@@ -22,6 +22,7 @@ export const DrawerProvider: React.FC = ({ children }) => {
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
 
   const toggleDrawer = () => {
+    console.log('Drawer toggled',!isDrawerVisible);
     setIsDrawerVisible((prev) => !prev); // Toggle drawer visibility
   };
 

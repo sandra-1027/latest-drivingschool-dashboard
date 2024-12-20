@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 
 
 const Sidebar = () => {
-  const { state, setAuthData } = useAuth();
+  const { state, clearAuthData  } = useAuth();
   const user = state?.user;
   const [activeTab, setActiveTab] = useState("dashboard");
   const { isDrawerVisible } = useDrawer();
@@ -23,12 +23,8 @@ const Sidebar = () => {
 
 
   const handleLogout = () => {
-    // Clear tokens from localStorage
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-  
-    // Redirect to login page
-    window.location.href = "/login";
+    clearAuthData(); // Clear auth state and localStorage
+    router.push("/login"); // Redirect to login page
   };
   
   

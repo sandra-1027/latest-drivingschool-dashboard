@@ -110,14 +110,59 @@
 
 
 
+// 'use client';
+
+// import { SessionProvider } from "next-auth/react"; // Import SessionProvider
+// import { ThemeProvider } from "next-themes"; // Import ThemeProvider
+// import "./globals.css"; // Import global styles
+// import { usePathname } from "next/navigation";
+// import DashboardLayout from "./dashboard/DashboardLayout";
+// import { AuthProvider } from "./context/AuthContext";
+// import { DrawerProvider } from "./dashboard/DrawerContext";
+
+// interface Props {
+//   children: React.ReactNode;
+// }
+
+// export default function RootLayout({ children }: Props) {
+//   const pathname = usePathname();
+//   // console.log('Current pathname:', pathname);
+
+//   return (
+//     <html lang="en">
+//       <body>
+//       <AuthProvider>
+//       <DrawerProvider>
+//           {/* Conditional rendering based on the pathname */}
+//           {pathname.startsWith("/admin") ? (
+            
+//             <DashboardLayout>{children}</DashboardLayout>
+            
+//           ) : (
+//             children
+//           )}
+//           </DrawerProvider>
+//           </AuthProvider>
+//       </body>
+      
+//     </html>
+      
+//   );
+// }
+
+
+
+
+
 'use client';
 
-import { SessionProvider } from "next-auth/react"; // Import SessionProvider
-import { ThemeProvider } from "next-themes"; // Import ThemeProvider
+import { SessionProvider } from "next-auth/react"; // For session handling
+import { ThemeProvider } from "next-themes"; // For theme handling
 import "./globals.css"; // Import global styles
 import { usePathname } from "next/navigation";
-import DashboardLayout from "./dashboard/Dashboardlayout";
-import { AuthProvider } from "./context/AuthContext";
+import DashboardLayout from "./dashboard/DashboardLayout";
+import { AuthProvider } from "./context/AuthContext"; // Ensure the correct path
+import { DrawerProvider } from "./dashboard/DrawerContext"; // Ensure the correct path
 
 interface Props {
   children: React.ReactNode;
@@ -125,22 +170,27 @@ interface Props {
 
 export default function RootLayout({ children }: Props) {
   const pathname = usePathname();
-  // console.log('Current pathname:', pathname);
 
   return (
     <html lang="en">
       <body>
-      <AuthProvider>
-          {/* Conditional rendering based on the pathname */}
-          {pathname.startsWith("/admin") ? (
-            
-            <DashboardLayout>{children}</DashboardLayout>
-            
-          ) : (
-            children
-          )}
-       </AuthProvider>
+       
+        <AuthProvider>
+          <DrawerProvider>
+            {/* Conditional rendering based on the pathname */}
+            {pathname.startsWith("/admin") ? (
+              <DashboardLayout>{children}</DashboardLayout>
+            ) : (
+              children
+            )}
+          </DrawerProvider>
+        </AuthProvider>
+        
       </body>
     </html>
   );
 }
+
+
+
+

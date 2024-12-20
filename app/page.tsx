@@ -1,13 +1,15 @@
 import Image from "next/image";
-import Dashboardlayout from "./dashboard/Dashboardlayout";
+
 
 import { DrawerProvider } from "./dashboard/DrawerContext";
+import DashboardLayout from "./dashboard/DashboardLayout";
+
 
 export default function Home() {
   return (
     <div >
       
-  
+  <DashboardLayout/>
  
     </div>
   );
