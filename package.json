@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "autoprefixer": "^10.4.20",
+    "bcryptjs": "^2.4.3",
     "html5-qrcode": "^2.3.8",
+    "jsonwebtoken": "^9.0.2",
     "next": "15.0.4",
     "next-auth": "^4.24.11",
     "react": "^19.0.0",

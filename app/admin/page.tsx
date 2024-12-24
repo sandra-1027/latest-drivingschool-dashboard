@@ -1,19 +1,19 @@
-'use client'
-import React from "react";
-import { useAuth } from "../context/AuthContext";
+// 'use client'
+// import React from "react";
+// import { useAuth } from "../context/AuthContext";
 
-const page = () => {
-  // const {state, setAuthData } = useAuth(); 
-  // const user = state?.user;
-  return (
-    <div>
-      <h1 style={{ fontSize: "24px", marginTop: "20px" }}> Dashboard</h1>
-{/* {user.username} */}
-    </div>
-  );
-};
+// const page = () => {
+//   // const {state, setAuthData } = useAuth(); 
+//   // const user = state?.user;
+//   return (
+//     <div>
+//       <h1 style={{ fontSize: "24px", marginTop: "20px" }}> Dashboard</h1>
+// {/* {user.username} */}
+//     </div>
+//   );
+// };
 
-export default page;
+// export default page;
 
 
 
@@ -49,5 +49,20 @@ export default page;
 
 //   return <h1>Welcome to the Admin Dashboard</h1>;
 // }
+
+
+'use client'
+import withAuth from "@/hoc/withAuth";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+// import withAuth from "../withAuth"; 
+
+
+const AdminPage = () => {
+  return <div>Welcome to the Admin Dashboard</div>;
+};
+
+// Wrap the AdminPage component with withAuth, specifying "admin" role
+export default withAuth(AdminPage, ['admin']);
 
 

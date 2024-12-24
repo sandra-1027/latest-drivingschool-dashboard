@@ -156,12 +156,11 @@
 
 'use client';
 
-import { SessionProvider } from "next-auth/react"; // For session handling
-import { ThemeProvider } from "next-themes"; // For theme handling
+
+
 import "./globals.css"; // Import global styles
 import { usePathname } from "next/navigation";
 import DashboardLayout from "./dashboard/DashboardLayout";
-import { AuthProvider } from "./context/AuthContext"; // Ensure the correct path
 import { DrawerProvider } from "./dashboard/DrawerContext"; // Ensure the correct path
 
 interface Props {
@@ -174,22 +173,23 @@ export default function RootLayout({ children }: Props) {
   return (
     <html lang="en">
       <body>
-       
-        <AuthProvider>
+        
           <DrawerProvider>
+         
             {/* Conditional rendering based on the pathname */}
             {pathname.startsWith("/admin") ? (
               <DashboardLayout>{children}</DashboardLayout>
             ) : (
               children
             )}
+           
           </DrawerProvider>
-        </AuthProvider>
         
       </body>
     </html>
   );
 }
+
 
 
 

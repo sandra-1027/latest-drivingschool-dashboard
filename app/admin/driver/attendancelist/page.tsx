@@ -239,11 +239,11 @@ const DriverView = () => {
     </ul>
   </div>
      {/* Driver Filter */}
-      <div className="flex justify-end mb-4">
+      <div className="flex justify-end mb-4 ">
         <select
           value={filterDriver}
           onChange={(e) => setFilterDriver(e.target.value)}
-          className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+          className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-300 "
         >
           <option value="all">All Drivers</option>
           {/* Dynamically populate driver options */}

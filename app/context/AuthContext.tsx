@@ -3,58 +3,6 @@
 
 
 
-// import { createContext, useContext, useReducer } from 'react';
-
-// const AuthContext = createContext(null);
-
-// const initialState = {
-//   user: null,
-//   accessToken: null,
-//   refreshToken: null,
-// };
-
-// const authReducer = (state, action) => {
-//   switch (action.type) {
-//     case 'SET_USER':
-//       return {
-//         ...state,
-//         user: action.payload.user,
-//         accessToken: action.payload.accessToken,
-//         refreshToken: action.payload.refreshToken,
-//       };
-//     case 'CLEAR_USER':
-//       return initialState;
-//     default:
-//       return state;
-//   }
-// };
-
-// export const AuthProvider = ({ children }) => {
-//   const [state, dispatch] = useReducer(authReducer, initialState);
-  
-//   const setAuthData = (data) => {
-//     dispatch({
-//       type: 'SET_USER',
-//       payload: {
-//         user: data.user,
-//         accessToken: data.accessToken,
-//         refreshToken: data.refreshToken,
-//       },
-//     });
-//   };
-
-//   return (
-//     <AuthContext.Provider value={{ state, setAuthData }}>
-//       {children}
-//     </AuthContext.Provider>
-//   );
-// };
-
-// export const useAuth = () => useContext(AuthContext);
-
-
-
-
 
 
 import { createContext, useContext, useReducer, useEffect } from "react";
@@ -136,6 +84,16 @@ export const AuthProvider = ({ children }) => {
 };
 
 export const useAuth = () => useContext(AuthContext);
+
+
+
+
+
+
+
+
+
+
 
 
 
