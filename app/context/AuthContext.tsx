@@ -69,6 +69,10 @@ export const AuthProvider = ({ children }) => {
         refreshToken: data.refreshToken,
       })
     );
+//     console.log("Setting token in localStorage:", data.accessToken);
+// localStorage.setItem('token', data.accessToken);
+
+
   };
 
   const clearAuthData = () => {
@@ -84,6 +88,9 @@ export const AuthProvider = ({ children }) => {
 };
 
 export const useAuth = () => useContext(AuthContext);
+
+
+
 
 
 

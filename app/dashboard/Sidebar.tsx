@@ -9,12 +9,12 @@ import { useRouter } from "next/navigation";
 
 
 const Sidebar = () => {
-  // const { state, clearAuthData  } = useAuth();
-  // const user = state?.user;
+  const { state, clearAuthData  } = useAuth();
+  const user = state?.user;
   const [activeTab, setActiveTab] = useState("dashboard");
   const { isDrawerVisible } = useDrawer();
  
-  // console.log(user,"get logindata")
+  // console.log(user,"get logined user")
     const router = useRouter();
   const showDashboard = () => setActiveTab("dashboard");
   const showUser = () => setActiveTab("user");
@@ -22,16 +22,12 @@ const Sidebar = () => {
   const showProfile = () => setActiveTab("profile");
 
 
-  // const handleLogout = () => {
-  //   clearAuthData(); // Clear auth state and localStorage
-  //   router.push("/login"); // Redirect to login page
-  // };
-  
   const handleLogout = () => {
-    localStorage.removeItem('token'); // Remove the token
-    router.push('/login'); // Redirect to login
+    localStorage.removeItem('token');
+    clearAuthData(); // Clear the context state as well
+    router.push('/login');
   };
-
+  
 
 
   return (
@@ -335,7 +331,7 @@ const Sidebar = () => {
                           Driving School Pro
                         </a>
                         <p className="text-xs text-slate-400 dark:text-navy-300">
-                          Admin
+                        Admin
                         </p>
                       </div>
                     </div>
@@ -405,7 +401,7 @@ const Sidebar = () => {
               {/* Sidebar Panel Header */}
               <div className="flex h-18 w-full items-center justify-between pl-4 pr-1">
                 <p className="text-base tracking-wider text-slate-800 dark:text-navy-100">
-                  Admin
+                    {user.data.user_name}
                 </p>
                 <button className="sidebar-close btn size-7 rounded-full p-0 text-primary hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:text-accent-light/80 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25 xl:hidden">
                   <svg
