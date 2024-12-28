@@ -417,6 +417,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { IoEye, IoEyeOff } from "react-icons/io5";
+import { useRouter } from "next/navigation";
 
 const Signup = () => {
   const [formData, setFormData] = useState<{
@@ -424,34 +425,34 @@ const Signup = () => {
     email: string;
     address: string;
     gender: string;
-    phone: string;
+    phone_no: string;
     role: string;
     amount: string;
     class: string;
     type: string[]; // Corrected type
-    hours: string;
-    days: string;
+    no_of_days:string;
     password: string;
     confirmPassword: string;
+    save:string;
   }>({
     name: "",
     email: "",
     address: "",
     gender: "",
-    phone: "",
+    phone_no: "",
     role: "",
     amount: "",
     class: "",
     type: [], // Initialize as an empty array
-    hours: "",
-    days: "",
+    no_of_days:"",
     password: "",
     confirmPassword: "",
+    save:"submit",
   });
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
+const router = useRouter();
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
   const toggleConfirmPasswordVisibility = () =>
     setShowConfirmPassword(!showConfirmPassword);
@@ -481,28 +482,70 @@ const Signup = () => {
     }
   };
 
-  // const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
-  //   e.preventDefault();
-  //   if (formData.password !== formData.confirmPassword) {
-  //     alert("Passwords do not match");
-  //     return;
-  //   }
-  //   console.log("Form Submitted:", formData);
-  // };
- 
-
-  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
+  
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+  
+    // Validate password match
     if (formData.password !== formData.confirmPassword) {
       alert("Passwords do not match");
       return;
     }
   
-    // Save form data to local storage (for demo purposes)
-    localStorage.setItem("signupData", JSON.stringify(formData));
-    console.log("Data stored in local storage:", formData);
+    try {
+      // Show a loading state if needed
+      console.log("Submitting signup data...", formData);
+  
+      // Send the form data to the backend
+      const response = await fetch("/api/home/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          address: formData.address,
+          gender: formData.gender,
+          phone_no: formData.phone_no,
+          role: formData.role,
+          amount: formData.amount,
+          class_days: formData.class,
+          class_type: formData.type,
+           no_of_days:formData.no_of_days,
+          password: formData.password,
+          confirm_password:formData.confirmPassword,
+          save:"submit"
+        }),
+      });
+  
+
+      // Check if the request was successful
+      if (!response.ok) {
+        const errorData = await response.json();
+        alert(errorData.message || "Signup failed");
+        return;
+      }
+  
+      
+
+
+
+      // Handle success response
+      const data = await response.json();
+      console.log("Signup successful:", data);
+  
+      // Redirect to a login page or dashboard
+      alert("Signup successful! Redirecting to login...");
+      // window.location.href = "/login"; 
+      router.push("/login")
+    } catch (error) {
+      console.error("Error during signup:", error);
+      alert("Something went wrong during signup. Please try again.");
+    }
   };
   
+
 
   return (
     <>
@@ -513,7 +556,7 @@ const Signup = () => {
           <div className="text-center">
             <img
               className="mx-auto size-16"
-              src="images/app-logo.svg"
+              src="/images/app-logo.svg"
               alt="logo"
             />
             <div className="mt-4">
@@ -582,8 +625,8 @@ const Signup = () => {
                 className="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70"
                 placeholder="Phone"
                 type="text"
-                name="phone"
-                value={formData.phone}
+                name="phone_no"
+                value={formData.phone_no}
                 onChange={handleChange}
               />
             </label>
@@ -601,20 +644,20 @@ const Signup = () => {
                     onChange={handleChange}
                   >
                     <option value="">Choose Class</option>
-                    <option value="hour">Hourly</option>
+                    <option value="hours">Hourly</option>
                     <option value="days">Daily</option>
                   </select>
                 </label>
 
                 {/* Hours or Days */}
-                {formData.class === "hour" && (
+                {formData.class === "hours" && (
                   <label className="relative flex mt-4">
                     <input
                       type="number"
-                      name="hours"
+                      name="no_of_days"
                       placeholder="Enter hours"
                       className="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70"
-                      value={formData.hours}
+                      value={formData.no_of_days}
                       onChange={handleChange}
                     />
                   </label>
@@ -623,10 +666,10 @@ const Signup = () => {
                   <label className="relative flex mt-4">
                     <input
                       type="number"
-                      name="days"
+                      name="no_of_days"
                       placeholder="Enter days"
                       className="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70"
-                      value={formData.days}
+                      value={formData.no_of_days}
                       onChange={handleChange}
                     />
                   </label>
@@ -720,6 +763,7 @@ const Signup = () => {
             {/* Submit Button */}
             <button
               className="btn mt-5 w-full bg-primary font-medium text-white hover:bg-primary-focus focus:bg-primary-focus"
+              type="submit"
               onClick={handleSubmit}
             >
               Sign Up

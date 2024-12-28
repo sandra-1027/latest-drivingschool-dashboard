@@ -4,6 +4,7 @@ import Scanner from "./Scanner";
 // import "./driver.css";
 
 import { MdQrCodeScanner } from "react-icons/md";
+import withAuth from "@/hoc/withAuth";
 
 const DriverView = () => {
   const [students, setStudents] = useState([
@@ -369,4 +370,5 @@ const DriverView = () => {
   );
 };
 
-export default DriverView;
+// export default DriverView;
+export default withAuth(DriverView, ['admin']);

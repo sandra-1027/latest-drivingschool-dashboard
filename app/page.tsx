@@ -3,14 +3,14 @@ import Image from "next/image";
 
 import { DrawerProvider } from "./dashboard/DrawerContext";
 import DashboardLayout from "./dashboard/DashboardLayout";
+import Login from "./login/page";
 
 
 export default function Home() {
   return (
     <div >
       
-  <DashboardLayout/>
- 
+<Login/>
     </div>
   );
 }

@@ -191,6 +191,7 @@
 
 
 'use client'
+import withAuth from '@/hoc/withAuth';
 import React, { useState } from 'react'
 
 const page = () => {
@@ -395,4 +396,5 @@ const page = () => {
   )
 }
 
-export default page
+// export default page
+export default withAuth(page, ['admin']);

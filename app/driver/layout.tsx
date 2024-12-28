@@ -1,10 +1,12 @@
-
-// export default function UserLayout({ children }: { children: React.ReactNode }) {
+// app/staff/layout.tsx
+// export default function StaffLayout({ children }: { children: React.ReactNode }) {
 //     return (
 //       <div>
-//         <header>User Navigation</header>
+//         <header>
+//           driver
+//         </header>
 //         <main>{children}</main>
-//         <footer>User Footer</footer>
+//         <footer>Staff Footer</footer>
 //       </div>
 //     );
 //   }
@@ -23,7 +25,7 @@ import Topbar from "./dashboard/Topbar";
 
 
 
-const studentLayout = ({ children }) => {
+const driverLayout = ({ children }) => {
  
   const [isDarkMode, setIsDarkMode] = useState(false);
 
@@ -78,4 +80,4 @@ const studentLayout = ({ children }) => {
   );
 };
 
-export default studentLayout;
+export default driverLayout;

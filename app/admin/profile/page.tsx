@@ -1,4 +1,5 @@
 "use client";
+import withAuth from "@/hoc/withAuth";
 import Link from "next/link";
 import React, { useRef, useState } from "react";
 
@@ -396,7 +397,8 @@ return (
   );
 };
 
-export default AdminProfile;
+// export default AdminProfile;
+export default withAuth(AdminProfile, ['admin']);
 
 
 

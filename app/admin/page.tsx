@@ -59,7 +59,7 @@ import { useEffect } from "react";
 
 
 const AdminPage = () => {
-  return <div>Welcome to the Admin Dashboard</div>;
+  return <div style={{ fontSize: "24px", marginTop: "20px" }}>Welcome to the Admin Dashboard</div>;
 };
 
 // Wrap the AdminPage component with withAuth, specifying "admin" role

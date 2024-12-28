@@ -1,11 +1,21 @@
-import withAuth from "@/hoc/withAuth";
+'use client'
 
+import withAuth from "@/hoc/withAuth";
+import { useRouter } from "next/navigation";
+import { useAuth } from "../context/AuthContext";
 
 
 const StudentDashboard = () => {
-  return <h1>Student Dashboard</h1>;
-};
-
+   const { state, clearAuthData  } = useAuth();
+  
+   
+    return (
+      <div>
+        <h1>Student Dashboard</h1>
+       
+        </div>
+      )};
+      
 export default withAuth(StudentDashboard, ['student']); // Only student can access
 
 

@@ -18,14 +18,14 @@ const nextConfig: NextConfig = {
       {
         // Rewrite for auth-related APIs
         source: '/api/auth/:path*', 
-        destination: 'https://our-demos.com/n/op2doctor_api/api/auth/:path*',
+        destination: 'http://our-demos.com/n/drivingschool_api/api/auth/:path*',
       },
     
-      // {
-      //   // Rewrite for auth-related APIs
-      //   source: '/api/auth/:path*', 
-      //   destination: ' http://localhost/WORKS/drivingschool_api/api/auth/:path*',
-      // },
+      {
+        // Rewrite for auth-related APIs
+        source: '/api/home/:path*', 
+        destination: 'http://our-demos.com/n/drivingschool_api/api/home/:path*',
+      },
      
     ];
   },

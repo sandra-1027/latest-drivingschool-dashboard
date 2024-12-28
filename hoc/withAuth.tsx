@@ -2,57 +2,6 @@
 
 
 
-
-
-
-// import { useEffect, useState } from 'react';
-// import jwt from 'jsonwebtoken';
-// import { useRouter } from 'next/navigation';
-
-// const secretKey = 'your-secret-key';
-
-// const withAuth = (WrappedComponent, allowedRoles = []) => {
-//   return (props) => {
-//     const [isAuthenticated, setIsAuthenticated] = useState(false);
-//     const router = useRouter();
-
-//     useEffect(() => {
-//       const token = localStorage.getItem('token');
-
-//       if (!token) {
-//         router.push('/login');
-//         return;
-//       }
-
-//       try {
-//         const decoded = jwt.verify(token, secretKey);
-
-//         if (allowedRoles.length && !allowedRoles.includes(decoded.role)) {
-//           router.push('/unauthorized');
-//           return;
-//         }
-
-//         setIsAuthenticated(true);
-//       } catch (err) {
-//         localStorage.removeItem('token');
-//         router.push('/login');
-//       }
-//     }, []);
-
-//     if (!isAuthenticated) {
-//       return <p>Loading...</p>;
-//     }
-
-//     return <WrappedComponent {...props} />;
-//   };
-// };
-
-// export default withAuth;
-
-
-
-
-
 // 'use client'
 
 // import { useEffect, useState } from 'react';
@@ -125,6 +74,7 @@
 import { useEffect, useState } from 'react';
 import jwt from 'jsonwebtoken'; // Ensure you use jwt-decode for frontend decoding
 import { useRouter } from 'next/navigation';
+import { jwtDecode } from 'jwt-decode';
 
 const withAuth = (WrappedComponent, allowedRoles = []) => {
   return (props) => {
@@ -142,30 +92,16 @@ const withAuth = (WrappedComponent, allowedRoles = []) => {
           router.push('/login');
           return;
         }
-        // const authData = JSON.parse(localStorage.getItem('authData'));
-        // const token = authData?.user?.token; 
-        // console.log("Retrieved token:", token);
-        // if (!token) {
-        //   console.log("No token found. Redirecting to login.");
-        //   router.push('/login');
-        // }
-
+        
 
 
         try {
           // Decode token without secret key
-          const decoded = jwt.decode(token);
+          // const decoded = jwt.decode(token);
+          const decoded = jwtDecode(token);
 
           // Log decoded token for debugging
           console.log("Decoded token:", decoded);
-
-          // Check if token is valid and not expired
-          // if (!decoded || (decoded.exp && decoded.exp * 1000 < Date.now())) {
-          //   console.log("Token expired. Redirecting to login.");
-          //   localStorage.removeItem('token');
-          //   router.push('/login');
-          //   return;
-          // }
 
    // Check if token is expired
 if (decoded && decoded.exp) {
@@ -216,4 +152,76 @@ if (decoded && decoded.exp) {
 };
 
 export default withAuth;
+
+
+
+
+
+
+
+// 'use client';
+
+// import { useEffect, useState } from 'react';
+// import jwtDecode from 'jwt-decode';
+// import { useRouter } from 'next/navigation';
+
+// const withAuth = (WrappedComponent, allowedRoles = []) => {
+//   return (props) => {
+//     const [authState, setAuthState] = useState({
+//       isAuthenticated: false,
+//       loading: true,
+//     });
+//     const router = useRouter();
+
+//     useEffect(() => {
+//       const verifyToken = async () => {
+//         const token = localStorage.getItem('token');
+//         if (!token) {
+//           console.log('No token found. Redirecting to login.');
+//           router.push('/login');
+//           return;
+//         }
+
+//         try {
+//           const decoded = jwtDecode(token);
+
+//           console.log('Decoded token:', decoded);
+
+//           if (decoded && decoded.exp) {
+//             const expiryTime = new Date(decoded.exp * 1000);
+//             if (expiryTime < new Date()) {
+//               console.log('Token expired. Redirecting to login.');
+//               localStorage.removeItem('token');
+//               router.push('/login');
+//               return;
+//             }
+//           }
+
+//           const userRole = decoded?.role || decoded?.user_type;
+
+//           if (!allowedRoles.length || allowedRoles.includes(userRole)) {
+//             setAuthState({ isAuthenticated: true, loading: false });
+//           } else {
+//             console.log('User role not authorized. Redirecting.');
+//             router.push('/unauthorized');
+//           }
+//         } catch (error) {
+//           console.error('Token verification failed:', error);
+//           localStorage.removeItem('token');
+//           router.push('/login');
+//         }
+//       };
+
+//       verifyToken();
+//     }, [router, allowedRoles]);
+
+//     if (authState.loading) {
+//       return <div>Loading...</div>;
+//     }
+
+//     return authState.isAuthenticated ? <WrappedComponent {...props} /> : null;
+//   };
+// };
+
+// export default withAuth;
 
