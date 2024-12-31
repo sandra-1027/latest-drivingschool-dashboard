@@ -1,6 +1,6 @@
 
 
-
+'use client'
 import { createContext, useContext, useReducer, useEffect } from "react";
 
 const AuthContext = createContext(null);

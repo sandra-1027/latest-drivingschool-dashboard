@@ -3,11 +3,9 @@
 import React, { Children, useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
 import Topbar from "./Topbar";
-// const Sidebar = dynamic(() => import("./Sidebar"),{
-//   loading: () =><div>...loading</div>,
-// ssr : false,
-// }) 
 
+// const Sidebar = dynamic(() => import("./Sidebar"), { ssr: false });
+// const Topbar = dynamic(() => import("./Topbar"), { ssr: false });
 
 import Head from "next/head";
 import { DrawerProvider } from "./DrawerContext";
@@ -19,15 +17,18 @@ import dynamic from "next/dynamic";
 
 
 
-const DashboardLayout = ({ children }) => {
- 
-  const [isDarkMode, setIsDarkMode] = useState(false);
+// const DashboardLayout = ({ children }) => {
+export default function DashboardLayout({children,}:{children:React.ReactNode;}){
 
-  useEffect(() => {
-    const darkMode = localStorage.getItem("dark-mode");
-    setIsDarkMode(darkMode === "dark");
-    console.log('Dark mode toggled', !isDarkMode);
-  }, []);
+
+ 
+  // const [isDarkMode, setIsDarkMode] = useState(false);
+
+  // useEffect(() => {
+  //   const darkMode = localStorage.getItem("dark-mode");
+  //   setIsDarkMode(darkMode === "dark");
+  //   console.log('Dark mode toggled', !isDarkMode);
+  // }, []);
 
  
   return (
@@ -54,8 +55,8 @@ const DashboardLayout = ({ children }) => {
         <div className="app-preloader-inner relative inline-block size-48" />
        </div> 
       
-          <Sidebar />
-          <Topbar />
+          <Sidebar/>
+          <Topbar/>
           <MobileSearchbar/>
           <RightSidebar/>
         
@@ -74,7 +75,10 @@ const DashboardLayout = ({ children }) => {
   );
 };
 
-export default DashboardLayout;
+// export default DashboardLayout;
+
+
+
 
 
 

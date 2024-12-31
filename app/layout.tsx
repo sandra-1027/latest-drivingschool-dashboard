@@ -74,10 +74,13 @@
 
 
 // "use client";
-// import { ThemeProvider } from "next-themes"; // Import ThemeProvider
+
 // import "./globals.css"; // Import global styles
 // import { usePathname } from "next/navigation";
-// import DashboardLayout from "./dashboard/Dashboardlayout";
+// import DashboardLayout from "./dashboard/DashboardLayout";
+// import { AuthProvider } from "./context/AuthContext";
+// import { DrawerProvider } from "./dashboard/DrawerContext";
+
 
 // interface Props {
 //   children: React.ReactNode;
@@ -92,7 +95,11 @@
 //         {/* Required html tag */}
 //         <body>
 //           {/* Required body tag */}
+//                <AuthProvider>
+//        <DrawerProvider>
 //           <DashboardLayout>{children}</DashboardLayout>
+//           </DrawerProvider>
+//           </AuthProvider>
 //         </body>
 //       </html>
 //     );
@@ -107,6 +114,13 @@
 //     </html>
 //   );
 // }
+
+
+
+
+
+
+
 
 
 
@@ -153,42 +167,6 @@ export default function RootLayout({ children }: Props) {
 
 
 
-
-// 'use client';
-
-
-
-// import "./globals.css"; // Import global styles
-// import { usePathname } from "next/navigation";
-// import DashboardLayout from "./dashboard/DashboardLayout";
-// import { DrawerProvider } from "./dashboard/DrawerContext"; // Ensure the correct path
-
-// interface Props {
-//   children: React.ReactNode;
-// }
-
-// export default function RootLayout({ children }: Props) {
-//   const pathname = usePathname();
-
-//   return (
-//     <html lang="en">
-//       <body>
-        
-//           <DrawerProvider>
-         
-//             {/* Conditional rendering based on the pathname */}
-//             {pathname.startsWith("/admin") ? (
-//               <DashboardLayout>{children}</DashboardLayout>
-//             ) : (
-//               children
-//             )}
-           
-//           </DrawerProvider>
-        
-//       </body>
-//     </html>
-//   );
-// }
 
 
 

@@ -27,13 +27,13 @@ import Topbar from "./dashboard/Topbar";
 
 const driverLayout = ({ children }) => {
  
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  // const [isDarkMode, setIsDarkMode] = useState(false);
 
-  useEffect(() => {
-    const darkMode = localStorage.getItem("dark-mode");
-    setIsDarkMode(darkMode === "dark");
-    console.log('Dark mode toggled', !isDarkMode);
-  }, []);
+  // useEffect(() => {
+  //   const darkMode = localStorage.getItem("dark-mode");
+  //   setIsDarkMode(darkMode === "dark");
+  //   console.log('Dark mode toggled', !isDarkMode);
+  // }, []);
 
  
   return (
