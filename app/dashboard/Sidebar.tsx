@@ -401,7 +401,7 @@ const Sidebar = () => {
               {/* Sidebar Panel Header */}
               <div className="flex h-18 w-full items-center justify-between pl-4 pr-1">
                 <p className="text-base tracking-wider text-slate-800 dark:text-navy-100">
-                    {user.data.user_type}
+                    Admin
                 </p>
                 <button className="sidebar-close btn size-7 rounded-full p-0 text-primary hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:text-accent-light/80 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25 xl:hidden">
                   <svg
@@ -433,6 +433,7 @@ const Sidebar = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </button> */}
+          
                     <ul className="ac-panel">
                       <li>
                         <a
@@ -461,6 +462,7 @@ const Sidebar = () => {
                         </a>
                       </li>
                     </ul>
+                  
                   </li>
                   <li className="ac nav-parent [&.is-active_svg]:rotate-90 [&.is-active_.ac-trigger]:font-semibold [&.is-active_.ac-trigger]:text-slate-800 dark:[&.is-active_.ac-trigger]:text-navy-50">
                     {/* <button className="ac-trigger flex w-full items-center justify-between py-2 text-xs+ tracking-wide text-slate-600 outline-none transition-[color,padding-left] duration-300 ease-in-out hover:text-slate-800 dark:text-navy-200 dark:hover:text-navy-50">

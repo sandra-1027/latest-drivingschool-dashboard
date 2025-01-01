@@ -75,9 +75,12 @@ export const AuthProvider = ({ children }) => {
     dispatch({ type: "CLEAR_USER" });
     localStorage.removeItem("authData"); // Clear from localStorage
   };
-
+  const isAuthenticated = () => {
+    const token = localStorage.getItem("token");
+    return !!token; // Returns true if token exists
+  };
   return (
-    <AuthContext.Provider value={{ state, setAuthData, clearAuthData }}>
+    <AuthContext.Provider value={{ state, setAuthData, clearAuthData ,isAuthenticated}}>
       {children}
     </AuthContext.Provider>
   );
