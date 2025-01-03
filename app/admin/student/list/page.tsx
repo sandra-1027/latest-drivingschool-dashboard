@@ -396,5 +396,5 @@ const page = () => {
   )
 }
 
-// export default page
-export default withAuth(page, ['admin']);
+export default page
+// export default withAuth(page, ['admin']);

@@ -153,13 +153,17 @@
 
 
 
+
+
 "use client";
 
 import { useState, useRef } from "react";
-import { Html5Qrcode } from "html5-qrcode";
+import QRCode from "qrcode";
+
 import "./profile.css";
 import { MdDateRange, MdEdit } from "react-icons/md";
 import { FaGraduationCap } from "react-icons/fa";
+
 
 const StudentProfile = () => {
   const [profileImage, setProfileImage] = useState<string | null>(null);
@@ -171,7 +175,7 @@ const StudentProfile = () => {
     completedClasses: 15,
   });
   const [isQrModalOpen, setIsQrModalOpen] = useState(false);
-  const qrCodeRef = useRef<HTMLDivElement | null>(null);
+  const qrCodeRef = useRef<HTMLCanvasElement | null>(null);
 
   const gender = "male";
   const defaultAvatar = gender === "male" ? "/male.webp" : "/female.webp";
@@ -200,13 +204,14 @@ const StudentProfile = () => {
     setIsQrModalOpen((prev) => !prev);
   };
 
-  const generateQrCode = () => {
+  const generateQrCode = async () => {
     if (qrCodeRef.current) {
-      const html5QrCode = new Html5Qrcode(qrCodeRef.current.id);
       const qrCodeText = `Name: ${studentDetails.name}, ID: ${studentDetails.mobileNo}`;
-      html5QrCode
-        .generateQrCode(qrCodeText)
-        .catch((err) => console.error("Error generating QR code:", err));
+      try {
+        await QRCode.toCanvas(qrCodeRef.current, qrCodeText, { width: 200 });
+      } catch (err) {
+        console.error("Error generating QR code:", err);
+      }
     }
   };
 
@@ -231,10 +236,14 @@ const StudentProfile = () => {
             backgroundImage: `url(${profileImage || defaultAvatar})`,
           }}
         />
-        <button
+        {/* <button
           onClick={isEditing ? null : triggerFileInput}
           className="editButton"
-        >
+        > */}
+        <button
+  onClick={isEditing ? undefined : triggerFileInput} // Use undefined instead of null
+  className="editButton"
+>
           {isEditing ? "Save" : <MdEdit style={{ color: "white" }} />}
         </button>
         <input
@@ -249,7 +258,7 @@ const StudentProfile = () => {
         <h4 className="studentId text-muted">
           phone: {studentDetails.mobileNo}
         </h4>
-        <div ref={qrCodeRef} id="qr-code-container" />
+        <canvas ref={qrCodeRef} id="qr-code-container" />
         <button onClick={generateQrCode} className="qrButton">
           Generate QR Code
         </button>
@@ -258,7 +267,7 @@ const StudentProfile = () => {
       {isQrModalOpen && (
         <div className="modalBackdrop" onClick={toggleQrModal}>
           <div className="modalContent" onClick={(e) => e.stopPropagation()}>
-            <div id="qr-modal-container" ref={qrCodeRef}></div>
+            <canvas ref={qrCodeRef}></canvas>
           </div>
         </div>
       )}
@@ -267,3 +276,4 @@ const StudentProfile = () => {
 };
 
 export default StudentProfile;
+

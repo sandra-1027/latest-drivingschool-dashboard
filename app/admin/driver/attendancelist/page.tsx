@@ -370,5 +370,5 @@ const DriverView = () => {
   );
 };
 
-// export default DriverView;
-export default withAuth(DriverView, ['admin']);
+export default DriverView;
+// export default withAuth(DriverView, ['admin']);

@@ -25,7 +25,8 @@ import Topbar from "./dashboard/Topbar";
 
 
 
-const driverLayout = ({ children }) => {
+// const driverLayout = ({ children }) => {
+ export default function driverLayout({children,}:{children:React.ReactNode;}){
  
   // const [isDarkMode, setIsDarkMode] = useState(false);
 
@@ -80,4 +81,4 @@ const driverLayout = ({ children }) => {
   );
 };
 
-export default driverLayout;
+// export default driverLayout;

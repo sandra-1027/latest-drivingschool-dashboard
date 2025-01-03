@@ -23,7 +23,8 @@ import Topbar from "./dashboard/Topbar";
 
 
 
-const studentLayout = ({ children }) => {
+// const studentLayout = ({ children }) => {
+  export default function studentLayout({children,}:{children:React.ReactNode;}){
  
   // const [isDarkMode, setIsDarkMode] = useState(false);
 
@@ -78,4 +79,4 @@ const studentLayout = ({ children }) => {
   );
 };
 
-export default studentLayout;
+// export default studentLayout;

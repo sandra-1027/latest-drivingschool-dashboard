@@ -154,7 +154,6 @@
 'use client';
 
 
-import { ThemeProvider } from "next-themes"; // Import ThemeProvider
 import "./globals.css"; // Import global styles
 import { usePathname } from "next/navigation";
 import DashboardLayout from "./dashboard/DashboardLayout";
@@ -177,7 +176,10 @@ export default function RootLayout({ children }: Props) {
           {/* Conditional rendering based on the pathname */}
           {pathname.startsWith("/admin") ? (
             
-            <DashboardLayout>{children}</DashboardLayout>
+            <DashboardLayout>
+              {children}
+             
+              </DashboardLayout>
             
           ) : (
             children
@@ -190,3 +192,9 @@ export default function RootLayout({ children }: Props) {
       
   );
 }
+
+
+
+
+
+

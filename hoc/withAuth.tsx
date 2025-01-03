@@ -191,35 +191,113 @@
 
 
 // withAuth.js (HOC)
+// import { useState, useEffect } from 'react';
+// import { useRouter } from 'next/navigation';
+// import {jwtDecode} from 'jwt-decode';
+// // Define the allowed roles explicitly
+// type Role = 'admin' | 'driver' | 'student';
+
+// // Enhance type safety for WrappedComponent
+// type WithAuthProps = {
+//   allowedRoles?: Role[];
+// };
+// // const withAuth = (WrappedComponent, allowedRoles = []) => {
+// //   return (props) => {
+// //     const [authState, setAuthState] = useState({ isAuthenticated: false, loading: true });
+// //     const router = useRouter();
+
+
+// const withAuth = <P extends object>(
+//   WrappedComponent: React.ComponentType<P>,
+//   allowedRoles: Role[] = []
+// ): React.FC<P> => {
+//   return (props: P) => {
+//     const [authState, setAuthState] = useState({ isAuthenticated: false, loading: true });
+//     const router = useRouter();
+//     useEffect(() => {
+//       const verifyToken = () => {
+//         const token = localStorage.getItem('token');
+//         if (!token ) {
+//           router.push('/login');
+//           return;
+//         }
+
+//         try {
+//           const decoded = jwtDecode(token);
+//           // Check expiration
+//           if (decoded.exp * 1000 < Date.now()) {
+//             localStorage.removeItem('token');
+//             router.push('/login');
+//             return;
+//           }
+
+          
+//           const role = localStorage.getItem('role');
+//           if (allowedRoles.length && !allowedRoles.includes(role)) {
+//             router.push('/unauthorized');
+//             return;
+//           }
+//           setAuthState({ isAuthenticated: true, loading: false });
+//         } catch (error) {
+//           localStorage.removeItem('token');
+//           localStorage.removeItem('role');
+//           router.push('/login');
+//         }
+//       };
+
+//       verifyToken();
+//     }, [router]);
+
+//     if (authState.loading) {
+//       return <div>Loading...</div>;
+//     }
+
+//     return <WrappedComponent {...props} />;
+//   };
+// };
+
+// export default withAuth;
+
+
+
+
+
+
+// withAuth.tsx (HOC)
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
-const withAuth = (WrappedComponent, allowedRoles = []) => {
-  return (props) => {
+// Define the allowed roles explicitly
+type Role = 'admin' | 'driver' | 'student';
+
+const withAuth = <P extends object>(
+  WrappedComponent: React.ComponentType<P>,
+  allowedRoles: Role[] = []
+): React.FC<P> => {
+  return (props: P) => {
     const [authState, setAuthState] = useState({ isAuthenticated: false, loading: true });
     const router = useRouter();
-
+    
     useEffect(() => {
       const verifyToken = () => {
         const token = localStorage.getItem('token');
-        if (!token ) {
+        if (!token) {
           router.push('/login');
           return;
         }
 
         try {
-          const decoded = jwtDecode(token);
-          // Check expiration
-          if (decoded.exp * 1000 < Date.now()) {
+          const decoded: { exp?: number } = jwtDecode(token); // Ensure `exp` is optional
+          // Check expiration if `exp` exists
+          if (decoded.exp && decoded.exp * 1000 < Date.now()) {
             localStorage.removeItem('token');
             router.push('/login');
             return;
           }
 
-          
           const role = localStorage.getItem('role');
-          if (allowedRoles.length && !allowedRoles.includes(role)) {
+          if (allowedRoles.length && role && !allowedRoles.includes(role as Role)) {
             router.push('/unauthorized');
             return;
           }
@@ -243,5 +321,3 @@ const withAuth = (WrappedComponent, allowedRoles = []) => {
 };
 
 export default withAuth;
-
-

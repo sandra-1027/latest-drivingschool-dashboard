@@ -867,7 +867,9 @@ const Topbar = () => {
       {/* <link rel="stylesheet" href="/css/base.css" />
       <link rel="stylesheet" href="/dist/css/app.css" />  */}
 
-      <nav className="header print:hidden">
+      {/* <nav className="header print:hidden"> */}
+      <nav className="header before:bg-white dark:before:bg-navy-750 print:hidden">
+      
         {/* App Header  */}
         <div className="header-container relative flex w-full bg-white dark:bg-navy-700 print:hidden">
           {/* Header Items */}

@@ -12,7 +12,7 @@ import { DrawerProvider } from "./DrawerContext";
 import MobileSearchbar from "./MobileSearchbar";
 import RightSidebar from "./RightSidebar";
 
-import Loader from "./Loader";
+
 import dynamic from "next/dynamic";
 
 
@@ -47,6 +47,7 @@ export default function DashboardLayout({children,}:{children:React.ReactNode;})
       {/* <DrawerProvider> */}
         {/* <div id="root" className={`min-h-100vh ${isDarkMode ? "dark bg-navy-900" : "bg-slate-50"}`}> 
           <div id="root" className={` min-h-screen flex grow bg-slate-50 dark:bg-navy-900 is-sidebar-open is-header-blur ${isDarkMode ? "dark bg-navy-900" : "bg-slate-50"}`}>  */}
+          
         <div
           id="root" className={` min-h-screen flex grow bg-slate-50 dark:bg-navy-900  is-header-blur`}
         >
@@ -67,7 +68,7 @@ export default function DashboardLayout({children,}:{children:React.ReactNode;})
           </main>
        
         </div>
-        
+       
         
       {/* </DrawerProvider> */}
       <script src="/dist/js/app.js" defer></script>
@@ -144,3 +145,7 @@ export default function DashboardLayout({children,}:{children:React.ReactNode;})
 // };
 
 // export default DashboardLayout;
+
+
+
+
