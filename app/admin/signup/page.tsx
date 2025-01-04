@@ -553,6 +553,7 @@ const router = useRouter();
       <link rel="stylesheet" href="/dist/css/app.css" />
       <main className="grid w-full grow grid-cols-1 place-items-center">
         <div className="w-full max-w-[26rem] p-4 sm:px-5">
+      
           <div className="text-center">
             <img
               className="mx-auto size-16"
@@ -563,9 +564,10 @@ const router = useRouter();
               <h2 className="text-2xl font-semibold text-slate-600 dark:text-navy-100">
                 Welcome To Lineone
               </h2>
-              <p className="text-slate-400 dark:text-navy-300">
+              {/* <p className="text-slate-400 dark:text-navy-300">
                 Please sign up to continue
-              </p>
+             
+              </p> */}
             </div>
           </div>
           <div className="card mt-5 rounded-lg p-5 lg:p-7">

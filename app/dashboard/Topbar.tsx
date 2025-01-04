@@ -854,14 +854,9 @@ import { useDrawer } from "./DrawerContext";
 
 const Topbar = () => {
   
-  const [isPopoverVisible, setIsPopoverVisible] = useState(false);
   const { toggleDrawer } = useDrawer();
 
- 
-  // const togglePopover = () => {
-  //   setIsPopoverVisible((prev) => !prev); 
-  // };
- 
+  
   return (
     <>
       {/* <link rel="stylesheet" href="/css/base.css" />
@@ -876,15 +871,18 @@ const Topbar = () => {
           <div className="flex w-full items-center justify-between">
             {/* Left: Sidebar Toggle Button */}
             <div className="size-7">
-              {/* <button  onClick={toggleSidebar} className="sidebar-toggle ml-0.5 flex size-7 flex-col justify-center space-y-1.5 text-primary outline-none focus:outline-none dark:text-accent-light/80"> */}
+             
               <button
                 onClick={toggleDrawer}
                 className="sidebar-toggle ml-0.5 flex size-7 flex-col justify-center space-y-1.5 text-primary outline-none focus:outline-none dark:text-accent-light/80"
+                
               >
                 <span />
                 <span />
                 <span />
               </button>
+
+
             </div>
           
             {/* Right: Header buttons */}
@@ -1696,3 +1694,16 @@ const Topbar = () => {
 };
 
 export default Topbar;
+
+
+
+
+
+
+
+
+
+
+
+
+
