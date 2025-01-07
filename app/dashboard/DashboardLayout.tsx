@@ -19,7 +19,7 @@ import dynamic from "next/dynamic";
 
 // const DashboardLayout = ({ children }) => {
 export default function DashboardLayout({children,}:{children:React.ReactNode;}){
- 
+  
   // const [isDarkMode, setIsDarkMode] = useState(false);
 
   // useEffect(() => {
@@ -43,9 +43,7 @@ export default function DashboardLayout({children,}:{children:React.ReactNode;})
       
    
       {/* <DrawerProvider> */}
-        {/* <div id="root" className={`min-h-100vh ${isDarkMode ? "dark bg-navy-900" : "bg-slate-50"}`}> 
-          <div id="root" className={` min-h-screen flex grow bg-slate-50 dark:bg-navy-900 is-sidebar-open is-header-blur ${isDarkMode ? "dark bg-navy-900" : "bg-slate-50"}`}>  */}
-          
+     
         <div
           id="root" className={` min-h-screen flex grow bg-slate-50 dark:bg-navy-900  is-header-blur`}
         >
@@ -69,7 +67,8 @@ export default function DashboardLayout({children,}:{children:React.ReactNode;})
         
       {/* </DrawerProvider> */}
       <script src="/dist/js/app.js" defer></script>
-    </>
+      <script src="/dist/js/main.js" defer></script>
+      </>
   );
 };
 

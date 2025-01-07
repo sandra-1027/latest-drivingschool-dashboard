@@ -855,6 +855,11 @@ import { useDrawer } from "./DrawerContext";
 const Topbar = () => {
   
   const { toggleDrawer } = useDrawer();
+  const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
+
+  const handleToggle = () => {
+    setIsSidebarExpanded(!isSidebarExpanded);
+  };
 
   
   return (
@@ -882,6 +887,17 @@ const Topbar = () => {
                 <span />
               </button>
 
+{/* <button
+      className={`menu-toggle ml-0.5 flex h-7 w-7 flex-col justify-center space-y-1.5 text-primary outline-none focus:outline-none dark:text-accent-light/80 ${
+        isSidebarExpanded ? "active" : ""
+      }`}
+      onClick={handleToggle}
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button> */}
+ 
 
             </div>
           
@@ -1687,7 +1703,6 @@ const Topbar = () => {
           </div>
         </div>
       </nav>
-
 
     </>
   );
