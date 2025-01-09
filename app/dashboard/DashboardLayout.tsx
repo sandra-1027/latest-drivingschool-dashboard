@@ -45,7 +45,8 @@ export default function DashboardLayout({children,}:{children:React.ReactNode;})
       {/* <DrawerProvider> */}
      
         <div
-          id="root" className={` min-h-screen flex grow bg-slate-50 dark:bg-navy-900  is-header-blur`}
+          id="root" 
+  className={` min-h-screen flex grow bg-slate-50 dark:bg-navy-900  is-header-blur`}
         >
           {/* App Preloader */}
  <div className="app-preloader fixed z-50 grid h-full w-full place-content-center bg-slate-50 dark:bg-navy-900">

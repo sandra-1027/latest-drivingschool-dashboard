@@ -46,6 +46,7 @@ const Sidebar = () => {
       <img
         className="size-11 transition-transform duration-500 ease-in-out hover:rotate-[360deg]"
         src="/images/app-logo.svg"
+        // src="/logo(1).png"
         alt="logo"
       />
     </Link>
@@ -310,7 +311,7 @@ fill="currentColor"
       <button id="profile-ref" className="avatar size-12">
         <img
           className="rounded-full"
-          src="/images/200x200.png"
+          src="/profile.png"
           alt="avatar"
         />
         <span className="absolute right-0 size-3.5 rounded-full border-2 border-white bg-success dark:border-navy-700" />
@@ -321,7 +322,7 @@ fill="currentColor"
             <div className="avatar size-14">
               <img
                 className="rounded-full"
-                src="/images/200x200.png"
+                src="/profile.png"
                 alt="avatar"
               />
             </div>
@@ -463,6 +464,21 @@ fill="currentColor"
                           <div className="flex items-center space-x-2">
                             <div className="size-1.5 rounded-full border border-current opacity-40" />
                             <span>Profile</span>
+                          </div>
+                          
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          href="/admin/signup/admission"
+                          className="nav-link flex items-center justify-between p-2 text-xs+ tracking-wide outline-none transition-[color,padding-left] duration-300 ease-in-out hover:pl-4"
+                          data-default-class="text-slate-600 hover:text-slate-800 dark:text-navy-200 dark:hover:text-navy-50"
+                          data-active-class="font-medium text-primary dark:text-accent-light"
+                        >
+                         
+                          <div className="flex items-center space-x-2">
+                            <div className="size-1.5 rounded-full border border-current opacity-40" />
+                            <span>Admission</span>
                           </div>
                           
                         </Link>

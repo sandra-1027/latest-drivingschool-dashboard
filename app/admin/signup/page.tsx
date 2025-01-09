@@ -558,6 +558,7 @@ const router = useRouter();
             <img
               className="mx-auto size-16"
               src="/images/app-logo.svg"
+              // src="/logo(1).png"
               alt="logo"
             />
             <div className="mt-4">
