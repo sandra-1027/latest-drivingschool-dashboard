@@ -2,7 +2,6 @@
 import React, { useState } from 'react'
 import { FaEdit } from 'react-icons/fa';
 import Create from './Create';
-import Edit from './Edit';
 
 const Admission = () => {
 
@@ -195,12 +194,9 @@ const Admission = () => {
                 <td className="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
                 {/* <FaEdit className='btn size-8 p-0 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25'/> */}
                 <button 
-                onClick={toggleEditModal} 
                 className="btn size-8 p-0 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25">
   <i className="fa fa-edit" />
-
 </button>
-<Edit editModal={editModal} toggleEditModal={toggleEditModal} />
 <button className="btn size-8 p-0 text-error hover:bg-error/20 focus:bg-error/20 active:bg-error/25">
   <i className="fa fa-trash-alt" />
 </button>

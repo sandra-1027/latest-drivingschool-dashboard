@@ -280,10 +280,14 @@ const Create: React.FC<CreateProps> = ({ showModal, toggleModal }) => {
 
         {/* Modal Body */}
         <div className="flex flex-col overflow-y-auto px-4 py-4 sm:px-5">
+        <label className="block mb-2 text-sm font-medium text-gray-700">
+                  Profile Information
+                </label>
           {/* Main Flex Container */}
           {/* <div className="flex space-x-8"> */}
           <div className="flex flex-col space-y-8 sm:flex-row sm:space-y-0 sm:space-x-8">
             {/* Left Section: Radio Buttons & Profile Information */}
+            
             <div className="flex-1">
               {/* Radio Buttons */}
               <div className="flex items-center space-x-4 mb-4">
@@ -329,9 +333,7 @@ const Create: React.FC<CreateProps> = ({ showModal, toggleModal }) => {
 
               {/* Profile Information */}
               <div className="mb-4 mt-4">
-                <label className="block mb-2 text-sm font-medium text-gray-700">
-                  Profile Information
-                </label>
+                
                 {/* Input Fields Section */}
                 {/* <div className="flex space-x-4 mb-4">
                   <label className="block flex-1">
