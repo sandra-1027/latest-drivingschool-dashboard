@@ -1,44 +1,53 @@
-
-
 // "use client";
 // import Head from "next/head";
-// import React, { useState } from "react";
+// import React, { useEffect, useState } from "react";
 // import { useDrawer } from "./DrawerContext";
 
 // const Topbar = () => {
-//   const [isPopoverVisible, setIsPopoverVisible] = useState(false);
+
 //   const { toggleDrawer } = useDrawer();
-  
-//   const togglePopover = () => {
-//     setIsPopoverVisible((prev) => !prev); 
+//   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
+
+//   const handleToggle = () => {
+//     setIsSidebarExpanded(!isSidebarExpanded);
 //   };
+
 //   return (
 //     <>
 //       {/* <link rel="stylesheet" href="/css/base.css" />
 //       <link rel="stylesheet" href="/dist/css/app.css" />  */}
 
-//       <nav className="header print:hidden">
+//       {/* <nav className="header print:hidden"> */}
+//       <nav className="header before:bg-white dark:before:bg-navy-750 print:hidden">
+
 //         {/* App Header  */}
 //         <div className="header-container relative flex w-full bg-white dark:bg-navy-700 print:hidden">
 //           {/* Header Items */}
 //           <div className="flex w-full items-center justify-between">
 //             {/* Left: Sidebar Toggle Button */}
 //             <div className="size-7">
-//               {/* <button  onClick={toggleSidebar} className="sidebar-toggle ml-0.5 flex size-7 flex-col justify-center space-y-1.5 text-primary outline-none focus:outline-none dark:text-accent-light/80"> */}
-//               <button
+
+//               {/* <button
 //                 onClick={toggleDrawer}
-//                 className="sidebar-toggle ml-0.5 flex size-7 flex-col justify-center space-y-1.5 text-primary outline-none focus:outline-none dark:text-accent-light/80"
-//               >
+//                 className="sidebar-toggle ml-0.5 flex size-7 flex-col justify-center space-y-1.5 text-primary outline-none focus:outline-none dark:text-accent-light/80">
+//                 <span />
+//                 <span />
+//                 <span />
+//               </button> */}
+//                 <button
+//                 onClick={toggleDrawer}
+//                 className="sidebar-toggle ml-0.5 flex size-7 flex-col justify-center space-y-1.5 text-primary outline-none focus:outline-none dark:text-accent-light/80">
 //                 <span />
 //                 <span />
 //                 <span />
 //               </button>
 //             </div>
+
 //             {/* Right: Header buttons */}
 //             <div className="-mr-1.5 flex items-center space-x-2">
 //               {/* Mobile Search Toggle */}
-//               <button 
-//               onClick={toggleDrawer} 
+//               <button
+//               // onClick={toggleDrawer}
 //               className="mobile-searchbar-show btn size-8 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25 sm:hidden">
 //                 <svg
 //                   xmlns="http://www.w3.org/2000/svg"
@@ -305,7 +314,7 @@
 //               {/* Notification*/}
 //               <div id="notification-wrapper" className="flex">
 //                 <button
-//                   onClick={togglePopover}
+//                   // onClick={togglePopover}
 //                   id="notification-ref"
 //                   className="btn relative size-8 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25"
 //                 >
@@ -328,12 +337,12 @@
 //                     <span className="inline-flex size-2 rounded-full bg-secondary" />
 //                   </span>
 //                 </button>
-//                 {isPopoverVisible && (
-//                   // <div id="notification-box" className="popper-root">
-//                   <div
+
+//                 <div id="notification-box" className="popper-root">
+//                   {/* <div
 //                     id="notification-box"
 //                     className=" absolute top-full right-0 mt-12 w-64 bg-white border shadow-lg rounded"
-//                   >
+//                   > */}
 //                     <div className="notification-tab-wrapper popper-box mx-4 mt-1 flex max-h-[calc(100vh-6rem)] w-[calc(100vw-2rem)] flex-col rounded-lg border border-slate-150 bg-white shadow-soft dark:border-navy-800 dark:bg-navy-700 dark:shadow-soft-dark sm:m-0 sm:w-80">
 //                       <div className="rounded-t-lg bg-slate-100 text-slate-600 dark:bg-navy-800 dark:text-navy-200">
 //                         <div className="flex items-center justify-between px-4 pt-2">
@@ -793,7 +802,7 @@
 //                           <div className="mt-8 pb-8 text-center">
 //                             <img
 //                               className="mx-auto w-36"
-//                               src="images/illustrations/empty-girl-box.svg"
+//                               src="/images/illustrations/empty-girl-box.svg"
 //                               alt="image"
 //                             />
 //                             <div className="mt-5">
@@ -809,7 +818,7 @@
 //                       </div>
 //                     </div>
 //                   </div>
-//                 )}
+
 //               </div>
 //               {/* Right Sidebar Toggle */}
 //               <button
@@ -837,15 +846,11 @@
 //         </div>
 //       </nav>
 
-
 //     </>
 //   );
 // };
 
 // export default Topbar;
-
-
-
 
 "use client";
 import Head from "next/head";
@@ -853,7 +858,6 @@ import React, { useEffect, useState } from "react";
 import { useDrawer } from "./DrawerContext";
 
 const Topbar = () => {
-  
   const { toggleDrawer } = useDrawer();
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
 
@@ -861,52 +865,40 @@ const Topbar = () => {
     setIsSidebarExpanded(!isSidebarExpanded);
   };
 
-  
   return (
     <>
-      {/* <link rel="stylesheet" href="/css/base.css" />
-      <link rel="stylesheet" href="/dist/css/app.css" />  */}
-
-      {/* <nav className="header print:hidden"> */}
       <nav className="header before:bg-white dark:before:bg-navy-750 print:hidden">
-      
         {/* App Header  */}
         <div className="header-container relative flex w-full bg-white dark:bg-navy-700 print:hidden">
           {/* Header Items */}
           <div className="flex w-full items-center justify-between">
             {/* Left: Sidebar Toggle Button */}
             <div className="size-7">
-             
               <button
                 onClick={toggleDrawer}
-                className="sidebar-toggle ml-0.5 flex size-7 flex-col justify-center space-y-1.5 text-primary outline-none focus:outline-none dark:text-accent-light/80"
-                
+                className="sidebar-toggle hidden sm:flex ml-0.5 flex-col justify-center space-y-1.5 text-primary outline-none focus:outline-none dark:text-accent-light/80"
               >
                 <span />
                 <span />
                 <span />
               </button>
-
-{/* <button
-      className={`menu-toggle ml-0.5 flex h-7 w-7 flex-col justify-center space-y-1.5 text-primary outline-none focus:outline-none dark:text-accent-light/80 ${
-        isSidebarExpanded ? "active" : ""
-      }`}
-      onClick={handleToggle}
-    >
-      <span></span>
-      <span></span>
-      <span></span>
-    </button> */}
- 
-
             </div>
-          
+            <button
+              onClick={toggleDrawer}
+              className="sidebar-toggle ml-0.5 flex size-7 flex-col justify-center space-y-1.5 text-primary outline-none focus:outline-none dark:text-accent-light/80 xl:hidden"
+            >
+              <span />
+              <span />
+              <span />
+            </button>
             {/* Right: Header buttons */}
             <div className="-mr-1.5 flex items-center space-x-2">
               {/* Mobile Search Toggle */}
-              <button 
-              onClick={toggleDrawer} 
-              className="mobile-searchbar-show btn size-8 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25 sm:hidden">
+
+              <button
+                // onClick={toggleDrawer}
+                className="mobile-searchbar-show btn size-8 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25 sm:hidden"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="size-5.5 text-slate-500 dark:text-navy-100"
@@ -942,206 +934,495 @@ const Topbar = () => {
                     </svg>
                   </div>
                 </div>
-                <div id="searchbar-box" data-active-tab="#search-all" className="popper-root search-tab-wrapper">
-            <div className="popper-box flex max-h-[calc(100vh-6rem)] w-80 flex-col rounded-lg border border-slate-150 bg-white shadow-soft dark:border-navy-800 dark:bg-navy-700 dark:shadow-soft-dark">
-              <div className="is-scrollbar-hidden flex shrink-0 overflow-x-auto rounded-t-lg bg-slate-100 px-2 text-slate-600 dark:bg-navy-800 dark:text-navy-200">
-                <button className="tab btn shrink-0 rounded-none border-b-2 px-3.5 py-2.5" data-active-class="border-primary dark:border-accent text-primary dark:text-accent-light" data-default-class="border-transparent hover:text-slate-800 focus:text-slate-800 dark:hover:text-navy-100 dark:focus:text-navy-100" data-target="#search-all">
-                  All
-                </button>
-                <button className="tab btn shrink-0 rounded-none border-b-2 px-3.5 py-2.5" data-active-class="border-primary dark:border-accent text-primary dark:text-accent-light" data-default-class="border-transparent hover:text-slate-800 focus:text-slate-800 dark:hover:text-navy-100 dark:focus:text-navy-100" data-target="#search-files">
-                  Files
-                </button>
-                <button className="tab btn shrink-0 rounded-none border-b-2 px-3.5 py-2.5" data-active-class="border-primary dark:border-accent text-primary dark:text-accent-light" data-default-class="border-transparent hover:text-slate-800 focus:text-slate-800 dark:hover:text-navy-100 dark:focus:text-navy-100" data-target="#search-chats">
-                  Chats
-                </button>
-                <button className="tab btn shrink-0 rounded-none border-b-2 px-3.5 py-2.5" data-active-class="border-primary dark:border-accent text-primary dark:text-accent-light" data-default-class="border-transparent hover:text-slate-800 focus:text-slate-800 dark:hover:text-navy-100 dark:focus:text-navy-100" data-target="#search-emails">
-                  Emails
-                </button>
-                <button className="tab btn shrink-0 rounded-none border-b-2 px-3.5 py-2.5" data-active-class="border-primary dark:border-accent text-primary dark:text-accent-light" data-default-class="border-transparent hover:text-slate-800 focus:text-slate-800 dark:hover:text-navy-100 dark:focus:text-navy-100" data-target="#search-projects">
-                  Projects
-                </button>
-                <button className="tab btn shrink-0 rounded-none border-b-2 px-3.5 py-2.5" data-active-class="border-primary dark:border-accent text-primary dark:text-accent-light" data-default-class="border-transparent hover:text-slate-800 focus:text-slate-800 dark:hover:text-navy-100 dark:focus:text-navy-100" data-target="#search-tasks">
-                  Tasks
-                </button>
-              </div>
-              <div className="is-scrollbar-hidden overflow-y-auto overscroll-contain pb-2">
-                <div className="is-scrollbar-hidden mt-3 flex space-x-4 overflow-x-auto px-3">
-                  <a href="apps-kanban.html" className="w-14 text-center">
-                    <div className="avatar size-12">
-                      <div className="is-initial rounded-full bg-success text-white">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" />
-                        </svg>
+                <div
+                  id="searchbar-box"
+                  data-active-tab="#search-all"
+                  className="popper-root search-tab-wrapper"
+                >
+                  <div className="popper-box flex max-h-[calc(100vh-6rem)] w-80 flex-col rounded-lg border border-slate-150 bg-white shadow-soft dark:border-navy-800 dark:bg-navy-700 dark:shadow-soft-dark">
+                    <div className="is-scrollbar-hidden flex shrink-0 overflow-x-auto rounded-t-lg bg-slate-100 px-2 text-slate-600 dark:bg-navy-800 dark:text-navy-200">
+                      <button
+                        className="tab btn shrink-0 rounded-none border-b-2 px-3.5 py-2.5"
+                        data-active-class="border-primary dark:border-accent text-primary dark:text-accent-light"
+                        data-default-class="border-transparent hover:text-slate-800 focus:text-slate-800 dark:hover:text-navy-100 dark:focus:text-navy-100"
+                        data-target="#search-all"
+                      >
+                        All
+                      </button>
+                      <button
+                        className="tab btn shrink-0 rounded-none border-b-2 px-3.5 py-2.5"
+                        data-active-class="border-primary dark:border-accent text-primary dark:text-accent-light"
+                        data-default-class="border-transparent hover:text-slate-800 focus:text-slate-800 dark:hover:text-navy-100 dark:focus:text-navy-100"
+                        data-target="#search-files"
+                      >
+                        Files
+                      </button>
+                      <button
+                        className="tab btn shrink-0 rounded-none border-b-2 px-3.5 py-2.5"
+                        data-active-class="border-primary dark:border-accent text-primary dark:text-accent-light"
+                        data-default-class="border-transparent hover:text-slate-800 focus:text-slate-800 dark:hover:text-navy-100 dark:focus:text-navy-100"
+                        data-target="#search-chats"
+                      >
+                        Chats
+                      </button>
+                      <button
+                        className="tab btn shrink-0 rounded-none border-b-2 px-3.5 py-2.5"
+                        data-active-class="border-primary dark:border-accent text-primary dark:text-accent-light"
+                        data-default-class="border-transparent hover:text-slate-800 focus:text-slate-800 dark:hover:text-navy-100 dark:focus:text-navy-100"
+                        data-target="#search-emails"
+                      >
+                        Emails
+                      </button>
+                      <button
+                        className="tab btn shrink-0 rounded-none border-b-2 px-3.5 py-2.5"
+                        data-active-class="border-primary dark:border-accent text-primary dark:text-accent-light"
+                        data-default-class="border-transparent hover:text-slate-800 focus:text-slate-800 dark:hover:text-navy-100 dark:focus:text-navy-100"
+                        data-target="#search-projects"
+                      >
+                        Projects
+                      </button>
+                      <button
+                        className="tab btn shrink-0 rounded-none border-b-2 px-3.5 py-2.5"
+                        data-active-class="border-primary dark:border-accent text-primary dark:text-accent-light"
+                        data-default-class="border-transparent hover:text-slate-800 focus:text-slate-800 dark:hover:text-navy-100 dark:focus:text-navy-100"
+                        data-target="#search-tasks"
+                      >
+                        Tasks
+                      </button>
+                    </div>
+                    <div className="is-scrollbar-hidden overflow-y-auto overscroll-contain pb-2">
+                      <div className="is-scrollbar-hidden mt-3 flex space-x-4 overflow-x-auto px-3">
+                        <a href="apps-kanban.html" className="w-14 text-center">
+                          <div className="avatar size-12">
+                            <div className="is-initial rounded-full bg-success text-white">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="size-5"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                strokeWidth={2}
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"
+                                />
+                              </svg>
+                            </div>
+                          </div>
+                          <p className="mt-1.5 overflow-hidden text-ellipsis whitespace-nowrap text-xs text-slate-700 dark:text-navy-100">
+                            Kanban
+                          </p>
+                        </a>
+                        <a
+                          href="dashboards-crm-analytics.html"
+                          className="w-14 text-center"
+                        >
+                          <div className="avatar size-12">
+                            <div className="is-initial rounded-full bg-secondary text-white">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="size-5"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                strokeWidth={2}
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                                />
+                              </svg>
+                            </div>
+                          </div>
+                          <p className="mt-1.5 overflow-hidden text-ellipsis whitespace-nowrap text-xs text-slate-700 dark:text-navy-100">
+                            Analytics
+                          </p>
+                        </a>
+                        <a href="apps-chat.html" className="w-14 text-center">
+                          <div className="avatar size-12">
+                            <div className="is-initial rounded-full bg-info text-white">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="size-5"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                strokeWidth={2}
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                                />
+                              </svg>
+                            </div>
+                          </div>
+                          <p className="mt-1.5 overflow-hidden text-ellipsis whitespace-nowrap text-xs text-slate-700 dark:text-navy-100">
+                            Chat
+                          </p>
+                        </a>
+                        <a
+                          href="apps-filemanager.html"
+                          className="w-14 text-center"
+                        >
+                          <div className="avatar size-12">
+                            <div className="is-initial rounded-full bg-error text-white">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="size-5"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                strokeWidth={2}
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"
+                                />
+                              </svg>
+                            </div>
+                          </div>
+                          <p className="mt-1.5 overflow-hidden text-ellipsis whitespace-nowrap text-xs text-slate-700 dark:text-navy-100">
+                            Files
+                          </p>
+                        </a>
+                        <a
+                          href="dashboards-crypto.html"
+                          className="w-14 text-center"
+                        >
+                          <div className="avatar size-12">
+                            <div className="is-initial rounded-full bg-secondary text-white">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="size-5"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                strokeWidth={2}
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M15 9a2 2 0 10-4 0v5a2 2 0 01-2 2h6m-6-4h4m8 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                                />
+                              </svg>
+                            </div>
+                          </div>
+                          <p className="mt-1.5 overflow-hidden text-ellipsis whitespace-nowrap text-xs text-slate-700 dark:text-navy-100">
+                            Crypto
+                          </p>
+                        </a>
+                        <a
+                          href="dashboards-banking-1.html"
+                          className="w-14 text-center"
+                        >
+                          <div className="avatar size-12">
+                            <div className="is-initial rounded-full bg-primary text-white dark:bg-accent">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="size-5"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                strokeWidth={2}
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"
+                                />
+                              </svg>
+                            </div>
+                          </div>
+                          <p className="mt-1.5 overflow-hidden text-ellipsis whitespace-nowrap text-xs text-slate-700 dark:text-navy-100">
+                            Banking
+                          </p>
+                        </a>
+                        <a href="apps-todo.html" className="w-14 text-center">
+                          <div className="avatar size-12">
+                            <div className="is-initial rounded-full bg-info text-white">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="size-5"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                strokeWidth={2}
+                              >
+                                <path
+                                  d="M12.5293 18L20.9999 8.40002"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                                <path
+                                  d="M3 13.2L7.23529 18L17.8235 6"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                            </div>
+                          </div>
+                          <p className="mt-1.5 overflow-hidden text-ellipsis whitespace-nowrap text-xs text-slate-700 dark:text-navy-100">
+                            Todo
+                          </p>
+                        </a>
+                        <a
+                          href="dashboards-crm-analytics.html"
+                          className="w-14 text-center"
+                        >
+                          <div className="avatar size-12">
+                            <div className="is-initial rounded-full bg-secondary text-white">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="size-5"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                strokeWidth={2}
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                                />
+                              </svg>
+                            </div>
+                          </div>
+                          <p className="mt-1.5 overflow-hidden text-ellipsis whitespace-nowrap text-xs text-slate-700 dark:text-navy-100">
+                            Analytics
+                          </p>
+                        </a>
+                        <a
+                          href="dashboards-orders.html"
+                          className="w-14 text-center"
+                        >
+                          <div className="avatar size-12">
+                            <div className="is-initial rounded-full bg-warning text-white">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="size-5"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                strokeWidth={2}
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                                />
+                              </svg>
+                            </div>
+                          </div>
+                          <p className="mt-1.5 overflow-hidden text-ellipsis whitespace-nowrap text-xs text-slate-700 dark:text-navy-100">
+                            Orders
+                          </p>
+                        </a>
+                      </div>
+                      <div className="mt-3 flex items-center justify-between bg-slate-100 py-1.5 px-3 dark:bg-navy-800">
+                        <p className="text-xs uppercase">Recent</p>
+                        <a
+                          href="#"
+                          className="text-tiny+ font-medium uppercase text-primary outline-none transition-colors duration-300 hover:text-primary/70 focus:text-primary/70 dark:text-accent-light dark:hover:text-accent-light/70 dark:focus:text-accent-light/70"
+                        >
+                          View All
+                        </a>
+                      </div>
+                      <div className="mt-1 font-inter font-medium">
+                        <a
+                          className="group flex items-center space-x-2 px-2.5 py-2 tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100"
+                          href="apps-chat.html"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="size-4.5 text-slate-400 transition-colors group-hover:text-slate-500 group-focus:text-slate-500 dark:text-navy-300 dark:group-hover:text-navy-200 dark:group-focus:text-navy-200"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                            />
+                          </svg>
+                          <span>Chat App</span>
+                        </a>
+                        <a
+                          className="group flex items-center space-x-2 px-2.5 py-2 tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100"
+                          href="apps-filemanager.html"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="size-4.5 text-slate-400 transition-colors group-hover:text-slate-500 group-focus:text-slate-500 dark:text-navy-300 dark:group-hover:text-navy-200 dark:group-focus:text-navy-200"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"
+                            />
+                          </svg>
+                          <span>File Manager App</span>
+                        </a>
+                        <a
+                          className="group flex items-center space-x-2 px-2.5 py-2 tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100"
+                          href="apps-mail.html"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="size-4.5 text-slate-400 transition-colors group-hover:text-slate-500 group-focus:text-slate-500 dark:text-navy-300 dark:group-hover:text-navy-200 dark:group-focus:text-navy-200"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                            />
+                          </svg>
+                          <span>Email App</span>
+                        </a>
+                        <a
+                          className="group flex items-center space-x-2 px-2.5 py-2 tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100"
+                          href="apps-kanban.html"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="size-4.5 text-slate-400 transition-colors group-hover:text-slate-500 group-focus:text-slate-500 dark:text-navy-300 dark:group-hover:text-navy-200 dark:group-focus:text-navy-200"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"
+                            />
+                          </svg>
+                          <span>Kanban Board</span>
+                        </a>
+                        <a
+                          className="group flex items-center space-x-2 px-2.5 py-2 tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100"
+                          href="apps-todo.html"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="size-4.5 text-slate-400 transition-colors group-hover:text-slate-500 group-focus:text-slate-500 dark:text-navy-300 dark:group-hover:text-navy-200 dark:group-focus:text-navy-200"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                          >
+                            <path
+                              d="M3 13.2L7.23529 18L17.8235 6"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                            <path
+                              d="M12.5293 18L20.9999 8.40002"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                          <span>Todo App</span>
+                        </a>
+                        <a
+                          className="group flex items-center space-x-2 px-2.5 py-2 tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100"
+                          href="dashboards-crypto-2.html"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="size-4.5 text-slate-400 transition-colors group-hover:text-slate-500 group-focus:text-slate-500 dark:text-navy-300 dark:group-hover:text-navy-200 dark:group-focus:text-navy-200"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M15 9a2 2 0 10-4 0v5a2 2 0 01-2 2h6m-6-4h4m8 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
+                          </svg>
+                          <span>Crypto Dashboard</span>
+                        </a>
+                        <a
+                          className="group flex items-center space-x-2 px-2.5 py-2 tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100"
+                          href="dashboards-banking-2.html"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="size-4.5 text-slate-400 transition-colors group-hover:text-slate-500 group-focus:text-slate-500 dark:text-navy-300 dark:group-hover:text-navy-200 dark:group-focus:text-navy-200"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"
+                            />
+                          </svg>
+                          <span>Banking Dashboard</span>
+                        </a>
+                        <a
+                          className="group flex items-center space-x-2 px-2.5 py-2 tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100"
+                          href="dashboards-crm-analytics.html"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="size-4.5 text-slate-400 transition-colors group-hover:text-slate-500 group-focus:text-slate-500 dark:text-navy-300 dark:group-hover:text-navy-200 dark:group-focus:text-navy-200"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                            />
+                          </svg>
+                          <span>Analytics Dashboard</span>
+                        </a>
+                        <a
+                          className="group flex items-center space-x-2 px-2.5 py-2 tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100"
+                          href="dashboards-influencer.html"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="size-4.5 text-slate-400 transition-colors group-hover:text-slate-500 group-focus:text-slate-500 dark:text-navy-300 dark:group-hover:text-navy-200 dark:group-focus:text-navy-200"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                            />
+                          </svg>
+                          <span>Influencer Dashboard</span>
+                        </a>
                       </div>
                     </div>
-                    <p className="mt-1.5 overflow-hidden text-ellipsis whitespace-nowrap text-xs text-slate-700 dark:text-navy-100">
-                      Kanban
-                    </p>
-                  </a>
-                  <a href="dashboards-crm-analytics.html" className="w-14 text-center">
-                    <div className="avatar size-12">
-                      <div className="is-initial rounded-full bg-secondary text-white">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                        </svg>
-                      </div>
-                    </div>
-                    <p className="mt-1.5 overflow-hidden text-ellipsis whitespace-nowrap text-xs text-slate-700 dark:text-navy-100">
-                      Analytics
-                    </p>
-                  </a>
-                  <a href="apps-chat.html" className="w-14 text-center">
-                    <div className="avatar size-12">
-                      <div className="is-initial rounded-full bg-info text-white">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                        </svg>
-                      </div>
-                    </div>
-                    <p className="mt-1.5 overflow-hidden text-ellipsis whitespace-nowrap text-xs text-slate-700 dark:text-navy-100">
-                      Chat
-                    </p>
-                  </a>
-                  <a href="apps-filemanager.html" className="w-14 text-center">
-                    <div className="avatar size-12">
-                      <div className="is-initial rounded-full bg-error text-white">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
-                        </svg>
-                      </div>
-                    </div>
-                    <p className="mt-1.5 overflow-hidden text-ellipsis whitespace-nowrap text-xs text-slate-700 dark:text-navy-100">
-                      Files
-                    </p>
-                  </a>
-                  <a href="dashboards-crypto.html" className="w-14 text-center">
-                    <div className="avatar size-12">
-                      <div className="is-initial rounded-full bg-secondary text-white">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M15 9a2 2 0 10-4 0v5a2 2 0 01-2 2h6m-6-4h4m8 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                      </div>
-                    </div>
-                    <p className="mt-1.5 overflow-hidden text-ellipsis whitespace-nowrap text-xs text-slate-700 dark:text-navy-100">
-                      Crypto
-                    </p>
-                  </a>
-                  <a href="dashboards-banking-1.html" className="w-14 text-center">
-                    <div className="avatar size-12">
-                      <div className="is-initial rounded-full bg-primary text-white dark:bg-accent">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
-                        </svg>
-                      </div>
-                    </div>
-                    <p className="mt-1.5 overflow-hidden text-ellipsis whitespace-nowrap text-xs text-slate-700 dark:text-navy-100">
-                      Banking
-                    </p>
-                  </a>
-                  <a href="apps-todo.html" className="w-14 text-center">
-                    <div className="avatar size-12">
-                      <div className="is-initial rounded-full bg-info text-white">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          <path d="M12.5293 18L20.9999 8.40002" strokeLinecap="round" strokeLinejoin="round" />
-                          <path d="M3 13.2L7.23529 18L17.8235 6" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                      </div>
-                    </div>
-                    <p className="mt-1.5 overflow-hidden text-ellipsis whitespace-nowrap text-xs text-slate-700 dark:text-navy-100">
-                      Todo
-                    </p>
-                  </a>
-                  <a href="dashboards-crm-analytics.html" className="w-14 text-center">
-                    <div className="avatar size-12">
-                      <div className="is-initial rounded-full bg-secondary text-white">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                        </svg>
-                      </div>
-                    </div>
-                    <p className="mt-1.5 overflow-hidden text-ellipsis whitespace-nowrap text-xs text-slate-700 dark:text-navy-100">
-                      Analytics
-                    </p>
-                  </a>
-                  <a href="dashboards-orders.html" className="w-14 text-center">
-                    <div className="avatar size-12">
-                      <div className="is-initial rounded-full bg-warning text-white">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                        </svg>
-                      </div>
-                    </div>
-                    <p className="mt-1.5 overflow-hidden text-ellipsis whitespace-nowrap text-xs text-slate-700 dark:text-navy-100">
-                      Orders
-                    </p>
-                  </a>
+                  </div>
                 </div>
-                <div className="mt-3 flex items-center justify-between bg-slate-100 py-1.5 px-3 dark:bg-navy-800">
-                  <p className="text-xs uppercase">Recent</p>
-                  <a href="#" className="text-tiny+ font-medium uppercase text-primary outline-none transition-colors duration-300 hover:text-primary/70 focus:text-primary/70 dark:text-accent-light dark:hover:text-accent-light/70 dark:focus:text-accent-light/70">
-                    View All
-                  </a>
-                </div>
-                <div className="mt-1 font-inter font-medium">
-                  <a className="group flex items-center space-x-2 px-2.5 py-2 tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100" href="apps-chat.html">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="size-4.5 text-slate-400 transition-colors group-hover:text-slate-500 group-focus:text-slate-500 dark:text-navy-300 dark:group-hover:text-navy-200 dark:group-focus:text-navy-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                    </svg>
-                    <span>Chat App</span>
-                  </a>
-                  <a className="group flex items-center space-x-2 px-2.5 py-2 tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100" href="apps-filemanager.html">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="size-4.5 text-slate-400 transition-colors group-hover:text-slate-500 group-focus:text-slate-500 dark:text-navy-300 dark:group-hover:text-navy-200 dark:group-focus:text-navy-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
-                    </svg>
-                    <span>File Manager App</span>
-                  </a>
-                  <a className="group flex items-center space-x-2 px-2.5 py-2 tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100" href="apps-mail.html">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="size-4.5 text-slate-400 transition-colors group-hover:text-slate-500 group-focus:text-slate-500 dark:text-navy-300 dark:group-hover:text-navy-200 dark:group-focus:text-navy-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                    <span>Email App</span>
-                  </a>
-                  <a className="group flex items-center space-x-2 px-2.5 py-2 tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100" href="apps-kanban.html">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="size-4.5 text-slate-400 transition-colors group-hover:text-slate-500 group-focus:text-slate-500 dark:text-navy-300 dark:group-hover:text-navy-200 dark:group-focus:text-navy-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" />
-                    </svg>
-                    <span>Kanban Board</span>
-                  </a>
-                  <a className="group flex items-center space-x-2 px-2.5 py-2 tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100" href="apps-todo.html">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="size-4.5 text-slate-400 transition-colors group-hover:text-slate-500 group-focus:text-slate-500 dark:text-navy-300 dark:group-hover:text-navy-200 dark:group-focus:text-navy-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                      <path d="M3 13.2L7.23529 18L17.8235 6" strokeLinecap="round" strokeLinejoin="round" />
-                      <path d="M12.5293 18L20.9999 8.40002" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                    <span>Todo App</span>
-                  </a>
-                  <a className="group flex items-center space-x-2 px-2.5 py-2 tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100" href="dashboards-crypto-2.html">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="size-4.5 text-slate-400 transition-colors group-hover:text-slate-500 group-focus:text-slate-500 dark:text-navy-300 dark:group-hover:text-navy-200 dark:group-focus:text-navy-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 9a2 2 0 10-4 0v5a2 2 0 01-2 2h6m-6-4h4m8 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span>Crypto Dashboard</span>
-                  </a>
-                  <a className="group flex items-center space-x-2 px-2.5 py-2 tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100" href="dashboards-banking-2.html">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="size-4.5 text-slate-400 transition-colors group-hover:text-slate-500 group-focus:text-slate-500 dark:text-navy-300 dark:group-hover:text-navy-200 dark:group-focus:text-navy-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
-                    </svg>
-                    <span>Banking Dashboard</span>
-                  </a>
-                  <a className="group flex items-center space-x-2 px-2.5 py-2 tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100" href="dashboards-crm-analytics.html">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="size-4.5 text-slate-400 transition-colors group-hover:text-slate-500 group-focus:text-slate-500 dark:text-navy-300 dark:group-hover:text-navy-200 dark:group-focus:text-navy-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                    </svg>
-                    <span>Analytics Dashboard</span>
-                  </a>
-                  <a className="group flex items-center space-x-2 px-2.5 py-2 tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100" href="dashboards-influencer.html">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="size-4.5 text-slate-400 transition-colors group-hover:text-slate-500 group-focus:text-slate-500 dark:text-navy-300 dark:group-hover:text-navy-200 dark:group-focus:text-navy-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                    <span>Influencer Dashboard</span>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
               </div>
               {/* Dark Mode Toggle */}
               <button className="darkmode-toggle btn size-8 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25">
@@ -1195,27 +1476,103 @@ const Topbar = () => {
                     <span className="inline-flex size-2 rounded-full bg-secondary" />
                   </span>
                 </button>
-               
+
                 <div id="notification-box" className="popper-root">
                   {/* <div
                     id="notification-box"
                     className=" absolute top-full right-0 mt-12 w-64 bg-white border shadow-lg rounded"
                   > */}
-                    <div className="notification-tab-wrapper popper-box mx-4 mt-1 flex max-h-[calc(100vh-6rem)] w-[calc(100vw-2rem)] flex-col rounded-lg border border-slate-150 bg-white shadow-soft dark:border-navy-800 dark:bg-navy-700 dark:shadow-soft-dark sm:m-0 sm:w-80">
-                      <div className="rounded-t-lg bg-slate-100 text-slate-600 dark:bg-navy-800 dark:text-navy-200">
-                        <div className="flex items-center justify-between px-4 pt-2">
-                          <div className="flex items-center space-x-2">
-                            <h3 className="font-medium text-slate-700 dark:text-navy-100">
-                              Notifications
-                            </h3>
-                            <div className="badge h-5 rounded-full bg-primary/10 px-1.5 text-primary dark:bg-accent-light/15 dark:text-accent-light">
-                              26
+                  <div className="notification-tab-wrapper popper-box mx-4 mt-1 flex max-h-[calc(100vh-6rem)] w-[calc(100vw-2rem)] flex-col rounded-lg border border-slate-150 bg-white shadow-soft dark:border-navy-800 dark:bg-navy-700 dark:shadow-soft-dark sm:m-0 sm:w-80">
+                    <div className="rounded-t-lg bg-slate-100 text-slate-600 dark:bg-navy-800 dark:text-navy-200">
+                      <div className="flex items-center justify-between px-4 pt-2">
+                        <div className="flex items-center space-x-2">
+                          <h3 className="font-medium text-slate-700 dark:text-navy-100">
+                            Notifications
+                          </h3>
+                          <div className="badge h-5 rounded-full bg-primary/10 px-1.5 text-primary dark:bg-accent-light/15 dark:text-accent-light">
+                            26
+                          </div>
+                        </div>
+                        <button className="btn -mr-1.5 size-7 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="size-4.5"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                            />
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                      <div className="tabs is-scrollbar-hidden flex shrink-0 overflow-x-auto px-3">
+                        <button
+                          className="tab btn shrink-0 rounded-none border-b-2 px-3.5 py-2.5"
+                          data-active-class="border-primary dark:border-accent text-primary dark:text-accent-light"
+                          data-default-class="border-transparent hover:text-slate-800 focus:text-slate-800 dark:hover:text-navy-100 dark:focus:text-navy-100"
+                          data-target="#notification-all"
+                        >
+                          <span>All</span>
+                        </button>
+                        <button
+                          className="tab btn shrink-0 rounded-none border-b-2 px-3.5 py-2.5"
+                          data-active-class="border-primary dark:border-accent text-primary dark:text-accent-light"
+                          data-default-class="border-transparent hover:text-slate-800 focus:text-slate-800 dark:hover:text-navy-100 dark:focus:text-navy-100"
+                          data-target="#notification-alerts"
+                        >
+                          <span>Alerts</span>
+                        </button>
+                        <button
+                          className="tab btn shrink-0 rounded-none border-b-2 px-3.5 py-2.5"
+                          data-active-class="border-primary dark:border-accent text-primary dark:text-accent-light"
+                          data-default-class="border-transparent hover:text-slate-800 focus:text-slate-800 dark:hover:text-navy-100 dark:focus:text-navy-100"
+                          data-target="#notification-events"
+                        >
+                          <span>Events</span>
+                        </button>
+                        <button
+                          className="tab btn shrink-0 rounded-none border-b-2 px-3.5 py-2.5"
+                          data-active-class="border-primary dark:border-accent text-primary dark:text-accent-light"
+                          data-default-class="border-transparent hover:text-slate-800 focus:text-slate-800 dark:hover:text-navy-100 dark:focus:text-navy-100"
+                          data-target="#notification-logs"
+                        >
+                          <span>Logs</span>
+                        </button>
+                      </div>
+                    </div>
+                    <div className="flex flex-col overflow-hidden">
+                      <div
+                        className="tab-content tab-shift-left is-scrollbar-hidden space-y-4 overflow-y-auto px-4 py-4"
+                        id="notification-all"
+                      >
+                        <div className="flex items-center space-x-3">
+                          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-secondary/10 dark:bg-secondary-light/15">
+                            <i className="fa fa-user-edit text-secondary dark:text-secondary-light" />
+                          </div>
+                          <div>
+                            <p className="font-medium text-slate-600 dark:text-navy-100">
+                              User Photo Changed
+                            </p>
+                            <div className="mt-1 text-xs text-slate-400 line-clamp-1 dark:text-navy-300">
+                              John Doe changed his avatar photo
                             </div>
                           </div>
-                          <button className="btn -mr-1.5 size-7 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25">
+                        </div>
+                        <div className="flex items-center space-x-3">
+                          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-info/10 dark:bg-info/15">
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
-                              className="size-4.5"
+                              className="size-5 text-info"
                               fill="none"
                               viewBox="0 0 24 24"
                               stroke="currentColor"
@@ -1224,459 +1581,380 @@ const Topbar = () => {
                               <path
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
-                                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                               />
+                            </svg>
+                          </div>
+                          <div>
+                            <p className="font-medium text-slate-600 dark:text-navy-100">
+                              Mon, June 14, 2021
+                            </p>
+                            <div className="mt-1 flex text-xs text-slate-400 dark:text-navy-300">
+                              <span className="shrink-0">08:00 - 09:00</span>
+                              <div className="mx-2 my-1 w-px bg-slate-200 dark:bg-navy-500" />
+                              <span className="line-clamp-1">
+                                Frontend Conf
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 dark:bg-accent-light/15">
+                            <i className="fa-solid fa-image text-primary dark:text-accent-light" />
+                          </div>
+                          <div>
+                            <p className="font-medium text-slate-600 dark:text-navy-100">
+                              Images Added
+                            </p>
+                            <div className="mt-1 text-xs text-slate-400 line-clamp-1 dark:text-navy-300">
+                              Mores Clarke added new image gallery
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-success/10 dark:bg-success/15">
+                            <i className="fa fa-leaf text-success" />
+                          </div>
+                          <div>
+                            <p className="font-medium text-slate-600 dark:text-navy-100">
+                              Design Completed
+                            </p>
+                            <div className="mt-1 text-xs text-slate-400 line-clamp-1 dark:text-navy-300">
+                              Robert Nolan completed the design of the CRM
+                              application
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-info/10 dark:bg-info/15">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="size-5 text-info"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                              strokeWidth="1.5"
+                            >
                               <path
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
-                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                               />
                             </svg>
-                          </button>
+                          </div>
+                          <div>
+                            <p className="font-medium text-slate-600 dark:text-navy-100">
+                              Wed, June 21, 2021
+                            </p>
+                            <div className="mt-1 flex text-xs text-slate-400 dark:text-navy-300">
+                              <span className="shrink-0">16:00 - 20:00</span>
+                              <div className="mx-2 my-1 w-px bg-slate-200 dark:bg-navy-500" />
+                              <span className="line-clamp-1">UI/UX Conf</span>
+                            </div>
+                          </div>
                         </div>
-                        <div className="tabs is-scrollbar-hidden flex shrink-0 overflow-x-auto px-3">
-                          <button
-                            className="tab btn shrink-0 rounded-none border-b-2 px-3.5 py-2.5"
-                            data-active-class="border-primary dark:border-accent text-primary dark:text-accent-light"
-                            data-default-class="border-transparent hover:text-slate-800 focus:text-slate-800 dark:hover:text-navy-100 dark:focus:text-navy-100"
-                            data-target="#notification-all"
-                          >
-                            <span>All</span>
-                          </button>
-                          <button
-                            className="tab btn shrink-0 rounded-none border-b-2 px-3.5 py-2.5"
-                            data-active-class="border-primary dark:border-accent text-primary dark:text-accent-light"
-                            data-default-class="border-transparent hover:text-slate-800 focus:text-slate-800 dark:hover:text-navy-100 dark:focus:text-navy-100"
-                            data-target="#notification-alerts"
-                          >
-                            <span>Alerts</span>
-                          </button>
-                          <button
-                            className="tab btn shrink-0 rounded-none border-b-2 px-3.5 py-2.5"
-                            data-active-class="border-primary dark:border-accent text-primary dark:text-accent-light"
-                            data-default-class="border-transparent hover:text-slate-800 focus:text-slate-800 dark:hover:text-navy-100 dark:focus:text-navy-100"
-                            data-target="#notification-events"
-                          >
-                            <span>Events</span>
-                          </button>
-                          <button
-                            className="tab btn shrink-0 rounded-none border-b-2 px-3.5 py-2.5"
-                            data-active-class="border-primary dark:border-accent text-primary dark:text-accent-light"
-                            data-default-class="border-transparent hover:text-slate-800 focus:text-slate-800 dark:hover:text-navy-100 dark:focus:text-navy-100"
-                            data-target="#notification-logs"
-                          >
-                            <span>Logs</span>
-                          </button>
+                        <div className="flex items-center space-x-3">
+                          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-warning/10 dark:bg-warning/15">
+                            <i className="fa fa-project-diagram text-warning" />
+                          </div>
+                          <div>
+                            <p className="font-medium text-slate-600 dark:text-navy-100">
+                              ER Diagram
+                            </p>
+                            <div className="mt-1 text-xs text-slate-400 line-clamp-1 dark:text-navy-300">
+                              Team completed the ER diagram app
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-warning/10 dark:bg-warning/15">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="size-5 text-warning"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                              strokeWidth="1.5"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
+                              />
+                            </svg>
+                          </div>
+                          <div>
+                            <p className="font-medium text-slate-600 dark:text-navy-100">
+                              THU, May 11, 2021
+                            </p>
+                            <div className="mt-1 flex text-xs text-slate-400 dark:text-navy-300">
+                              <span className="shrink-0">10:00 - 11:30</span>
+                              <div className="mx-2 my-1 w-px bg-slate-200 dark:bg-navy-500" />
+                              <span className="line-clamp-1">
+                                Interview, Konnor Guzman
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-error/10 dark:bg-error/15">
+                            <i className="fa fa-history text-error" />
+                          </div>
+                          <div>
+                            <p className="font-medium text-slate-600 dark:text-navy-100">
+                              Weekly Report
+                            </p>
+                            <div className="mt-1 text-xs text-slate-400 line-clamp-1 dark:text-navy-300">
+                              The weekly report was uploaded
+                            </div>
+                          </div>
                         </div>
                       </div>
-                      <div className="flex flex-col overflow-hidden">
-                        <div
-                          className="tab-content tab-shift-left is-scrollbar-hidden space-y-4 overflow-y-auto px-4 py-4"
-                          id="notification-all"
-                        >
-                          <div className="flex items-center space-x-3">
-                            <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-secondary/10 dark:bg-secondary-light/15">
-                              <i className="fa fa-user-edit text-secondary dark:text-secondary-light" />
-                            </div>
-                            <div>
-                              <p className="font-medium text-slate-600 dark:text-navy-100">
-                                User Photo Changed
-                              </p>
-                              <div className="mt-1 text-xs text-slate-400 line-clamp-1 dark:text-navy-300">
-                                John Doe changed his avatar photo
-                              </div>
-                            </div>
+                      <div
+                        id="notification-alerts"
+                        className="tab-content tab-shift-left is-scrollbar-hidden space-y-4 overflow-y-auto px-4 py-4"
+                      >
+                        <div className="flex items-center space-x-3">
+                          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-secondary/10 dark:bg-secondary-light/15">
+                            <i className="fa fa-user-edit text-secondary dark:text-secondary-light" />
                           </div>
-                          <div className="flex items-center space-x-3">
-                            <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-info/10 dark:bg-info/15">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="size-5 text-info"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                strokeWidth="1.5"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                                />
-                              </svg>
-                            </div>
-                            <div>
-                              <p className="font-medium text-slate-600 dark:text-navy-100">
-                                Mon, June 14, 2021
-                              </p>
-                              <div className="mt-1 flex text-xs text-slate-400 dark:text-navy-300">
-                                <span className="shrink-0">08:00 - 09:00</span>
-                                <div className="mx-2 my-1 w-px bg-slate-200 dark:bg-navy-500" />
-                                <span className="line-clamp-1">
-                                  Frontend Conf
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="flex items-center space-x-3">
-                            <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 dark:bg-accent-light/15">
-                              <i className="fa-solid fa-image text-primary dark:text-accent-light" />
-                            </div>
-                            <div>
-                              <p className="font-medium text-slate-600 dark:text-navy-100">
-                                Images Added
-                              </p>
-                              <div className="mt-1 text-xs text-slate-400 line-clamp-1 dark:text-navy-300">
-                                Mores Clarke added new image gallery
-                              </div>
-                            </div>
-                          </div>
-                          <div className="flex items-center space-x-3">
-                            <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-success/10 dark:bg-success/15">
-                              <i className="fa fa-leaf text-success" />
-                            </div>
-                            <div>
-                              <p className="font-medium text-slate-600 dark:text-navy-100">
-                                Design Completed
-                              </p>
-                              <div className="mt-1 text-xs text-slate-400 line-clamp-1 dark:text-navy-300">
-                                Robert Nolan completed the design of the CRM
-                                application
-                              </div>
-                            </div>
-                          </div>
-                          <div className="flex items-center space-x-3">
-                            <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-info/10 dark:bg-info/15">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="size-5 text-info"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                strokeWidth="1.5"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                                />
-                              </svg>
-                            </div>
-                            <div>
-                              <p className="font-medium text-slate-600 dark:text-navy-100">
-                                Wed, June 21, 2021
-                              </p>
-                              <div className="mt-1 flex text-xs text-slate-400 dark:text-navy-300">
-                                <span className="shrink-0">16:00 - 20:00</span>
-                                <div className="mx-2 my-1 w-px bg-slate-200 dark:bg-navy-500" />
-                                <span className="line-clamp-1">UI/UX Conf</span>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="flex items-center space-x-3">
-                            <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-warning/10 dark:bg-warning/15">
-                              <i className="fa fa-project-diagram text-warning" />
-                            </div>
-                            <div>
-                              <p className="font-medium text-slate-600 dark:text-navy-100">
-                                ER Diagram
-                              </p>
-                              <div className="mt-1 text-xs text-slate-400 line-clamp-1 dark:text-navy-300">
-                                Team completed the ER diagram app
-                              </div>
-                            </div>
-                          </div>
-                          <div className="flex items-center space-x-3">
-                            <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-warning/10 dark:bg-warning/15">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="size-5 text-warning"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                strokeWidth="1.5"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
-                                />
-                              </svg>
-                            </div>
-                            <div>
-                              <p className="font-medium text-slate-600 dark:text-navy-100">
-                                THU, May 11, 2021
-                              </p>
-                              <div className="mt-1 flex text-xs text-slate-400 dark:text-navy-300">
-                                <span className="shrink-0">10:00 - 11:30</span>
-                                <div className="mx-2 my-1 w-px bg-slate-200 dark:bg-navy-500" />
-                                <span className="line-clamp-1">
-                                  Interview, Konnor Guzman
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="flex items-center space-x-3">
-                            <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-error/10 dark:bg-error/15">
-                              <i className="fa fa-history text-error" />
-                            </div>
-                            <div>
-                              <p className="font-medium text-slate-600 dark:text-navy-100">
-                                Weekly Report
-                              </p>
-                              <div className="mt-1 text-xs text-slate-400 line-clamp-1 dark:text-navy-300">
-                                The weekly report was uploaded
-                              </div>
+                          <div>
+                            <p className="font-medium text-slate-600 dark:text-navy-100">
+                              User Photo Changed
+                            </p>
+                            <div className="mt-1 text-xs text-slate-400 line-clamp-1 dark:text-navy-300">
+                              John Doe changed his avatar photo
                             </div>
                           </div>
                         </div>
-                        <div
-                          id="notification-alerts"
-                          className="tab-content tab-shift-left is-scrollbar-hidden space-y-4 overflow-y-auto px-4 py-4"
-                        >
-                          <div className="flex items-center space-x-3">
-                            <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-secondary/10 dark:bg-secondary-light/15">
-                              <i className="fa fa-user-edit text-secondary dark:text-secondary-light" />
-                            </div>
-                            <div>
-                              <p className="font-medium text-slate-600 dark:text-navy-100">
-                                User Photo Changed
-                              </p>
-                              <div className="mt-1 text-xs text-slate-400 line-clamp-1 dark:text-navy-300">
-                                John Doe changed his avatar photo
-                              </div>
-                            </div>
+                        <div className="flex items-center space-x-3">
+                          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 dark:bg-accent-light/15">
+                            <i className="fa-solid fa-image text-primary dark:text-accent-light" />
                           </div>
-                          <div className="flex items-center space-x-3">
-                            <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 dark:bg-accent-light/15">
-                              <i className="fa-solid fa-image text-primary dark:text-accent-light" />
-                            </div>
-                            <div>
-                              <p className="font-medium text-slate-600 dark:text-navy-100">
-                                Images Added
-                              </p>
-                              <div className="mt-1 text-xs text-slate-400 line-clamp-1 dark:text-navy-300">
-                                Mores Clarke added new image gallery
-                              </div>
-                            </div>
-                          </div>
-                          <div className="flex items-center space-x-3">
-                            <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-success/10 dark:bg-success/15">
-                              <i className="fa fa-leaf text-success" />
-                            </div>
-                            <div>
-                              <p className="font-medium text-slate-600 dark:text-navy-100">
-                                Design Completed
-                              </p>
-                              <div className="mt-1 text-xs text-slate-400 line-clamp-1 dark:text-navy-300">
-                                Robert Nolan completed the design of the CRM
-                                application
-                              </div>
-                            </div>
-                          </div>
-                          <div className="flex items-center space-x-3">
-                            <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-warning/10 dark:bg-warning/15">
-                              <i className="fa fa-project-diagram text-warning" />
-                            </div>
-                            <div>
-                              <p className="font-medium text-slate-600 dark:text-navy-100">
-                                ER Diagram
-                              </p>
-                              <div className="mt-1 text-xs text-slate-400 line-clamp-1 dark:text-navy-300">
-                                Team completed the ER diagram app
-                              </div>
-                            </div>
-                          </div>
-                          <div className="flex items-center space-x-3">
-                            <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-error/10 dark:bg-error/15">
-                              <i className="fa fa-history text-error" />
-                            </div>
-                            <div>
-                              <p className="font-medium text-slate-600 dark:text-navy-100">
-                                Weekly Report
-                              </p>
-                              <div className="mt-1 text-xs text-slate-400 line-clamp-1 dark:text-navy-300">
-                                The weekly report was uploaded
-                              </div>
+                          <div>
+                            <p className="font-medium text-slate-600 dark:text-navy-100">
+                              Images Added
+                            </p>
+                            <div className="mt-1 text-xs text-slate-400 line-clamp-1 dark:text-navy-300">
+                              Mores Clarke added new image gallery
                             </div>
                           </div>
                         </div>
-                        <div
-                          id="notification-events"
-                          className="tab-content tab-shift-left is-scrollbar-hidden space-y-4 overflow-y-auto px-4 py-4"
-                        >
-                          <div className="flex items-center space-x-3">
-                            <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-info/10 dark:bg-info/15">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="size-5 text-info"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                strokeWidth="1.5"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                                />
-                              </svg>
-                            </div>
-                            <div>
-                              <p className="font-medium text-slate-600 dark:text-navy-100">
-                                Mon, June 14, 2021
-                              </p>
-                              <div className="mt-1 flex text-xs text-slate-400 dark:text-navy-300">
-                                <span className="shrink-0">08:00 - 09:00</span>
-                                <div className="mx-2 my-1 w-px bg-slate-200 dark:bg-navy-500" />
-                                <span className="line-clamp-1">
-                                  Frontend Conf
-                                </span>
-                              </div>
-                            </div>
+                        <div className="flex items-center space-x-3">
+                          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-success/10 dark:bg-success/15">
+                            <i className="fa fa-leaf text-success" />
                           </div>
-                          <div className="flex items-center space-x-3">
-                            <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-info/10 dark:bg-info/15">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="size-5 text-info"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                strokeWidth="1.5"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                                />
-                              </svg>
-                            </div>
-                            <div>
-                              <p className="font-medium text-slate-600 dark:text-navy-100">
-                                Wed, June 21, 2021
-                              </p>
-                              <div className="mt-1 flex text-xs text-slate-400 dark:text-navy-300">
-                                <span className="shrink-0">16:00 - 20:00</span>
-                                <div className="mx-2 my-1 w-px bg-slate-200 dark:bg-navy-500" />
-                                <span className="line-clamp-1">UI/UX Conf</span>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="flex items-center space-x-3">
-                            <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-warning/10 dark:bg-warning/15">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="size-5 text-warning"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                strokeWidth="1.5"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
-                                />
-                              </svg>
-                            </div>
-                            <div>
-                              <p className="font-medium text-slate-600 dark:text-navy-100">
-                                THU, May 11, 2021
-                              </p>
-                              <div className="mt-1 flex text-xs text-slate-400 dark:text-navy-300">
-                                <span className="shrink-0">10:00 - 11:30</span>
-                                <div className="mx-2 my-1 w-px bg-slate-200 dark:bg-navy-500" />
-                                <span className="line-clamp-1">
-                                  Interview, Konnor Guzman
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="flex items-center space-x-3">
-                            <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-info/10 dark:bg-info/15">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="size-5 text-info"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                strokeWidth="1.5"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                                />
-                              </svg>
-                            </div>
-                            <div>
-                              <p className="font-medium text-slate-600 dark:text-navy-100">
-                                Mon, Jul 16, 2021
-                              </p>
-                              <div className="mt-1 flex text-xs text-slate-400 dark:text-navy-300">
-                                <span className="shrink-0">06:00 - 16:00</span>
-                                <div className="mx-2 my-1 w-px bg-slate-200 dark:bg-navy-500" />
-                                <span className="line-clamp-1">
-                                  Laravel Conf
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="flex items-center space-x-3">
-                            <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-warning/10 dark:bg-warning/15">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="size-5 text-warning"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                strokeWidth="1.5"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
-                                />
-                              </svg>
-                            </div>
-                            <div>
-                              <p className="font-medium text-slate-600 dark:text-navy-100">
-                                Wed, Jun 16, 2021
-                              </p>
-                              <div className="mt-1 flex text-xs text-slate-400 dark:text-navy-300">
-                                <span className="shrink-0">15:30 - 11:30</span>
-                                <div className="mx-2 my-1 w-px bg-slate-200 dark:bg-navy-500" />
-                                <span className="line-clamp-1">
-                                  Interview, Jonh Doe
-                                </span>
-                              </div>
+                          <div>
+                            <p className="font-medium text-slate-600 dark:text-navy-100">
+                              Design Completed
+                            </p>
+                            <div className="mt-1 text-xs text-slate-400 line-clamp-1 dark:text-navy-300">
+                              Robert Nolan completed the design of the CRM
+                              application
                             </div>
                           </div>
                         </div>
-                        <div
-                          id="notification-logs"
-                          className="tab-content tab-shift-left is-scrollbar-hidden overflow-y-auto px-4"
-                        >
-                          <div className="mt-8 pb-8 text-center">
-                            <img
-                              className="mx-auto w-36"
-                              src="/images/illustrations/empty-girl-box.svg"
-                              alt="image"
-                            />
-                            <div className="mt-5">
-                              <p className="text-base font-semibold text-slate-700 dark:text-navy-100">
-                                No any logs
-                              </p>
-                              <p className="text-slate-400 dark:text-navy-300">
-                                There are no unread logs yet
-                              </p>
+                        <div className="flex items-center space-x-3">
+                          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-warning/10 dark:bg-warning/15">
+                            <i className="fa fa-project-diagram text-warning" />
+                          </div>
+                          <div>
+                            <p className="font-medium text-slate-600 dark:text-navy-100">
+                              ER Diagram
+                            </p>
+                            <div className="mt-1 text-xs text-slate-400 line-clamp-1 dark:text-navy-300">
+                              Team completed the ER diagram app
                             </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-error/10 dark:bg-error/15">
+                            <i className="fa fa-history text-error" />
+                          </div>
+                          <div>
+                            <p className="font-medium text-slate-600 dark:text-navy-100">
+                              Weekly Report
+                            </p>
+                            <div className="mt-1 text-xs text-slate-400 line-clamp-1 dark:text-navy-300">
+                              The weekly report was uploaded
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        id="notification-events"
+                        className="tab-content tab-shift-left is-scrollbar-hidden space-y-4 overflow-y-auto px-4 py-4"
+                      >
+                        <div className="flex items-center space-x-3">
+                          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-info/10 dark:bg-info/15">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="size-5 text-info"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                              strokeWidth="1.5"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                              />
+                            </svg>
+                          </div>
+                          <div>
+                            <p className="font-medium text-slate-600 dark:text-navy-100">
+                              Mon, June 14, 2021
+                            </p>
+                            <div className="mt-1 flex text-xs text-slate-400 dark:text-navy-300">
+                              <span className="shrink-0">08:00 - 09:00</span>
+                              <div className="mx-2 my-1 w-px bg-slate-200 dark:bg-navy-500" />
+                              <span className="line-clamp-1">
+                                Frontend Conf
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-info/10 dark:bg-info/15">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="size-5 text-info"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                              strokeWidth="1.5"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                              />
+                            </svg>
+                          </div>
+                          <div>
+                            <p className="font-medium text-slate-600 dark:text-navy-100">
+                              Wed, June 21, 2021
+                            </p>
+                            <div className="mt-1 flex text-xs text-slate-400 dark:text-navy-300">
+                              <span className="shrink-0">16:00 - 20:00</span>
+                              <div className="mx-2 my-1 w-px bg-slate-200 dark:bg-navy-500" />
+                              <span className="line-clamp-1">UI/UX Conf</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-warning/10 dark:bg-warning/15">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="size-5 text-warning"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                              strokeWidth="1.5"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
+                              />
+                            </svg>
+                          </div>
+                          <div>
+                            <p className="font-medium text-slate-600 dark:text-navy-100">
+                              THU, May 11, 2021
+                            </p>
+                            <div className="mt-1 flex text-xs text-slate-400 dark:text-navy-300">
+                              <span className="shrink-0">10:00 - 11:30</span>
+                              <div className="mx-2 my-1 w-px bg-slate-200 dark:bg-navy-500" />
+                              <span className="line-clamp-1">
+                                Interview, Konnor Guzman
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-info/10 dark:bg-info/15">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="size-5 text-info"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                              strokeWidth="1.5"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                              />
+                            </svg>
+                          </div>
+                          <div>
+                            <p className="font-medium text-slate-600 dark:text-navy-100">
+                              Mon, Jul 16, 2021
+                            </p>
+                            <div className="mt-1 flex text-xs text-slate-400 dark:text-navy-300">
+                              <span className="shrink-0">06:00 - 16:00</span>
+                              <div className="mx-2 my-1 w-px bg-slate-200 dark:bg-navy-500" />
+                              <span className="line-clamp-1">Laravel Conf</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-warning/10 dark:bg-warning/15">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="size-5 text-warning"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                              strokeWidth="1.5"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
+                              />
+                            </svg>
+                          </div>
+                          <div>
+                            <p className="font-medium text-slate-600 dark:text-navy-100">
+                              Wed, Jun 16, 2021
+                            </p>
+                            <div className="mt-1 flex text-xs text-slate-400 dark:text-navy-300">
+                              <span className="shrink-0">15:30 - 11:30</span>
+                              <div className="mx-2 my-1 w-px bg-slate-200 dark:bg-navy-500" />
+                              <span className="line-clamp-1">
+                                Interview, Jonh Doe
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        id="notification-logs"
+                        className="tab-content tab-shift-left is-scrollbar-hidden overflow-y-auto px-4"
+                      >
+                        <div className="mt-8 pb-8 text-center">
+                          <img
+                            className="mx-auto w-36"
+                            src="/images/illustrations/empty-girl-box.svg"
+                            alt="image"
+                          />
+                          <div className="mt-5">
+                            <p className="text-base font-semibold text-slate-700 dark:text-navy-100">
+                              No any logs
+                            </p>
+                            <p className="text-slate-400 dark:text-navy-300">
+                              There are no unread logs yet
+                            </p>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-              
+                </div>
               </div>
               {/* Right Sidebar Toggle */}
               <button
@@ -1703,22 +1981,8 @@ const Topbar = () => {
           </div>
         </div>
       </nav>
-
     </>
   );
 };
 
 export default Topbar;
-
-
-
-
-
-
-
-
-
-
-
-
-

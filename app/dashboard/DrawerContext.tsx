@@ -6,6 +6,8 @@ import Topbar from "./Topbar";
 type DrawerContextType = {
   isDrawerVisible: boolean;
   toggleDrawer: () => void;
+
+
 };
 
 const DrawerContext = createContext<DrawerContextType | undefined>(undefined);
@@ -21,10 +23,12 @@ export const useDrawer = () => {
 export const DrawerProvider: React.FC<{ children:React.ReactNode}> = ({ children }) => {
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
 
+
   const toggleDrawer = () => {
     // console.log('Drawer toggled',!isDrawerVisible);
-    setIsDrawerVisible((prev) => !prev); // Toggle drawer visibility
+    setIsDrawerVisible((prev) => !prev); 
   };
+ 
 
   return (
     <DrawerContext.Provider value={{ isDrawerVisible, toggleDrawer }}>

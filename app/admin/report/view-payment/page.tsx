@@ -5,107 +5,98 @@ import React, { useState } from 'react'
 
 const page = () => {
     const [attendanceData, setAttendanceData] = useState([
-    {
-      id: 1,
-      name: "john",
-      date: "2024-11-01",
-      checkinTime: "08:30 AM",
-      checkoutTime: "10:30 AM",
-      paymentDetails: [
-        { term: "1st Term", status: "Paid" },
-        { term: "2nd Term", status: "Pending" },
-      ],
-      status: "active",
-    },
-    {
-      id: 2,
-      name: "Riya",
-      date: "2024-11-02",
-      checkinTime: "09:00 AM",
-      checkoutTime: "11:00 AM",
-      paymentDetails: [
-        { term: "1st Term", status: "Pending" },
-        { term: "2nd Term", status: "Pending" },
-      ],
-      status: "inactive",
-    },
-    {
-      id: 3,
-      name: "Smith",
-      date: "2024-11-03",
-      checkinTime: "08:45 AM",
-      checkoutTime: "10:45 AM",
-      paymentDetails: [
-        { term: "1st Term", status: "Paid" },
-        { term: "2nd Term", status: "Paid" },
-      ],
-      status: "completed",
-    },
-  ]);
-
-  const [filterStatus, setFilterStatus] = useState("all");
-
-  const handlePaymentStatusChange = (
-    id: number,
-    term: string,
-    newStatus: string
-  ) => {
-    setAttendanceData((prevData) =>
-      prevData.map((item) =>
-        item.id === id
-          ? {
-              ...item,
-              paymentDetails: item.paymentDetails.map((payment) =>
-                payment.term === term
-                  ? { ...payment, status: newStatus }
-                  : payment
-              ),
-            }
-          : item
-      )
-    );
-  };
-
-  const filteredData =
-    filterStatus === "all"
-      ? attendanceData
-      : attendanceData.filter((item) => item.status === filterStatus);
+        {
+          id: 1,
+          name: "john",
+          date: "2024-11-01",
+          checkinTime: "08:30 AM",
+          checkoutTime: "10:30 AM",
+          paymentDetails: [
+            { term: "1st Term", status: "Paid" },
+            { term: "2nd Term", status: "Pending" },
+          ],
+          status: "active",
+        },
+        {
+          id: 2,
+          name: "Riya",
+          date: "2024-11-02",
+          checkinTime: "09:00 AM",
+          checkoutTime: "11:00 AM",
+          paymentDetails: [
+            { term: "1st Term", status: "Pending" },
+            { term: "2nd Term", status: "Pending" },
+          ],
+          status: "inactive",
+        },
+        {
+          id: 3,
+          name: "Smith",
+          date: "2024-11-03",
+          checkinTime: "08:45 AM",
+          checkoutTime: "10:45 AM",
+          paymentDetails: [
+            { term: "1st Term", status: "Paid" },
+            { term: "2nd Term", status: "Paid" },
+          ],
+          status: "completed",
+        },
+      ]);
+    
+      const [filterStatus, setFilterStatus] = useState("all");
+    
+      const handlePaymentStatusChange = (
+        id: number,
+        term: string,
+        newStatus: string
+      ) => {
+        setAttendanceData((prevData) =>
+          prevData.map((item) =>
+            item.id === id
+              ? {
+                  ...item,
+                  paymentDetails: item.paymentDetails.map((payment) =>
+                    payment.term === term
+                      ? { ...payment, status: newStatus }
+                      : payment
+                  ),
+                }
+              : item
+          )
+        );
+      };
+    
+      const filteredData =
+        filterStatus === "all"
+          ? attendanceData
+          : attendanceData.filter((item) => item.status === filterStatus);
   return (
     <div className=" w-full  pb-8">
  
         
     <div className="flex items-center space-x-4 py-5 lg:py-6">
     <h2 className="text-xl font-medium text-slate-800 dark:text-navy-50 lg:text-2xl">
-    Student List
+    View Payment Details
     </h2>
     <div className="hidden h-full py-1 sm:flex">
       <div className="h-full w-px bg-slate-300 dark:bg-navy-600" />
     </div>
     <ul className="hidden flex-wrap items-center space-x-2 sm:flex">
       <li className="flex items-center space-x-2">
-        <a className="text-primary transition-colors hover:text-primary-focus dark:text-accent-light dark:hover:text-accent" href="#">Student
+        <a className="text-primary transition-colors hover:text-primary-focus dark:text-accent-light dark:hover:text-accent" href="#">Home
         </a>
         <svg xmlns="http://www.w3.org/2000/svg" className="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
         </svg>
       </li>
-      <li>Student List</li>
+      <li>Report</li>
+      <svg xmlns="http://www.w3.org/2000/svg" className="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+      <li>View Payment Details</li>
     </ul>
   </div>
-  <div className="flex justify-end mb-4">
-           {/* Dropdown filter */}
-           <select
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-300"
-            // className={`btn bg-default/10 font-medium text-default hover:bg-default/20 focus:bg-default/20 active:bg-default/25 dark:bg-default-light/10 dark:text-default-light dark:hover:bg-default-light/20 dark:focus:bg-default-light/20 dark:active:bg-default-light/25`}
-          >
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
-            <option value="completed">Completed</option>
-          </select>
-        </div>
+
   <div className="grid grid-cols-1 gap-4 sm:gap-5 lg:gap-6" >
   <div className="card px-4 pb-4 sm:px-5">
   <div className="mt-5">
@@ -118,22 +109,22 @@ const page = () => {
                 SL No
                 </th>
                 <th className="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                Date
+                Total Amount
                 </th>
                 <th className="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                Name
+                Pay Amount
                 </th>
                 <th className="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                Check-In Time
+                Due Amount
                 </th>
                 <th className="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                Check-Out Time
+                Payment Status
                 </th>            
                 <th className="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                Payment Details
+                Payment Method
                 </th> 
                 <th className="whitespace-nowrap rounded-r-lg bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                Status
+                Date
                 </th> 
           
               </tr>
