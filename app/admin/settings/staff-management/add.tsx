@@ -16,9 +16,8 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal }) => {
   const [formData, setFormData] = useState({
     
     staff_name: "",
-    patient_name: "",
-    age: "",
     mobile: "",
+    place: "",
     sex: "",
     address: "",
     dr_name: "",
@@ -109,7 +108,7 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal }) => {
                 className="w-1/2 border rounded p-2 mr-2"
               />
               <input
-                name="staff_name"
+                name="mobile"
                 onChange={handleChange}
                 type="text"
                 placeholder="Mobile"

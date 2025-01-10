@@ -18,7 +18,9 @@ export default function RootLayout({ children }: Props) {
 
   return (
     <html lang="en">
-      <body>
+      <body  x-data x-bind="$store.global.documentBody"
+  className="is-header-blur">
+
       <AuthProvider>
       <DrawerProvider>
           {/* Conditional rendering based on the pathname */}
