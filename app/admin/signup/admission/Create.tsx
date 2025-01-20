@@ -9,7 +9,81 @@ type CreateProps = {
 
 const Create: React.FC<CreateProps> = ({ showModal, toggleModal }) => {
   const [selectedOption, setSelectedOption] = useState<string>("create");
+   const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [mobile, setMobile] = useState('');
+    const [bloodgrp, setBloodgrp] = useState('');
+    const [documentType, setDocumentType] = useState('');
+    const [gender, setGender] = useState('');
+    const [paymentmethod, setPaymentmethod]= useState('');
+    const [service_id, setservice_id]= useState('');
+    const [total_amount, settotal_amount]= useState('');
+    const [pay_amount, setpay_amount]= useState('');
+    const [type, settype]= useState('');
+    
+   
+    
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState(false);
   if (!showModal) return null;
+// const handleSubmit = async(e: React.FormEvent) => {
+//     e.preventDefault();
+//     if (!name || !mobile || !bloodgrp || !gender || !service_id) {
+//       setError('All fields are required');
+//       return;
+//     }
+//     if (!/^\d+$/.test(mobile)) {
+//       setError("Mobile number must be numeric.");
+//       return;
+//     }
+//     setError("");
+//     setLoading(true);
+//     setSuccess(false);
+//     console.log({ accountType, expenseType, amount });
+//     setExpenseType('');
+//     setAmount('');
+
+
+//     const formData = {
+//       driver_name: driverName,
+//       mobile,
+//       place,
+//       driving_licence_no: drivingLicenceNo,
+//     };
+
+//     try {
+//       // Replace with your backend endpoint
+//       const response = await fetch('/api/admin/settings/add_driver', {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify(formData),
+//       });
+
+//       if (!response.ok) {
+//         const errorData = await response.json();
+//         throw new Error(errorData.message || 'An error occurred');
+//       }
+
+//       const result = await response.json();
+//       setSuccess(true);
+//       console.log('Driver added successfully:', result);
+
+//       // Clear form fields
+//       setDriverName('');
+//       setMobile('');
+//       setPlace('');
+//       setdrivingLicenceNo('');
+//       setTimeout(() => togglemodal(), 2000);
+//     } catch (err: any) {
+//       setError(err.message || 'An error occurred');
+//       console.error(err);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
 
   return (
     <div

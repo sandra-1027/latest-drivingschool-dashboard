@@ -115,14 +115,18 @@
 
 
 
+import { useAuth } from '@/app/context/AuthContext';
+import withAuth from '@/hoc/withAuth';
 import React, {  useState } from 'react';
+import { IoEye, IoEyeOff } from 'react-icons/io5';
 
 type CreateProps = {
-  showmodal: boolean;
+  showModal: boolean;
   togglemodal: () => void;
 }
 
-const Add: React.FC<CreateProps> = ({ showmodal, togglemodal }) => {
+const Add: React.FC<CreateProps> = ({ showModal, togglemodal }) => {
+    const {state}=useAuth();
   const [accountType, setAccountType] = useState('expense');
   const [expenseType, setExpenseType] = useState('');
   const [amount, setAmount] = useState('');
@@ -130,11 +134,14 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal }) => {
   const [mobile, setMobile] = useState('');
   const [place, setPlace] = useState('');
   const [drivingLicenceNo, setdrivingLicenceNo] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
-  
-  if (!showmodal) return null;
+    const [showPassword, setShowPassword] = useState(false);
+    const togglePasswordVisibility = () => setShowPassword(!showPassword);
+
+  if (!showModal) return null;
  
   const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
@@ -158,25 +165,50 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal }) => {
       driver_name: driverName,
       mobile,
       place,
+      password,
       driving_licence_no: drivingLicenceNo,
     };
 
     try {
-      // Replace with your backend endpoint
+      // const token = localStorage.getItem('token');
+      // console.log('adToken:', token);
+      // // Replace with your backend endpoint
+      // const response = await fetch('/api/admin/settings/add_driver', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     'authorizations': `Bearer ${token}`,
+      //     'api_key':'10f052463f485938d04ac7300de7ec2b',
+      //   },
+      //   body: JSON.stringify(formData),
+      // });
+
+      // if (!response.ok) {
+      //   const errorData = await response.json();
+      //   throw new Error(errorData.message || 'An error occurred');
+      // }
+
+      // const result = await response.json();
+      // setSuccess(true);
+      // console.log('Driver added successfully:', result);
+
+
+
       const response = await fetch('/api/admin/settings/add_driver', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+           'authorizations': state?.accessToken ?? '', 
+          'api_key': '10f052463f485938d04ac7300de7ec2b',  // Make sure the API key is correct
         },
         body: JSON.stringify(formData),
       });
-
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || 'An error occurred');
+        // console.error('API error:', errorData);
+        throw new Error(`HTTP error! Status: ${response.status} - ${errorData.message || 'Unknown error'}`);
       }
-
-      const result = await response.json();
+      
+  const result = await response.json();
       setSuccess(true);
       console.log('Driver added successfully:', result);
 
@@ -185,6 +217,7 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal }) => {
       setMobile('');
       setPlace('');
       setdrivingLicenceNo('');
+      setPassword('');
       setTimeout(() => togglemodal(), 2000);
     } catch (err: any) {
       setError(err.message || 'An error occurred');
@@ -284,6 +317,26 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal }) => {
       />
 </span>
   </label>
+  {/* <label className="relative flex mt-4"> */}
+  <label className="block">
+    <span>Password</span>
+    <span className="relative mt-1.5 flex">
+                <input
+                  className="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                  placeholder="Password"
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <span
+                  className="absolute right-3 flex items-center justify-center text-slate-400 cursor-pointer mt-3"
+                  onClick={togglePasswordVisibility}
+                >
+                  {showPassword ? <IoEye /> : <IoEyeOff />}
+                </span>
+                </span>
+              </label>
 </div>
 
 
@@ -305,7 +358,8 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal }) => {
   );
 }
 
-export default Add;
+// export default Add;
+export default withAuth(Add, ['admin']);
 
 
 

@@ -55,10 +55,12 @@
 import withAuth from "@/hoc/withAuth";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-// import withAuth from "../withAuth"; 
+
 
 
 const AdminPage = () => {
+ 
+  
   return <div style={{ fontSize: "24px", marginTop: "20px" }}>Welcome to the Admin Dashboard</div>;
 };
 

@@ -1,95 +1,166 @@
-
-
-
 'use client'
-import withAuth from '@/hoc/withAuth';
-import React, { useState } from 'react'
-import Add from './add';
+
+import { useAuth } from "@/app/context/AuthContext";
+import { useEffect, useState } from "react";
+import Edit from "./edit";
+import Add from "./add";
+
+
+
+type Service = {
+    service_name: string;
+  id: string;
+  status: string;
+  [key: string]: any;
+ 
+};
+type ServiceData = {
+  data: Service[];
+};
 
 const page = () => {
-  const [showmodal,setShowmodal]=useState(false);
-  const togglemodal =()=>{
-    setShowmodal((prev)=> !prev)
-  }
-    const [attendanceData, setAttendanceData] = useState([
-    {
-      id: 1,
-      name: "john",
-      date: "2024-11-01",
-      checkinTime: "08:30 AM",
-      checkoutTime: "10:30 AM",
-      paymentDetails: [
-        { term: "1st Term", status: "Paid" },
-        { term: "2nd Term", status: "Pending" },
-      ],
-      status: "active",
-    },
-    {
-      id: 2,
-      name: "Riya",
-      date: "2024-11-02",
-      checkinTime: "09:00 AM",
-      checkoutTime: "11:00 AM",
-      paymentDetails: [
-        { term: "1st Term", status: "Pending" },
-        { term: "2nd Term", status: "Pending" },
-      ],
-      status: "inactive",
-    },
-    {
-      id: 3,
-      name: "Smith",
-      date: "2024-11-03",
-      checkinTime: "08:45 AM",
-      checkoutTime: "10:45 AM",
-      paymentDetails: [
-        { term: "1st Term", status: "Paid" },
-        { term: "2nd Term", status: "Paid" },
-      ],
-      status: "completed",
-    },
-  ]);
-
-  const [filterStatus,setFilterStatus] = useState("all");
-  
-  const [currentPage,setCurrentPage] = useState(1);
+  const {state}=useAuth();
+  const [filterStatus, setFilterStatus] = useState("all");
+  const [currentPage, setCurrentPage] = useState(1);
   const [entriesPerPage] = useState(10);
-  
-  const handlePaymentStatusChange = (
-    id: number,
-    term: string,
-    newStatus: string
-  ) => {
-    setAttendanceData((prevData) =>
-      prevData.map((item) =>
-        item.id === id
-          ? {
-              ...item,
-              paymentDetails: item.paymentDetails.map((payment) =>
-                payment.term === term
-                  ? { ...payment, status: newStatus }
-                  : payment
-              ),
-            }
-          : item
-      )
-    );
+  const [serviceData, setServiceData] = useState<Service[]>([]);
+  const [showmodal, setShowmodal] = useState(false);
+  const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
+   const [editedService, setEditedService] = useState<Service | null>(null);
+    const [selectedService, setSelectedService] = useState<string>("");
+    const [filteredData, setFilteredData] = useState<Service[]>([]);
+      const [searchTerm, setSearchTerm] = useState("");
+      const [selectedStatus, setSelectedStatus] = useState<string>("");
+ 
+  const togglemodal = (mode: 'add' | 'edit', service: Service | null = null) => {
+    setModalMode(mode);  // Set the modal mode to either "add" or "edit"
+    setEditedService(service);  // Pass the selected driver if in edit mode
+    setShowmodal((prev) => !prev);  // Toggle the modal visibility
   };
-
-  const filteredData =
-    filterStatus === "all"
-      ? attendanceData
-      : attendanceData.filter((item) => item.status === filterStatus);
+ 
 
   
-    // Calculate pagination
-    const indexOfLastEntry = currentPage * entriesPerPage;
-    const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
-    const currentEntries = filteredData.slice(indexOfFirstEntry, indexOfLastEntry);
-    const totalEntries = filteredData.length;
+
+   const fetchServiceData = async () => {
+    try {
+
+      const response = await fetch('/api/admin/settings/service_details', {
+        method: 'POST',
+        headers: {
+           'authorizations': state?.accessToken ?? '', 
+          // 'authorizations': token ?? '',
+          'api_key': '10f052463f485938d04ac7300de7ec2b',  // Make sure the API key is correct
+        },
+        body: JSON.stringify({ /* request body */ }),
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        // console.error('API error:', errorData);
+        throw new Error(`HTTP error! Status: ${response.status} - ${errorData.message || 'Unknown error'}`);
+      }
+      
+      const data = await response.json();
+     
+      if (data.success) {
+        setServiceData(data.data || []);
+        setFilteredData(data.data || []);
+      } else {
+        // console.error("API error:", data.msg || "Unknown error");
+      }
+    } catch (error) {
+      console.error("Fetch error:", error);
+    }
+  };
   
-    // Pagination logic
-    const totalPages = Math.ceil(totalEntries / entriesPerPage);
+  useEffect(() => {
+    fetchServiceData();
+  }, [state]);
+
+
+    const applyFilters = () => {
+          let newFilteredData = serviceData;
+        
+          // Apply form filters
+          if (selectedService) {
+            newFilteredData = newFilteredData.filter(
+              (item) => item.service_name === selectedService
+            );
+          }
+          if (selectedStatus) {
+            newFilteredData = newFilteredData.filter(
+              (item) => item.status === selectedStatus
+            );
+          }
+        
+          return newFilteredData; // Return filtered data
+        };
+        const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+          const value = e.target.value;
+          setSearchTerm(value);
+        
+          const searchFilteredData = serviceData.filter(
+            (item) =>
+              item.service_name.toLowerCase().includes(value.toLowerCase()) ||
+              item.description.toLowerCase().includes(value.toLowerCase()) ||
+              item.amount.toLowerCase().includes(value.toLowerCase()) ||
+              item.status.toLowerCase().includes(value.toLowerCase())
+          );
+        
+          setFilteredData(searchFilteredData); // Update filtered data in real-time
+        };
+        const handleFilterSubmit = (e: React.FormEvent) => {
+          e.preventDefault(); // Prevent page reload
+          const newFilteredData = applyFilters();
+          setFilteredData(newFilteredData); // Update filtered data
+        };
+        
+        const handleReset = () => {
+          setSearchTerm("");
+          setSelectedService("");
+          setSelectedStatus("");
+          setFilteredData(serviceData); // Reset to original data
+        };
+        const indexOfLastEntry = currentPage * entriesPerPage;
+        const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
+        const currentEntries = filteredData.slice(indexOfFirstEntry, indexOfLastEntry);
+        const totalEntries = filteredData.length;
+      
+        // Pagination logic
+        const totalPages = Math.ceil(totalEntries / entriesPerPage);
+  
+
+        const updateAccountStatus = async (id: string, status: string) => {
+          try {
+            const response = await fetch('/api/admin/settings/inactivate_service', {
+              method: 'POST',
+              headers: {
+                'authorizations': state?.accessToken ?? '', 
+                'api_key': '10f052463f485938d04ac7300de7ec2b',
+              },
+              body: JSON.stringify({
+                id: id,
+                status: status,
+              }),
+            });
+        
+            if (!response.ok) {
+              const errorData = await response.json();
+              throw new Error(`HTTP error! Status: ${response.status} - ${errorData.message || 'Unknown error'}`);
+            }
+        
+            const data = await response.json();
+            console.log("API Response:", data); // Log the response
+        
+            if (data.success) {
+              fetchServiceData();
+          
+            } else {
+              console.error("API error:", data.msg || "Unknown error");
+            }
+          } catch (error) {
+            console.error("Update error:", error);
+          }
+        };
   return (
     <div className=" w-full  pb-8">
  
@@ -131,12 +202,18 @@ const page = () => {
             Service Name
           </label>
           <select
-            id="driverName"
-            name="driverName"
+            id="serviceName"
+            name="service_name"
+            value={selectedService}
+            onChange={(e) => setSelectedService(e.target.value)}
             className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
           >
             <option value="">select a service</option>
-          
+            {serviceData.map((service) => (
+    <option key={service.id} value={service.service_name}>
+      {service.service_name}
+    </option>
+  ))}
           </select>
         </div>
         {/* Status Select */}
@@ -150,6 +227,8 @@ const page = () => {
           <select
             id="status"
             name="status"
+            value={selectedStatus}
+            onChange={(e) => setSelectedStatus(e.target.value)}
             className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
           >
             <option value="">All Status</option>
@@ -162,12 +241,14 @@ const page = () => {
       <div className="mt-4 flex space-x-4">
         <button
           type="submit"
+          onClick={handleFilterSubmit}
           className="inline-flex justify-center rounded-md border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
         ><i className='fa fa-filter' style={{marginTop:'3px',marginRight:'3px'}}></i>
           Filter
         </button>
         <button
           type="button"
+          onClick={handleReset}
           className="inline-flex justify-center rounded-md border border-gray-300 bg-warning py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-warningfocus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
         ><i className='fa fa-refresh' style={{marginTop:'3px',marginRight:'3px'}}></i>
           Reset
@@ -183,10 +264,11 @@ const page = () => {
                 Service Details
                 </span>
                
-                <button className="px-4 py-2 bg-[#4f46e5] text-white rounded-md" onClick={togglemodal}>  
+                <button className="px-4 py-2 bg-[#4f46e5] text-white rounded-md" 
+                onClick={() => togglemodal('add')}
+                >  
           Add Services
                 </button>
-                <Add showmodal={showmodal} togglemodal={togglemodal}/>
             </div>
 
                              
@@ -202,7 +284,8 @@ const page = () => {
                 placeholder="Type a keyword..."
                 aria-label="Type a keyword..."
                 className="gridjs-input gridjs-search-input"
-                
+                value={searchTerm}
+                onChange={handleSearchChange}
               />
             </div>
           </div>
@@ -241,13 +324,13 @@ const page = () => {
                 {index + 1}
                 </td>
                 <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                {item.date}
+                {item.service_name}
                 </td>
                 <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                {item.name}
+                {item.amount}
                 </td>
                 <td className="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
-                {item.checkinTime}
+                <div dangerouslySetInnerHTML={{ __html: item.description }}/>
                 </td>
 
                 <td className="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
@@ -264,25 +347,24 @@ const page = () => {
                   <span>inactive</span>
                 </div>
                 )}
-                 {item.status === "completed" && (
-                <div className="badge space-x-2.5 rounded-full bg-info/10 text-info">
-                  <div className="size-2 rounded-full bg-current"/>
-                  <span>completed</span>
-                </div>
-                )}
+                 
                 </td>
 
                 <td className="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
-                {item.date}
+                {item.added_date}
                 </td>
                 <td className="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
                 <span>
                       <div className="flex justify-center space-x-2">
-                        <button className="btn size-8 p-0 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25">
+                        <button 
+                         onClick={() => togglemodal('edit', item)}
+                        className="btn size-8 p-0 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25">
                           <i className="fa fa-edit" />
                         </button>
-                        <button className="btn size-8 p-0 text-error hover:bg-error/20 focus:bg-error/20 active:bg-error/25">
-                          <i className="fa fa-trash-alt" />
+                        <button 
+                        onClick={() => updateAccountStatus(item.id!, item.status)}
+                        className={`btn size-8 p-0 ${item.status === 'active' ? 'text-error' : 'text-primary'} hover:bg-${item.status === 'active' ? 'error' : 'primary'}/20 focus:bg-${item.status === 'active' ? 'error' : 'primary'}/20 active:bg-${item.status === 'active' ? 'error' : 'primary'}/25`}>
+                           <i className={`fa ${item.status === 'active' ? 'fa-trash-alt' : 'fa-check-circle'}`} />
                         </button>
                       </div>
                     </span>
@@ -341,6 +423,25 @@ const page = () => {
       </div>
   </div>
   </div>
+
+
+  {showmodal && (
+  modalMode === 'edit' ? (
+    <Edit
+      showModal={showmodal}
+      toggleModal={() => togglemodal('add')}  // Correct the mode here if you want to switch to 'edit'
+      serviceData={editedService}
+      onSave={(updatedService) => {
+        setServiceData((prevData) => prevData.map((branch) =>
+          branch.id === updatedService.id ? updatedService : branch
+        ));
+        togglemodal('add');  // Close modal after saving
+      }}
+    />
+  ) : (
+    <Add showmodal={showmodal} togglemodal={() => togglemodal('add')} />
+  )
+)}
   </div>
   
   )
