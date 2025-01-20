@@ -195,8 +195,15 @@
 
 import React, { useState, useRef } from 'react';
 
+
+type TextEditorProps = {
+  value: string;
+  onChange: (value: string) => void;
+};
+
+    const TextEditor: React.FC<TextEditorProps> = ({ value, onChange }) => {
 // const TextEditor = () => {
-  const TextEditor: React.FC<{ value: string; onChange: (value: string) => void }> = ({ value, onChange }) => {
+  // const TextEditor: React.FC<{ value: string; onChange: (value: string) => void }> = ({ value, onChange }) => {
   const [isBold, setIsBold] = useState(false);
   const [isItalic, setIsItalic] = useState(false);
   const [isUnderline, setIsUnderline] = useState(false);
@@ -290,6 +297,17 @@ const resetColor = () => {
 };
 
 
+ React.useEffect(() => {
+    if (editorRef.current && editorRef.current.innerHTML !== value) {
+      editorRef.current.innerHTML = value;
+    }
+  }, [value]);
+const handleInput = () => {
+  if (editorRef.current) {
+    onChange(editorRef.current.innerHTML);
+    onChange(content);
+  }
+};
   return (
     <div className="w-full border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
       <div className="px-3 py-2 border-b dark:border-gray-600">
@@ -593,24 +611,23 @@ const resetColor = () => {
         </div>
       </div>
 
-      <div
+      {/* <div
         ref={editorRef}
         contentEditable
         onInput={updateToolbarState}
         className="p-4 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-600 rounded-b-lg min-h-[200px]"
         dangerouslySetInnerHTML={{ __html: value }}
        
-     />
+     /> */}
     
-
- {/* <div
-  ref={editorRef}
-  contentEditable
-  suppressContentEditableWarning
-  className="w-full h-64 px-3 py-2 text-gray-800 bg-white border rounded-lg dark:text-gray-200 dark:bg-gray-800 dark:border-gray-600"
-  onInput={(e) => onChange((e.target as HTMLDivElement).innerHTML)}
-  dangerouslySetInnerHTML={{ __html: value }}
-/> */}
+    <div
+        ref={editorRef}
+        contentEditable
+        dir="ltr"
+        style={{ direction: 'ltr', textAlign: 'left' }}
+        onInput={handleInput}
+        className="p-4 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-600 rounded-b-lg min-h-[200px]"
+       />
 
 
 </div> 

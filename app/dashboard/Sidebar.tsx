@@ -1417,6 +1417,8 @@ const Sidebar = () => {
         />
       </svg>
     </Link>
+
+
     {/* Pages And Layouts */}
     <Link
       href="/admin/driver/attendancelist"
@@ -1735,7 +1737,8 @@ fill="currentColor"
       <button id="profile-ref" className="avatar size-12">
         <img
           className="rounded-full"
-          src="/images/200x200.png"
+          // src="/images/200x200.png"
+          src="/profile.png"
           alt="avatar"
         />
         <span className="absolute right-0 size-3.5 rounded-full border-2 border-white bg-success dark:border-navy-700" />

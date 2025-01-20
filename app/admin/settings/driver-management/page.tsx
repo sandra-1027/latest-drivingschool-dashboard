@@ -368,7 +368,7 @@ import Edit from './edit';
 
 
 interface Driver {
-  id: number;
+  id: string;
   first_name: string;
   status: string;
   mobile: string;
@@ -549,7 +549,6 @@ const handleReset = () => {
         console.log("API Response:", data); // Log the response
     
         if (data.success) {
-          console.log("Status updated successfully!");
           fetchDriverData();
       
         } else {
@@ -559,7 +558,7 @@ const handleReset = () => {
         console.error("Update error:", error);
       }
     };
-  
+   
   return (
     <div className=" w-full  pb-8">
  
