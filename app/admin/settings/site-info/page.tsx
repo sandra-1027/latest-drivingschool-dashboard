@@ -1,5 +1,6 @@
 "use client"
 import React, { useState } from "react";
+import TextEditor from "./TextEditor";
 
 const page = () => {
     const [maintenanceText, setMaintenanceText] = useState('Site is under maintenance mode');
@@ -1702,6 +1703,7 @@ const page = () => {
                           </button>
                         </span>
                       </div>
+                      {/* <TextEditor/> */}
                       <div
                         className="h-48 ql-container ql-snow"
                         x-init="$el._x_quill = new Quill($el,{

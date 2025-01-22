@@ -1,5 +1,3 @@
-
-
 'use client'
 import withAuth from '@/hoc/withAuth';
 import React, { useEffect, useState } from 'react'
@@ -32,12 +30,12 @@ const page = () => {
     setShowmodal((prev)=> !prev)
   }
   
-  const fetchlicenseData = async () => {
+  const fetchclassData = async () => {
   
 
     try {
 
-      const response = await fetch('/api/admin/accounts/license_cost_details', {
+      const response = await fetch('/api/admin/accounts/license_class_details', {
         method: 'POST',
         headers: {
            'authorizations': state?.accessToken ?? '', 
@@ -53,7 +51,6 @@ const page = () => {
       }
       
       const data = await response.json();
- 
       if (data.success) {
         setCostData(data.data || []);
          setFilteredData(data.data || []);
@@ -66,7 +63,7 @@ const page = () => {
   };
   
   useEffect(() => {
-    fetchlicenseData();
+    fetchclassData();
   }, [state]);
 
  
@@ -91,7 +88,6 @@ const page = () => {
       }
       
       const data = await response.json();
-   
       if (data.success) {
         setService(data.data || []);
          
@@ -125,7 +121,7 @@ const page = () => {
         body: JSON.stringify({
           id: id,
           status: status,
-          table: "license_cost"
+          table: "license_class"
         }),
       });
   
@@ -139,7 +135,7 @@ const page = () => {
   
       if (data.success) {
        
-        fetchlicenseData();
+        fetchclassData();
       } else {
         console.error("API error:", data.msg || "Unknown error");
       }
@@ -147,9 +143,10 @@ const page = () => {
       console.error("Update error:", error);
     }
   };
-  
 
-  const handleEdit = (staff: Cost) => {
+
+
+    const handleEdit = (staff: Cost) => {
       setSelectedCost(staff); 
       setShowmodal(true); 
     };
@@ -214,7 +211,7 @@ const page = () => {
         
     <div className="flex items-center space-x-4 py-5 lg:py-6">
     <h2 className="text-xl font-medium text-slate-800 dark:text-navy-50 lg:text-2xl">
-    License Cost
+    License Class
     </h2>
     <div className="hidden h-full py-1 sm:flex">
       <div className="h-full w-px bg-slate-300 dark:bg-navy-600" />
@@ -231,7 +228,7 @@ const page = () => {
       <svg xmlns="http://www.w3.org/2000/svg" className="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
         </svg>
-      <li>License Cost</li>
+      <li>License Class</li>
     </ul>
   </div>
 
@@ -307,10 +304,10 @@ const page = () => {
 
   <div className="flex items-center justify-between py-5 lg:py-6">
                 <span className="text-lg font-medium text-slate-800 dark:text-navy-50">
-                License Cost
+                License Class
                 </span>
                 <button className="px-4 py-2 bg-[#4f46e5] text-white rounded-md" onClick={togglemodal}>  
-          Add License Cost
+          Add License Class
                 </button>
                 <Add showmodal={showmodal} togglemodal={togglemodal}/>
             </div>
@@ -393,12 +390,13 @@ const page = () => {
                   <span>inactive</span>
                 </div>
                 )}
-                 {item.status === "completed" && (
+                {/* {item.status} */}
+                 {/* {item.status === "completed" && (
                 <div className="badge space-x-2.5 rounded-full bg-info/10 text-info">
                   <div className="size-2 rounded-full bg-current"/>
                   <span>completed</span>
                 </div>
-                )}
+                )} */}
                 </td>
             <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 {item.added_date}
@@ -410,7 +408,7 @@ const page = () => {
                           <i className="fa fa-edit" onClick={() => handleEdit(item)}/>
                         </button>
                         <button className="btn size-8 p-0 text-error hover:bg-error/20 focus:bg-error/20 active:bg-error/25">
-                          <i className="fa fa-trash-alt" onClick={() => updateAccountStatus(item.id!, item.status)} />
+                          <i className="fa fa-trash-alt" onClick={() => updateAccountStatus(item.id!, item.status)}/>
                         </button>
                       </div>
                     </span>

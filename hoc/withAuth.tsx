@@ -9,6 +9,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { jwtDecode } from 'jwt-decode';
+import Loader from '@/app/dashboard/Loader';
 
 // Define the allowed roles explicitly
 type Role = 'admin' | 'driver' | 'student';
@@ -63,7 +64,7 @@ const withAuth = <P extends object>(
     }, [router]);
 
     if (authState.loading) {
-      return <div>Loading...</div>;
+      return <Loader/>;
     }
 
     return <WrappedComponent {...props} />;

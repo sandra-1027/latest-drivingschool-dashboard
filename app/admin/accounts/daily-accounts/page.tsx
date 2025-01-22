@@ -3,85 +3,129 @@
 
 'use client'
 import withAuth from '@/hoc/withAuth';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+
+import { strict } from 'assert';
+import { useAuth } from '@/app/context/AuthContext';
 import Add from './add';
+import { FaRegCheckCircle } from 'react-icons/fa';
+type Account = {
+  id?: string;
+  status: string;
+  daily_status: string; 
+ 
+  type: string;
+  expense_name: string;
+  email: string;
+  branch_id: string;
+  branch_name:string;
+  added_date:string;
+  staff_name:string;
+  amount:string;
+};
 
 const page = () => {
+  const { state } = useAuth();
   const [showmodal,setShowmodal]=useState(false);
+  const [accountData, setAccountData] = useState<Account[]>([]);
+  const [filteredData, setFilteredData] = useState<Account[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedBranch, setSelectedBranch] = useState<string>("");
+  const [selectedStatus, setSelectedStatus] = useState<string>("");
+  const [dailystatusselected, setdailystatusselected] = useState<string>("");
+  const [selectedAccount, setSelectedAccount] = useState<Account | null>(null); 
   const togglemodal =()=>{
     setShowmodal((prev)=> !prev)
   }
-    const [attendanceData, setAttendanceData] = useState([
-    {
-      id: 1,
-      name: "john",
-      date: "2024-11-01",
-      checkinTime: "08:30 AM",
-      checkoutTime: "10:30 AM",
-      paymentDetails: [
-        { term: "1st Term", status: "Paid" },
-        { term: "2nd Term", status: "Pending" },
-      ],
-      status: "active",
-    },
-    {
-      id: 2,
-      name: "Riya",
-      date: "2024-11-02",
-      checkinTime: "09:00 AM",
-      checkoutTime: "11:00 AM",
-      paymentDetails: [
-        { term: "1st Term", status: "Pending" },
-        { term: "2nd Term", status: "Pending" },
-      ],
-      status: "inactive",
-    },
-    {
-      id: 3,
-      name: "Smith",
-      date: "2024-11-03",
-      checkinTime: "08:45 AM",
-      checkoutTime: "10:45 AM",
-      paymentDetails: [
-        { term: "1st Term", status: "Paid" },
-        { term: "2nd Term", status: "Paid" },
-      ],
-      status: "completed",
-    },
-  ]);
-
   const [filterStatus,setFilterStatus] = useState("all");
   
   const [currentPage,setCurrentPage] = useState(1);
   const [entriesPerPage] = useState(10);
+
+  const fetchStaffData = async () => {
   
-  const handlePaymentStatusChange = (
-    id: number,
-    term: string,
-    newStatus: string
-  ) => {
-    setAttendanceData((prevData) =>
-      prevData.map((item) =>
-        item.id === id
-          ? {
-              ...item,
-              paymentDetails: item.paymentDetails.map((payment) =>
-                payment.term === term
-                  ? { ...payment, status: newStatus }
-                  : payment
-              ),
-            }
-          : item
-      )
+
+    try {
+
+      const response = await fetch('/api/admin/accounts/accounts_details', {
+        method: 'POST',
+        headers: {
+           'authorizations': state?.accessToken ?? '', 
+          // 'authorizations': token ?? '',
+          'api_key': '10f052463f485938d04ac7300de7ec2b',  // Make sure the API key is correct
+        },
+        body: JSON.stringify({ /* request body */ }),
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        // console.error('API error:', errorData);
+        throw new Error(`HTTP error! Status: ${response.status} - ${errorData.message || 'Unknown error'}`);
+      }
+      
+      const data = await response.json();
+     
+      if (data.success) {
+        setAccountData(data.data || []);
+        setFilteredData(data.data || []);
+      } else {
+        // console.error("API error:", data.msg || "Unknown error");
+      }
+    } catch (error) {
+      console.error("Fetch error:", error);
+    }
+  };
+  useEffect(() => {
+    fetchStaffData();
+  }, [state]);
+
+
+  const applyFilters = () => {
+    let newFilteredData = accountData;
+  
+    // Apply form filters
+    if (dailystatusselected) {
+      newFilteredData = newFilteredData.filter(
+        (item) => item.daily_status === dailystatusselected
+      );
+    }
+    if (selectedStatus) {
+      newFilteredData = newFilteredData.filter(
+        (item) => item.status === selectedStatus
+      );
+    }
+  
+    return newFilteredData; // Return filtered data
+  };
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+  
+    const searchFilteredData = accountData.filter(
+      (item) =>
+        item.daily_status.toLowerCase().includes(value.toLowerCase()) ||
+        item.type.toLowerCase().includes(value.toLowerCase()) ||
+        item.status.toLowerCase().includes(value.toLowerCase())
     );
+  
+    setFilteredData(searchFilteredData); // Update filtered data in real-time
+  };
+  
+  // Handle form submit for additional filters
+  const handleFilterSubmit = (e: React.FormEvent) => {
+    e.preventDefault(); // Prevent page reload
+    const newFilteredData = applyFilters();
+    setFilteredData(newFilteredData); // Update filtered data
+  };
+  
+  const handleReset = () => {
+    setSearchTerm("");
+    setdailystatusselected("");
+    setSelectedStatus("");
+    setFilteredData(accountData); // Reset to original data
   };
 
-  const filteredData =
-    filterStatus === "all"
-      ? attendanceData
-      : attendanceData.filter((item) => item.status === filterStatus);
 
-  
+
     // Calculate pagination
     const indexOfLastEntry = currentPage * entriesPerPage;
     const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
@@ -90,6 +134,46 @@ const page = () => {
   
     // Pagination logic
     const totalPages = Math.ceil(totalEntries / entriesPerPage);
+
+    const handleEdit = (staff: Account) => {
+      setSelectedAccount(staff); 
+      setShowmodal(true); 
+    };
+
+
+    const updateAccountStatus = async (id: string, status: string) => {
+      try {
+        const response = await fetch('/api/admin/accounts/inactivate_accounts', {
+          method: 'POST',
+          headers: {
+            'authorizations': state?.accessToken ?? '', 
+            'api_key': '10f052463f485938d04ac7300de7ec2b',
+          },
+          body: JSON.stringify({
+            id: id,
+            status: status,
+            table: "daily_accounts"
+          }),
+        });
+    
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(`HTTP error! Status: ${response.status} - ${errorData.message || 'Unknown error'}`);
+        }
+    
+        const data = await response.json();
+        console.log("API Response:", data); // Log the response
+    
+        if (data.success) {
+         
+          fetchStaffData();
+        } else {
+          console.error("API error:", data.msg || "Unknown error");
+        }
+      } catch (error) {
+        console.error("Update error:", error);
+      }
+    };
   return (
     <div className=" w-full  pb-8">
  
@@ -116,26 +200,27 @@ const page = () => {
   <div className="grid grid-cols-1 gap-4 sm:gap-5 lg:gap-6 mb-4" >
   <div className="card px-4 pb-4 sm:px-5 pt-4">
   <div className="p-4 rounded-lg bg-slate-100 dark:bg-navy-800">
-    <form>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        {/* Driver Name Select */}
+
+<form>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      
         <div>
           <label
-            htmlFor="serviceName"
+            htmlFor="status"
             className="block text-sm font-medium text-slate-700 dark:text-navy-100"
           >
            Accounts Type
           </label>
           <select
-            id="driverName"
-            name="driverName"
             className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+            value={dailystatusselected}
+            onChange={(e) => setdailystatusselected(e.target.value)}
           >
             <option value="">Please select Account Type</option>
-          
+            <option value="expense">Expense</option>
+            <option value="income">Income</option>
           </select>
         </div>
-        {/* Status Select */}
         <div>
           <label
             htmlFor="status"
@@ -144,9 +229,9 @@ const page = () => {
             Status
           </label>
           <select
-            id="status"
-            name="status"
             className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+            value={selectedStatus}
+            onChange={(e) => setSelectedStatus(e.target.value)}
           >
             <option value="">All Status</option>
             <option value="active">Active</option>
@@ -154,18 +239,27 @@ const page = () => {
           </select>
         </div>
       </div>
-      {/* Buttons */}
       <div className="mt-4 flex space-x-4">
         <button
           type="submit"
           className="inline-flex justify-center rounded-md border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-        ><i className='fa fa-filter' style={{marginTop:'3px',marginRight:'3px'}}></i>
+          onClick={handleFilterSubmit}
+        >
+          <i
+            className="fa fa-filter"
+            style={{ marginTop: "3px", marginRight: "3px" }}
+          ></i>
           Filter
         </button>
         <button
           type="button"
           className="inline-flex justify-center rounded-md border border-gray-300 bg-warning py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-warningfocus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-        ><i className='fa fa-refresh' style={{marginTop:'3px',marginRight:'3px'}}></i>
+          onClick={handleReset}
+        >
+          <i
+            className="fa fa-refresh"
+            style={{ marginTop: "3px", marginRight: "3px" }}
+          ></i>
           Reset
         </button>
       </div>
@@ -192,13 +286,14 @@ const page = () => {
   
   <div className="gridjs-head">
             <div className="gridjs-search">
-              <input
-                type="search"
-                placeholder="Type a keyword..."
-                aria-label="Type a keyword..."
-                className="gridjs-input gridjs-search-input"
-                
-              />
+           
+            <input
+      type="text"
+      value={searchTerm}
+      onChange={handleSearchChange}
+      placeholder="Search by name, branch, or place..."
+      className="form-input peer w-1/4 rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-1 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+    />
             </div>
           </div>
         <div className="overflow-x-auto w-full">
@@ -217,9 +312,9 @@ const page = () => {
                 <th className="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                Amount
                 </th>
-                <th className="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
+                {/* <th className="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                 Status
-                </th>            
+                </th>             */}
                  
                 <th className="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                Date
@@ -237,49 +332,34 @@ const page = () => {
                 {index + 1}
                 </td>
                 <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                {item.date}
+                {item.daily_status}
                 </td>
                 <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                {item.name}
+                {/* {item.type} */}
+                {item.daily_status === "income" ? item.type : item.expense_name}
                 </td>
-                <td className="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
-                {item.checkinTime}
+                <td className="whitespace-nowrap  px-4 py-3 sm:px-5">
+                {item.amount}
                 </td>
               
-                <td className="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
-               
-                 {item.status === "active" && (
-                <div className="badge space-x-2.5 rounded-full bg-success/10 text-success">
-                  <div className="size-2 rounded-full bg-current"/>
-                  <span>active</span>
-                </div>
-                )}
-                 {item.status === "inactive" && (
-                <div className="badge space-x-2.5 rounded-full bg-error/10 text-error">
-                  <div className="size-2 rounded-full bg-current"/>
-                  <span>inactive</span>
-                </div>
-                )}
-                 {item.status === "completed" && (
-                <div className="badge space-x-2.5 rounded-full bg-info/10 text-info">
-                  <div className="size-2 rounded-full bg-current"/>
-                  <span>completed</span>
-                </div>
-                )}
-                </td>
 
-                <td className="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
-                {item.date}
+                <td className="whitespace-nowrap  px-4 py-3 sm:px-5">
+                {item.added_date}
                 </td>
                 <td className="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
                 <span>
-                      <div className="flex justify-center space-x-2">
+                      <div className="flex  space-x-2">
                         <button className="btn size-8 p-0 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25">
-                          <i className="fa fa-edit" />
+                          <i className="fa fa-edit" onClick={() => handleEdit(item)}/>
                         </button>
-                        <button className="btn size-8 p-0 text-error hover:bg-error/20 focus:bg-error/20 active:bg-error/25">
-                          <i className="fa fa-trash-alt" />
-                        </button>
+                       
+                        <button
+                        className={`btn size-8 p-0 ${item.status === 'active' ? 'text-error' : 'text-primary'} hover:bg-${item.status === 'active' ? 'error' : 'primary'}/20 focus:bg-${item.status === 'active' ? 'error' : 'primary'}/20 active:bg-${item.status === 'active' ? 'error' : 'primary'}/25`}
+                        onClick={() => updateAccountStatus(item.id!, item.status)} // Pass the current status
+                      >
+                        <i className={`fa ${item.status === 'active' ? 'fa-trash-alt' : 'fa-check-circle'}`} />
+                      </button>
+
                       </div>
                     </span>
                 </td>
@@ -337,9 +417,33 @@ const page = () => {
       </div>
   </div>
   </div>
+
+  <Add
+  showmodal={showmodal}
+  togglemodal={togglemodal}
+  formData={selectedAccount ? { 
+    daily_status:selectedAccount.daily_status, 
+    amount: selectedAccount.amount, 
+    type: selectedAccount.type, 
+    expense_name: selectedAccount.expense_name,
+    id:selectedAccount.id || ""
+  } : undefined}
+  isEditing={!!selectedAccount}
+/>
+
   </div>
   
   )
 }
 
 export default page
+
+
+
+
+
+
+
+
+
+
