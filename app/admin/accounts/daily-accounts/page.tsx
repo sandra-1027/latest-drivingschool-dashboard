@@ -1,6 +1,16 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
 'use client'
 import withAuth from '@/hoc/withAuth';
 import React, { useEffect, useState } from 'react'
@@ -13,7 +23,6 @@ type Account = {
   id?: string;
   status: string;
   daily_status: string; 
- 
   type: string;
   expense_name: string;
   email: string;
@@ -22,6 +31,8 @@ type Account = {
   added_date:string;
   staff_name:string;
   amount:string;
+  total_income:string;
+  total_expense:string;
 };
 
 const page = () => {
@@ -29,18 +40,18 @@ const page = () => {
   const [showmodal,setShowmodal]=useState(false);
   const [accountData, setAccountData] = useState<Account[]>([]);
   const [filteredData, setFilteredData] = useState<Account[]>([]);
+  const [expenseData, setExpenseData] = useState<Account[]>([]);
+
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedBranch, setSelectedBranch] = useState<string>("");
   const [selectedStatus, setSelectedStatus] = useState<string>("");
+  const [selectedDate, setSelectedDate] = useState<string>("");
   const [dailystatusselected, setdailystatusselected] = useState<string>("");
   const [selectedAccount, setSelectedAccount] = useState<Account | null>(null); 
   const togglemodal =()=>{
     setShowmodal((prev)=> !prev)
   }
-  const [filterStatus,setFilterStatus] = useState("all");
-  
-  const [currentPage,setCurrentPage] = useState(1);
-  const [entriesPerPage] = useState(10);
+
 
   const fetchStaffData = async () => {
   
@@ -54,7 +65,10 @@ const page = () => {
           // 'authorizations': token ?? '',
           'api_key': '10f052463f485938d04ac7300de7ec2b',  // Make sure the API key is correct
         },
-        body: JSON.stringify({ /* request body */ }),
+        body: JSON.stringify({ 
+          id: null,
+          status: null,
+          date: null, }),
       });
       if (!response.ok) {
         const errorData = await response.json();
@@ -65,8 +79,9 @@ const page = () => {
       const data = await response.json();
      
       if (data.success) {
-        setAccountData(data.data || []);
-        setFilteredData(data.data || []);
+        setAccountData(data.data.accounts_details);
+        setFilteredData(data.data.accounts_details);
+        setExpenseData(data.data.expenses);
       } else {
         // console.error("API error:", data.msg || "Unknown error");
       }
@@ -78,6 +93,10 @@ const page = () => {
     fetchStaffData();
   }, [state]);
 
+  const [filterStatus,setFilterStatus] = useState("all");
+  
+  const [currentPage,setCurrentPage] = useState(1);
+  const [entriesPerPage] = useState(10);
 
   const applyFilters = () => {
     let newFilteredData = accountData;
@@ -93,7 +112,14 @@ const page = () => {
         (item) => item.status === selectedStatus
       );
     }
-  
+   
+    if (selectedDate) {
+      newFilteredData = newFilteredData.filter((item) => {
+      
+        const itemDate = item.added_date.split(" ")[0]; // Splits "2025-01-18 16:58:49" into ["2025-01-18", "16:58:49"] and takes the first part
+        return itemDate === selectedDate;
+      });
+    }
     return newFilteredData; // Return filtered data
   };
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -124,16 +150,15 @@ const page = () => {
     setFilteredData(accountData); // Reset to original data
   };
 
+  const indexOfLastEntry = currentPage * entriesPerPage;
+  const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
+  const currentEntries = filteredData.slice(
+    indexOfFirstEntry,
+    indexOfLastEntry
+  );
+  const totalEntries = filteredData.length;
+  const totalPages = Math.ceil(totalEntries / entriesPerPage);
 
-
-    // Calculate pagination
-    const indexOfLastEntry = currentPage * entriesPerPage;
-    const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
-    const currentEntries = filteredData.slice(indexOfFirstEntry, indexOfLastEntry);
-    const totalEntries = filteredData.length;
-  
-    // Pagination logic
-    const totalPages = Math.ceil(totalEntries / entriesPerPage);
 
     const handleEdit = (staff: Account) => {
       setSelectedAccount(staff); 
@@ -174,6 +199,9 @@ const page = () => {
         console.error("Update error:", error);
       }
     };
+
+
+   
   return (
     <div className=" w-full  pb-8">
  
@@ -197,8 +225,10 @@ const page = () => {
     </ul>
   </div>
 
-  <div className="grid grid-cols-1 gap-4 sm:gap-5 lg:gap-6 mb-4" >
-  <div className="card px-4 pb-4 sm:px-5 pt-4">
+
+<div className="grid grid-cols-1 sm:grid-cols-4 gap-4 sm:gap-5 lg:gap-6 mb-4">
+
+  <div className="col-span-4 sm:col-span-3 card px-4 pb-4 sm:px-5 pt-4">
   <div className="p-4 rounded-lg bg-slate-100 dark:bg-navy-800">
 
 <form>
@@ -238,6 +268,21 @@ const page = () => {
             <option value="inactive">Inactive</option>
           </select>
         </div>
+        <div>
+      <label
+        htmlFor="date"
+        className="block text-sm font-medium text-slate-700 dark:text-navy-100"
+      >
+        Date
+      </label>
+      <input
+        type="date"
+        id="date"
+        className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+        value={selectedDate}
+      onChange={(e) => setSelectedDate(e.target.value)}
+      />
+    </div>
       </div>
       <div className="mt-4 flex space-x-4">
         <button
@@ -265,8 +310,33 @@ const page = () => {
       </div>
     </form>
   </div>
+  </div>
+
+
+  <div className="col-span-4 sm:col-span-1 card px-4 pb-4 sm:px-5 pt-10">
+    <div className="p-3 rounded-lg bg-slate-100 dark:bg-navy-800">
+      <div className="card top-countries-card">
+      {expenseData && (
+        <div className="list-group border">
+        
+          <div className="flex list-group-item border p-2" >
+            <p className='mr-8'>Total Income </p>
+            <span className='font-bold'>₹ {expenseData.total_income}</span>
+          </div>
+
+          <div className="flex list-group-item p-2">
+            <p className='mr-8'>Total Expense </p>
+            <span className='font-bold'>₹ {expenseData.total_expense}</span>
+          </div>
+       
+        </div>
+         )}
+      </div>
     </div>
   </div>
+</div>
+
+
 
   <div className="flex items-center justify-between py-5 lg:py-6">
                 <span className="text-lg font-medium text-slate-800 dark:text-navy-50">
@@ -326,6 +396,7 @@ const page = () => {
               </tr>
             </thead>
             <tbody>
+             
             {filteredData.map((item, index) => (
               <tr key={item.id} className="border-y border-transparent border-b-slate-200 dark:border-b-navy-500">
                 <td className="whitespace-nowrap rounded-l-lg px-4 py-3 sm:px-5">
@@ -437,13 +508,3 @@ const page = () => {
 }
 
 export default page
-
-
-
-
-
-
-
-
-
-

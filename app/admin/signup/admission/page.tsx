@@ -4,28 +4,51 @@ import { FaEdit } from 'react-icons/fa';
 import Create from './Create';
 import Edit from './Edit';
 import { useAuth } from '@/app/context/AuthContext';
+import { CgNotes } from "react-icons/cg";
+import { RiCurrencyLine } from 'react-icons/ri';
+import Payment from './payment';
+import { FiClock } from "react-icons/fi";
+import { IoMdCheckmark } from 'react-icons/io';
 
 type Admission = {
   id?: string;
-  status: string;
-  service_name: string;
-  f_cost: string;
-  m_cost: string;
-  vehicle_type: string;
-  service_id: string;
-  branch_name:string;
+ pay_status: string;
+  user_name:string;
+  email:string;
+  blood_group:string;
+  gender:string;
+  service_name:string;
+  due_amount:string;
   added_date:string;
+  amount:string;
+  pay_amount: string;
+  payed_amount: string;
+  customer_id: string;
+  service_id: string;
+  type: string;
+  branch_id:string;
+  name:string;
+  mobile:string;
+  document_type:string;
+  userfile:File;
+  document:File;
+  total_amount:string;
+  payment_method:string;
+ 
 };
 
 const Admission = () => {
 
   const { state } = useAuth();
   const [showmodal,setShowmodal]=useState(false);
+  const [showmodals,setShowmodals]=useState(false);
   const [costData, setCostData] = useState<Admission []>([]);
   const [filteredData, setFilteredData] = useState<Admission []>([]);
   const [selectedCost, setSelectedCost] = useState<Admission  | null>(null); 
   const [search, setSearch] = useState("");
   const [selectedServices, setSelectedServices] = useState<string>("");
+  const [selectedAdmission,  setSelectedAdmission] = useState<Admission  | null>(null); 
+
   const [service, setService] = useState<{ id: string; service_name: string }[]>([]);
   const [filters, setFilters] = useState({ service_name: '', status: '' });
   const [searchTerm, setSearchTerm] = useState('');
@@ -33,53 +56,45 @@ const Admission = () => {
   const togglemodal =()=>{
     setShowmodal((prev)=> !prev)
   }
-
+  const togglemodals =()=>{
+    setShowmodals((prev)=> !prev)
+  }
   const fetchlicenseData = async () => {
+  
+
     try {
-      const response = await fetch('/https://our-demos.com/n/shanibads/api/admin/signup/get_admission_details', {
+
+      const response = await fetch('/api/admin/signup/get_admission_details', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          // 'authorizations': state?.accessToken ?? '' ,
-          'authorizationts':'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiMTYiLCJ1c2VyX3R5cGUiOiJhZG1pbiJ9.CfhEfHc-FN-nM-GQSYok4U-IaFZHUZlKkVxaVsdfIHU',
-          'api_key': '10f052463f485938d04ac7300de7ec2b',
-          
+           'authorizations': state?.accessToken ?? '', 
+          // 'authorizations': token ?? '',
+          'api_key': '10f052463f485938d04ac7300de7ec2b',  // Make sure the API key is correct
         },
-        body: JSON.stringify({}),
+        body: JSON.stringify({ user_id:null}),
       });
-  
-      console.log(response, "response");
       if (!response.ok) {
         const errorData = await response.json();
-        console.error('API error:', errorData);
+        // console.error('API error:', errorData);
         throw new Error(`HTTP error! Status: ${response.status} - ${errorData.message || 'Unknown error'}`);
       }
-  
+      
       const data = await response.json();
-      console.log(data, "data");
-  
+ 
       if (data.success) {
-        console.log(data.data, "data");
         setCostData(data.data || []);
-        setFilteredData(data.data || []);
+         setFilteredData(data.data || []);
       } else {
-        console.error("API error:", data.msg || "Unknown error");
+        // console.error("API error:", data.msg || "Unknown error");
       }
     } catch (error) {
-      // console.error("Fetch error:", error);
+      console.error("Fetch error:", error);
     }
   };
   
-
   useEffect(() => {
     fetchlicenseData();
-    
   }, [state]);
-  
- 
-
- 
-
 
   const [filterStatus,setFilterStatus] = useState("all");
   
@@ -121,11 +136,14 @@ const Admission = () => {
       console.error("Update error:", error);
     }
   };
-  
+  const handleEdits = (staff: Admission) => {
+    setSelectedAdmission(staff); 
+    setShowmodal(true); 
+  };
 
   const handleEdit = (staff: Admission ) => {
       setSelectedCost(staff); 
-      setShowmodal(true); 
+      setShowmodals(true); 
     };
     const applyFilters = () => {
       let newFilteredData = costData;
@@ -171,12 +189,7 @@ const Admission = () => {
     const totalEntries = filteredData.length;
     const totalPages = Math.ceil(totalEntries / entriesPerPage);
    
-
-  
- 
- 
-
-  
+   
 
   return (
   
@@ -212,7 +225,7 @@ const Admission = () => {
                 <button className="px-4 py-2 bg-[#4f46e5] text-white rounded-md" onClick={togglemodal}>  
           Add admission
                 </button>
-                {/* <Add showmodal={showmodal} togglemodal={togglemodal}/> */}
+                <Create showmodal={showmodal} togglemodal={togglemodal}/>
               
             </div>
 
@@ -239,7 +252,7 @@ const Admission = () => {
                 SL No
                 </th>
                 <th className="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                User Name
+                Mobile Number
                 </th>
                 <th className="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                Info
@@ -253,9 +266,7 @@ const Admission = () => {
                 <th className="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                Pay Status
                 </th> 
-                <th className="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-               Branch Name
-                </th> 
+                
                 <th className="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
               Date
                 </th> 
@@ -275,50 +286,69 @@ const Admission = () => {
                 {item.user_name}
                 </td>
                 <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                  Email: {item.email}
-                  Blood Group:{item.email}
-                  Gender:{item.email}
+                  <p><span className="font-bold mr-2">Email: </span>{item.email}</p>
+                  <p><span className="font-bold mr-2">Blood Group:</span>{item.blood_group}</p>
+                  <p><span className="font-bold mr-2">Gender:</span>{item.gender}</p>
                
                 </td>
-                <td className="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
-                {item.f_cost}
+                <td className="whitespace-nowrap px-4 py-3 sm:px-5">
+                {item.service_name}
                 </td>
-                <td className="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
-                {item.m_cost}
+                <td className="whitespace-nowrap px-4 py-3 sm:px-5">
+                {item.due_amount}
                 </td>
-                <td className="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
+                <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                
-                 {item.status === "active" && (
-                <div className="badge space-x-2.5 rounded-full bg-success/10 text-success">
-                  <div className="size-2 rounded-full bg-current"/>
-                  <span>active</span>
+                 {item.pay_status === "completed" && (
+                <div className="badge space-x-2.5 rounded-lg bg-success/10 text-success">
+                  {/* <div className="size-2 rounded-full bg-current"/> */}
+                  {/* <span>completed</span> */}
+                  <span className="badge bg-orange-transparent">
+                 
+                  <IoMdCheckmark className='mr-2'/>
+                    Fully Paid</span>
                 </div>
                 )}
-                 {item.status === "inactive" && (
-                <div className="badge space-x-2.5 rounded-full bg-error/10 text-error">
-                  <div className="size-2 rounded-full bg-current"/>
-                  <span>inactive</span>
+                 {item.pay_status === "pending" && (
+                <div className="badge space-x-2.5 rounded-lg bg-error/10 text-error">
+                  
+                  <span className="badge bg-orange-transparent">
+                  <FiClock className='mr-2'/>
+                  
+
+                   Pending</span>
                 </div>
                 )}
-                 {item.status === "completed" && (
-                <div className="badge space-x-2.5 rounded-full bg-info/10 text-info">
-                  <div className="size-2 rounded-full bg-current"/>
-                  <span>completed</span>
+                 {item.pay_status === "remaining" && (
+                <div className="badge space-x-2.5 rounded-lg bg-info/10 text-info">
+                 
+                  <span className="badge bg-orange-transparent">
+                  <CgNotes className='mr-2'/>
+                  Partially Paid</span>
                 </div>
                 )}
                 </td>
-            <td className="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
+            <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 {item.added_date}
                 </td>
                 <td className="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
                 <span>
                       <div className="flex justify-center space-x-2">
                         <button className="btn size-8 p-0 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25">
-                          <i className="fa fa-edit" onClick={() => handleEdit(item)}/>
+                          <i className="fa fa-edit"  onClick={() => handleEdits(item)}/>
                         </button>
-                        <button className="btn size-8 p-0 text-error hover:bg-error/20 focus:bg-error/20 active:bg-error/25">
-                          <i className="fa fa-trash-alt" onClick={() => updateAccountStatus(item.id!, item.status)} />
-                        </button>
+                        {/* <button className="btn size-8 p-0 text-error hover:bg-error/20 focus:bg-error/20 active:bg-error/25 border-error">
+                        <RiCurrencyLine />
+                        </button> */}
+                         {item.pay_status !== 'completed' && (
+                      <button
+        
+                      onClick={() => handleEdit(item)}
+                      className="btn size-7 p-0 text-error focus:bg-error/20 active:bg-error/25 border border-error rounded">
+                <RiCurrencyLine />
+              </button>
+                )}
+    
                       </div>
                     </span>
                 </td>
@@ -374,18 +404,46 @@ const Admission = () => {
       </div>
   </div>
   </div>
-  {/* <Add
+
+  {/* <Create
   showmodal={showmodal}
   togglemodal={togglemodal}
+  formDatas={selectedAdmission ? { 
+    name: selectedAdmission.name, 
+    mobile: selectedAdmission.mobile, 
+    email: selectedAdmission.email, 
+    blood_group: selectedAdmission.blood_group, 
+    document_type:selectedAdmission.document_type, 
+    gender:selectedAdmission.gender, 
+    userfile:selectedAdmission.userfile, 
+    document:selectedAdmission.document, 
+    payment_method:selectedAdmission.payment_method, 
+    service_id:selectedAdmission.service_id, 
+    total_amount:selectedAdmission.total_amount, 
+    pay_amount:selectedAdmission.pay_amount, 
+    type:selectedAdmission.type, 
+    amount:selectedAdmission.amount, 
+    branch_id:selectedAdmission.branch_id, 
+    id:selectedAdmission.id || ""
+  } : undefined}
+  isEditing={!!selectedAdmission}
+/> */}
+  <Payment
+  showmodals={showmodals}
+  togglemodals={togglemodals}
   formData={selectedCost ? { 
+    pay_amount: selectedCost.pay_amount, 
+    payed_amount: selectedCost.payed_amount,  
+    due_amount:selectedCost. due_amount, 
+    customer_id: selectedCost.customer_id, 
     service_id: selectedCost.service_id, 
-    vehicle_type: selectedCost.vehicle_type, 
-    f_cost: selectedCost.f_cost, 
-    m_cost: selectedCost.m_cost, 
+    type: selectedCost.type,
+    amount: selectedCost.amount, 
+    service_name:selectedCost.service_name,
     id:selectedCost.id || ""
   } : undefined}
   isEditing={!!selectedCost}
-/> */}
+/>
   </div>
 
 
@@ -393,380 +451,3 @@ const Admission = () => {
 }
 
 export default Admission
-
-
-
-
-
-
-
-
-
-// "use client";
-// import React, { useState } from "react";
-// import { FaEdit } from "react-icons/fa";
-
-// const Admission = () => {
-//   const [filteredData, setFilteredData] = useState([
-//     { id: 1, name: "John", email: "john@example.com", bloodGroup: "A+", gender: "Male", date: "13/2/2025" },
-//     // Add more entries
-// ]);
-  
-//   const [currentPage,setCurrentPage] = useState(1);
-//   const [entriesPerPage] = useState(10);
-  
- 
- 
-
-  
-//     // Calculate pagination
-//     const indexOfLastEntry = currentPage * entriesPerPage;
-//     const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
-//     const currentEntries = filteredData.slice(indexOfFirstEntry, indexOfLastEntry);
-//     const totalEntries = filteredData.length;
-  
-//     // Pagination logic
-//     const totalPages = Math.ceil(totalEntries / entriesPerPage);
-  
-//   return (
-//     <div className=" w-full  pb-8">
- 
-        
-//     <div className="flex items-center space-x-4 py-5 lg:py-6">
-//     <h2 className="text-xl font-medium text-slate-800 dark:text-navy-50 lg:text-2xl">
-//     Admission
-//     </h2>
-//     <div className="hidden h-full py-1 sm:flex">
-//       <div className="h-full w-px bg-slate-300 dark:bg-navy-600" />
-//     </div>
-//     <ul className="hidden flex-wrap items-center space-x-2 sm:flex">
-//       <li className="flex items-center space-x-2">
-//         <a className="text-primary transition-colors hover:text-primary-focus dark:text-accent-light dark:hover:text-accent" href="#">Home
-//         </a>
-//         <svg xmlns="http://www.w3.org/2000/svg" className="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-//           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-//         </svg>
-//       </li>
-//       <li>Admission</li>
-//     </ul>
-//   </div>
-//       <div x-data="pages.tables.initGridTableExapmle">
-//         <div
-//           role="complementary"
-//           className="gridjs gridjs-container"
-//           style={{ width: "100%" }}
-//         >
-//           <div className="gridjs-head">
-//             <div className="gridjs-search">
-//               <input
-//                 type="search"
-//                 placeholder="Type a keyword..."
-//                 aria-label="Type a keyword..."
-//                 className="gridjs-input gridjs-search-input"
-                
-//               />
-//             </div>
-//           </div>
-//           <div className="gridjs-wrapper" style={{ height: "auto" }}>
-//             <table
-//               role="grid"
-//               className="gridjs-table"
-//               style={{ height: "auto" }}
-//             >
-//               <thead className="gridjs-thead">
-//                 <tr className="gridjs-tr">
-//                   <th
-//                     data-column-id="id"
-//                     className="gridjs-th gridjs-th-sort"
-//                     tabIndex={0}
-//                     style={{ minWidth: 61, width: 82 }}
-//                   >
-//                     <div className="gridjs-th-content">#</div>
-//                     <button
-//                       tabIndex={-1}
-//                       aria-label="Sort column ascending"
-//                       title="Sort column ascending"
-//                       className="gridjs-sort gridjs-sort-neutral"
-//                     />
-//                   </th>
-//                   <th
-//                     data-column-id="name"
-//                     className="gridjs-th gridjs-th-sort"
-//                     tabIndex={0}
-//                     style={{ minWidth: 84, width: 112 }}
-//                   >
-//                     <div className="gridjs-th-content">User Name</div>
-//                     <button
-//                       tabIndex={-1}
-//                       aria-label="Sort column ascending"
-//                       title="Sort column ascending"
-//                       className="gridjs-sort gridjs-sort-neutral"
-//                     />
-//                   </th>
-//                   <th
-//                     data-column-id="avatar_url"
-//                     className="gridjs-th"
-//                     style={{ minWidth: 89, width: 118 }}
-//                   >
-//                     <div className="gridjs-th-content">Email</div>
-//                   </th>
-//                   <th
-//                     data-column-id="email"
-//                     className="gridjs-th gridjs-th-sort"
-//                     tabIndex={0}
-//                     style={{ minWidth: 193, width: 256 }}
-//                   >
-//                     <div className="gridjs-th-content">Blood_Group</div>
-//                     <button
-//                       tabIndex={-1}
-//                       aria-label="Sort column ascending"
-//                       title="Sort column ascending"
-//                       className="gridjs-sort gridjs-sort-neutral"
-//                     />
-//                   </th>
-//                   <th
-//                     data-column-id="phone"
-//                     className="gridjs-th gridjs-th-sort"
-//                     tabIndex={0}
-//                     style={{ minWidth: 153, width: 203 }}
-//                   >
-//                     <div className="gridjs-th-content">Gender</div>
-//                     <button
-//                       tabIndex={-1}
-//                       aria-label="Sort column ascending"
-//                       title="Sort column ascending"
-//                       className="gridjs-sort gridjs-sort-neutral"
-//                     />
-//                   </th>
-//                   <th
-//                     data-column-id="phone"
-//                     className="gridjs-th gridjs-th-sort"
-//                     tabIndex={0}
-//                     style={{ minWidth: 153, width: 203 }}
-//                   >
-//                     <div className="gridjs-th-content">Date</div>
-//                     <button
-//                       tabIndex={-1}
-//                       aria-label="Sort column ascending"
-//                       title="Sort column ascending"
-//                       className="gridjs-sort gridjs-sort-neutral"
-//                     />
-//                   </th>
-//                   <th
-//                     data-column-id="actions"
-//                     className="gridjs-th"
-//                     style={{ minWidth: 104, width: 138 }}
-//                   >
-//                     <div className="gridjs-th-content">Actions</div>
-//                   </th>
-//                 </tr>
-//               </thead>
-//               <tbody className="gridjs-tbody">
-//                 <tr className="gridjs-tr">
-//                   <td data-column-id="id" className="gridjs-td">
-//                     <span>
-//                       <span className="mx-2">1</span>
-//                     </span>
-//                   </td>
-//                   <td data-column-id="name" className="gridjs-td">
-//                     <span>
-//                       <span className="text-slate-700 dark:text-navy-100 font-medium">
-//                         John
-//                       </span>
-//                     </span>
-//                   </td>
-//                   <td data-column-id="email" className="gridjs-td">
-//                     john@example.com
-//                   </td>
-//                   <td data-column-id="bloodgrp" className="gridjs-td">
-//                     A+
-//                   </td>
-//                   <td data-column-id="bloodgrp" className="gridjs-td">
-//                     male
-//                   </td>
-//                   <td data-column-id="date" className="gridjs-td">
-//                     13/2/2025
-//                   </td>
-//                   <td data-column-id="actions" className="gridjs-td">
-//                     <span>
-//                       <div className="flex justify-center space-x-2">
-//                         <button className="btn size-8 p-0 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25">
-//                           <i className="fa fa-edit" />
-//                         </button>
-//                         <button className="btn size-8 p-0 text-error hover:bg-error/20 focus:bg-error/20 active:bg-error/25">
-//                           <i className="fa fa-trash-alt" />
-//                         </button>
-//                       </div>
-//                     </span>
-//                   </td>
-//                 </tr>
-//                 <tr className="gridjs-tr">
-//                   <td data-column-id="id" className="gridjs-td">
-//                     <span>
-//                       <span className="mx-2">2</span>
-//                     </span>
-//                   </td>
-//                   <td data-column-id="name" className="gridjs-td">
-//                     <span>
-//                       <span className="text-slate-700 dark:text-navy-100 font-medium">
-//                         Doe
-//                       </span>
-//                     </span>
-//                   </td>
-                 
-//                   <td data-column-id="email" className="gridjs-td">
-//                     thedoe@example.com
-//                   </td>
-//                   <td data-column-id="date" className="gridjs-td">
-//                    07/01/2025
-//                   </td>
-//                   <td data-column-id="date" className="gridjs-td">
-//                    AB-
-//                   </td>
-//                   <td data-column-id="date" className="gridjs-td">
-//                    male
-//                   </td>
-//                   <td data-column-id="actions" className="gridjs-td">
-//                     <span>
-//                       <div className="flex justify-center space-x-2">
-//                         <button className="btn size-8 p-0 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25">
-//                           <i className="fa fa-edit" />
-//                         </button>
-//                         <button className="btn size-8 p-0 text-error hover:bg-error/20 focus:bg-error/20 active:bg-error/25">
-//                           <i className="fa fa-trash-alt" />
-//                         </button>
-//                       </div>
-//                     </span>
-//                   </td>
-//                 </tr>
-//                 <tr className="gridjs-tr">
-//                   <td data-column-id="id" className="gridjs-td">
-//                     <span>
-//                       <span className="mx-2">3</span>
-//                     </span>
-//                   </td>
-//                   <td data-column-id="name" className="gridjs-td">
-//                     <span>
-//                       <span className="text-slate-700 dark:text-navy-100 font-medium">
-//                         Nancy
-//                       </span>
-//                     </span>
-//                   </td>
-//                   {/* <td data-column-id="avatar_url" className="gridjs-td">
-//                     <span>
-//                       <div className="avatar flex">
-//                         <img
-//                           className="rounded-full"
-//                           src="images/avatar/avatar-14.jpg"
-//                           alt="avatar"
-//                         />
-//                       </div>
-//                     </span>
-//                   </td> */}
-//                   <td data-column-id="email" className="gridjs-td">
-//                     nancy@example.com
-//                   </td>
-//                   <td data-column-id="phone" className="gridjs-td">
-//                    12/12/2024
-//                   </td>
-//                   <td data-column-id="phone" className="gridjs-td">
-//                   O+
-//                   </td>
-//                   <td data-column-id="phone" className="gridjs-td">
-//                    female
-//                   </td>
-//                   <td data-column-id="actions" className="gridjs-td">
-//                     <span>
-//                       <div className="flex justify-center space-x-2">
-//                         <button className="btn size-8 p-0 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25">
-//                           <i className="fa fa-edit" />
-//                         </button>
-//                         <button className="btn size-8 p-0 text-error hover:bg-error/20 focus:bg-error/20 active:bg-error/25">
-//                           <i className="fa fa-trash-alt" />
-//                         </button>
-//                       </div>
-//                     </span>
-//                   </td>
-//                 </tr>
-               
-//               </tbody>
-//             </table>
-//           </div>
-//           {/* <div className="gridjs-footer">
-//             <div className="gridjs-pagination">
-//               <div className="gridjs-pages">
-//                 <button
-//                   tabIndex={0}
-//                   role="button"
-//                   title="Previous"
-//                   aria-label="Previous"
-//                   disabled={currentPage === 1}
-//                   onClick={() => setCurrentPage(currentPage - 1)}
-//                 >
-//                   Previous
-//                 </button>
-//                 <button
-//                   tabIndex={0}
-//                   role="button"
-//                   title="Next"
-//                   aria-label="Next"
-//                   disabled={currentPage === totalPages}
-//                   onClick={() => setCurrentPage(currentPage + 1)}
-//                 >
-//                   Next
-//                 </button>
-//               </div>
-//             </div>
-//           </div> */}
-//           <div className="flex justify-between items-center mt-4">
-//         <div>
-//           Showing {indexOfFirstEntry + 1} to {Math.min(indexOfLastEntry, totalEntries)} of {totalEntries} entries
-//         </div>
-//         <div>
-//           <button
-//             onClick={() => setCurrentPage(1)}
-//             disabled={currentPage === 1}
-//             className="px-4 py-2 border rounded-md"
-//           >
-//             First
-//           </button>
-//           <button
-//             onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-//             disabled={currentPage === 1}
-//             className="px-4 py-2 border rounded-md"
-//           >
-//             Previous
-//           </button>
-//           {Array.from({ length: totalPages }, (_, i) => (
-//             <button
-//               key={i + 1}
-//               onClick={() => setCurrentPage(i + 1)}
-//               className={`px-4 py-2 border rounded-md ${currentPage === i + 1 ? 'bg-[#4f46e5] text-white' : ''}`}
-//             >
-//               {i + 1}
-//             </button>
-//           ))}
-//           <button
-//             onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-//             disabled={currentPage === totalPages}
-//             className="px-4 py-2 border rounded-md"
-//           >
-//             Next
-//           </button>
-//           <button
-//             onClick={() => setCurrentPage(totalPages)}
-//             disabled={currentPage === totalPages}
-//             className="px-4 py-2 border rounded-md"
-//           >
-//             Last
-//           </button>
-//         </div>
-//       </div>
-//           <div id="gridjs-temp" className="gridjs-temp" />
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Admission;

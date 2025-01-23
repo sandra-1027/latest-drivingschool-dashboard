@@ -62,7 +62,7 @@ const Sidebar = () => {
       <img
         className="size-11 transition-transform duration-500 ease-in-out hover:rotate-[360deg]"
         // src="/images/app-logo.svg"
-        src="/logo(1).png"
+        src="/logo.png"
         alt="logo"
       />
     </Link>

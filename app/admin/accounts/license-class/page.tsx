@@ -236,9 +236,9 @@ const page = () => {
   <div className="card px-4 pb-4 sm:px-5 pt-4">
   <div className="p-4 rounded-lg bg-slate-100 dark:bg-navy-800">
     <form>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         {/* Driver Name Select */}
-        <div>
+        <div className='flex-1'>
           <label
             htmlFor="serviceName"
             className="block text-sm font-medium text-slate-700 dark:text-navy-100"
@@ -262,7 +262,7 @@ const page = () => {
 
         </div>
         {/* Status Select */}
-        <div>
+        <div className='flex-1'>
           <label
             htmlFor="status"
             className="block text-sm font-medium text-slate-700 dark:text-navy-100"
@@ -279,9 +279,25 @@ const page = () => {
             <option value="inactive">Inactive</option>
           </select>
         </div>
+        <div className='flex-1 mt-6'>
+        <button
+         onClick={handleFilterSubmit}
+          type="submit"
+          className="inline-flex justify-center rounded-md border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+        ><i className='fa fa-filter' style={{marginTop:'3px',marginRight:'3px'}} ></i>
+          Filter
+        </button>
+        <button
+           onClick={handleReset}
+          type="button"
+          className="ml-4 inline-flex justify-center rounded-md border border-gray-300 bg-warning py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-warningfocus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+        ><i className='fa fa-refresh' style={{marginTop:'3px',marginRight:'3px'}}></i>
+          Reset
+        </button>
+        </div>
       </div>
       {/* Buttons */}
-      <div className="mt-4 flex space-x-4">
+      {/* <div className="mt-4 flex space-x-4">
         <button
          onClick={handleFilterSubmit}
           type="submit"
@@ -296,7 +312,7 @@ const page = () => {
         ><i className='fa fa-refresh' style={{marginTop:'3px',marginRight:'3px'}}></i>
           Reset
         </button>
-      </div>
+      </div> */}
     </form>
   </div>
     </div>
@@ -318,13 +334,19 @@ const page = () => {
   <div className="mt-5">
 <div className="gridjs-head">
             <div className="gridjs-search">
-                <input
-      type="text"
-      value={searchTerm}
-      onChange={handleSearchChange}
-      placeholder="Search by name, branch, or place..."
-      className="form-input peer w-1/4 rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-1 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-    />
+            <div className="gridjs-head">
+           
+           <div className="gridjs-search">
+<input type="search" 
+placeholder="Type a keyword..." 
+aria-label="Type a keyword..." 
+className="gridjs-input gridjs-search-input" 
+defaultValue="" 
+value={searchTerm}
+onChange={handleSearchChange}
+/>
+</div>
+        </div>
             </div>
           </div>
         <div className="overflow-x-auto w-full">

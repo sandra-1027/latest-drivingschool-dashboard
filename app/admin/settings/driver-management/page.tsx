@@ -376,6 +376,7 @@ interface Driver {
   driving_licence_no: string;
   date_of_joining: string;
   password:string;
+  user_id:string;
  
 }
 const page = () => {
@@ -526,8 +527,14 @@ const handleReset = () => {
     // Pagination logic
     const totalPages = Math.ceil(totalEntries / entriesPerPage);
 
-    const updateAccountStatus = async (id: string, status: string) => {
+    const updateAccountStatus = async (user_id: string, status: string) => {
       try {
+
+        console.log("Sending Request to Update Status");
+        console.log("User ID:",user_id);
+        console.log("Current Status:", status);
+
+
         const response = await fetch('/api/admin/settings/inactivate_driver', {
           method: 'POST',
           headers: {
@@ -535,8 +542,8 @@ const handleReset = () => {
             'api_key': '10f052463f485938d04ac7300de7ec2b',
           },
           body: JSON.stringify({
-            id: id,
-            status: status,
+            id:user_id,
+            status:status,
           }),
         });
     
@@ -591,9 +598,9 @@ const handleReset = () => {
   <div className="card px-4 pb-4 sm:px-5 pt-4">
   <div className="p-4 rounded-lg bg-slate-100 dark:bg-navy-800">
     <form>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         {/* Driver Name Select */}
-        <div>
+        <div className='flex-1'>
           <label
             htmlFor="driverName"
             className="block text-sm font-medium text-slate-700 dark:text-navy-100"
@@ -618,7 +625,7 @@ const handleReset = () => {
           </select>
         </div>
         {/* Status Select */}
-        <div>
+        <div  className='flex-1'>
           <label
             htmlFor="status"
             className="block text-sm font-medium text-slate-700 dark:text-navy-100"
@@ -639,9 +646,27 @@ const handleReset = () => {
             <option value="inactive">Inactive</option>
           </select>
         </div>
+
+        <div className='flex-1 mt-6'>
+        <button
+          type="button"
+          className="inline-flex justify-center rounded-md border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          onClick={handleFilterSubmit}
+        ><i className='fa fa-filter' style={{marginTop:'3px',marginRight:'3px'}}></i>
+          Filter
+        </button>
+        <button
+          type="button"
+          className="ml-4 inline-flex justify-center rounded-md border border-gray-300 bg-warning py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-warningfocus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+       
+          onClick={handleReset}
+        ><i className='fa fa-refresh' style={{marginTop:'3px',marginRight:'3px'}}></i>
+          Reset
+        </button>
+        </div>
       </div>
       {/* Buttons */}
-      <div className="mt-4 flex space-x-4">
+      {/* <div className="mt-4 flex space-x-4">
         <button
           type="button"
           className="inline-flex justify-center rounded-md border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
@@ -652,12 +677,12 @@ const handleReset = () => {
         <button
           type="button"
           className="inline-flex justify-center rounded-md border border-gray-300 bg-warning py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-warningfocus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-          // onClick={() => setFilters({ driverName: '', status: '' })}
+       
           onClick={handleReset}
         ><i className='fa fa-refresh' style={{marginTop:'3px',marginRight:'3px'}}></i>
           Reset
         </button>
-      </div>
+      </div> */}
     </form>
   </div>
     </div>
@@ -725,7 +750,8 @@ const handleReset = () => {
               </tr>
             </thead>
             <tbody>
-            {filteredData.map((item, index) => (
+            {/* {filteredData.map((item, index) => ( */}
+            {currentEntries.map((item, index) => (
               <tr key={item.id} className="border-y border-transparent border-b-slate-200 dark:border-b-navy-500">
                 <td className="whitespace-nowrap rounded-l-lg px-4 py-3 sm:px-5">
                 {index + 1}
@@ -764,7 +790,7 @@ const handleReset = () => {
                         </button> */}
                         <button
                         className={`btn size-8 p-0 ${item.status === 'active' ? 'text-error' : 'text-primary'} hover:bg-${item.status === 'active' ? 'error' : 'primary'}/20 focus:bg-${item.status === 'active' ? 'error' : 'primary'}/20 active:bg-${item.status === 'active' ? 'error' : 'primary'}/25`}
-                        onClick={() => updateAccountStatus(item.id!, item.status)} // Pass the current status
+                        onClick={() => updateAccountStatus(item.user_id!, item.status)} // Pass the current status
                       >
                         <i className={`fa ${item.status === 'active' ? 'fa-trash-alt' : 'fa-check-circle'}`} />
                       </button>

@@ -64,7 +64,7 @@ const withAuth = <P extends object>(
     }, [router]);
 
     if (authState.loading) {
-      return <Loader/>;
+      return <div>Loading...</div>;
     }
 
     return <WrappedComponent {...props} />;

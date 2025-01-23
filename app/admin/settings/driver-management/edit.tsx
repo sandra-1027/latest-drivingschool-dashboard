@@ -199,11 +199,21 @@ const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
+  // useEffect(() => {
+  //   if (driverData) {
+  //     setFormData(driverData);
+  //   }
+  // }, [driverData]);
   useEffect(() => {
     if (driverData) {
-      setFormData(driverData);
+      // Exclude password from being pre-filled
+      setFormData({
+        ...driverData,
+        password: '', // Reset the password field
+      });
     }
   }, [driverData]);
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -212,47 +222,7 @@ const [loading, setLoading] = useState(false);
 
 
 
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault(); // Prevent page reload
-  //   setLoading(true);
-  //   setError('');
-  //   setSuccess(false);
-  
-  //   console.log('Form Data:', formData);
-  
-  //   try {
-  //     if (formData) {
-  //       const response = await fetch(`/api/admin/settings/update_driver`, {
-  //         method: 'POST',
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //           authorizations: state?.accessToken ?? '',
-  //           api_key: '10f052463f485938d04ac7300de7ec2b',
-  //         },
-  //         body: JSON.stringify(formData),
-  //       });
-  
-  //       console.log('Response Status:', response.status);
-  //       const data = await response.json();
-  
-  //       console.log('Response Data:', data);
-  
-  //       if (data.success) {
-  //         setSuccess(true);
-  //         onSave(formData); // Notify parent component
-  //         toggleModal(); // Close the modal
-  //       } else {
-  //         setError(data.message || 'Failed to update driver');
-  //       }
-  //     }
-  //   } catch (err) {
-  //     console.error('Error during API call:', err);
-  //     setError('An error occurred while updating the driver.');
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-  
+ 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -269,6 +239,7 @@ const [loading, setLoading] = useState(false);
           place: formData.address,
           driving_licence_no: formData.driving_licence_no,
           password: formData.password,
+          
         };
   
         console.log('Transformed Data:', transformedData);
@@ -328,7 +299,7 @@ const [loading, setLoading] = useState(false);
             <div className="relative flex w-full max-w-3xl origin-top flex-col overflow-hidden rounded-lg bg-white transition-all duration-300 dark:bg-navy-700">
               <div className="flex justify-between rounded-t-lg bg-slate-200 px-4 py-3 dark:bg-navy-800 sm:px-5">
                 <h3 className="text-xl font-medium text-slate-700 dark:text-navy-100">
-                Add Driver
+                Edit Driver
                 </h3>
                 <button
                   onClick={toggleModal}

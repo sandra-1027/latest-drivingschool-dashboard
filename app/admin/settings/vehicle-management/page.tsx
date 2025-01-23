@@ -646,9 +646,9 @@ const page = () => {
   <div className="card px-4 pb-4 sm:px-5 pt-4">
   <div className="p-4 rounded-lg bg-slate-100 dark:bg-navy-800">
     <form>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         {/* Driver Name Select */}
-        <div>
+        <div className='flex-1'>
           <label
             htmlFor="serviceName"
             className="block text-sm font-medium text-slate-700 dark:text-navy-100"
@@ -671,7 +671,7 @@ const page = () => {
           </select>
         </div>
         {/* Status Select */}
-        <div>
+        <div className='flex-1'>
           <label
             htmlFor="status"
             className="block text-sm font-medium text-slate-700 dark:text-navy-100"
@@ -690,9 +690,26 @@ const page = () => {
             <option value="inactive">Inactive</option>
           </select>
         </div>
+
+        <div className='flex-1 mt-6'>
+        <button
+          type="submit"
+          onClick={handleFilterSubmit}
+          className="inline-flex justify-center rounded-md border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+        ><i className='fa fa-filter' style={{marginTop:'3px',marginRight:'3px'}}></i>
+          Filter
+        </button>
+        <button
+          type="button"
+          onClick={handleReset}
+          className=" ml-4 inline-flex justify-center rounded-md border border-gray-300 bg-warning py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-warningfocus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+        ><i className='fa fa-refresh' style={{marginTop:'3px',marginRight:'3px'}}></i>
+          Reset
+        </button>
+        </div>
       </div>
       {/* Buttons */}
-      <div className="mt-4 flex space-x-4">
+      {/* <div className="mt-4 flex space-x-4">
         <button
           type="submit"
           onClick={handleFilterSubmit}
@@ -707,7 +724,7 @@ const page = () => {
         ><i className='fa fa-refresh' style={{marginTop:'3px',marginRight:'3px'}}></i>
           Reset
         </button>
-      </div>
+      </div> */}
     </form>
   </div>
     </div>
@@ -777,7 +794,8 @@ const page = () => {
               </tr>
             </thead>
             <tbody>
-            {filteredData.map((item, index) => (
+            {/* {filteredData.map((item, index) => ( */}
+            {currentEntries.map((item, index) => (
               <tr key={item.id} className="border-y border-transparent border-b-slate-200 dark:border-b-navy-500">
                 <td className="whitespace-nowrap rounded-l-lg px-4 py-3 sm:px-5">
                 {index + 1}
@@ -786,7 +804,8 @@ const page = () => {
                 {item.vehicle_no}
                 </td>
                 <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                {item.rc_document}
+                {/* {item.rc_document} */}
+                NA
                 </td>
                 <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 {item.rc_expiry_date}

@@ -1,178 +1,21 @@
-
-"use client";
-import React, { Children, useEffect, useState } from "react";
-import Sidebar from "./Sidebar";
-import Topbar from "./Topbar";
-import Head from "next/head";
-import { ClipLoader } from "react-spinners";
-
-
-
-// const DashboardLayout = ({ children }) => {
-export default function DashboardLayout({children,}:{children:React.ReactNode;}){
-  
-  // const [isDarkMode, setIsDarkMode] = useState(false);
-
-  // useEffect(() => {
-  //   const darkMode = localStorage.getItem("dark-mode");
-  //   setIsDarkMode(darkMode === "dark");
-  //   console.log('Dark mode toggled', !isDarkMode);
-  // }, []);
-  const [isHidden, setIsHidden] = useState(false);
-  const [loading, setLoading] = useState<boolean>(true); // State for loading
-  const handleClose = () => {
-    setIsHidden(true);
-  };
- 
-  return (
-    <>
-      <Head>
-        <title>Dashboard</title>
-        <link rel="icon" href="/images/favicon.png" />
-        <link rel="stylesheet" href="/dist/css/app.css" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
-
-        
-        <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-      </Head>
-      
-   
-      {/* <DrawerProvider> */}
-     
-        <div
-          id="root" 
-  className={` min-h-screen flex grow bg-slate-50 dark:bg-navy-900  is-header-blur`}
-        >
-          {/* App Preloader */}
- <div className="app-preloader fixed z-50 grid h-full w-full place-content-center bg-slate-50 dark:bg-navy-900">
-        <div className="app-preloader-inner relative inline-block size-48" />
-       </div> 
-          {/* <Sidebar/>
-          <Topbar/> */}
-          <Topbar/>
-          <Sidebar  />
-          {/* <MobileSearchbar/> */}
-          {/* <RightSidebar/> */}
-        
-          <main className="main-content w-full px-[var(--margin-x)] pb-8">
-            <div  className="flex items-center space-x-4 py-5 lg:py-6">
-              {children}
-            </div>
-
-{/* Show loading spinner if content is loading */}
-{loading ? (
-            <div className="flex justify-center items-center h-full">
-              <ClipLoader color="#36d7b7" size={50} />
-            </div>
-          ) : (
-            children // Show actual content once loading is complete
-          )}
-
-          </main>
-       
-        </div>
-       
-        
-      {/* </DrawerProvider> */}
-      <script src="/dist/js/app.js" defer></script>
-      <script src="/dist/js/main.js" defer></script>
-      </>
-  );
-};
-
-
-
-
-
-
-
-
-
-
 // "use client";
-
 // import React, { Children, useEffect, useState } from "react";
 // import Sidebar from "./Sidebar";
 // import Topbar from "./Topbar";
 // import Head from "next/head";
-// import { DrawerProvider } from "./DrawerContext";
-// import MobileSearchbar from "./MobileSearchbar";
-// import RightSidebar from "./RightSidebar";
-// import MainContent from "./MainContent";
+// import { ClipLoader } from "react-spinners";
 // import Loader from "./Loader";
-// import Sidebar2 from "./sidebar2/page";
-
-// const DashboardLayout = ({ children }) => {
-//   const [isDarkMode, setIsDarkMode] = useState(false);
-
-//   useEffect(() => {
-//     const darkMode = localStorage.getItem("dark-mode");
-//     setIsDarkMode(darkMode === "dark");
-//   }, []);
-
-//   return (
-//     <>
-//       <Head>
-//         <title>Dashboard</title>
-//         <link rel="icon" href="/images/favicon.png" />
-//         <link rel="stylesheet" href="/dist/css/app.css" />
-//         <link
-//           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
-//           rel="stylesheet"
-//         />
-//       </Head>
-//       {/* <DrawerProvider> */}
- 
-//         <div
-//           id="root" className={` min-h-screen flex grow bg-slate-50 dark:bg-navy-900  is-header-blur`}
-//         >
-//           {/* App Preloader */}
-// {/* <div className="app-preloader fixed z-50 grid h-full w-full place-content-center bg-slate-50 dark:bg-navy-900">
-//         <div className="app-preloader-inner relative inline-block size-48" />
-//        </div> */}
-//           <Sidebar2/>
-//           <Topbar />
-//           <MobileSearchbar/>
-//           <RightSidebar/>
-//           <main className="main-content w-full px-[var(--margin-x)] pb-8">
-//             <div className="flex items-center space-x-4 py-5 lg:py-6">
-//               {children}
-//             </div>
-//           </main>
-//         </div>
-//       {/* </DrawerProvider> */}
-//       <script src="/dist/js/app.js" defer></script>
-//     </>
-//   );
-// };
-
-// export default DashboardLayout;
-
-
-
-
-
-
-
-
-
-// "use client";
-
-// import React, { useState } from "react";
-// import Sidebar from "./Sidebar";
-// import Topbar from "./Topbar";
-// import Head from "next/head";
 // import MobileSearchbar from "./MobileSearchbar";
-// import RightSidebar from "./RightSidebar";
 
-// export default function DashboardLayout({ children }) {
-//   const [isSidebarVisible, setIsSidebarVisible] = useState(false); // Start with the sidebar hidden
-
-//   const toggleSidebar = () => {
-//     setIsSidebarVisible((prev) => !prev);
+// export default function DashboardLayout({
+//   children,
+// }: {
+//   children: React.ReactNode;
+// }) {
+//   const [isHidden, setIsHidden] = useState(false);
+//   const [loading, setLoading] = useState<boolean>(true); // State for loading
+//   const handleClose = () => {
+//     setIsHidden(true);
 //   };
 
 //   return (
@@ -185,22 +28,196 @@ export default function DashboardLayout({children,}:{children:React.ReactNode;})
 //           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
 //           rel="stylesheet"
 //         />
+
+//         <script
+//           src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+//           defer
+//         ></script>
 //       </Head>
 
-//       <div id="root" className={`min-h-screen flex grow bg-slate-50 dark:bg-navy-900 is-header-blur`}>
-//         <Sidebar isVisible={isSidebarVisible} toggleSidebar={toggleSidebar} />
-//         <Topbar toggleSidebar={toggleSidebar} />
-//         <MobileSearchbar />
-//         <RightSidebar />
-
+//       <div
+//         id="root"
+//         className={` min-h-screen flex grow bg-slate-50 dark:bg-navy-900  is-header-blur`}
+//       >
+//         {/* App Preloader */}
+//         <div className="app-preloader fixed z-50 grid h-full w-full place-content-center bg-slate-50 dark:bg-navy-900">
+//           <div className="app-preloader-inner relative inline-block size-48" />
+//         </div>
+//         <Topbar />
+//         <Sidebar />
+//         <MobileSearchbar/>
 //         <main className="main-content w-full px-[var(--margin-x)] pb-8">
 //           <div className="flex items-center space-x-4 py-5 lg:py-6">
 //             {children}
+
 //           </div>
+
 //         </main>
+
+
+
+
+//         {/* <main
+//          className="main-content w-full px-[var(--margin-x)] pb-8"
+//           style={{
+//             boxShadow: 'inset 1px 4px 6px rgba(0, 0, 0, 0.1)',
+//             boxSizing: 'border-box'
+//           }}
+//         >
+       
+//           {loading ? (
+//             <div className="flex justify-center items-center h-full">
+//               <ClipLoader color="#36d7b7" size={50} />
+
+
+
+              
+              
+//         </div>
+//           ) : (
+//             children 
+//           )}
+//         </main> */}
+
+
+
 //       </div>
 //       <script src="/dist/js/app.js" defer></script>
+//       <script src="/dist/js/main.js" defer></script>
 //     </>
 //   );
 // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"use client";
+import React, { useState, useEffect } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import Sidebar from "./Sidebar";
+import Topbar from "./Topbar";
+import Head from "next/head";
+import MobileSearchbar from "./MobileSearchbar";
+import Loader from "./Loader";
+
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
+  // useEffect(() => {
+  //   const handleStart = () => setLoading(true); // Show loader on route change start
+  //   const handleComplete = () => setLoading(false); // Hide loader when route changes are done
+
+  //   router.events?.on("routeChangeStart", handleStart);
+  //   router.events?.on("routeChangeComplete", handleComplete);
+  //   router.events?.on("routeChangeError", handleComplete);
+
+  //   // Cleanup listeners on unmount
+  //   return () => {
+  //     router.events?.off("routeChangeStart", handleStart);
+  //     router.events?.off("routeChangeComplete", handleComplete);
+  //     router.events?.off("routeChangeError", handleComplete);
+  //   };
+  // }, [router]);
+  useEffect(() => {
+    // When pathname changes, trigger loading
+    setLoading(true);
+
+    // Simulate loading time with a timeout (for demo purposes)
+    const timeout = setTimeout(() => {
+      setLoading(false); // Hide the loader after a set time
+    }, 500); // Set your desired delay
+
+    // Cleanup timeout when component unmounts or when pathname changes
+    return () => clearTimeout(timeout);
+  }, [pathname]); 
+  return (
+    <>
+      <Head>
+        <title>Dashboard</title>
+        <link rel="icon" href="/images/favicon.png" />
+        <link rel="stylesheet" href="/dist/css/app.css" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+          defer
+        ></script>
+      </Head>
+
+      {/* Loader */}
+      {/* {loading && <Loader />} */}
+
+      {/* {loading && 
+         <div className="app-preloader fixed z-50 grid h-full w-full place-content-center bg-slate-50 dark:bg-navy-900">
+         <div className="app-preloader-inner relative inline-block size-48" />
+       </div>
+      } */}
+           
+
+      <div
+        id="root"
+        className={`min-h-screen flex grow bg-slate-50 dark:bg-navy-900 ${
+          loading ? "pointer-events-none opacity-50" : ""
+        }`}
+      >
+             {/* <div
+         id="root"
+         className={` min-h-screen flex grow bg-slate-50 dark:bg-navy-900  is-header-blur`}
+       > */}
+        <Topbar />
+        <Sidebar />
+        <MobileSearchbar />
+
+        {loading && 
+         <div className="app-preloader fixed z-50 grid h-full w-full place-content-center bg-slate-50 dark:bg-navy-900">
+         <div className="app-preloader-inner relative inline-block size-48" />
+       </div>
+      }
+
+        <main className="main-content w-full px-[var(--margin-x)] pb-8">
+          <div className="flex items-center space-x-4 py-5 lg:py-6">
+            {children}
+          </div>
+        </main>
+      </div>
+      <script src="/dist/js/app.js" defer></script>
+      <script src="/dist/js/main.js" defer></script>
+    </>
+  );
+}
+
+
+
+
+
+
+
+
+
+
+
+
 

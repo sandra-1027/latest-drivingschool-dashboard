@@ -598,9 +598,9 @@ const AdminProfile = () => {
   const {state}=useAuth();
   const [activeTab, setActiveTab] = useState("account"); // Default to 'account'
   const [changePasswordData, setChangePasswordData] = useState({
-    Password: "",
-    newPassword: "",
-    confirmPassword: "",
+    password: "",
+    new_password: "",
+    confirm_password: "",
   });
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [userData, setUserData] = useState({
@@ -752,7 +752,7 @@ const AdminProfile = () => {
     setError('');
     setSuccess(false);
   
-    if (changePasswordData.newPassword !== changePasswordData.confirmPassword) {
+    if (changePasswordData.new_password !== changePasswordData.confirm_password) {
       // setFormStatus({ ...formStatus, error: "Passwords do not match." });
       setError('Passwords do not match.');
       return;
@@ -761,25 +761,33 @@ const AdminProfile = () => {
     try {
       const response = await fetch("/api/admin/member/change_password", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        // headers: { "Content-Type": "application/json" },
+        headers: {
+          authorizations: state?.accessToken ?? "",
+          api_key: "10f052463f485938d04ac7300de7ec2b",
+        },
         body: JSON.stringify({
-          currentPassword: changePasswordData.Password,
-          newPassword: changePasswordData.newPassword,
+          password: changePasswordData.password,
+          new_password: changePasswordData.new_password,
+          confirm_password: changePasswordData.confirm_password,
         }),
       });
   
       const result = await response.json();
-  
-      if (!response.ok) throw new Error(result.message || "Failed to update password.");
-  
-      // setFormStatus({ ...formStatus, message: "Password successfully updated!" });
+  console.log(result,'changepassword')
+  if (!response.ok) {
+    throw new Error(result.msg || "Failed to update password.");
+  }
+
+  setSuccess(true);
+     
     } catch (err: any) {
       // setFormStatus({ ...formStatus, error: err.message });
       console.error('Error during API call:', err);
       setError('An error occurred while changing password.');
     } finally {
       // setFormStatus({ ...formStatus, isSubmitting: false });
-      // setIsSubmitting('')
+      setIsSubmitting('')
     }
   };
 
@@ -887,7 +895,7 @@ const AdminProfile = () => {
                 </h3>
 
                 {/* social icons */}
-                <div>
+                {/* <div>
                   <button className="btn size-8 m-1 rounded-full bg-primary/10 p-0 font-medium text-primary hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25">
                     <FaFacebookSquare className="size-4" />
                     <path
@@ -924,9 +932,109 @@ const AdminProfile = () => {
                       d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
                     />
                   </button>
-                </div>
+                </div> */}
               </div>
             </div>
+{/* social icons */}
+            <div>
+            <div className="flex space-x-4 mt-2">
+                  <button className="btn size-8 m-1 rounded-full bg-primary/10 p-0 font-medium text-primary hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25">
+                    <FaFacebookSquare className="size-4" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+                    />
+                  </button>
+
+                  <div>
+          <h3 className="font-normal text-slate-700 line-clamp-1 dark:text-navy-100">
+            Facebook
+          </h3>
+         
+          <p className="mt-0.5 text-xs line-clamp-1 text-primary">
+          <Link href=""
+          onClick={()=>window.open(`http://facebook.com`,'_blank')}>
+         http://facebook.com 
+         </Link>
+          </p>
+          
+        </div>
+        </div>
+
+        <div className="flex space-x-4 mt-2">
+                  <button className="btn size-8 m-1 rounded-full bg-success/10 p-0 font-medium text-success hover:bg-success/20 focus:bg-success/20 active:bg-success/25">
+                    <FaTwitter className="size-4" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+                    />
+                  </button>
+                  <div>
+          <h3 className="font-normal text-slate-700 line-clamp-1 dark:text-navy-100">
+           Twitter
+          </h3>
+          <p className="mt-0.5 text-xs line-clamp-1 text-primary">
+          <Link href=""
+          onClick={()=>window.open(`https://www.twitter.com`,'_blank')}>
+          https://www.twitter.com/
+          </Link>
+          </p>
+        </div>
+        </div>
+        <div className="flex space-x-4 mt-2">
+                  <button className="btn size-8 m-1 rounded-full bg-info/10 p-0 font-medium text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25">
+                    <FaLinkedin className="size-4" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+                    />
+                  </button>
+                  <div>
+          <h3 className="font-normal text-slate-700 line-clamp-1 dark:text-navy-100">
+          Linkedin
+          </h3>
+          <p className="mt-0.5 text-xs line-clamp-1 text-primary">
+          <Link href=""
+          onClick={()=>window.open(` https://www.linkedin.com/`,'_blank')}>
+          https://www.linkedin.com/
+          </Link>
+          </p>
+        </div>
+                  </div>
+
+                  <div className="flex space-x-4 mt-2">
+                  <button className="btn size-8 m-1 rounded-full bg-secondary/10 p-0 font-medium text-secondary hover:bg-secondary/20 focus:bg-secondary/20 active:bg-secondary/25">
+                    <FaInstagram className="size-4" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+                    />
+                  </button>
+                  <div>
+          <h3 className="font-normal text-slate-700 line-clamp-1 dark:text-navy-100">
+          Instagram
+          </h3>
+          <p className="mt-0.5 text-xs line-clamp-1 text-primary">
+          <Link href=""
+          onClick={()=>window.open(` https://www.instagram.com`,'_blank')}>
+          https://www.instagram.com/
+          </Link>
+          </p>
+        </div>
+
+</div>
+
+                </div>
+
+
 
             <ul className="mt-6 space-y-1.5 font-inter font-medium">
               <li>
@@ -994,12 +1102,7 @@ const AdminProfile = () => {
                   <h2 className="text-lg font-medium tracking-wide text-slate-700 dark:text-navy-100">
                     Account Settings
                   </h2>
-                  <div className="flex justify-center space-x-2">
-
-                  {loading && <p>Loading...</p>}
-                {error && <p className="text-red-500">{error}</p>}
-                {success && <p className="text-green-500">updated successfully!</p>}
-    
+                  {/* <div className="flex justify-center space-x-2">
                     <button
                       className="btn min-w-[7rem] rounded-full bg-primary font-medium text-white hover:bg-primary-focus focus:bg-primary-focus active:bg-primary-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90"
                       type="submit"
@@ -1008,49 +1111,17 @@ const AdminProfile = () => {
                     >
                       {isSubmitting ? "Updating..." : "Update"}
                     </button>
-                  </div>
-                </div>
-                <div className="p-4 sm:p-5">
-                  {/* <div className="flex flex-col">
-                    <span className="text-base font-medium text-slate-600 dark:text-navy-100">
-                      Avatar
-                    </span>
-                    <div className="avatar mt-1.5 size-20">
-                      <img
-                        className="mask is-squircle"
-                        // src="/images/200x200.png"
-                        src={profileImage || "/profile.png"}
-                        alt="avatar"
-                      />
-                      <div className="absolute bottom-0 right-0 flex items-center justify-center rounded-full bg-white dark:bg-navy-700">
-                        <button
-                          className="btn size-6 rounded-full border border-slate-200 p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:border-navy-500 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="size-3.5"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <input
-                              type="file"
-                              // ref={fileInputRef}
-                              accept="image/*"
-                              onChange={handleImageUpload}
-                              className="uploadInput"
-                              // style={{ display: "none" }}
-                            />
-
-                            <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-                          </svg>
-                        </button>
-
-                        {error && <p className="text-red-500">{error}</p>}
-
-                      </div>
-                    </div>
                   </div> */}
-                  {/* <div className="my-7 h-px bg-slate-200 dark:bg-navy-500" /> */}
+
+             
+                </div>
+
+
+                {loading && <p>Loading...</p>}
+                {error && <p className="text-red-500">{error}</p>}
+                {success && <p className="text-green-500">updated successfully!</p>}
+                <div className="p-4 sm:p-5">
+                 
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <label className="block">
                       <span>First Name </span>
@@ -1186,7 +1257,7 @@ const AdminProfile = () => {
 
         {/* File Input for New Profile Photo */}
         <div className="mb-4">
-           <label className="w-1/4 flex items-center justify-center border rounded p-2 cursor-pointer bg-blue-500 text-white">
+           <label className="w-1/5 flex items-center justify-center border rounded p-2 cursor-pointer bg-blue-500 text-white">
         Select Image
         <input
           type="file"
@@ -1198,8 +1269,26 @@ const AdminProfile = () => {
         </div>
 
 
+                 
+
+
+                  <div className="flex justify-end space-x-2">
+                    <button
+                      className="btn min-w-[7rem] rounded-full bg-primary font-medium text-white hover:bg-primary-focus focus:bg-primary-focus active:bg-primary-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90"
+                      type="submit"
+                      disabled={isSubmitting}
+                      >
+                      {isSubmitting ? "Updating..." : "Update"}
+                    </button>
+                  </div>
                   <div className="my-7 h-px bg-slate-200 dark:bg-navy-500" />
                 </div>
+
+             
+                  
+                
+               
+
               </form>
             )}
             {activeTab === "security" && (
@@ -1208,11 +1297,9 @@ const AdminProfile = () => {
                   <h2 className="text-lg font-medium tracking-wide text-slate-700 dark:text-navy-100">
                     Change password
                   </h2>
-                  <div className="flex justify-center space-x-2">
+                  {/* <div className="flex justify-center space-x-2">
                     
-                  {loading && <p>Loading...</p>}
-                {error && <p className="text-red-500">{error}</p>}
-                {success && <p className="text-green-500">password Changed successfully!</p>}
+                 
                     <button
                       className="btn min-w-[7rem] rounded-full bg-primary font-medium text-white hover:bg-primary-focus focus:bg-primary-focus active:bg-primary-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90"
                       type="submit"
@@ -1220,20 +1307,26 @@ const AdminProfile = () => {
                     >
                       {isSubmitting ? "Saving..." : "Save"}
                     </button>
-                  </div>
+                  </div> */}
+
+                 
                 </div>
+
+                {/* {loading && <p>Loading...</p>} */}
+                {error && <p className="text-red-500">{error}</p>}
+                {success && <p className="text-green-500">password Changed successfully!</p>}
                 <div className="p-4 sm:p-5">
-                  <div>
+                  <div className="mb-4">
                     {/* <form onSubmit={handlePasswordChange} className="space-y-4"> */}
                       
                       <div className="relative">
                         <label className="block">New Password:</label>
                         <input
                           type={showPassword ? "text" : "password"}
-                          name="newPassword"
-                          className="form-input peer w-full rounded-full border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                          name="new_password"
+                          className="form-input peer mt-1.5 w-full rounded-full border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                           placeholder="Enter new password"
-                          value={changePasswordData.newPassword}
+                          value={changePasswordData.new_password}
                         onChange={handlePasswordInputChange}
                           required
                         />
@@ -1245,14 +1338,14 @@ const AdminProfile = () => {
                         </span>
                       </div>
                       <div className="relative">
-                        <label className="block">Confirm New Password:</label>
+                        <label className="block mt-1.5">Confirm New Password:</label>
                         <input
                           type={showConfirmPassword ? "text" : "password"}
-                          name="confirmPassword"
+                          name="confirm_password"
                           // className="w-full rounded border-gray-300 p-2 dark:bg-gray-800 dark:text-gray-200"
-                          className="form-input peer w-full rounded-full border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                          className="form-input peer mt-1.5 w-full rounded-full border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                           placeholder="Confirm new password"
-                          value={changePasswordData.confirmPassword}
+                          value={changePasswordData.confirm_password}
                           onChange={handlePasswordInputChange}
                           required
                         />
@@ -1267,6 +1360,18 @@ const AdminProfile = () => {
                         <p className="text-sm text-red-600">{message}</p>
                       )}
                     {/* </form> */}
+                  </div>
+
+                  <div className="flex justify-end space-x-2">
+                    
+                 
+                    <button
+                      className="btn min-w-[7rem] w-full rounded-full bg-primary font-medium text-white hover:bg-primary-focus focus:bg-primary-focus active:bg-primary-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90"
+                      type="submit"
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? "Updating password...." : "Update Password"}
+                    </button>
                   </div>
                   <div className="my-7 h-px bg-slate-200 dark:bg-navy-500" />
                 </div>

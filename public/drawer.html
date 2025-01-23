@@ -11274,3 +11274,316 @@ fill="currentColor"
   </div>
 </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div className="space-y-3.5" x-data="{expandedItem:'item-1'}">
+  <div x-data="accordionItem('item-1')">
+    <div className="flex items-center justify-between">
+      <div className="flex space-x-4">
+        <div className="avatar size-10">
+          <img className="rounded-full" src="images/avatar/avatar-12.jpg" alt="avatar" />
+        </div>
+        <div>
+          <h3 className="font-medium text-slate-700 line-clamp-1 dark:text-navy-100">
+            Konnor Guzman
+          </h3>
+          <p className="mt-0.5 text-xs line-clamp-1">
+            (01) 22 888 4444
+          </p>
+        </div>
+      </div>
+      <button @click="expanded = !expanded" className="btn size-7 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25">
+        <i :class="expanded && '-rotate-180'" className="fas fa-chevron-down transition-transform" />
+      </button>
+    </div>
+    <div x-show="expanded" x-collapse style={{height: 0, overflow: 'hidden', display: 'none'}} hidden>
+      <div className="flex justify-between pt-4">
+        <button className="btn size-7 rounded-full bg-success/10 p-0 text-success hover:bg-success/20 focus:bg-success/20 active:bg-success/25">
+          <i className="fa-solid fa-phone text-xs" />
+        </button>
+        <button className="btn size-7 rounded-full bg-warning/10 p-0 text-warning hover:bg-warning/20 focus:bg-warning/20 active:bg-warning/25">
+          <i className="fa-solid fa-video text-xs" />
+        </button>
+        <button className="btn size-7 rounded-full bg-secondary/10 p-0 text-secondary hover:bg-secondary/20 focus:bg-secondary/20 active:bg-secondary/25 dark:bg-secondary-light/10 dark:text-secondary-light dark:hover:bg-secondary-light/20 dark:focus:bg-secondary-light/20 dark:active:bg-secondary-light/25">
+          <i className="fa-regular fa-comment text-xs" />
+        </button>
+        <button className="btn size-7 rounded-full bg-info/10 p-0 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25">
+          <i className="fa-regular fa-envelope text-xs" />
+        </button>
+        <button className="btn size-7 rounded-full bg-slate-150 p-0 text-slate-800 hover:bg-slate-200 focus:bg-slate-200 active:bg-slate-200/80 dark:bg-navy-500 dark:text-navy-50 dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90">
+          <i className="fa-solid fa-ellipsis" />
+        </button>
+      </div>
+    </div>
+  </div>
+  <div x-data="accordionItem('item-2')">
+    <div className="flex items-center justify-between">
+      <div className="flex space-x-4">
+        <div className="avatar size-10">
+          <img className="rounded-full" src="images/avatar/avatar-6.jpg" alt="avatar" />
+        </div>
+        <div>
+          <h3 className="font-medium text-slate-700 line-clamp-1 dark:text-navy-100">
+            Alfredo Elliott
+          </h3>
+          <p className="mt-0.5 text-xs line-clamp-1">
+            (095)-800-8313
+          </p>
+        </div>
+      </div>
+      <button @click="expanded = !expanded" className="btn size-7 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25">
+        <i :class="expanded && '-rotate-180'" className="fas fa-chevron-down transition-transform" />
+      </button>
+    </div>
+    <div x-show="expanded" x-collapse style={{display: 'none', height: 0, overflow: 'hidden'}} hidden>
+      <div className="flex justify-between pt-4">
+        <button className="btn size-7 rounded-full bg-success/10 p-0 text-success hover:bg-success/20 focus:bg-success/20 active:bg-success/25">
+          <i className="fa-solid fa-phone text-xs" />
+        </button>
+        <button className="btn size-7 rounded-full bg-warning/10 p-0 text-warning hover:bg-warning/20 focus:bg-warning/20 active:bg-warning/25">
+          <i className="fa-solid fa-video text-xs" />
+        </button>
+        <button className="btn size-7 rounded-full bg-secondary/10 p-0 text-secondary hover:bg-secondary/20 focus:bg-secondary/20 active:bg-secondary/25 dark:bg-secondary-light/10 dark:text-secondary-light dark:hover:bg-secondary-light/20 dark:focus:bg-secondary-light/20 dark:active:bg-secondary-light/25">
+          <i className="fa-regular fa-comment text-xs" />
+        </button>
+        <button className="btn size-7 rounded-full bg-info/10 p-0 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25">
+          <i className="fa-regular fa-envelope text-xs" />
+        </button>
+        <button className="btn size-7 rounded-full bg-slate-150 p-0 text-slate-800 hover:bg-slate-200 focus:bg-slate-200 active:bg-slate-200/80 dark:bg-navy-500 dark:text-navy-50 dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90">
+          <i className="fa-solid fa-ellipsis" />
+        </button>
+      </div>
+    </div>
+  </div>
+  <div x-data="accordionItem('item-3')">
+    <div className="flex items-center justify-between">
+      <div className="flex space-x-4">
+        <div className="avatar size-10">
+          <div className="is-initial rounded-full bg-info text-sm+ uppercase text-white">
+            ds
+          </div>
+        </div>
+        <div>
+          <h3 className="font-medium text-slate-700 line-clamp-1 dark:text-navy-100">
+            Derrick Simmons
+          </h3>
+          <p className="mt-0.5 text-xs line-clamp-1">
+            (350)-813-3861
+          </p>
+        </div>
+      </div>
+      <button @click="expanded = !expanded" className="btn size-7 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25">
+        <i :class="expanded && '-rotate-180'" className="fas fa-chevron-down transition-transform" />
+      </button>
+    </div>
+    <div x-show="expanded" x-collapse style={{display: 'none', height: 0, overflow: 'hidden'}} hidden>
+      <div className="flex justify-between pt-4">
+        <button className="btn size-7 rounded-full bg-success/10 p-0 text-success hover:bg-success/20 focus:bg-success/20 active:bg-success/25">
+          <i className="fa-solid fa-phone text-xs" />
+        </button>
+        <button className="btn size-7 rounded-full bg-warning/10 p-0 text-warning hover:bg-warning/20 focus:bg-warning/20 active:bg-warning/25">
+          <i className="fa-solid fa-video text-xs" />
+        </button>
+        <button className="btn size-7 rounded-full bg-secondary/10 p-0 text-secondary hover:bg-secondary/20 focus:bg-secondary/20 active:bg-secondary/25 dark:bg-secondary-light/10 dark:text-secondary-light dark:hover:bg-secondary-light/20 dark:focus:bg-secondary-light/20 dark:active:bg-secondary-light/25">
+          <i className="fa-regular fa-comment text-xs" />
+        </button>
+        <button className="btn size-7 rounded-full bg-info/10 p-0 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25">
+          <i className="fa-regular fa-envelope text-xs" />
+        </button>
+        <button className="btn size-7 rounded-full bg-slate-150 p-0 text-slate-800 hover:bg-slate-200 focus:bg-slate-200 active:bg-slate-200/80 dark:bg-navy-500 dark:text-navy-50 dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90">
+          <i className="fa-solid fa-ellipsis" />
+        </button>
+      </div>
+    </div>
+  </div>
+  <div x-data="accordionItem('item-4')">
+    <div className="flex items-center justify-between">
+      <div className="flex space-x-4">
+        <div className="avatar size-10">
+          <img className="rounded-full" src="images/avatar/avatar-3.jpg" alt="avatar" />
+        </div>
+        <div>
+          <h3 className="font-medium text-slate-700 line-clamp-1 dark:text-navy-100">
+            Henry Curtis
+          </h3>
+          <p className="mt-0.5 text-xs line-clamp-1">
+            (675)-975-0083
+          </p>
+        </div>
+      </div>
+      <button @click="expanded = !expanded" className="btn size-7 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25">
+        <i :class="expanded && '-rotate-180'" className="fas fa-chevron-down transition-transform" />
+      </button>
+    </div>
+    <div x-show="expanded" x-collapse style={{display: 'none', height: 0, overflow: 'hidden'}} hidden>
+      <div className="flex justify-between pt-4">
+        <button className="btn size-7 rounded-full bg-success/10 p-0 text-success hover:bg-success/20 focus:bg-success/20 active:bg-success/25">
+          <i className="fa-solid fa-phone text-xs" />
+        </button>
+        <button className="btn size-7 rounded-full bg-warning/10 p-0 text-warning hover:bg-warning/20 focus:bg-warning/20 active:bg-warning/25">
+          <i className="fa-solid fa-video text-xs" />
+        </button>
+        <button className="btn size-7 rounded-full bg-secondary/10 p-0 text-secondary hover:bg-secondary/20 focus:bg-secondary/20 active:bg-secondary/25 dark:bg-secondary-light/10 dark:text-secondary-light dark:hover:bg-secondary-light/20 dark:focus:bg-secondary-light/20 dark:active:bg-secondary-light/25">
+          <i className="fa-regular fa-comment text-xs" />
+        </button>
+        <button className="btn size-7 rounded-full bg-info/10 p-0 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25">
+          <i className="fa-regular fa-envelope text-xs" />
+        </button>
+        <button className="btn size-7 rounded-full bg-slate-150 p-0 text-slate-800 hover:bg-slate-200 focus:bg-slate-200 active:bg-slate-200/80 dark:bg-navy-500 dark:text-navy-50 dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90">
+          <i className="fa-solid fa-ellipsis" />
+        </button>
+      </div>
+    </div>
+  </div>
+  <div x-data="accordionItem('item-5')">
+    <div className="flex items-center justify-between">
+      <div className="flex space-x-4">
+        <div className="avatar size-10">
+          <img className="rounded-full" src="images/avatar/avatar-20.jpg" alt="avatar" />
+        </div>
+        <div>
+          <h3 className="font-medium text-slate-700 line-clamp-1 dark:text-navy-100">
+            John Doe
+          </h3>
+          <p className="mt-0.5 text-xs line-clamp-1">
+            (727)-810-3880
+          </p>
+        </div>
+      </div>
+      <button @click="expanded = !expanded" className="btn size-7 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25">
+        <i :class="expanded && '-rotate-180'" className="fas fa-chevron-down transition-transform" />
+      </button>
+    </div>
+    <div x-show="expanded" x-collapse style={{display: 'none', height: 0, overflow: 'hidden'}} hidden>
+      <div className="flex justify-between pt-4">
+        <button className="btn size-7 rounded-full bg-success/10 p-0 text-success hover:bg-success/20 focus:bg-success/20 active:bg-success/25">
+          <i className="fa-solid fa-phone text-xs" />
+        </button>
+        <button className="btn size-7 rounded-full bg-warning/10 p-0 text-warning hover:bg-warning/20 focus:bg-warning/20 active:bg-warning/25">
+          <i className="fa-solid fa-video text-xs" />
+        </button>
+        <button className="btn size-7 rounded-full bg-secondary/10 p-0 text-secondary hover:bg-secondary/20 focus:bg-secondary/20 active:bg-secondary/25 dark:bg-secondary-light/10 dark:text-secondary-light dark:hover:bg-secondary-light/20 dark:focus:bg-secondary-light/20 dark:active:bg-secondary-light/25">
+          <i className="fa-regular fa-comment text-xs" />
+        </button>
+        <button className="btn size-7 rounded-full bg-info/10 p-0 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25">
+          <i className="fa-regular fa-envelope text-xs" />
+        </button>
+        <button className="btn size-7 rounded-full bg-slate-150 p-0 text-slate-800 hover:bg-slate-200 focus:bg-slate-200 active:bg-slate-200/80 dark:bg-navy-500 dark:text-navy-50 dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90">
+          <i className="fa-solid fa-ellipsis" />
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div className="form-group " data-select2-id="select2-data-6-t6dx">
+  <select name="service_id" id="service_id" className="form-control service_ajax select2-hidden-accessible" data-select2-id="select2-data-service_id" tabIndex={-1} aria-hidden="true">
+  </select><span className="select2 select2-container select2-container--default select2-container--below select2-container--open select2-container--focus" dir="ltr" data-select2-id="select2-data-1-q6h0" style={{width: 'auto'}}><span className="selection"><span className="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="true" tabIndex={0} aria-disabled="false" aria-labelledby="select2-service_id-container" aria-controls="select2-service_id-container" aria-owns="select2-service_id-results"><span className="select2-selection__rendered" id="select2-service_id-container" role="textbox" aria-readonly="true" title="Select a Service"><span className="select2-selection__placeholder">Select a Service</span></span><span className="select2-selection__arrow" role="presentation"><b role="presentation" /></span></span></span><span className="dropdown-wrapper" aria-hidden="true" /></span>
+  <div className="invalid-feedback">
+  </div>
+  <span className="select2-container select2-container--default select2-container--open" style={{position: 'absolute', top: '88.1875px', left: 21}}>
+    <span className="select2-dropdown select2-dropdown--below" dir="ltr" style={{width: 499}}><span className="select2-search select2-search--dropdown">
+      <input className="select2-search__field" type="search" tabIndex={0} autoCorrect="off" autoCapitalize="none" spellCheck="false" role="searchbox" aria-autocomplete="list" autoComplete="off" aria-label="Search" aria-controls="select2-service_id-results" /></span><span className="select2-results"><ul className="select2-results__options" role="listbox" id="select2-service_id-results" aria-expanded="true" aria-hidden="false">
+        <li className="select2-results__option select2-results__option--selectable" role="option" data-select2-id="select2-data-16-rqa6" aria-selected="false">
+          licence fresh</li>
+          <li className="select2-results__option select2-results__option--selectable" role="option" data-select2-id="select2-data-17-k7zi" aria-selected="false">
+            renewal licence</li>
+            <li className="select2-results__option select2-results__option--selectable" role="option" data-select2-id="select2-data-18-vy8y" aria-selected="false">
+              duplicate licence</li>
+              <li className="select2-results__option select2-results__option--selectable select2-results__option--highlighted" role="option" data-select2-id="select2-data-19-xuq9" aria-selected="true">
+              licence reentry</li>
+              <li className="select2-results__option select2-results__option--selectable" role="option" data-select2-id="select2-data-20-2qy0" aria-selected="false">
+                insurence renewal</li>
+                <li className="select2-results__option select2-results__option--selectable" role="option" data-select2-id="select2-data-21-bj0s" aria-selected="false">
+                  fresh insurence</li>
+                  <li className="select2-results__option select2-results__option--selectable" role="option" data-select2-id="select2-data-22-x51o" aria-selected="false">
+                    rc renewal</li>
+                    <li className="select2-results__option select2-results__option--selectable" role="option" data-select2-id="select2-data-23-cic4" aria-selected="false">
+                      rc transfer</li>
+                      <li className="select2-results__option select2-results__option--selectable" role="option" data-select2-id="select2-data-24-wwz7" aria-selected="false">
+                        rc hp</li>
+                        <li className="select2-results__option select2-results__option--selectable" role="option" data-select2-id="select2-data-25-oyxp" aria-selected="false">
+                          cf</li>
+                          <li className="select2-results__option select2-results__option--selectable" role="option" data-select2-id="select2-data-26-kdy1" aria-selected="false">
+                            cf renewal</li>
+                            <li className="select2-results__option select2-results__option--selectable" role="option" data-select2-id="select2-data-27-w26x" aria-selected="false">
+                              sfds</li>
+                            </ul>
+                          </span>
+                        </span>
+                      </span>
+      </div>

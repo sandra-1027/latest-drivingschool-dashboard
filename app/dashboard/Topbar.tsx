@@ -1156,10 +1156,13 @@ import React, { useEffect, useState } from "react";
 import { useDrawer } from "./DrawerContext";
 import Link from "next/link";
 import { useAuth } from "../context/AuthContext";
+import { useRouter } from "next/navigation";
+
 
 const Topbar = () => {
    const { state, clearAuthData } = useAuth();
   const { toggleDrawer } = useDrawer();
+   const router = useRouter();
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
 
   const handleToggle = () => {
@@ -1199,6 +1202,53 @@ const Topbar = () => {
             {/* Right: Header buttons */}
             <div className="-mr-1.5 flex items-center space-x-2">
               
+
+           
+             {/* Mobile Search Toggle */}
+
+              <button
+                // onClick={toggleDrawer}
+                className="mobile-searchbar-show btn size-8 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25 sm:hidden"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="size-5.5 text-slate-500 dark:text-navy-100"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
+                </svg>
+              </button>
+              {/* Main Searchbar */}
+              <div id="searchbar-wrapper" className="hidden sm:flex">
+                <div className="relative mr-4 flex h-8">
+                  <input
+                    id="searchbar-ref"
+                    placeholder="Search here..."
+                    className="form-input peer h-full w-60 rounded-full bg-slate-150 px-4 pl-9 text-xs+ text-slate-800 ring-primary/50 hover:bg-slate-200 focus:ring dark:bg-navy-900/90 dark:text-navy-100 dark:placeholder-navy-300 dark:ring-accent/50 dark:hover:bg-navy-900 dark:focus:bg-navy-900"
+                    type="text"
+                  />
+                  <div className="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400 peer-focus:text-primary dark:text-navy-300 dark:peer-focus:text-accent">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="size-4.5 transition-colors duration-200"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M3.316 13.781l.73-.171-.73.171zm0-5.457l.73.171-.73-.171zm15.473 0l.73-.171-.73.171zm0 5.457l.73.171-.73-.171zm-5.008 5.008l-.171-.73.171.73zm-5.457 0l-.171.73.171-.73zm0-15.473l-.171-.73.171.73zm5.457 0l.171-.73-.171.73zM20.47 21.53a.75.75 0 101.06-1.06l-1.06 1.06zM4.046 13.61a11.198 11.198 0 010-5.115l-1.46-.342a12.698 12.698 0 000 5.8l1.46-.343zm14.013-5.115a11.196 11.196 0 010 5.115l1.46.342a12.698 12.698 0 000-5.8l-1.46.343zm-4.45 9.564a11.196 11.196 0 01-5.114 0l-.342 1.46c1.907.448 3.892.448 5.8 0l-.343-1.46zM8.496 4.046a11.198 11.198 0 015.115 0l.342-1.46a12.698 12.698 0 00-5.8 0l.343 1.46zm0 14.013a5.97 5.97 0 01-4.45-4.45l-1.46.343a7.47 7.47 0 005.568 5.568l.342-1.46zm5.457 1.46a7.47 7.47 0 005.568-5.567l-1.46-.342a5.97 5.97 0 01-4.45 4.45l.342 1.46zM13.61 4.046a5.97 5.97 0 014.45 4.45l1.46-.343a7.47 7.47 0 00-5.568-5.567l-.342 1.46zm-5.457-1.46a7.47 7.47 0 00-5.567 5.567l1.46.342a5.97 5.97 0 014.45-4.45l-.343-1.46zm8.652 15.28l3.665 3.664 1.06-1.06-3.665-3.665-1.06 1.06z" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+
+
               {/* Dark Mode Toggle */}
               <button className="darkmode-toggle btn size-8 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25">
                 <svg
@@ -1268,7 +1318,7 @@ const Topbar = () => {
                             26
                           </div>
                         </div>
-                        <button className="btn -mr-1.5 size-7 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25">
+                        {/* <button className="btn -mr-1.5 size-7 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             className="size-4.5"
@@ -1288,7 +1338,7 @@ const Topbar = () => {
                               d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
                             />
                           </svg>
-                        </button>
+                        </button> */}
                       </div>
                       <div className="tabs is-scrollbar-hidden flex shrink-0 overflow-x-auto px-3">
                         <button
@@ -1299,30 +1349,7 @@ const Topbar = () => {
                         >
                           <span>All</span>
                         </button>
-                        <button
-                          className="tab btn shrink-0 rounded-none border-b-2 px-3.5 py-2.5"
-                          data-active-class="border-primary dark:border-accent text-primary dark:text-accent-light"
-                          data-default-class="border-transparent hover:text-slate-800 focus:text-slate-800 dark:hover:text-navy-100 dark:focus:text-navy-100"
-                          data-target="#notification-alerts"
-                        >
-                          <span>Alerts</span>
-                        </button>
-                        <button
-                          className="tab btn shrink-0 rounded-none border-b-2 px-3.5 py-2.5"
-                          data-active-class="border-primary dark:border-accent text-primary dark:text-accent-light"
-                          data-default-class="border-transparent hover:text-slate-800 focus:text-slate-800 dark:hover:text-navy-100 dark:focus:text-navy-100"
-                          data-target="#notification-events"
-                        >
-                          <span>Events</span>
-                        </button>
-                        <button
-                          className="tab btn shrink-0 rounded-none border-b-2 px-3.5 py-2.5"
-                          data-active-class="border-primary dark:border-accent text-primary dark:text-accent-light"
-                          data-default-class="border-transparent hover:text-slate-800 focus:text-slate-800 dark:hover:text-navy-100 dark:focus:text-navy-100"
-                          data-target="#notification-logs"
-                        >
-                          <span>Logs</span>
-                        </button>
+                        
                       </div>
                     </div>
                     <div className="flex flex-col overflow-hidden">

@@ -8,7 +8,9 @@ import { useAuth } from "../context/AuthContext";
 const Login = () => {
   const [username, setUsername] = useState(""); // State for username
   const [password, setPassword] = useState(""); // State for password
-  const [error, setError] = useState(""); // Error state
+  const [error, setError] = useState(""); 
+
+
   const [loading, setLoading] = useState(false); // Loading state
 
   const { state, setAuthData, isAuthenticated } = useAuth(); // Destructure state and setAuthData
@@ -32,7 +34,7 @@ const Login = () => {
     e.preventDefault();
     setError("");
     setLoading(true);
-console.log(username,"username")
+// console.log(username,"username")
     try {
       const response = await fetch("/api/auth/login", {
         method: "POST",
@@ -79,6 +81,12 @@ console.log(username,"username")
         setError("Something went wrong.");
       }
     }
+
+
+   
+    
+    
+
     
   };
 
