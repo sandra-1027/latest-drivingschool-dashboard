@@ -2,13 +2,14 @@
 import React, { useEffect, useState } from 'react'
 import { FaEdit } from 'react-icons/fa';
 import Create from './Create';
-import Edit from './Edit';
+
 import { useAuth } from '@/app/context/AuthContext';
 import { CgNotes } from "react-icons/cg";
 import { RiCurrencyLine } from 'react-icons/ri';
 import Payment from './payment';
 import { FiClock } from "react-icons/fi";
 import { IoMdCheckmark } from 'react-icons/io';
+import Edit from './edit';
 
 type Admission = {
   id?: string;
@@ -41,6 +42,8 @@ const Admission = () => {
 
   const { state } = useAuth();
   const [showmodal,setShowmodal]=useState(false);
+   const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
+
   const [showmodals,setShowmodals]=useState(false);
   const [costData, setCostData] = useState<Admission []>([]);
   const [filteredData, setFilteredData] = useState<Admission []>([]);
@@ -48,18 +51,23 @@ const Admission = () => {
   const [search, setSearch] = useState("");
   const [selectedServices, setSelectedServices] = useState<string>("");
   const [selectedAdmission,  setSelectedAdmission] = useState<Admission  | null>(null); 
-
+  const [editedAdmission,  setEditedAdmission] = useState<Admission  | null>(null); 
   const [service, setService] = useState<{ id: string; service_name: string }[]>([]);
   const [filters, setFilters] = useState({ service_name: '', status: '' });
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStatus, setSelectedStatus] = useState<string>("");
-  const togglemodal =()=>{
-    setShowmodal((prev)=> !prev)
-  }
+  // const togglemodal =()=>{
+  //   setShowmodal((prev)=> !prev)
+  // }
+  const togglemodal = (mode: 'add' | 'edit', admission: Admission | null = null) => {
+    setModalMode(mode);  // Set the modal mode to either "add" or "edit"
+    setEditedAdmission(admission);  // Pass the selected driver if in edit mode
+    setShowmodal((prev) => !prev);  // Toggle the modal visibility
+  };
   const togglemodals =()=>{
     setShowmodals((prev)=> !prev)
   }
-  const fetchlicenseData = async () => {
+  const fetchAdmissionData = async () => {
   
 
     try {
@@ -93,7 +101,7 @@ const Admission = () => {
   };
   
   useEffect(() => {
-    fetchlicenseData();
+    fetchAdmissionData();
   }, [state]);
 
   const [filterStatus,setFilterStatus] = useState("all");
@@ -222,10 +230,11 @@ const Admission = () => {
                 <span className="text-lg font-medium text-slate-800 dark:text-navy-50">
               
                 </span>
-                <button className="px-4 py-2 bg-[#4f46e5] text-white rounded-md" onClick={togglemodal}>  
+                <button className="px-4 py-2 bg-[#4f46e5] text-white rounded-md" 
+                 onClick={() => togglemodal('add')}>  
           Add admission
                 </button>
-                <Create showmodal={showmodal} togglemodal={togglemodal}/>
+                
               
             </div>
 
@@ -335,7 +344,9 @@ const Admission = () => {
                 <span>
                       <div className="flex justify-center space-x-2">
                         <button className="btn size-8 p-0 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25">
-                          <i className="fa fa-edit"  onClick={() => handleEdits(item)}/>
+                          <i className="fa fa-edit"  
+                           onClick={() => togglemodal('edit', item)}
+                          />
                         </button>
                         {/* <button className="btn size-8 p-0 text-error hover:bg-error/20 focus:bg-error/20 active:bg-error/25 border-error">
                         <RiCurrencyLine />
@@ -444,6 +455,24 @@ const Admission = () => {
   } : undefined}
   isEditing={!!selectedCost}
 />
+
+{showmodal && (
+  modalMode === 'edit' ? (
+    <Edit
+      showModal={showmodal}
+      toggleModal={() => togglemodal('add')}  // Correct the mode here if you want to switch to 'edit'
+      admissionData={editedAdmission}
+      onSave={(updatedBranch) => {
+        setAdmissionData((prevData) => prevData.map((admission) =>
+          admission.id === updatedAdmission.id ? updatedBranch : admission
+        ));
+        togglemodal('add');  // Close modal after saving
+      }}
+    />
+  ) : (
+    <Create showmodal={showmodal} togglemodal={() => togglemodal('add')} />
+  )
+)}
   </div>
 
 

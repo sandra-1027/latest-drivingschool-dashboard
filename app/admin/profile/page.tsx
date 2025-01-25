@@ -602,6 +602,7 @@ const AdminProfile = () => {
     new_password: "",
     confirm_password: "",
   });
+  const [imageChanged, setImageChanged] = useState(false);
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [userData, setUserData] = useState({
     first_name: "",
@@ -610,8 +611,9 @@ const AdminProfile = () => {
    mobile: "",
     address: "",
     city: "",
-    zipcode: "",
-    user_photo:"",
+    zip_code: "",
+    userfile:"",
+    // user_photo:'',
   });
   
   const [showPassword, setShowPassword] = useState(false);
@@ -650,9 +652,10 @@ const AdminProfile = () => {
         }
         
         const data = await response.json();
-       console.log(data,'datttt')
+     
         if (data.success) {
           setUserData(data.data || []);
+          // setUserData(data.data);
           
         } else {
           // console.error("API error:", data.msg || "Unknown error");
@@ -681,9 +684,9 @@ const AdminProfile = () => {
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
    
-    // setLoading(true);
-    // setError('');
-    // setSuccess(false);
+    setLoading(true);
+    setError('');
+    setSuccess(false);
    
       
       const formData = new FormData();
@@ -693,14 +696,21 @@ const AdminProfile = () => {
       formData.append("mobile", userData.mobile);
       formData.append("address", userData.address);
       formData.append("city", userData.city);
-      formData.append("zipcode", userData.zipcode);
+      formData.append("zip_code", userData.zip_code);
 
       // if (profileImage) {
       //   formData.append("user_photo", profileImage); // Upload image
       // }
-      if (userData.user_photo) {
-        formData.append("user_photo", userData.user_photo); // Send the actual file
+      if (userData.userfile) {
+        formData.append("userfile", userData.userfile); // Send the actual file
       }
+     
+
+      console.log('submitting formdata', Object.fromEntries(formData.entries()))
+
+      formData.forEach((value, key) => {
+        console.log(`${key}:`, value);
+      });
 
       try {
         setIsSubmitting(true);
@@ -714,10 +724,14 @@ const AdminProfile = () => {
       });
   
       const data = await response.json();
-      console.log(data,'update')
+
+      console.log(data,'Backend update response')
+    
+
       if (data.success) {
       
         setSuccess(true);
+        fetchProfileData();
       } else {
         
         setError(data.msg || 'Failed to update profile.');
@@ -822,31 +836,49 @@ const AdminProfile = () => {
   // };
   
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  // const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
    
-    const file = event.target.files?.[0];
+  //   const file = event.target.files?.[0];
   
+  //   if (file) {
+  //     if (!file.type.startsWith("image/")) {
+  //       setError("Only image files are allowed.");
+  //       return;
+  //     }
+  //     if (file.size > 5 * 1024 * 1024) {
+  //       setError("File size should not exceed 5MB.");
+  //       return;
+  //     }
+  
+  //     // Update the profile image state with the file
+  //     setProfileImage(URL.createObjectURL(file)); // Create object URL for image preview
+  
+  //     // Add the file to user data for submission
+  //     setUserData((prevData) => ({
+  //       ...prevData,
+  //       user_photo: file, // Store the file, not the base64 string
+  //     }));
+  //   }
+  // };
+  
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
     if (file) {
-      if (!file.type.startsWith("image/")) {
-        setError("Only image files are allowed.");
-        return;
-      }
-      if (file.size > 5 * 1024 * 1024) {
-        setError("File size should not exceed 5MB.");
-        return;
-      }
-  
-      // Update the profile image state with the file
-      setProfileImage(URL.createObjectURL(file)); // Create object URL for image preview
-  
-      // Add the file to user data for submission
-      setUserData((prevData) => ({
-        ...prevData,
-        user_photo: file, // Store the file, not the base64 string
-      }));
+      const reader = new FileReader();
+      reader.onload = () => {
+        setProfileImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+      setUserData((prevData) => (prevData ? { ...prevData, userfile: file } : null)); // Store the file in formData
+      setImageChanged(true); // Set the image change flag to true
     }
   };
+
   
+  const handleRemoveImage= ()=>{
+    setProfileImage(null);
+    setUserData((prevData)=>(prevData?{...prevData,userfile:null}:null));
+  }
   return (
     <div className=" w-full  pb-8">
       <div className="flex items-center space-x-4 py-5 lg:py-6">
@@ -894,45 +926,6 @@ const AdminProfile = () => {
                   Admin
                 </h3>
 
-                {/* social icons */}
-                {/* <div>
-                  <button className="btn size-8 m-1 rounded-full bg-primary/10 p-0 font-medium text-primary hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25">
-                    <FaFacebookSquare className="size-4" />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-                    />
-                  </button>
-                  <button className="btn size-8 m-1 rounded-full bg-success/10 p-0 font-medium text-success hover:bg-success/20 focus:bg-success/20 active:bg-success/25">
-                    <FaTwitter className="size-4" />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-                    />
-                  </button>
-                  <button className="btn size-8 m-1 rounded-full bg-info/10 p-0 font-medium text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25">
-                    <FaLinkedin className="size-4" />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-                    />
-                  </button>
-                  <button className="btn size-8 m-1 rounded-full bg-secondary/10 p-0 font-medium text-secondary hover:bg-secondary/20 focus:bg-secondary/20 active:bg-secondary/25">
-                    <FaInstagram className="size-4" />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-                    />
-                  </button>
-                </div> */}
               </div>
             </div>
 {/* social icons */}
@@ -1212,6 +1205,7 @@ const AdminProfile = () => {
                           className="form-input peer w-full rounded-full border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                           placeholder=""
                           type="text"
+                          name="city"
                           value={userData.city}
                           onChange={handleInputChange}
                         />
@@ -1224,7 +1218,8 @@ const AdminProfile = () => {
                           className="form-input peer w-full rounded-full border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                           placeholder=""
                           type="text"
-                          value={userData.zipcode}
+                          name="zip_code"
+                          value={userData.zip_code}
                           onChange={handleInputChange}
                         />
                       </span>
@@ -1238,7 +1233,7 @@ const AdminProfile = () => {
           <div className="w-32 h-32">
             {profileImage ? (
               <img
-                src={userData.user_photo}
+                src={profileImage}
                 alt="Profile Preview"
                 className="w-full h-full object-cover rounded border"
               />
@@ -1247,16 +1242,55 @@ const AdminProfile = () => {
                <img
                         className="mask is-squircle"
                         // src="/images/200x200.png"
-                        src= "/profile.png"
-                        alt="avatar"
+                        // src= "/profile.png"
+                        src={`https://our-demos.com/n/drivingschool_api/assets/images/documents/${userData.userfile}`}
+                        
+                        // alt="avatar"
                       />
               </div>
             )}
+            
+
           </div>
         </div>
-
+        {!profileImage && (
+               <div className="mb-4">
+               <label className="w-1/5 flex items-center justify-center border rounded p-2 cursor-pointer bg-blue-500 text-white">
+            Select Image
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              className="hidden" // Hide the default file input
+            />
+          </label>
+            </div>
+            )}
+            {profileImage &&(
+              <>
+              <label className="cursor-pointer bg-primary hover:bg-primary-focus text-white font-bold py-2 px-4 rounded">
+              Change
+              <input
+                type="file"
+                accept="image/*"
+                // onChange={(e) =>
+                //   handleFileChange(e, setDocuments)
+                // }
+                onChange={handleImageUpload}
+                className="hidden"
+              />
+            </label>
+            <button
+              // onClick={() => handleRemove(setDocuments)}
+              onClick={handleRemoveImage}
+              className="outline-dark border-[1px] border-dark font-bold py-2 px-4 rounded"
+            >
+              Remove
+            </button>
+            </>
+            )}
         {/* File Input for New Profile Photo */}
-        <div className="mb-4">
+        {/* <div className="mb-4">
            <label className="w-1/5 flex items-center justify-center border rounded p-2 cursor-pointer bg-blue-500 text-white">
         Select Image
         <input
@@ -1266,7 +1300,7 @@ const AdminProfile = () => {
           className="hidden" // Hide the default file input
         />
       </label>
-        </div>
+        </div> */}
 
 
                  

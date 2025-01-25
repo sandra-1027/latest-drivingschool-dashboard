@@ -20,7 +20,7 @@ interface EditProps {
   showModal: boolean;
   toggleModal: () => void;
   branchData: Branch | null;
-  onSave: (updatedDriver: Branch) => void;
+  onSave: (updatedBranch: Branch) => void;
 }
 
 const Edit = ({ showModal, toggleModal, branchData, onSave }: EditProps) => {

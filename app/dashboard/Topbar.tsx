@@ -1161,6 +1161,10 @@ import { useRouter } from "next/navigation";
 
 const Topbar = () => {
    const { state, clearAuthData } = useAuth();
+   const user = state?.user;
+ const data= user?.data;
+ const photo =data?.user_photo;
+// console.log(photo,'user profile data')
   const { toggleDrawer } = useDrawer();
    const router = useRouter();
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
@@ -1770,6 +1774,8 @@ const Topbar = () => {
     <img
       className="rounded-full"
       src="/profile.png"
+     
+      // src={photo}
       alt="avatar"
     />
     <span className="absolute right-0 size-3.5 rounded-full border-2 border-white bg-success dark:border-navy-700" />

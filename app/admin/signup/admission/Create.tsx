@@ -857,6 +857,21 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import { useAuth } from "@/app/context/AuthContext";
 import React, { useEffect, useState } from "react";
 import Select from 'react-select';
@@ -873,12 +888,19 @@ type CreateProps = {
   const [selectedOption, setSelectedOption] = useState<string>("create");
   const [branch, setBranch] = useState<{ id: string; branch_name: string }[]>([]);
   const [service, setService] = useState<{ id: string; service_name: string }[]>([]);
-  const [documents, setDocuments] = useState<File | null>(null);
-  const [photo, setPhoto] = useState<File | null>(null);
+  const [admission, setAdmission] = useState<{ id: string; user_name: string }[]>([]);
+  // const [documents, setDocuments] = useState<File | null>(null);
+  // const [photo, setPhoto] = useState<File | null>(null);
+ 
 const[imagePreview,setImagePreview]=useState<string>('');
 const[documentPreview,setDocumentPreview]=useState<string>('');
+const[oldrcPreview,setOldrcPreview]=useState<string>('');
+const[adharPreview,setAdharPreview]=useState<string>('');
+const[insurencePreview,setInsurencePreview]=useState<string>('');
   const [searchTerm, setSearchTerm] = useState('');
+  const [searchMobile, setSearchMobile] = useState('');
   const [isOpen, setIsOpen] = useState(false);
+  const [mobileOpen, setmobileOpen] = useState(false);
   const [selectedService, setSelectedService] = useState('');
   const [selectedAmount, setSelectedAmount] = useState('');
 
@@ -889,16 +911,21 @@ const[documentPreview,setDocumentPreview]=useState<string>('');
   const [blood_group, setblood_group] = useState('');
   const [gender, setgender] = useState('');
   const [branch_id, setbranch_id] = useState('');
-  const [userfile, setuserfile] = useState('');
-  const [document, setdocument] = useState('');
+ 
+  const [userfile, setuserfile] = useState<File | null>(null);
+  const [document, setdocument] = useState<File | null>(null);
+  const [old_rc, setold_rc] = useState<File | null>(null);
+  const [adhar, setadhar] = useState<File | null>(null);
+  const [insurence, setinsurence] = useState<File | null>(null);
   const [payment_method, setpayment_method] = useState('');
   const [service_id, setservice_id] = useState('');
-  const [total_amount, settotal_amount] = useState('');
+  // const [total_amount, settotal_amount] = useState('');
   const [pay_amount, setpay_amount] = useState('');
   const [type, settype] = useState('');
   const [amount, setamount] = useState('');
   const [document_type, setdocument_type] = useState('');
-
+  const [tax, settax] = useState('');
+  const [pucc, setpucc] = useState('');
  
 
 
@@ -975,19 +1002,58 @@ const[documentPreview,setDocumentPreview]=useState<string>('');
     fetchserviceData();
   }, [state]);
 
-  const handleFileChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    setImage: React.Dispatch<React.SetStateAction<string | null>>
-  ) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+  const fetchAdmissionData = async () => {
+  
+
+    try {
+
+      const response = await fetch('/api/admin/signup/get_admission_details', {
+        method: 'POST',
+        headers: {
+           'authorizations': state?.accessToken ?? '', 
+          // 'authorizations': token ?? '',
+          'api_key': '10f052463f485938d04ac7300de7ec2b',  // Make sure the API key is correct
+        },
+        body: JSON.stringify({ user_id:null}),
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        // console.error('API error:', errorData);
+        throw new Error(`HTTP error! Status: ${response.status} - ${errorData.message || 'Unknown error'}`);
+      }
+      
+      const data = await response.json();
+ 
+      if (data.success) {
+        setAdmission(data.data || []);
+         
+      } else {
+        // console.error("API error:", data.msg || "Unknown error");
+      }
+    } catch (error) {
+      console.error("Fetch error:", error);
     }
   };
+  
+  useEffect(() => {
+    fetchAdmissionData();
+  }, [state]);
+
+
+  // const handleFileChange = (
+  //   e: React.ChangeEvent<HTMLInputElement>,
+  //   setImage: React.Dispatch<React.SetStateAction<string | null>>
+  // ) => {
+  //   const file = e.target.files?.[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       setImage(reader.result as string);
+  //     };
+  //     reader.readAsDataURL(file);
+        
+  //   }
+  // };
   
   
   
@@ -995,7 +1061,7 @@ const[documentPreview,setDocumentPreview]=useState<string>('');
     const file=e.target.files?.[0];
 
     if(file){
-      setPhoto(file);
+      setuserfile(file);
       setImagePreview(URL.createObjectURL(file))
     }
   }
@@ -1004,10 +1070,53 @@ const[documentPreview,setDocumentPreview]=useState<string>('');
     const file=e.target.files?.[0];
 
     if(file){
-      setDocuments(file);
+      setdocument(file);
       setDocumentPreview(URL.createObjectURL(file))
     }
   }
+
+  const handleOldrcChange =(e:React.ChangeEvent<HTMLInputElement>)=>{
+    const file=e.target.files?.[0];
+
+    if(file){
+      setold_rc(file);
+      setOldrcPreview(URL.createObjectURL(file))
+    }
+  }
+
+ const handleAdharChange =(e:React.ChangeEvent<HTMLInputElement>)=>{
+  const file=e.target.files?.[0];
+
+  if(file){
+    setadhar(file);
+    setAdharPreview(URL.createObjectURL(file))
+  }
+}
+
+
+const handleInsurenceChange =(e:React.ChangeEvent<HTMLInputElement>)=>{
+  const file=e.target.files?.[0];
+
+  if(file){
+    setinsurence(file);
+    setInsurencePreview(URL.createObjectURL(file))
+  }
+}
+
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, type: "photo" | "document") => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (type === "photo") {
+        setPhoto(file);
+        setImagePreview(URL.createObjectURL(file));
+      } else {
+        setDocuments(file);
+        setDocumentPreview(URL.createObjectURL(file));
+      }
+    }
+  };
+  
 
   const handleRemove = (
     setImage: React.Dispatch<React.SetStateAction<string | null>>
@@ -1016,85 +1125,94 @@ const[documentPreview,setDocumentPreview]=useState<string>('');
   };
 
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+ 
 
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+  
 
     const formData = new FormData();
-    formData.append('name', name);
-    formData.append('mobile', mobile);
-    formData.append('email', email);
-    formData.append('blood_group', blood_group);
-    formData.append('gender', gender);
-    formData.append('branch_id', branch_id);
-    formData.append('payment_method', payment_method);
-    formData.append('service_id', service_id);
-    formData.append(' total_amount',  total_amount);
-    formData.append(' pay_amount', pay_amount);
-    formData.append('type', type);
-    formData.append('amount', amount);
-    formData.append('document_type',document_type);
-
-    if (photo) {
-      formData.append('userfile', photo);
+    formData.append("name", name);
+    formData.append("mobile", mobile);
+    formData.append("email", email);
+    formData.append("blood_group", blood_group || ""); // Default to empty string
+    formData.append("gender", gender || ""); // Default to empty string
+    formData.append("branch_id", branch_id);
+    formData.append("payment_method", payment_method);
+    formData.append("service_id", service_id);
+    // formData.append("total_amount", total_amount);
+    formData.append("total_amount", selectedAmount);
+    formData.append("pay_amount", pay_amount);
+    formData.append("type", type || ""); // Default to empty string
+    // formData.append("amount", amount || ""); 
+    formData.append("document_type", document_type || ""); // Default to empty string
+    formData.append("tax", tax);
+    formData.append("pucc",pucc);
+    // Add files
+    if (userfile) formData.append("userfile", userfile);
+    if (document) formData.append("document", document);
+    if (old_rc) formData.append("old_rc", old_rc);
+    if (adhar) formData.append("adhar", adhar);
+    if (insurence) formData.append("insurence", insurence);
+  
+    // Debug formData
+    for (const [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
     }
-    if (documents) {
-      formData.append('document', documents);
-    }
-
-
+  console.log('submitting formdata', Object.fromEntries(formData.entries()))
     try {
       const response = await fetch("/api/admin/signup/admission", {
         method: "POST",
         headers: {
           authorizations: state?.accessToken ?? "",
-        api_key: "10f052463f485938d04ac7300de7ec2b",
-        "Content-Type": "application/json",
+          api_key: "10f052463f485938d04ac7300de7ec2b",
         },
-        body: JSON.stringify(formData),
+        body: formData,
       });
-
-   
-    console.log(formData, "data sent to backend");
   
-    const responseJson = await response.json();
-    console.log("Response from backend:", responseJson);
-
-    if (!response.ok) {
-      alert(`Failed to add Admission. Status code: ${response.status}`);
-      return;
+      const data = await response.json();
+      console.log("Backend response:", data);
+  
+      if (!response.ok) {
+        console.error("Failed request details:", data);
+        alert(data.msg || "Failed to add Admission. Please check the required fields.");
+        return;
+      }
+  
+      alert("Admission added successfully!");
+      togglemodal(); 
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert("An error occurred while adding the Admission.");
     }
-
-    alert(`Admission added successfully!`);
-    togglemodal(); 
-  } catch (error) {
-    console.error("Error submitting form:", error);
-    alert(`An error occurred while adding the Admission.`);
-  }
   };
-
-
+  
 
   const filteredServices = service.filter((service) =>
     service.service_name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+  const filteredMobilenumbers = admission.filter((admission) =>
+    admission.user_name.toLowerCase().includes(searchMobile.toLowerCase())
+  );
 
-  // Handle service selection
-  const handleSelect = (service) => {
+  
+  const handleSelect = (service:{id:string; service_name:string; amount:string}) => {
+ 
     setSelectedService(service.service_name);
-    if (selectedService) {
-      setSelectedAmount(selectedService.amount);
-    }
-    setIsOpen(false); // Close the dropdown after selecting
+    setservice_id(service.id);
+    setSelectedAmount(service.amount); // Access the amount property directly
+    setIsOpen(false); // Close the dropdown
   };
 
+
+  const handleSelectmobile = (admission) => {
+    setmobile(admission.user_name);
+    // setSelectedAmount(service.amount); 
+    setmobileOpen(false); // Close the dropdown
+  };
+  
+  
   if (!showmodal) return null;
 
   return (
@@ -1155,7 +1273,8 @@ const[documentPreview,setDocumentPreview]=useState<string>('');
                       checked={selectedOption === "create"}
                       onChange={(e) => setSelectedOption(e.target.value)}
                       className="form-radio is-basic size-4 rounded-full border-slate-400/70 checked:border-primary checked:bg-primary hover:border-primary focus:border-primary dark:border-navy-400 dark:checked:border-accent dark:checked:bg-accent dark:hover:border-accent dark:focus:border-accent"
-                      name="basic"
+                      // name="basic"
+                      name="create"
                       type="radio"
                     />
                     <span>Create</span>
@@ -1167,7 +1286,8 @@ const[documentPreview,setDocumentPreview]=useState<string>('');
                       checked={selectedOption === "alreadyCreated"}
                       onChange={(e) => setSelectedOption(e.target.value)}
                       className="form-radio is-basic size-4 rounded-full border-slate-400/70 checked:border-primary checked:bg-primary hover:border-primary focus:border-primary dark:border-navy-400 dark:checked:border-accent dark:checked:bg-accent dark:hover:border-accent dark:focus:border-accent"
-                      name="basic"
+                      // name="basic"
+                      name="alreadyCreated"
                       type="radio"
                     />
                     <span>Already Created</span>
@@ -1177,18 +1297,65 @@ const[documentPreview,setDocumentPreview]=useState<string>('');
                 {/* Conditional Input Field */}
                 {selectedOption === "alreadyCreated" && (
                   <div className="mb-4">
-                    <label className="block">
+                    {/* <label className="block"
+                     onClick={() => setmobileOpen(!isOpen)} >
                       <span>Enter Mobile No:</span>
                       <select 
+                      value={mobile}
+                      onChange={(e) => setmobile(e.target.value)}
                       className="form-select mt-1.5 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:bg-navy-700 dark:hover:border-navy-400 dark:focus:border-accent">
                         <option>Select a mobile</option>
-                        <option>345678</option>
+                        <option>
+                        </option>
                         <option>78907654</option>
                         <option>0098765434</option>
                       </select>
-                    </label>
+                    </label> */}
+<div className="relative w-full"
+onClick={() => setmobileOpen(!isOpen)} >
+      <div
+        className="form-select peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9"
+        
+       
+      >
+        <span>{mobile || 'Select a number'}</span>
+      </div>
+      </div>
+
+                    {mobileOpen && (
+        <div className="z-10 w-full mt-1 bg-white border border-slate-300 rounded-lg shadow-md">
+          <input
+            type="text"
+            placeholder="Search..."
+            className="w-full px-3 py-2 border-b"
+            value={searchMobile}
+            onChange={(e) => setSearchMobile(e.target.value)}
+          />
+          <div className="max-h-60 overflow-y-auto">
+            {filteredMobilenumbers.length > 0 ? (
+              filteredMobilenumbers.map((admission) => (
+                <div
+                  key={admission.id}
+                  className="cursor-pointer px-3 py-2 hover:bg-gray-200"
+                  onClick={() => handleSelectmobile(admission)}
+                >
+                  {admission.user_name}
+                </div>
+              ))
+            ) : (
+              <div className="px-3 py-2 text-gray-400">No results found</div>
+            )}
+          </div>
+        </div>
+      )}
+
                   </div>
                 )}
+
+
+
+
+
 
                 {/* Profile Information */}
                 <div className="mb-4 mt-4 ">
@@ -1199,7 +1366,7 @@ const[documentPreview,setDocumentPreview]=useState<string>('');
                         <input
                         name="name"
                        value={name}
-                       onChange={handleChange}
+                       onChange={(e) => setname(e.target.value)}
                           className="form-input peer  mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                           placeholder="name"
                           type="text"
@@ -1212,7 +1379,7 @@ const[documentPreview,setDocumentPreview]=useState<string>('');
                         <input
                          name="mobile"
                          value={mobile}
-                         onChange={handleChange}
+                         onChange={(e) => setmobile(e.target.value)}
                           className="form-input peer  mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                           placeholder="mobile"
                           type="text"
@@ -1229,7 +1396,7 @@ const[documentPreview,setDocumentPreview]=useState<string>('');
                         <input
                          name="email"
                          value={email}
-                         onChange={handleChange}
+                         onChange={(e) => setemail(e.target.value)}
                           type="text"
                           placeholder="email"
                           className="form-input peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
@@ -1242,17 +1409,18 @@ const[documentPreview,setDocumentPreview]=useState<string>('');
                         <select
                          name="blood_group"
                          value={blood_group}
-                         onChange={handleChange}
+                         onChange={(e) => setblood_group(e.target.value)}
                           className="form-input peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                         >
                           <option>Select Blood Group</option>
-                          <option>A+ve</option>
-                          <option>O+ve</option>
-                          <option>B+ve</option>
-                          <option>AB+ve</option>
-                          <option>B-ve</option>
-                          <option>A-ve</option>
-                          <option>O-ve</option>
+                          <option value="A+ve">A+ve</option>
+                          <option value="O+ve">O+ve</option>
+                          <option value="B+ve">B+ve</option>
+                          <option value="AB+ve">AB+ve</option>
+                          <option value="B-ve">B-ve</option>
+                          <option value="A-ve">A-ve</option>
+                          <option value="AB-ve">AB-ve</option>
+                          <option value="O-ve">O-ve</option>
                         </select>
                       </span>
                     </label>
@@ -1264,13 +1432,13 @@ const[documentPreview,setDocumentPreview]=useState<string>('');
                         <select
                          name="gender"
                          value={gender}
-                         onChange={handleChange}
+                         onChange={(e) => setgender(e.target.value)}
                           className="form-input peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                         >
                           <option>Select a Gender</option>
-                          <option>Male</option>
-                          <option>Female</option>
-                          <option>Others</option>
+                          <option value="male">Male</option>
+                          <option value="female">Female</option>
+                          <option value="others">Others</option>
                         </select>
                       </span>
                     </label>
@@ -1281,7 +1449,7 @@ const[documentPreview,setDocumentPreview]=useState<string>('');
                         <select
                          name="branch_id"
                          value={branch_id}
-                         onChange={handleChange}
+                         onChange={(e) => setbranch_id(e.target.value)}
                           // className="form-select mt-1.5 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:bg-navy-700 dark:hover:border-navy-400 dark:focus:border-accent"
                           className="form-select peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                         >
@@ -1303,14 +1471,14 @@ const[documentPreview,setDocumentPreview]=useState<string>('');
                       <select
                        name="document_type"
                        value={document_type}
-                       onChange={handleChange}
+                       onChange={(e) => setdocument_type(e.target.value)}
                         className="form-select peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                       >
                         <option>Choose Document Type</option>
-                        <option>SSLC</option>
-                        <option>Adhar</option>
-                        <option>Birth Certificate</option>
-                        <option>Passport</option>
+                        <option value="sslc">SSLC</option>
+                        <option value="aadhaar">Aadhaar</option>
+                        <option value="birthcertificate">Birth Certificate</option>
+                        <option value="passport">Passport</option>
                       </select>
                     </span>
                   </label>
@@ -1325,12 +1493,12 @@ const[documentPreview,setDocumentPreview]=useState<string>('');
                         </label>
                         <div
                           className={`border-2 rounded-lg flex items-center justify-center h-42 w-42 sm:h-40 sm:w-40 ${
-                            document ? "border-gray-300" : "border-blue-500"
+                            documentPreview ? "border-gray-300" : "border-blue-500"
                           }`}
                         >
-                          {document ? (
+                          {documentPreview ? (
                             <img
-                              src={document}
+                              src={documentPreview}
                               alt="Uploaded Document"
                               className="max-h-full max-w-full object-contain"
                             />
@@ -1347,8 +1515,8 @@ const[documentPreview,setDocumentPreview]=useState<string>('');
                               <input
                                 type="file"
                                 accept="image/*"
-                                name="document"
-                                value={document}
+                                // name="document"
+                                // value={document}
                                 // onChange={handleChange}
                                 onChange={handleDocumentChange}
                                 className="hidden"
@@ -1361,14 +1529,19 @@ const[documentPreview,setDocumentPreview]=useState<string>('');
                                 <input
                                   type="file"
                                   accept="image/*"
-                                  onChange={(e) =>
-                                    handleFileChange(e, setDocument)
-                                  }
+                                  // onChange={(e) =>
+                                  //   handleFileChange(e, setDocuments)
+                                  // }
+                                  onChange={handleDocumentChange}
                                   className="hidden"
                                 />
                               </label>
                               <button
-                                onClick={() => handleRemove(setDocument)}
+                                // onClick={() => handleRemove(setDocuments)}
+                                onClick={() => {
+                                  setdocument(null);
+                                  setDocumentPreview("");
+                                }}
                                 className="outline-dark border-[1px] border-dark font-bold py-2 px-4 rounded"
                               >
                                 Remove
@@ -1383,12 +1556,12 @@ const[documentPreview,setDocumentPreview]=useState<string>('');
                         <label className="block mb-2 mt-4">User Photo</label>
                         <div
                           className={`border-2 rounded-lg flex items-center justify-center h-42 w-42 sm:h-40 sm:w-40 ${
-                            photo ? "border-gray-300" : "border-blue-500"
+                            imagePreview ? "border-gray-300" : "border-blue-500"
                           }`}
                         >
-                          {photo ? (
+                          {imagePreview ? (
                             <img
-                              src={photo}
+                              src={imagePreview}
                               alt="Uploaded Photo"
                               className="max-h-full max-w-full object-contain"
                             />
@@ -1399,12 +1572,13 @@ const[documentPreview,setDocumentPreview]=useState<string>('');
                           )}
                         </div>
                         <div className="mt-4 flex space-x-2">
-                          {!photo ? (
+                          {!userfile ? (
                             <label className="cursor-pointer bg-primary hover:bg-primary-focus text-white font-bold py-2 px-4 rounded">
                               Select Image
                               <input
                                 type="file"
                                 accept="image/*"
+                                // value={photo}
                                 onChange={handleImageChange}
                                 className="hidden"
                               />
@@ -1416,14 +1590,19 @@ const[documentPreview,setDocumentPreview]=useState<string>('');
                                 <input
                                   type="file"
                                   accept="image/*"
-                                  onChange={(e) =>
-                                    handleFileChange(e, setPhoto)
-                                  }
+                                  // onChange={(e) =>
+                                  //   handleFileChange(e, setPhoto)
+                                  // }
+                                  onChange={handleImageChange}
                                   className="hidden"
                                 />
                               </label>
                               <button
-                                onClick={() => handleRemove(setPhoto)}
+                                // onClick={() => handleRemove(setPhoto)}
+                                onClick={() => {
+                                  setuserfile(null);
+                                  setImagePreview("");
+                                }}
                                 className="outline-dark border-[1px] border-dark font-bold py-2 px-4 rounded"
                               >
                                 Remove
@@ -1446,8 +1625,9 @@ const[documentPreview,setDocumentPreview]=useState<string>('');
             <div className="space-y-5 p-4 sm:p-5">
       <div className="relative w-full">
       <div
-        className="form-input peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9"
-        onClick={() => setIsOpen(!isOpen)} // Toggle dropdown open/close
+        className="form-select peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9"
+        onClick={() => setIsOpen(!isOpen)} 
+        
       >
         <span>{selectedService || 'Select a Service'}</span>
       </div>
@@ -1487,6 +1667,8 @@ const[documentPreview,setDocumentPreview]=useState<string>('');
 
   <span className="relative mt-1.5 flex">
     <select
+    value={type}
+    onChange={(e) => settype(e.target.value)}
       className="form-input peer mt-1.5  w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
     >
       <option>Select Type</option>
@@ -1505,6 +1687,8 @@ const[documentPreview,setDocumentPreview]=useState<string>('');
                     <input
                       type="text"
                       placeholder="Tax"
+                      value={tax}
+    onChange={(e) => settax(e.target.value)}
                       className="form-input peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                     />
                   </span>
@@ -1514,11 +1698,213 @@ const[documentPreview,setDocumentPreview]=useState<string>('');
                     <input
                       type="text"
                       placeholder="Pucc"
+                      value={pucc}
+    onChange={(e) => setpucc(e.target.value)}
                       className="form-input peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                     />
                   </span>
     </label>
+
+
+
+                      <div>
+                        <label className="block mb-2 mt-4">
+                         Old RC
+                        </label>
+                        <div
+                          className={`border-2 rounded-lg flex items-center justify-center h-42 w-42 sm:h-40 sm:w-40 ${
+                            oldrcPreview ? "border-gray-300" : "border-blue-500"
+                          }`}
+                        >
+                          {oldrcPreview ? (
+                            <img
+                              src={oldrcPreview}
+                              alt="Uploaded Document"
+                              className="max-h-full max-w-full object-contain"
+                            />
+                          ) : (
+                            <span className="text-gray-500 text-sm text-center">
+                              No image selected
+                            </span>
+                          )}
+                        </div>
+                        <div className="mt-4 flex space-x-2">
+                          {!old_rc ? (
+                            <label className="cursor-pointer bg-primary hover:bg-primary-focus text-white font-bold py-2 px-4 rounded">
+                              Select RC
+                              <input
+                                type="file"
+                                accept="image/*"
+                                // name="document"
+                                // value={document}
+                                // onChange={handleChange}
+                                onChange={handleOldrcChange}
+                                className="hidden"
+                              />
+                            </label>
+                          ) : (
+                            <>
+                              <label className="cursor-pointer bg-primary hover:bg-primary-focus text-white font-bold py-2 px-4 rounded">
+                                Change
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  // onChange={(e) =>
+                                  //   handleFileChange(e, setDocuments)
+                                  // }
+                                  onChange={handleOldrcChange}
+                                  className="hidden"
+                                />
+                              </label>
+                              <button
+                                // onClick={() => handleRemove(setDocuments)}
+                                onClick={() => {
+                                  setold_rc(null);
+                                  setOldrcPreview("");
+                                }}
+                                className="outline-dark border-[1px] border-dark font-bold py-2 px-4 rounded"
+                              >
+                                Remove
+                              </button>
+                            </>
+                          )}
+                        </div>
+                      </div>
+
+
+                      <div>
+                        <label className="block mb-2 mt-4">
+                          Aadhaar
+                        </label>
+                        <div
+                          className={`border-2 rounded-lg flex items-center justify-center h-42 w-42 sm:h-40 sm:w-40 ${
+                            adharPreview ? "border-gray-300" : "border-blue-500"
+                          }`}
+                        >
+                          {adharPreview ? (
+                            <img
+                              src={adharPreview}
+                              alt="Uploaded Document"
+                              className="max-h-full max-w-full object-contain"
+                            />
+                          ) : (
+                            <span className="text-gray-500 text-sm text-center">
+                              No image selected
+                            </span>
+                          )}
+                        </div>
+                        <div className="mt-4 flex space-x-2">
+                          {!adhar ? (
+                            <label className="cursor-pointer bg-primary hover:bg-primary-focus text-white font-bold py-2 px-4 rounded">
+                              Select Aadhaar
+                              <input
+                                type="file"
+                                accept="image/*"
+                                // name="document"
+                                // value={document}
+                                // onChange={handleChange}
+                                onChange={handleAdharChange}
+                                className="hidden"
+                              />
+                            </label>
+                          ) : (
+                            <>
+                              <label className="cursor-pointer bg-primary hover:bg-primary-focus text-white font-bold py-2 px-4 rounded">
+                                Change
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  // onChange={(e) =>
+                                  //   handleFileChange(e, setDocuments)
+                                  // }
+                                  onChange={handleAdharChange}
+                                  className="hidden"
+                                />
+                              </label>
+                              <button
+                                // onClick={() => handleRemove(setDocuments)}
+                                onClick={() => {
+                                  setadhar(null);
+                                  setAdharPreview("");
+                                }}
+                                className="outline-dark border-[1px] border-dark font-bold py-2 px-4 rounded"
+                              >
+                                Remove
+                              </button>
+                            </>
+                          )}
+                        </div>
+                      </div>
+
+
+
+                      <div>
+                        <label className="block mb-2 mt-4">
+                         Insurence
+                        </label>
+                        <div
+                          className={`border-2 rounded-lg flex items-center justify-center h-42 w-42 sm:h-40 sm:w-40 ${
+                            insurencePreview ? "border-gray-300" : "border-blue-500"
+                          }`}
+                        >
+                          {insurencePreview ? (
+                            <img
+                              src={insurencePreview}
+                              alt="Uploaded Document"
+                              className="max-h-full max-w-full object-contain"
+                            />
+                          ) : (
+                            <span className="text-gray-500 text-sm text-center">
+                              No image selected
+                            </span>
+                          )}
+                        </div>
+                        <div className="mt-4 flex space-x-2">
+                          {!insurence ? (
+                            <label className="cursor-pointer bg-primary hover:bg-primary-focus text-white font-bold py-2 px-4 rounded">
+                              Select Insurence
+                              <input
+                                type="file"
+                                accept="image/*"
+                                // name="document"
+                                // value={document}
+                                // onChange={handleChange}
+                                onChange={handleInsurenceChange}
+                                className="hidden"
+                              />
+                            </label>
+                          ) : (
+                            <>
+                              <label className="cursor-pointer bg-primary hover:bg-primary-focus text-white font-bold py-2 px-4 rounded">
+                                Change
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  // onChange={(e) =>
+                                  //   handleFileChange(e, setDocuments)
+                                  // }
+                                  onChange={handleInsurenceChange}
+                                  className="hidden"
+                                />
+                              </label>
+                              <button
+                                // onClick={() => handleRemove(setDocuments)}
+                                onClick={() => {
+                                  setinsurence(null);
+                                  setInsurencePreview("");
+                                }}
+                                className="outline-dark border-[1px] border-dark font-bold py-2 px-4 rounded"
+                              >
+                                Remove
+                              </button>
+                            </>
+                          )}
+                        </div>
+                      </div>
+
     </div>
+
+
          )}
          {/* Common Fields */}
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -1526,10 +1912,13 @@ const[documentPreview,setDocumentPreview]=useState<string>('');
                   <span>Payment Method</span>
                   <span className="relative mt-1.5 flex">
                     <select
+                    value={payment_method}
+                    onChange={(e) => setpayment_method(e.target.value)}
                       className="form-input peer mt-1.5  w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                     >
-                      <option>Cash</option>
-                      <option value="digital">Online</option>
+                      <option >Select payment method</option>
+                      <option value="cash">Cash</option>
+                      <option value="online">Online</option>
                     </select>
                   </span>
                 </label>
@@ -1556,6 +1945,8 @@ const[documentPreview,setDocumentPreview]=useState<string>('');
                     <input
                       type="number"
                       placeholder=""
+                      value={pay_amount}
+                      onChange={(e) => setpay_amount(e.target.value)}
                       className="form-input peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                     />
                   </span>

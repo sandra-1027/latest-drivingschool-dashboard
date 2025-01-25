@@ -1,98 +1,44 @@
-
 'use client'
+import Link from 'next/link'
+import React, { useState } from 'react'
 
-import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { useAuth } from "../context/AuthContext";
-import Link from "next/link";
+function ForgotPassword() {
 
-const Login = () => {
-  const [username, setUsername] = useState(""); // State for username
-  const [password, setPassword] = useState(""); // State for password
-  const [error, setError] = useState(""); 
+  const [username, setUsername] =useState('');
+  const [email, setEmail] =useState('');
+const [loading, setLoading] =useState(false);
+const [error, setError] = useState('');
+const [message, setMessage] =useState('');
 
+const handleForgotPassword = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  setError('');
+  setMessage('');
 
-  const [loading, setLoading] = useState(false); // Loading state
+  try {
+    const response = await fetch('/api/admin/member/forgot_password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username }),
+    });
 
-  const { state, setAuthData, isAuthenticated } = useAuth(); // Destructure state and setAuthData
-  const router = useRouter();
+    const data = await response.json();
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    const role = localStorage.getItem("role");
-    if (token) {
-      // User is already authenticated, redirect based on role
-      const rolePaths = {
-        admin: "/admin",
-        driver: "/driver",
-        student: "/student",
-      };
-      router.push(rolePaths[role as keyof typeof rolePaths] || "/unauthorized");
-    }
-  }, [router]);
-
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
-// console.log(username,"username")
-    try {
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-       
-        body: JSON.stringify({ username:username, password }),
-      
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Invalid credentials.");
-      }
-      const data = await response.json();
-      console.log(data,"data")
-      const {token, user_type: role } = data?.data || {};
-
-      if (!role || !token) {
-        throw new Error("Role or token missing in the response.");
-      }
-
-      localStorage.setItem("token", token);
-      localStorage.setItem("role", role);
-
-      // Store user data in context (optional)
-      if (setAuthData) {
-        setAuthData({
-          user: data,
-          accessToken: token,
-          refreshToken: data.refreshToken, // Use the actual field name if available
-        });
-      }
-      const rolePaths = {
-        admin: "/admin",
-        driver: "/driver",
-        student: "/student",
-      };
-
-    await router.push(rolePaths[role as keyof typeof rolePaths] || "/unauthorized");
-    }catch (err: unknown) {
-      if (err instanceof Error) {
-        setError(err.message || "Something went wrong.");
-      } else {
-        setError("Something went wrong.");
-      }
+    if (!response.ok) {
+      throw new Error(data.message || 'Something went wrong');
     }
 
-
-   
-    
-    
-
-    
-  };
+    setMessage('A reset link has been sent to your email.');
+  } catch (err) {
+    setError(err.message || 'Failed to send reset link.');
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
-        <div>
+    <div>
       <link rel="stylesheet" href="/css/base.css" />
       <link rel="stylesheet" href="/dist/css/app.css" />
       <main className="grid w-full grow grid-cols-1 place-items-center">
@@ -106,15 +52,15 @@ const Login = () => {
             />
             <div className="mt-4">
               <h2 className="text-2xl font-semibold text-slate-600 dark:text-navy-100">
-                Welcome Back
+                ForgotPassword
               </h2>
-              <p className="text-slate-400 dark:text-navy-300">
+              {/* <p className="text-slate-400 dark:text-navy-300">
                 Please sign in to continue
-              </p>
+              </p> */}
             </div>
           </div>
           <div className="card mt-5 rounded-lg p-5 lg:p-7">
-          <form onSubmit={handleLogin}>
+          <form onSubmit={handleForgotPassword}>
             <label className="block">
               <span>Username:</span>
               <span className="relative mt-1.5 flex">
@@ -145,14 +91,14 @@ const Login = () => {
               </span>
             </label>
             <label className="mt-4 block">
-              <span>Password:</span>
+              <span>Email:</span>
               <span className="relative mt-1.5 flex">
                 <input
                   className="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:z-10 hover:border-slate-400 focus:z-10 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                   placeholder="Enter Password"
                   type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)} // Update state
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)} // Update state
                   required
                 />
                 <span className="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400 peer-focus:text-primary dark:text-navy-300 dark:peer-focus:text-accent">
@@ -182,14 +128,15 @@ const Login = () => {
                 <span className="line-clamp-1">Remember me</span>
               </label> */}
               <Link
-                href="/forgotpassword"
+                href="#"
                 className="text-xs text-slate-400 transition-colors line-clamp-1 hover:text-slate-800 focus:text-slate-800 dark:text-navy-300 dark:hover:text-navy-100 dark:focus:text-navy-100"
               >
-                Forgot Password?
+                Forgot Username?
               </Link>
             </div>
             <button   type="submit" className="btn mt-5 w-full bg-primary font-medium text-white hover:bg-primary-focus focus:bg-primary-focus active:bg-primary-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90">
-            {loading ? "Signing In..." : "Sign In"}
+            {/* {loading ? "Signing In..." : "Sign In"} */}
+            Send reset password link
             </button>
            
             </form>
@@ -199,7 +146,7 @@ const Login = () => {
       </main>
     
     </div>
-  );
-};
+  )
+}
 
-export default Login;
+export default ForgotPassword
