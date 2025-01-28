@@ -402,7 +402,7 @@ const page = () => {
                 </thead>
                 <tbody>
                   {/* {filteredData.map((item, index) => ( */}
-                  {filteredData.map((item, index) => {
+                  {currentEntries.map((item, index) => {
     const formattedDate = new Date(item.date_of_joining).toLocaleDateString('en-GB', {
       day: '2-digit',
       month: 'short',
@@ -415,7 +415,7 @@ const page = () => {
                       className="border-y border-transparent border-b-slate-200 dark:border-b-navy-500"
                     >
                       <td className="whitespace-nowrap rounded-l-lg px-4 py-3 sm:px-5">
-                        {index + 1}
+                        {indexOfFirstEntry+index + 1}
                       </td>
                       <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                         {item.first_name}

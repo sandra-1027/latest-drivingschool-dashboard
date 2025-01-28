@@ -598,7 +598,7 @@ const AdminProfile = () => {
   const {state}=useAuth();
   const [activeTab, setActiveTab] = useState("account"); // Default to 'account'
   const [changePasswordData, setChangePasswordData] = useState({
-    password: "",
+    // password: "",
     new_password: "",
     confirm_password: "",
   });
@@ -613,7 +613,7 @@ const AdminProfile = () => {
     city: "",
     zip_code: "",
     userfile:"",
-    // user_photo:'',
+    user_photo:"",
   });
   
   const [showPassword, setShowPassword] = useState(false);
@@ -703,15 +703,22 @@ const AdminProfile = () => {
       // }
       if (userData.userfile) {
         formData.append("userfile", userData.userfile); // Send the actual file
+        // console.log('Uploading file:', userData.userfile);
+        console.log("FormData preview:");
+        formData.forEach((value, key) => {
+          console.log(`${key}:`, value);
+        });
+  
+
+
+      }else {
+        console.log('No file provided for upload.');
       }
      
 
       console.log('submitting formdata', Object.fromEntries(formData.entries()))
 
-      formData.forEach((value, key) => {
-        console.log(`${key}:`, value);
-      });
-
+      
       try {
         setIsSubmitting(true);
       const response = await fetch(`/api/admin/member/profile_update`, {
@@ -760,28 +767,43 @@ const AdminProfile = () => {
  
  
   const handlePasswordChange = async (e: React.FormEvent<HTMLFormElement>) => {
+    // setLoading(true);
     e.preventDefault();
-    // setFormStatus({ ...formStatus, isSubmitting: true, message: "", error: "" });
-    setLoading(true);
-    setError('');
+    setIsSubmitting(true);
+    setMessage("");
+    setError("");
     setSuccess(false);
-  
+    
+   // Input validation
+  if (!changePasswordData.new_password || !changePasswordData.confirm_password) {
+    setMessage("All fields are required.");
+    setIsSubmitting(false);
+    return;
+  }
+  if (changePasswordData.new_password.length < 6) {
+    setMessage("New password must be at least 6 characters long.");
+    setIsSubmitting(false);
+    return;
+  }
+
+
+
     if (changePasswordData.new_password !== changePasswordData.confirm_password) {
-      // setFormStatus({ ...formStatus, error: "Passwords do not match." });
-      setError('Passwords do not match.');
+     
+      setMessage("Passwords do not match!");
+      setIsSubmitting(false);
       return;
     }
-  
     try {
       const response = await fetch("/api/admin/member/change_password", {
         method: "POST",
         // headers: { "Content-Type": "application/json" },
         headers: {
-          authorizations: state?.accessToken ?? "",
+          Authorizations: state?.accessToken ?? "",
           api_key: "10f052463f485938d04ac7300de7ec2b",
         },
         body: JSON.stringify({
-          password: changePasswordData.password,
+          // password: changePasswordData.password,
           new_password: changePasswordData.new_password,
           confirm_password: changePasswordData.confirm_password,
         }),
@@ -790,18 +812,24 @@ const AdminProfile = () => {
       const result = await response.json();
   console.log(result,'changepassword')
   if (!response.ok) {
+    setError(result.msg || "Failed to update password. Try again.");
     throw new Error(result.msg || "Failed to update password.");
   }
 
   setSuccess(true);
-     
+  
+  setChangePasswordData({
+    new_password: "",
+    confirm_password: "",
+  });
+
     } catch (err: any) {
-      // setFormStatus({ ...formStatus, error: err.message });
+      
       console.error('Error during API call:', err);
-      setError('An error occurred while changing password.');
+      setError("Failed to update password. Try again.");
     } finally {
-      // setFormStatus({ ...formStatus, isSubmitting: false });
-      setIsSubmitting('')
+     
+      setIsSubmitting(false);
     }
   };
 
@@ -824,14 +852,12 @@ const AdminProfile = () => {
   //     }
   
   //     const reader = new FileReader();
-  //     reader.onloadend = () => {
-  //       setProfileImage(reader.result?.toString() ?? null);
-  //       setUserData((prevData) => ({
-  //         ...prevData,
-  //         user_photo: reader.result?.toString() ?? "",
-  //       }));
-  //     };
-  //     reader.readAsDataURL(file);
+  //     reader.onloadend = () => 
+  //       setProfileImage(reader.result as string);
+  // reader.readAsDataURL(file);
+  //       setUserData((prevData) => ({...prevData,userfile: file}));
+  // setImageChanged(true);
+      
   //   }
   // };
   
@@ -856,10 +882,15 @@ const AdminProfile = () => {
   //     // Add the file to user data for submission
   //     setUserData((prevData) => ({
   //       ...prevData,
-  //       user_photo: file, // Store the file, not the base64 string
+  //       userfile: file, // Store the file, not the base64 string
   //     }));
   //   }
   // };
+
+
+
+
+
   
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -869,8 +900,9 @@ const AdminProfile = () => {
         setProfileImage(reader.result as string);
       };
       reader.readAsDataURL(file);
-      setUserData((prevData) => (prevData ? { ...prevData, userfile: file } : null)); // Store the file in formData
-      setImageChanged(true); // Set the image change flag to true
+      setUserData((prevData) => (prevData ? { ...prevData, userfile: file } : null)); 
+      setImageChanged(true); 
+     
     }
   };
 
@@ -1243,7 +1275,7 @@ const AdminProfile = () => {
                         className="mask is-squircle"
                         // src="/images/200x200.png"
                         // src= "/profile.png"
-                        src={`https://our-demos.com/n/drivingschool_api/assets/images/documents/${userData.userfile}`}
+                        src={`https://our-demos.com/n/drivingschool_api/assets/images/documents/${userData.user_photo}`}
                         
                         // alt="avatar"
                       />

@@ -160,7 +160,7 @@ const Admission = () => {
      
       if (selectedServices) {
         newFilteredData = newFilteredData.filter(
-          (item) => item.service_name === selectedServices
+          (item) => item.mobile === selectedServices
         );
       }
       if (selectedStatus) {
@@ -180,20 +180,37 @@ const Admission = () => {
       const searchFilteredData = costData.filter(
         (item) =>
           item.service_name.toLowerCase().includes(value.toLowerCase()) ||
-          item.vehicle_type.toLowerCase().includes(value.toLowerCase()) ||
+          item.mobile.toLowerCase().includes(value.toLowerCase()) ||
+          item.added_date.toLowerCase().includes(value.toLowerCase()) ||
+          item.email.toLowerCase().includes(value.toLowerCase()) ||
           item.status.toLowerCase().includes(value.toLowerCase())
       );
     
       setFilteredData(searchFilteredData); // Update filtered data in real-time
     };
     
- 
+    const handleFilterSubmit = (e: React.FormEvent) => {
+      e.preventDefault(); // Prevent page reload
+      const newFilteredData = applyFilters();
+      setFilteredData(newFilteredData); // Update filtered data
+
+      setCurrentPage(1); // Reset pagination to the first page
+    };
+    
+    const handleReset = () => {
+      setSearchTerm("");
+      setSelectedServices("");
+      setSelectedStatus("");
+      setFilteredData(costData); // Reset to original data
+
+      setCurrentPage(1); // Reset pagination to the first page
+    };
+
+
+
     const indexOfLastEntry = currentPage * entriesPerPage;
     const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
-    const currentEntries = filteredData.slice(
-      indexOfFirstEntry,
-      indexOfLastEntry
-    );
+    const currentEntries = filteredData.slice(indexOfFirstEntry, indexOfLastEntry);
     const totalEntries = filteredData.length;
     const totalPages = Math.ceil(totalEntries / entriesPerPage);
    
@@ -225,6 +242,81 @@ const Admission = () => {
   </div>
 
  
+  <div className="grid grid-cols-1 gap-4 sm:gap-5 lg:gap-6 mb-4" >
+  <div className="card px-4 pb-4 sm:px-5 pt-4">
+  <div className="p-4 rounded-lg bg-slate-100 dark:bg-navy-800">
+    <form>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        {/* Driver Name Select */}
+        <div className='flex-1'>
+          <label
+            htmlFor="serviceName"
+            className="block text-sm font-medium text-slate-700 dark:text-navy-100"
+          >
+            Mobile
+          </label>
+          <select
+            id="mobile"
+            name="mobile"
+            value={selectedServices}
+            onChange={(e) => setSelectedServices(e.target.value)}
+            className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+          >
+            <option value="">select a mobile</option>
+            {costData.map((admission) => (
+    <option key={admission.id} value={admission.mobile}>
+      {admission.mobile}
+    </option>
+  ))}
+          </select>
+        </div>
+        {/* Status Select */}
+        {/* <div className='flex-1'>
+          <label
+            htmlFor="status"
+            className="block text-sm font-medium text-slate-700 dark:text-navy-100"
+          >
+            Status
+          </label>
+          <select
+            id="status"
+            name="status"
+            value={selectedStatus}
+            onChange={(e) => setSelectedStatus(e.target.value)}
+            className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+          >
+            <option value="">All Status</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </div> */}
+        <div className='flex-1 mt-6'>
+        <button
+          type="submit"
+          onClick={handleFilterSubmit}
+          className="inline-flex justify-center rounded-md border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+        ><i className='fa fa-filter' style={{marginTop:'3px',marginRight:'3px'}}></i>
+          Filter
+        </button>
+        <button
+          type="button"
+          onClick={handleReset}
+          className="ml-4 inline-flex justify-center rounded-md border border-gray-300 bg-warning py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-warningfocus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+        ><i className='fa fa-refresh' style={{marginTop:'3px',marginRight:'3px'}}></i>
+          Reset
+        </button>
+        </div>
+      </div>
+     
+    </form>
+  </div>
+    </div>
+  </div>
+
+
+
+
+
 
   <div className="flex items-center justify-between py-5 lg:py-6">
                 <span className="text-lg font-medium text-slate-800 dark:text-navy-50">
@@ -286,10 +378,10 @@ const Admission = () => {
               </tr>
             </thead>
             <tbody>
-            {filteredData.map((item, index) => (
+            {currentEntries.map((item, index) => (
               <tr key={item.id} className="border-y border-transparent border-b-slate-200 dark:border-b-navy-500">
                 <td className="whitespace-nowrap rounded-l-lg px-4 py-3 sm:px-5">
-                {index + 1}
+                {indexOfFirstEntry+index + 1}
                 </td>
                 <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 {item.user_name}
@@ -459,10 +551,10 @@ const Admission = () => {
 {showmodal && (
   modalMode === 'edit' ? (
     <Edit
-      showModal={showmodal}
-      toggleModal={() => togglemodal('add')}  // Correct the mode here if you want to switch to 'edit'
+      showmodal={showmodal}
+      togglemodal={() => togglemodal('add')}  // Correct the mode here if you want to switch to 'edit'
       admissionData={editedAdmission}
-      onSave={(updatedBranch) => {
+      onSave={(updatedAdmission) => {
         setAdmissionData((prevData) => prevData.map((admission) =>
           admission.id === updatedAdmission.id ? updatedBranch : admission
         ));

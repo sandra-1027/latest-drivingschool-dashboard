@@ -798,26 +798,30 @@ const page = () => {
             {currentEntries.map((item, index) => (
               <tr key={item.id} className="border-y border-transparent border-b-slate-200 dark:border-b-navy-500">
                 <td className="whitespace-nowrap rounded-l-lg px-4 py-3 sm:px-5">
-                {index + 1}
+                {indexOfFirstEntry+index + 1}
                 </td>
                 <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 {item.vehicle_no}
                 </td>
                 <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                {/* {item.rc_document} */}
-                NA
+                {item.rc_document ? (
+               <a href={`https://our-demos.com/n/drivingschool_api/assets/images/rc_documents/${item.rc_document}`} target="_blank" rel="noopener noreferrer">
+  <i className="text-center fa fa-drivers-license"></i>
+</a> ) : (
+    <span>NA</span>
+  )}
                 </td>
                 <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 {item.rc_expiry_date}
                 </td>
-                <td className="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
+                <td className="whitespace-nowrap  px-4 py-3 sm:px-5">
                 {item.pucc_expiry_date}
                 </td>
 
-                <td className="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
+                <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 {item.insurance_expiry_date}
                 </td>
-                <td className="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
+                <td className="whitespace-nowrap  px-4 py-3 sm:px-5">
                 {item.tax_expiry_date}
                 </td>
                 <td className="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
@@ -825,7 +829,7 @@ const page = () => {
                       <div className="flex justify-center space-x-2">
                         <button 
                         onClick={() => togglemodal('edit', item)}
-                        className="btn size-8 p-0 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25">
+                        className="btn size-8 p-0  bg-primary hover:bg-primary-focus text-white">
                           <i className="fa fa-edit" />
                         </button>
                         {/* <button className="btn size-8 p-0 text-error hover:bg-error/20 focus:bg-error/20 active:bg-error/25">
