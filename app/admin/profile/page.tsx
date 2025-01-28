@@ -1,22 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 "use client";
 import { useAuth } from "@/app/context/AuthContext";
 import withAuth from "@/hoc/withAuth";
@@ -30,8 +11,11 @@ import {
 } from "react-icons/fa";
 
 import { IoEye, IoEyeOff } from "react-icons/io5";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const AdminProfile = () => {
-  const {state}=useAuth();
+  const { state } = useAuth();
   const [activeTab, setActiveTab] = useState("account"); // Default to 'account'
   const [changePasswordData, setChangePasswordData] = useState({
     // password: "",
@@ -40,18 +24,8 @@ const AdminProfile = () => {
   });
   const [imageChanged, setImageChanged] = useState(false);
   const [profileImage, setProfileImage] = useState<string | null>(null);
-  // const [userData, setUserData] = useState({
-  //   first_name: "",
-  //  second_name: "",
-  //   email: "",
-  //  mobile: "",
-  //   address: "",
-  //   city: "",
-  //   zip_code: "",
-  //   userfile:"",
-  //   user_photo:"",
-  // });
   
+
   const [userData, setUserData] = useState<{
     first_name: string;
     second_name: string;
@@ -73,13 +47,13 @@ const AdminProfile = () => {
     userfile: null, // Default to null for file
     user_photo: "",
   });
-  
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState("");
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   //  const [imagePreview, setImagePreview] = useState<string>('');
@@ -90,93 +64,82 @@ const AdminProfile = () => {
   const toggleConfirmPasswordVisibility = () =>
     setShowConfirmPassword(!showConfirmPassword);
 
-
-
-
-    const fetchProfileData = async () => {
-      try {
-
-        const response = await fetch('/api/admin/member/my_profile', {
-          method: 'POST',
-          headers: {
-             'authorizations': state?.accessToken ?? '', 
-            'api_key': '10f052463f485938d04ac7300de7ec2b',  // Make sure the API key is correct
-          },
-          body: JSON.stringify({ /* request body */ }),
-        });
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(`HTTP error! Status: ${response.status} - ${errorData.message || 'Unknown error'}`);
-        }
-        
-        const data = await response.json();
-     
-        if (data.success) {
-          setUserData(data.data || []);
-         
-          
-        } else {
-          // console.error("API error:", data.msg || "Unknown error");
-        }
-      } catch (error) {
-        console.error("Fetch error:", error);
+  const fetchProfileData = async () => {
+    try {
+      const response = await fetch("/api/admin/member/my_profile", {
+        method: "POST",
+        headers: {
+          authorizations: state?.accessToken ?? "",
+          api_key: "10f052463f485938d04ac7300de7ec2b", // Make sure the API key is correct
+        },
+        body: JSON.stringify({
+          /* request body */
+        }),
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          `HTTP error! Status: ${response.status} - ${
+            errorData.message || "Unknown error"
+          }`
+        );
       }
-    };
-    // };
-    useEffect(() => {
-      fetchProfileData ();
+
+      const data = await response.json();
+
+      if (data.success) {
+        setUserData(data.data || []);
+      } else {
+        // console.error("API error:", data.msg || "Unknown error");
+      }
+    } catch (error) {
+      console.error("Fetch error:", error);
+    }
+  };
+  // };
+  useEffect(() => {
+    fetchProfileData();
   }, [state]);
 
-
-
- const handleInputChange = (e) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUserData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
   };
- 
- 
 
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
-   
+
     setLoading(true);
-    setError('');
+    setError("");
     setSuccess(false);
-   
-      
-      const formData = new FormData();
-      formData.append("first_name", userData.first_name);
-      formData.append("second_name", userData.second_name);
-      formData.append("email", userData.email);
-      formData.append("mobile", userData.mobile);
-      formData.append("address", userData.address);
-      formData.append("city", userData.city);
-      formData.append("zip_code", userData.zip_code);
 
-     
-      if (userData.userfile) {
-        formData.append("userfile", userData.userfile); // Send the actual file
-        // console.log('Uploading file:', userData.userfile);
-        console.log("FormData preview:");
-        formData.forEach((value, key) => {
-          console.log(`${key}:`, value);
-        });
-  
+    const formData = new FormData();
+    formData.append("first_name", userData.first_name);
+    formData.append("second_name", userData.second_name);
+    formData.append("email", userData.email);
+    formData.append("mobile", userData.mobile);
+    formData.append("address", userData.address);
+    formData.append("city", userData.city);
+    formData.append("zip_code", userData.zip_code);
 
+    if (userData.userfile) {
+      formData.append("userfile", userData.userfile); // Send the actual file
+      // console.log('Uploading file:', userData.userfile);
+      console.log("FormData preview:");
+      formData.forEach((value, key) => {
+        console.log(`${key}:`, value);
+      });
+    } else {
+      console.log("No file provided for upload.");
+    }
 
-      }else {
-        console.log('No file provided for upload.');
-      }
-     
+    console.log("submitting formdata", Object.fromEntries(formData.entries()));
 
-      console.log('submitting formdata', Object.fromEntries(formData.entries()))
-
-      
-      try {
-        setIsSubmitting(true);
+    try {
+      setIsSubmitting(true);
       const response = await fetch(`/api/admin/member/profile_update`, {
         method: "POST",
         headers: {
@@ -185,33 +148,36 @@ const AdminProfile = () => {
         },
         body: formData,
       });
-  
+
       const data = await response.json();
 
-      console.log(data,'Backend update response')
-    
+      console.log(data, "Backend update response");
 
       if (data.success) {
-      
-        setSuccess(true);
+        toast.success("Profile updated successfully!", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+        });
         fetchProfileData();
       } else {
-        
-        setError(data.msg || 'Failed to update profile.');
-        console.log('Error Messages:', data.error_msgs);
+        toast.error(data.msg || "Failed to update profile.", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+        });
       }
     } catch (err: any) {
-     
-      console.error('Error during API call:', err);
-      setError('Update failed!');
+      console.error("Error during API call:", err);
+      toast.error("Something went wrong. Please try again.", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+      });
     } finally {
-     
-      setIsSubmitting(false);
+      setLoading(false);
     }
   };
-  
- 
-  
 
   const handlePasswordInputChange = (e) => {
     const { name, value } = e.target;
@@ -220,34 +186,41 @@ const AdminProfile = () => {
       [name]: value,
     }));
   };
- 
- 
+
   const handlePasswordChange = async (e: React.FormEvent<HTMLFormElement>) => {
-    // setLoading(true);
+    setLoading(true);
     e.preventDefault();
-    setIsSubmitting(true);
-    setMessage("");
-    setError("");
-    setSuccess(false);
-    
-   // Input validation
-  if (!changePasswordData.new_password || !changePasswordData.confirm_password) {
-    setMessage("All fields are required.");
-    setIsSubmitting(false);
-    return;
-  }
-  if (changePasswordData.new_password.length < 6) {
-    setMessage("New password must be at least 6 characters long.");
-    setIsSubmitting(false);
-    return;
-  }
+    // setIsSubmitting(true);
+    // setMessage("");
+    // setError("");
+    // setSuccess(false);
 
+    // Input validation
+    if (
+      !changePasswordData.new_password ||
+      !changePasswordData.confirm_password
+    ) {
+      // setMessage("All fields are required.");
+      toast.error("All fields are required!");
+      setLoading(false);
+      // setIsSubmitting(false);
+      return;
+    }
+    if (changePasswordData.new_password.length < 6) {
+      // setMessage("New password must be at least 6 characters long.");
+      // setIsSubmitting(false);
+      toast.error("New password must be at least 6 characters long.");
+      setLoading(false);
+      return;
+    }
 
-
-    if (changePasswordData.new_password !== changePasswordData.confirm_password) {
-     
-      setMessage("Passwords do not match!");
-      setIsSubmitting(false);
+    if (
+      changePasswordData.new_password !== changePasswordData.confirm_password
+    ) {
+      // setMessage("Passwords do not match!");
+      // setIsSubmitting(false);
+      toast.error("Passwords do not match!");
+      setLoading(false);
       return;
     }
     try {
@@ -264,56 +237,35 @@ const AdminProfile = () => {
           confirm_password: changePasswordData.confirm_password,
         }),
       });
-  
+
       const result = await response.json();
-  console.log(result,'changepassword')
-  if (!response.ok) {
-    setError(result.msg || "Failed to update password. Try again.");
-    throw new Error(result.msg || "Failed to update password.");
-  }
+      console.log(result, "changepassword");
+      if (!response.ok) {
+        // setError(result.msg || "Failed to update password. Try again.");
+        // throw new Error(result.msg || "Failed to update password.");
+        toast.error(result.msg || "Failed to change password!");
+      } else {
+        toast.success("Password changed successfully!");
+      }
 
-  setSuccess(true);
-  
-  setChangePasswordData({
-    new_password: "",
-    confirm_password: "",
-  });
+      setSuccess(true);
 
+      setChangePasswordData({
+        new_password: "",
+        confirm_password: "",
+      });
     } catch (err: any) {
-      
-      console.error('Error during API call:', err);
-      setError("Failed to update password. Try again.");
+      toast.error("Error during password change!");
+      // console.error('Error during API call:', err);
+      // setError("Failed to update password. Try again.");
     } finally {
-     
-      setIsSubmitting(false);
+      setLoading(false);
+      // setIsSubmitting(false);
     }
   };
 
-  
   const showAccount = () => setActiveTab("account");
   const showSecurity = () => setActiveTab("security");
-
-
-  
-  // const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const file = e.target.files?.[0];
-  //   if (file) {
-  //     const reader = new FileReader();
-  //     reader.onload = () => {
-  //       setProfileImage(reader.result as string);
-  //     };
-  //     reader.readAsDataURL(file);
-  //     setUserData((prevData) => (prevData ? { ...prevData, userfile: file } : null)); 
-  //     setImageChanged(true); 
-     
-  //   }
-  // };
-
-  
-  // const handleRemoveImage= ()=>{
-  //   setProfileImage(null);
-  //   setUserData((prevData)=>(prevData?{...prevData,userfile:null}:null));
-  // }
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -322,18 +274,18 @@ const AdminProfile = () => {
         console.error("Invalid file type. Please upload an image.");
         return;
       }
-  
+
       const reader = new FileReader();
       reader.onload = () => {
         setProfileImage(reader.result as string);
       };
       reader.readAsDataURL(file);
-  
+
       setUserData((prevData) => ({ ...prevData, userfile: file }));
       setImageChanged(true);
     }
   };
-  
+
   const handleRemoveImage = () => {
     setProfileImage(null);
     setUserData((prevData) => ({ ...prevData, userfile: null }));
@@ -377,6 +329,7 @@ const AdminProfile = () => {
           <li> Profile</li>
         </ul>
       </div>
+
       <div className="grid grid-cols-12 gap-4 sm:gap-5 lg:gap-6">
         <div className="col-span-12 lg:col-span-4">
           <div className="card p-4 sm:p-5">
@@ -388,109 +341,119 @@ const AdminProfile = () => {
                 <h3 className="text-base font-medium text-slate-700 dark:text-navy-100">
                   Admin
                 </h3>
-
               </div>
             </div>
-{/* social icons */}
+            {/* social icons */}
             <div>
-            <div className="flex space-x-4 mt-2">
-                  <button className="btn size-8 m-1 rounded-full bg-primary/10 p-0 font-medium text-primary hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25">
-                    <FaFacebookSquare className="size-4" />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-                    />
-                  </button>
+              <div className="flex space-x-4 mt-2">
+                <button className="btn size-8 m-1 rounded-full bg-primary/10 p-0 font-medium text-primary hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25">
+                  <FaFacebookSquare className="size-4" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+                  />
+                </button>
 
-                  <div>
-          <h3 className="font-normal text-slate-700 line-clamp-1 dark:text-navy-100">
-            Facebook
-          </h3>
-         
-          <p className="mt-0.5 text-xs line-clamp-1 text-primary">
-          <Link href=""
-          onClick={()=>window.open(`http://facebook.com`,'_blank')}>
-         http://facebook.com 
-         </Link>
-          </p>
-          
-        </div>
-        </div>
+                <div>
+                  <h3 className="font-normal text-slate-700 line-clamp-1 dark:text-navy-100">
+                    Facebook
+                  </h3>
 
-        <div className="flex space-x-4 mt-2">
-                  <button className="btn size-8 m-1 rounded-full bg-success/10 p-0 font-medium text-success hover:bg-success/20 focus:bg-success/20 active:bg-success/25">
-                    <FaTwitter className="size-4" />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-                    />
-                  </button>
-                  <div>
-          <h3 className="font-normal text-slate-700 line-clamp-1 dark:text-navy-100">
-           Twitter
-          </h3>
-          <p className="mt-0.5 text-xs line-clamp-1 text-primary">
-          <Link href=""
-          onClick={()=>window.open(`https://www.twitter.com`,'_blank')}>
-          https://www.twitter.com/
-          </Link>
-          </p>
-        </div>
-        </div>
-        <div className="flex space-x-4 mt-2">
-                  <button className="btn size-8 m-1 rounded-full bg-info/10 p-0 font-medium text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25">
-                    <FaLinkedin className="size-4" />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-                    />
-                  </button>
-                  <div>
-          <h3 className="font-normal text-slate-700 line-clamp-1 dark:text-navy-100">
-          Linkedin
-          </h3>
-          <p className="mt-0.5 text-xs line-clamp-1 text-primary">
-          <Link href=""
-          onClick={()=>window.open(` https://www.linkedin.com/`,'_blank')}>
-          https://www.linkedin.com/
-          </Link>
-          </p>
-        </div>
-                  </div>
-
-                  <div className="flex space-x-4 mt-2">
-                  <button className="btn size-8 m-1 rounded-full bg-secondary/10 p-0 font-medium text-secondary hover:bg-secondary/20 focus:bg-secondary/20 active:bg-secondary/25">
-                    <FaInstagram className="size-4" />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-                    />
-                  </button>
-                  <div>
-          <h3 className="font-normal text-slate-700 line-clamp-1 dark:text-navy-100">
-          Instagram
-          </h3>
-          <p className="mt-0.5 text-xs line-clamp-1 text-primary">
-          <Link href=""
-          onClick={()=>window.open(` https://www.instagram.com`,'_blank')}>
-          https://www.instagram.com/
-          </Link>
-          </p>
-        </div>
-
-</div>
-
+                  <p className="mt-0.5 text-xs line-clamp-1 text-primary">
+                    <Link
+                      href=""
+                      onClick={() =>
+                        window.open(`http://facebook.com`, "_blank")
+                      }
+                    >
+                      http://facebook.com
+                    </Link>
+                  </p>
                 </div>
+              </div>
 
+              <div className="flex space-x-4 mt-2">
+                <button className="btn size-8 m-1 rounded-full bg-success/10 p-0 font-medium text-success hover:bg-success/20 focus:bg-success/20 active:bg-success/25">
+                  <FaTwitter className="size-4" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+                  />
+                </button>
+                <div>
+                  <h3 className="font-normal text-slate-700 line-clamp-1 dark:text-navy-100">
+                    Twitter
+                  </h3>
+                  <p className="mt-0.5 text-xs line-clamp-1 text-primary">
+                    <Link
+                      href=""
+                      onClick={() =>
+                        window.open(`https://www.twitter.com`, "_blank")
+                      }
+                    >
+                      https://www.twitter.com/
+                    </Link>
+                  </p>
+                </div>
+              </div>
+              <div className="flex space-x-4 mt-2">
+                <button className="btn size-8 m-1 rounded-full bg-info/10 p-0 font-medium text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25">
+                  <FaLinkedin className="size-4" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+                  />
+                </button>
+                <div>
+                  <h3 className="font-normal text-slate-700 line-clamp-1 dark:text-navy-100">
+                    Linkedin
+                  </h3>
+                  <p className="mt-0.5 text-xs line-clamp-1 text-primary">
+                    <Link
+                      href=""
+                      onClick={() =>
+                        window.open(` https://www.linkedin.com/`, "_blank")
+                      }
+                    >
+                      https://www.linkedin.com/
+                    </Link>
+                  </p>
+                </div>
+              </div>
 
+              <div className="flex space-x-4 mt-2">
+                <button className="btn size-8 m-1 rounded-full bg-secondary/10 p-0 font-medium text-secondary hover:bg-secondary/20 focus:bg-secondary/20 active:bg-secondary/25">
+                  <FaInstagram className="size-4" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+                  />
+                </button>
+                <div>
+                  <h3 className="font-normal text-slate-700 line-clamp-1 dark:text-navy-100">
+                    Instagram
+                  </h3>
+                  <p className="mt-0.5 text-xs line-clamp-1 text-primary">
+                    <Link
+                      href=""
+                      onClick={() =>
+                        window.open(` https://www.instagram.com`, "_blank")
+                      }
+                    >
+                      https://www.instagram.com/
+                    </Link>
+                  </p>
+                </div>
+              </div>
+            </div>
 
             <ul className="mt-6 space-y-1.5 font-inter font-medium">
               <li>
@@ -568,16 +531,9 @@ const AdminProfile = () => {
                       {isSubmitting ? "Updating..." : "Update"}
                     </button>
                   </div> */}
-
-             
                 </div>
 
-
-                {loading && <p>Loading...</p>}
-                {error && <p className="text-red-500">{error}</p>}
-                {success && <p className="text-green-500">updated successfully!</p>}
                 <div className="p-4 sm:p-5">
-                 
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <label className="block">
                       <span>First Name </span>
@@ -643,7 +599,6 @@ const AdminProfile = () => {
                         </span>
                       </span>
                     </label>
-
                   </div>
                   <div className="gap-4 sm:grid-cols-2">
                     <label className="block mt-2">
@@ -660,7 +615,7 @@ const AdminProfile = () => {
                       </span>
                     </label>
                   </div>
-                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <label className="block mt-2">
                       <span>City </span>
                       <span className="relative mt-1.5 flex">
@@ -689,103 +644,69 @@ const AdminProfile = () => {
                     </label>
                   </div>
 
-
-
-<div className="mb-4">
-          <label className="block mb-2 font-medium">User Photo</label>
-          <div className="w-32 h-32">
-            {profileImage ? (
-              <img
-                src={profileImage}
-                alt="Profile Preview"
-                className="w-full h-full object-cover rounded border"
-              />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center border rounded">
-               <img
-                        className="mask is-squircle"
-                        // src="/images/200x200.png"
-                        // src= "/profile.png"
-                        src={`https://our-demos.com/n/drivingschool_api/assets/images/documents/${userData.user_photo}`}
-                        
-                        // alt="avatar"
-                      />
-              </div>
-            )}
-            
-
-          </div>
-        </div>
-        {!profileImage && (
-               <div className="mb-4">
-               <label className="w-1/5 flex items-center justify-center border rounded p-2 cursor-pointer bg-blue-500 text-white">
-            Select Image
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-              className="hidden" // Hide the default file input
-            />
-          </label>
-            </div>
-            )}
-            {profileImage &&(
-              <>
-              <label className="cursor-pointer bg-primary hover:bg-primary-focus text-white font-bold py-2 px-4 rounded">
-              Change
-              <input
-                type="file"
-                accept="image/*"
-                // onChange={(e) =>
-                //   handleFileChange(e, setDocuments)
-                // }
-                onChange={handleImageUpload}
-                className="hidden"
-              />
-            </label>
-            <button
-              // onClick={() => handleRemove(setDocuments)}
-              onClick={handleRemoveImage}
-              className="outline-dark border-[1px] border-dark font-bold py-2 px-4 rounded"
-            >
-              Remove
-            </button>
-            </>
-            )}
-        {/* File Input for New Profile Photo */}
-        {/* <div className="mb-4">
-           <label className="w-1/5 flex items-center justify-center border rounded p-2 cursor-pointer bg-blue-500 text-white">
-        Select Image
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleImageUpload}
-          className="hidden" // Hide the default file input
-        />
-      </label>
-        </div> */}
-
-
-                 
-
+                  <div className="mb-4">
+                    <label className="block mb-2 font-medium">User Photo</label>
+                    <div className="w-32 h-32">
+                      {profileImage ? (
+                        <img
+                          src={profileImage}
+                          alt="Profile Preview"
+                          className="w-full h-full object-cover rounded border"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center border rounded">
+                          <img
+                            className="mask is-squircle"
+                            src={`https://our-demos.com/n/drivingschool_api/assets/images/documents/${userData.user_photo}`}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  {!profileImage && (
+                    <div className="mb-4">
+                      <label className="w-1/5 flex items-center justify-center border rounded p-2 cursor-pointer bg-blue-500 text-white">
+                        Select Image
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageUpload}
+                          className="hidden" // Hide the default file input
+                        />
+                      </label>
+                    </div>
+                  )}
+                  {profileImage && (
+                    <>
+                      <label className="cursor-pointer bg-primary hover:bg-primary-focus text-white font-bold py-2 px-4 rounded">
+                        Change
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageUpload}
+                          className="hidden"
+                        />
+                      </label>
+                      <button
+                        onClick={handleRemoveImage}
+                        className="outline-dark border-[1px] border-dark font-bold py-2 px-4 rounded"
+                      >
+                        Remove
+                      </button>
+                    </>
+                  )}
 
                   <div className="flex justify-end space-x-2">
                     <button
                       className="btn min-w-[7rem] rounded-full bg-primary font-medium text-white hover:bg-primary-focus focus:bg-primary-focus active:bg-primary-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90"
                       type="submit"
                       disabled={isSubmitting}
-                      >
-                      {isSubmitting ? "Updating..." : "Update"}
+                    >
+                      Update
                     </button>
                   </div>
                   <div className="my-7 h-px bg-slate-200 dark:bg-navy-500" />
                 </div>
-
-             
-                  
-                
-               
-
               </form>
             )}
             {activeTab === "security" && (
@@ -805,75 +726,82 @@ const AdminProfile = () => {
                       {isSubmitting ? "Saving..." : "Save"}
                     </button>
                   </div> */}
-
-                 
                 </div>
 
-                {/* {loading && <p>Loading...</p>} */}
-                {error && <p className="text-red-500">{error}</p>}
-                {success && <p className="text-green-500">password Changed successfully!</p>}
                 <div className="p-4 sm:p-5">
                   <div className="mb-4">
-                    {/* <form onSubmit={handlePasswordChange} className="space-y-4"> */}
-                      
-                      <div className="relative">
-                        <label className="block">New Password:</label>
-                        <input
-                          type={showPassword ? "text" : "password"}
-                          name="new_password"
-                          className="form-input peer mt-1.5 w-full rounded-full border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                          placeholder="Enter new password"
-                          value={changePasswordData.new_password}
+                    <div className="relative">
+                      <label className="block">New Password:</label>
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        name="new_password"
+                        className="form-input peer mt-1.5 w-full rounded-full border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                        placeholder="Enter new password"
+                        value={changePasswordData.new_password}
                         onChange={handlePasswordInputChange}
-                          required
-                        />
-                        <span
-                          className="absolute inset-y-0 right-3 flex items-center cursor-pointer text-gray-500 dark:text-gray-400 mt-4"
-                          onClick={togglePasswordVisibility}
-                        >
-                          {showPassword ? <IoEye /> : <IoEyeOff />}
-                        </span>
-                      </div>
-                      <div className="relative">
-                        <label className="block mt-1.5">Confirm New Password:</label>
-                        <input
-                          type={showConfirmPassword ? "text" : "password"}
-                          name="confirm_password"
-                          // className="w-full rounded border-gray-300 p-2 dark:bg-gray-800 dark:text-gray-200"
-                          className="form-input peer mt-1.5 w-full rounded-full border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                          placeholder="Confirm new password"
-                          value={changePasswordData.confirm_password}
-                          onChange={handlePasswordInputChange}
-                          required
-                        />
-                        <span
-                          className="absolute inset-y-0 right-3 flex items-center cursor-pointer text-gray-500 dark:text-gray-400 mt-4"
-                          onClick={toggleConfirmPasswordVisibility}
-                        >
-                          {showConfirmPassword ? <IoEye /> : <IoEyeOff />}
-                        </span>
-                      </div>
-                      {message && (
-                        <p className="text-sm text-red-600">{message}</p>
-                      )}
+                        required
+                      />
+                      <span
+                        className="absolute inset-y-0 right-3 flex items-center cursor-pointer text-gray-500 dark:text-gray-400 mt-4"
+                        onClick={togglePasswordVisibility}
+                      >
+                        {showPassword ? <IoEye /> : <IoEyeOff />}
+                      </span>
+                    </div>
+                    <div className="relative">
+                      <label className="block mt-1.5">
+                        Confirm New Password:
+                      </label>
+                      <input
+                        type={showConfirmPassword ? "text" : "password"}
+                        name="confirm_password"
+                        className="form-input peer mt-1.5 w-full rounded-full border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                        placeholder="Confirm new password"
+                        value={changePasswordData.confirm_password}
+                        onChange={handlePasswordInputChange}
+                        required
+                      />
+                      <span
+                        className="absolute inset-y-0 right-3 flex items-center cursor-pointer text-gray-500 dark:text-gray-400 mt-4"
+                        onClick={toggleConfirmPasswordVisibility}
+                      >
+                        {showConfirmPassword ? <IoEye /> : <IoEyeOff />}
+                      </span>
+                    </div>
+                    {message && (
+                      <p className="text-sm text-red-600">{message}</p>
+                    )}
                     {/* </form> */}
                   </div>
 
                   <div className="flex justify-end space-x-2">
-                    
-                 
                     <button
                       className="btn min-w-[7rem] w-full rounded-full bg-primary font-medium text-white hover:bg-primary-focus focus:bg-primary-focus active:bg-primary-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90"
                       type="submit"
                       disabled={isSubmitting}
                     >
-                      {isSubmitting ? "Updating password...." : "Update Password"}
+                      Update Password
                     </button>
                   </div>
                   <div className="my-7 h-px bg-slate-200 dark:bg-navy-500" />
                 </div>
               </form>
             )}
+
+            {/* ToastContainer is necessary to render the toast notifications */}
+            <ToastContainer
+              position="top-center"
+              autoClose={5000}
+              hideProgressBar
+              style={{
+                width: "100%",
+                padding: "0 20px", // Optional, to give some padding on the sides
+              }}
+              toastStyle={{
+                width: "100%", // Make each toast full width
+                marginBottom: "10px", // Optional, adds spacing between toasts
+              }}
+            />
           </div>
         </div>
       </div>
