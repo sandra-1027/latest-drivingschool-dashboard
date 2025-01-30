@@ -12,6 +12,8 @@ type Service = {
   id: string;
   status: string;
   [key: string]: any;
+  description: string;
+  amount:string;
  
 };
 type ServiceData = {
@@ -520,8 +522,8 @@ const page = () => {
       toggleModal={() => togglemodal('add')}  // Correct the mode here if you want to switch to 'edit'
       serviceData={editedService}
       onSave={(updatedService) => {
-        setServiceData((prevData) => prevData.map((branch) =>
-          branch.id === updatedService.id ? updatedService : branch
+        setServiceData((prevData) => prevData.map((service) =>
+          service.id === updatedService.id ? updatedService : service
         ));
         togglemodal('add');  // Close modal after saving
       }}

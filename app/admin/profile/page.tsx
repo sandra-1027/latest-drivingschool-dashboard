@@ -36,6 +36,7 @@ const AdminProfile = () => {
     zip_code: string;
     userfile: File | null;
     user_photo: string;
+    user_name:string;
   }>({
     first_name: "",
     second_name: "",
@@ -44,6 +45,7 @@ const AdminProfile = () => {
     address: "",
     city: "",
     zip_code: "",
+    user_name:"",
     userfile: null, // Default to null for file
     user_photo: "",
   });
@@ -335,11 +337,15 @@ const AdminProfile = () => {
           <div className="card p-4 sm:p-5">
             <div className="flex items-center space-x-4">
               <div className="avatar size-14">
-                <img className="rounded-full" src="/profile.png" alt="avatar" />
+                <img className="rounded-full" 
+                // src="/profile.png" 
+                src={` https://our-demos.com/n/drivingschool_api/assets/images/documents/${userData.user_photo}`}
+                alt="avatar" />
               </div>
               <div>
                 <h3 className="text-base font-medium text-slate-700 dark:text-navy-100">
-                  Admin
+                  {/* Admin */}
+                  {userData.user_name}
                 </h3>
               </div>
             </div>

@@ -1162,8 +1162,29 @@ import { useRouter } from "next/navigation";
 const Topbar = () => {
    const { state, clearAuthData } = useAuth();
    const user = state?.user;
- const data= user?.data;
- const photo =data?.user_photo;
+const [userData, setUserData] = useState<{
+    first_name: string;
+    second_name: string;
+    email: string;
+    mobile: string;
+    address: string;
+    city: string;
+    zip_code: string;
+    userfile: File | null;
+    user_photo: string;
+    user_name:string;
+  }>({
+    first_name: "",
+    second_name: "",
+    email: "",
+    mobile: "",
+    address: "",
+    city: "",
+    zip_code: "",
+    user_name:"",
+    userfile: null, // Default to null for file
+    user_photo: "",
+  });
 // console.log(photo,'user profile data')
   const { toggleDrawer } = useDrawer();
    const router = useRouter();
@@ -1177,6 +1198,47 @@ const Topbar = () => {
     clearAuthData(); // Clear the context state as well
     router.push("/login");
   };
+
+
+
+  const fetchProfileData = async () => {
+    try {
+      const response = await fetch("/api/admin/member/my_profile", {
+        method: "POST",
+        headers: {
+          authorizations: state?.accessToken ?? "",
+          api_key: "10f052463f485938d04ac7300de7ec2b", // Make sure the API key is correct
+        },
+        body: JSON.stringify({
+          /* request body */
+        }),
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          `HTTP error! Status: ${response.status} - ${
+            errorData.message || "Unknown error"
+          }`
+        );
+      }
+
+      const data = await response.json();
+
+      if (data.success) {
+        setUserData(data.data || []);
+      } else {
+        // console.error("API error:", data.msg || "Unknown error");
+      }
+    } catch (error) {
+      console.error("Fetch error:", error);
+    }
+  };
+  // };
+  useEffect(() => {
+    fetchProfileData();
+  }, [state]);
+
+
   return (
     <>
       <nav className="header before:bg-white dark:before:bg-navy-750 print:hidden">
@@ -1773,10 +1835,10 @@ const Topbar = () => {
   <button id="profile-ref" className="avatar size-10">
     <img
       className="rounded-full"
-      src="/profile.png"
+      // src="/profile.png"
      
-      // src={photo}
-      alt="avatar"
+      src={` https://our-demos.com/n/drivingschool_api/assets/images/documents/${userData.user_photo}`}
+     
     />
     <span className="absolute right-0 size-3.5 rounded-full border-2 border-white bg-success dark:border-navy-700" />
   </button>
@@ -1789,7 +1851,8 @@ const Topbar = () => {
             href="#"
             className="text-base font-medium text-slate-700 hover:text-primary focus:text-primary dark:text-navy-100 dark:hover:text-accent-light dark:focus:text-accent-light"
           >
-           Admin
+           {/* Admin */}
+           {userData.user_name}
           </a>
          
         </div>

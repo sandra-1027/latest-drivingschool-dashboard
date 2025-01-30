@@ -5,7 +5,7 @@ import TextEditor from './TextEditor';
 
 
 
-interface Branch {
+interface Service {
     id: number;
     service_name: string;
     amount:string;
@@ -22,13 +22,13 @@ interface Branch {
 interface EditProps {
   showModal: boolean;
   toggleModal: () => void;
-  serviceData: Branch | null;
-  onSave: (updatedDriver: Branch) => void;
+  serviceData: Service | null;
+  onSave: (updatedDriver: Service) => void;
 }
 
 const Edit = ({ showModal, toggleModal, serviceData, onSave }: EditProps) => {
      const {state}=useAuth();
-  const [formData, setFormData] = useState<Branch | null>(null);
+  const [formData, setFormData] = useState<Service | null>(null);
 const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);

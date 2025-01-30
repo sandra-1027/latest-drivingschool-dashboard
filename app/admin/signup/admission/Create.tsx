@@ -1104,18 +1104,18 @@ const handleInsurenceChange =(e:React.ChangeEvent<HTMLInputElement>)=>{
 }
 
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, type: "photo" | "document") => {
-    const file = e.target.files?.[0];
-    if (file) {
-      if (type === "photo") {
-        setPhoto(file);
-        setImagePreview(URL.createObjectURL(file));
-      } else {
-        setDocuments(file);
-        setDocumentPreview(URL.createObjectURL(file));
-      }
-    }
-  };
+  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, type: "photo" | "document") => {
+  //   const file = e.target.files?.[0];
+  //   if (file) {
+  //     if (type === "photo") {
+  //       setPhoto(file);
+  //       setImagePreview(URL.createObjectURL(file));
+  //     } else {
+  //       setDocuments(file);
+  //       setDocumentPreview(URL.createObjectURL(file));
+  //     }
+  //   }
+  // };
   
 
   const handleRemove = (
