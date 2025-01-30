@@ -874,9 +874,7 @@
 
 import { useAuth } from "@/app/context/AuthContext";
 import React, { useEffect, useState } from "react";
-
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import Select from 'react-select';
 
 type CreateProps = {
   showmodal: boolean;
@@ -1164,7 +1162,7 @@ const handleInsurenceChange =(e:React.ChangeEvent<HTMLInputElement>)=>{
     }
   console.log('submitting formdata', Object.fromEntries(formData.entries()))
     try {
-      const response = await fetch("/api/admin/signup/admission", {
+      const response = await fetch("/api/staff/signup/admission", {
         method: "POST",
         headers: {
           authorizations: state?.accessToken ?? "",
@@ -1182,21 +1180,11 @@ const handleInsurenceChange =(e:React.ChangeEvent<HTMLInputElement>)=>{
         return;
       }
   
-      // alert("Admission added successfully!");
-      toast.success("Admission added successfully!", {
-                position: "top-center",
-                autoClose: 3000,
-                hideProgressBar: true,
-              });
+      alert("Admission added successfully!");
       togglemodal(); 
     } catch (error) {
       console.error("Error submitting form:", error);
-      // alert("An error occurred while adding the Admission.");
-      toast.error("Something went wrong. Please try again.", {
-              position: "top-center",
-              autoClose: 3000,
-              hideProgressBar: true,
-            });
+      alert("An error occurred while adding the Admission.");
     }
   };
   
@@ -1986,26 +1974,7 @@ onClick={() => setmobileOpen(!isOpen)} >
           
         </div>
         </form>
-
-
-
-           
       </div>
-
-       {/* ToastContainer is necessary to render the toast notifications */}
-       <ToastContainer
-              position="top-center"
-              autoClose={5000}
-              hideProgressBar
-              style={{
-                width: "100%",
-                padding: "0 20px", // Optional, to give some padding on the sides
-              }}
-              toastStyle={{
-                width: "100%", // Make each toast full width
-                marginBottom: "10px", // Optional, adds spacing between toasts
-              }}
-            />
     </div>
   );
 };

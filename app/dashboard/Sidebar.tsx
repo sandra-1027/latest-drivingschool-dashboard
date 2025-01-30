@@ -23,9 +23,6 @@ const Sidebar = () => {
     setIsSidebarExpanded(!isSidebarExpanded);
   };
 
-  // const handleSidebarVisibility = () => {
-  //   setIsSidebarVisible((prev) => !prev); // Toggle sidebar visibility
-  // };
   const handleSidebarVisibility = () => {
     setIsSidebarVisible(!isSidebarVisible); // Toggle sidebar visibility without 'prev'
   };
@@ -61,8 +58,7 @@ const Sidebar = () => {
     <Link href="/">
       <img
         className="size-11 transition-transform duration-500 ease-in-out hover:rotate-[360deg]"
-        // src="/images/app-logo.svg"
-        src="/logo.png"
+        src="/images/app-logo.svg"
         alt="logo"
       />
     </Link>
@@ -105,31 +101,7 @@ const Sidebar = () => {
       </svg>
       {/* </Link> */}
     </Link>
-   {/* site info*/}
-    <Link
-  href="/admin/settings/site-info"
-  data-tooltip="Site Information"
-  data-placement="right"
-  className="tooltip-main-sidebar flex size-11 items-center justify-center rounded-lg bg-primary/10 text-primary outline-none transition-colors duration-200 hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:bg-navy-600 dark:text-accent-light dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90"
->
 
-  <svg
-  xmlns="http://www.w3.org/2000/svg"
-  viewBox="0 0 24 24"
-  fill="none"
-  stroke="currentColor"
-  strokeWidth="2"
-  strokeLinecap="round"
-  strokeLinejoin="round"
-  className="size-6"
->
-  <circle cx="12" cy="12" r="10"></circle>
-  <path d="M2 12h20"></path>
-  <path d="M12 2a15.3 15.3 0 0 1 0 20"></path>
-  <path d="M12 2a15.3 15.3 0 0 0 0 20"></path>
-</svg>
-
-</Link>
  {/* Admission */}
  <Link
   href="/admin/signup/admission"
@@ -247,37 +219,6 @@ fill="currentColor"
         />
       </svg>
     </Link>
-    
-    {/* Signup */}
-    <Link
-      href="/admin/signup"
-      data-tooltip="signup"
-      data-placement="right"
-      // className="tooltip-main-sidebar flex size-11 items-center justify-center rounded-lg outline-none transition-colors duration-200 hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25"
-    className="tooltip-main-sidebar flex size-11 items-center justify-center rounded-lg bg-primary/10 text-primary outline-none transition-colors duration-200 hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:bg-navy-600 dark:text-accent-light dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90"
-    >
-      <svg
-        className="size-7"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          fillOpacity="0.5"
-          d="M14.2498 16C14.2498 17.5487 13.576 18.9487 12.4998 19.9025C11.5723 20.7425 10.3473 21.25 8.99976 21.25C6.10351 21.25 3.74976 18.8962 3.74976 16C3.74976 13.585 5.39476 11.5375 7.61726 10.9337C8.22101 12.4562 9.51601 13.6287 11.1173 14.0662C11.5548 14.1887 12.0185 14.25 12.4998 14.25C12.981 14.25 13.4448 14.1887 13.8823 14.0662C14.1185 14.6612 14.2498 15.3175 14.2498 16Z"
-          fill="currentColor"
-        />
-        <path
-          d="M17.75 9.00012C17.75 9.68262 17.6187 10.3389 17.3825 10.9339C16.7787 12.4564 15.4837 13.6289 13.8825 14.0664C13.445 14.1889 12.9813 14.2501 12.5 14.2501C12.0187 14.2501 11.555 14.1889 11.1175 14.0664C9.51625 13.6289 8.22125 12.4564 7.6175 10.9339C7.38125 10.3389 7.25 9.68262 7.25 9.00012C7.25 6.10387 9.60375 3.75012 12.5 3.75012C15.3962 3.75012 17.75 6.10387 17.75 9.00012Z"
-          fill="currentColor"
-        />
-        <path
-          fillOpacity="0.3"
-          d="M21.25 16C21.25 18.8962 18.8962 21.25 16 21.25C14.6525 21.25 13.4275 20.7425 12.5 19.9025C13.5763 18.9487 14.25 17.5487 14.25 16C14.25 15.3175 14.1187 14.6612 13.8825 14.0662C15.4837 13.6287 16.7787 12.4562 17.3825 10.9337C19.605 11.5375 21.25 13.585 21.25 16Z"
-          fill="currentColor"
-        />
-      </svg>
-    </Link>
     {/* Logout */}
     <button 
     onClick={handleLogout}
@@ -340,32 +281,6 @@ fill="currentColor"
     </Link>
    
  
-      {/* site info*/}
-      <Link
-  href="/admin/settings/site-info"
-  data-tooltip="Site Information"
-  data-placement="right"
-  className="tooltip-main-sidebar flex size-11 items-center justify-center rounded-lg bg-primary/10 text-primary outline-none transition-colors duration-200 hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:bg-navy-600 dark:text-accent-light dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90"
->
-
-  <svg
-  
-  xmlns="http://www.w3.org/2000/svg"
-  viewBox="0 0 24 24"
-  fill="none"
-  stroke="currentColor"
-  strokeWidth="2"
-  strokeLinecap="round"
-  strokeLinejoin="round"
-  className="size-6"
->
-  <circle cx="12" cy="12" r="10"></circle>
-  <path d="M2 12h20"></path>
-  <path d="M12 2a15.3 15.3 0 0 1 0 20"></path>
-  <path d="M12 2a15.3 15.3 0 0 0 0 20"></path>
-</svg>
-
-</Link>
    
  {/* Admission */}
  <Link
@@ -485,37 +400,7 @@ fill="currentColor"
         />
       </svg>
     </Link>
-    {/* Components */}
-    <Link
-      href="/admin/signup"
-      data-tooltip="signup"
-      data-placement="right"
-      // className="tooltip-main-sidebar flex size-11 items-center justify-center rounded-lg outline-none transition-colors duration-200 hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25"
-    className="tooltip-main-sidebar flex size-11 items-center justify-center rounded-lg bg-primary/10 text-primary outline-none transition-colors duration-200 hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:bg-navy-600 dark:text-accent-light dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90"
-    >
-      <svg
    
-        className="size-7"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          fillOpacity="0.5"
-          d="M14.2498 16C14.2498 17.5487 13.576 18.9487 12.4998 19.9025C11.5723 20.7425 10.3473 21.25 8.99976 21.25C6.10351 21.25 3.74976 18.8962 3.74976 16C3.74976 13.585 5.39476 11.5375 7.61726 10.9337C8.22101 12.4562 9.51601 13.6287 11.1173 14.0662C11.5548 14.1887 12.0185 14.25 12.4998 14.25C12.981 14.25 13.4448 14.1887 13.8823 14.0662C14.1185 14.6612 14.2498 15.3175 14.2498 16Z"
-          fill="currentColor"
-        />
-        <path
-          d="M17.75 9.00012C17.75 9.68262 17.6187 10.3389 17.3825 10.9339C16.7787 12.4564 15.4837 13.6289 13.8825 14.0664C13.445 14.1889 12.9813 14.2501 12.5 14.2501C12.0187 14.2501 11.555 14.1889 11.1175 14.0664C9.51625 13.6289 8.22125 12.4564 7.6175 10.9339C7.38125 10.3389 7.25 9.68262 7.25 9.00012C7.25 6.10387 9.60375 3.75012 12.5 3.75012C15.3962 3.75012 17.75 6.10387 17.75 9.00012Z"
-          fill="currentColor"
-        />
-        <path
-          fillOpacity="0.3"
-          d="M21.25 16C21.25 18.8962 18.8962 21.25 16 21.25C14.6525 21.25 13.4275 20.7425 12.5 19.9025C13.5763 18.9487 14.25 17.5487 14.25 16C14.25 15.3175 14.1187 14.6612 13.8825 14.0662C15.4837 13.6287 16.7787 12.4562 17.3825 10.9337C19.605 11.5375 21.25 13.585 21.25 16Z"
-          fill="currentColor"
-        />
-      </svg>
-    </Link>
     <button 
     onClick={handleLogout}
       data-tooltip="Logout"
@@ -540,97 +425,7 @@ fill="currentColor"
     </button>
   </div>
 
-   {/* Profile */}
-  {/* <div className="flex flex-col items-center space-y-3 py-3">
-   
-    <div id="profile-wrapper" className="flex">
-      <button id="profile-ref" className="avatar size-12">
-        <img
-          className="rounded-full"
-          src="/profile.png"
-          alt="avatar"
-        />
-        <span className="absolute right-0 size-3.5 rounded-full border-2 border-white bg-success dark:border-navy-700" />
-      </button>
-      <div id="profile-box" className="popper-root fixed">
-        <div className="popper-box w-64 rounded-lg border border-slate-150 bg-white shadow-soft dark:border-navy-600 dark:bg-navy-700">
-          <div className="flex items-center space-x-4 rounded-t-lg bg-slate-100 py-5 px-4 dark:bg-navy-800">
-            <div className="avatar size-14">
-              <img
-                className="rounded-full"
-                src="/images/200x200.png"
-                alt="avatar"
-              />
-            </div>
-            <div>
-              <a
-                href="#"
-                className="text-base font-medium text-slate-700 hover:text-primary focus:text-primary dark:text-navy-100 dark:hover:text-accent-light dark:focus:text-accent-light"
-              >
-                Driving School Pro
-              </a>
-              <p className="text-xs text-slate-400 dark:text-navy-300">
-              Admin
-              </p>
-            </div>
-          </div>
-          <div className="flex flex-col pt-2 pb-5">
-            <Link
-              href="/admin/profile"
-              className="group flex items-center space-x-3 py-2 px-4 tracking-wide outline-none transition-all hover:bg-slate-100 focus:bg-slate-100 dark:hover:bg-navy-600 dark:focus:bg-navy-600"
-            >
-              <div className="flex size-8 items-center justify-center rounded-lg bg-warning text-white">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="size-4.5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                  />
-                </svg>
-              </div>
-              <div>
-                <h2 className="font-medium text-slate-700 transition-colors group-hover:text-primary group-focus:text-primary dark:text-navy-100 dark:group-hover:text-accent-light dark:group-focus:text-accent-light">
-                  Profile
-                </h2>
-                <div className="text-xs text-slate-400 line-clamp-1 dark:text-navy-300">
-                  Your profile setting
-                </div>
-              </div>
-            </Link>
-           
-            <div className="mt-3 px-4">
-              <button 
-              onClick={handleLogout}
-              className="btn h-9 w-full space-x-2 bg-primary text-white hover:bg-primary-focus focus:bg-primary-focus active:bg-primary-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="size-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="1.5"
-                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-                  />
-                </svg>
-                <span>Logout</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div> */}
+
 </div>
           </div>
           {isDrawerVisible && (
@@ -664,22 +459,20 @@ fill="currentColor"
                 </button>
               </div>
               {/* Sidebar Panel Body */}
+              {/* largeScren */}
               <div
                 className="nav-wrapper h-[calc(100%-4.5rem)] overflow-x-hidden pb-6 hidden sm:flex"
                 data-simplebar
               >
                 <ul className="flex flex-1 flex-col px-4 font-inter">
                   <li className="ac nav-parent [&.is-active_svg]:rotate-90 [&.is-active_.ac-trigger]:font-semibold [&.is-active_.ac-trigger]:text-slate-800 dark:[&.is-active_.ac-trigger]:text-navy-50">
-                 
-          
-                   
-                  
+                     
                   </li>
                   <li className="ac nav-parent [&.is-active_svg]:rotate-90 [&.is-active_.ac-trigger]:font-semibold [&.is-active_.ac-trigger]:text-slate-800 dark:[&.is-active_.ac-trigger]:text-navy-50">
                 
                     <ul className="ac-panel">
                      
-                     
+                     {/* admission */}
                       <li>
                         <Link
                           href="/admin/signup/admission"
@@ -695,37 +488,10 @@ fill="currentColor"
                          
                         </Link>
                       </li>
-                      <li>
-                        <Link
-                          href="/admin/accounts/daily-accounts"
-                          className="nav-link flex items-center justify-between p-2 text-xs+ tracking-wide outline-none transition-[color,padding-left] duration-300 ease-in-out hover:pl-4"
-                          data-default-class="text-slate-600 hover:text-slate-800 dark:text-navy-200 dark:hover:text-navy-50"
-                          data-active-class="font-medium text-primary dark:text-accent-light"
-                        >
-                         
-                          <div className="flex items-center space-x-2">
-                            <div className="size-1.5 rounded-full border border-current opacity-40" />
-                            <span>Accounts</span>
-                          </div>
-                         
-                        </Link>
-                      </li>
+                    
+                    {/* master */}
 
-                      <li>
-                        <Link
-                          href="/admin/settings/site-info"
-                          className="nav-link flex items-center justify-between p-2 text-xs+ tracking-wide outline-none transition-[color,padding-left] duration-300 ease-in-out hover:pl-4"
-                          data-default-class="text-slate-600 hover:text-slate-800 dark:text-navy-200 dark:hover:text-navy-50"
-                          data-active-class="font-medium text-primary dark:text-accent-light"
-                        >
-                         
-                          <div className="flex items-center space-x-2">
-                            <div className="size-1.5 rounded-full border border-current opacity-40" />
-                            <span>Site Information</span>
-                          </div>
-                         
-                        </Link>
-                      </li>
+                     
 
 
   <li className="ac nav-parent [&.is-active_svg]:rotate-90 [&.is-active_.ac-trigger]:font-semibold [&.is-active_.ac-trigger]:text-slate-800 dark:[&.is-active_.ac-trigger]:text-navy-50">
@@ -805,7 +571,24 @@ fill="currentColor"
         </li>
       </ul>
     </li>
+  {/* accounts */}
+  <li>
+                        <Link
+                          href="/admin/accounts/daily-accounts"
+                          className="nav-link flex items-center justify-between p-2 text-xs+ tracking-wide outline-none transition-[color,padding-left] duration-300 ease-in-out hover:pl-4"
+                          data-default-class="text-slate-600 hover:text-slate-800 dark:text-navy-200 dark:hover:text-navy-50"
+                          data-active-class="font-medium text-primary dark:text-accent-light"
+                        >
+                         
+                          <div className="flex items-center space-x-2">
+                            <div className="size-1.5 rounded-full border border-current opacity-40" />
+                            <span>Accounts</span>
+                          </div>
+                         
+                        </Link>
+                      </li>
 
+                      {/* report */}
  <li className="ac nav-parent [&.is-active_svg]:rotate-90 [&.is-active_.ac-trigger]:font-semibold [&.is-active_.ac-trigger]:text-slate-800 dark:[&.is-active_.ac-trigger]:text-navy-50">
       <button
         onClick={handleDropdownToggles} // Toggle the dropdown on button click
@@ -842,69 +625,21 @@ fill="currentColor"
                 </ul>
               </div>
 
-
+{/* small screen */}
               <div
                 className="nav-wrapper h-[calc(100%-4.5rem)] overflow-x-hidden pb-6 xl:hidden"
                 data-simplebar
               >
                 <ul className="flex flex-1 flex-col px-4 font-inter">
-                  <li className="ac nav-parent [&.is-active_svg]:rotate-90 [&.is-active_.ac-trigger]:font-semibold [&.is-active_.ac-trigger]:text-slate-800 dark:[&.is-active_.ac-trigger]:text-navy-50">
                  
-          
-                    <ul className="ac-panel">
-                      <li>
-                        <Link
-                          href="/admin/signup"
-                          className="nav-link flex items-center justify-between p-2 text-xs+ tracking-wide outline-none transition-[color,padding-left] duration-300 ease-in-out hover:pl-4"
-                          data-default-class="text-slate-600 hover:text-slate-800 dark:text-navy-200 dark:hover:text-navy-50"
-                          data-active-class="font-medium text-primary dark:text-accent-light"
-                        >
-                        
-                          <div className="flex items-center space-x-2">
-                            <div className="size-1.5 rounded-full border border-current opacity-40" />
-                            <span onClick={toggleDrawer}>Signup</span>
-                          </div>
-                          
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href="/admin/profile"
-                          className="nav-link flex items-center justify-between p-2 text-xs+ tracking-wide outline-none transition-[color,padding-left] duration-300 ease-in-out hover:pl-4"
-                          data-default-class="text-slate-600 hover:text-slate-800 dark:text-navy-200 dark:hover:text-navy-50"
-                          data-active-class="font-medium text-primary dark:text-accent-light"
-                        >
-                          <div className="flex items-center space-x-2">
-                            <div className="size-1.5 rounded-full border border-current opacity-40" />
-                            <span  onClick={toggleDrawer}>Profile</span>
-                          </div>
-                          
-                        </Link>
-                      </li>
-                    </ul>
-                  
-                  </li>
                   <li className="ac nav-parent [&.is-active_svg]:rotate-90 [&.is-active_.ac-trigger]:font-semibold [&.is-active_.ac-trigger]:text-slate-800 dark:[&.is-active_.ac-trigger]:text-navy-50">
                 
                     <ul className="ac-panel">
+                     
+                      {/* admission */}
                       <li>
                         <Link
-                          href="/admin/student/list"
-                          className="nav-link flex items-center justify-between p-2 text-xs+ tracking-wide outline-none transition-[color,padding-left] duration-300 ease-in-out hover:pl-4"
-                          data-default-class="text-slate-600 hover:text-slate-800 dark:text-navy-200 dark:hover:text-navy-50"
-                          data-active-class="font-medium text-primary dark:text-accent-light"
-                        >
-                          
-                          <div className="flex items-center space-x-2">
-                            <div className="size-1.5 rounded-full border border-current opacity-40" />
-                            <span  onClick={toggleDrawer}>Student</span>
-                          </div>
-                          
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href="/admin/driver/attendancelist"
+                          href="/admin/signup/admission"
                           className="nav-link flex items-center justify-between p-2 text-xs+ tracking-wide outline-none transition-[color,padding-left] duration-300 ease-in-out hover:pl-4"
                           data-default-class="text-slate-600 hover:text-slate-800 dark:text-navy-200 dark:hover:text-navy-50"
                           data-active-class="font-medium text-primary dark:text-accent-light"
@@ -912,11 +647,95 @@ fill="currentColor"
                          
                           <div className="flex items-center space-x-2">
                             <div className="size-1.5 rounded-full border border-current opacity-40" />
-                            <span  onClick={toggleDrawer}>Driver</span>
+                            <span>Admission</span>
                           </div>
                          
                         </Link>
                       </li>
+
+                                          {/* master */}
+
+                     
+
+
+  <li className="ac nav-parent [&.is-active_svg]:rotate-90 [&.is-active_.ac-trigger]:font-semibold [&.is-active_.ac-trigger]:text-slate-800 dark:[&.is-active_.ac-trigger]:text-navy-50">
+      <button
+        onClick={handleDropdownToggle} // Toggle the dropdown on button click
+        className="ac-trigger flex w-full items-center justify-between py-2 text-xs+ tracking-wide text-slate-600 outline-none transition-[color,padding-left] duration-300 ease-in-out hover:text-slate-800 dark:text-navy-200 dark:hover:text-navy-50"
+      >
+        <span>Master</span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className={`size-4 text-slate-400 transition-transform ease-in-out ${isDropdownOpen ? 'rotate-90' : ''}`}
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+
+      {/* Toggle visibility of dropdown list */}
+      <ul className={`ac-panel ${isDropdownOpen ? 'block' : 'hidden'}`}>
+        <li>
+          <Link href="/admin/settings/service-management" className="nav-link flex items-center justify-between p-2 text-xs+ tracking-wide outline-none transition-[color,padding-left] duration-300 ease-in-out hover:pl-4">
+            <div className="flex items-center space-x-2">
+              <div className="size-1.5 rounded-full border border-current opacity-40" />
+              <span>Service</span>
+            </div>
+          </Link>
+        </li>
+        <li>
+          <Link href="/admin/settings/driver-management" className="nav-link flex items-center justify-between p-2 text-xs+ tracking-wide outline-none transition-[color,padding-left] duration-300 ease-in-out hover:pl-4">
+            <div className="flex items-center space-x-2">
+              <div className="size-1.5 rounded-full border border-current opacity-40" />
+              <span>Driver</span>
+            </div>
+          </Link>
+        </li>
+        <li>
+          <Link href="/admin/settings/vehicle-management" className="nav-link flex items-center justify-between p-2 text-xs+ tracking-wide outline-none transition-[color,padding-left] duration-300 ease-in-out hover:pl-4">
+            <div className="flex items-center space-x-2">
+              <div className="size-1.5 rounded-full border border-current opacity-40" />
+              <span>Vehicle</span>
+            </div>
+          </Link>
+        </li>
+        <li>
+          <Link href="/admin/settings/branch-management" className="nav-link flex items-center justify-between p-2 text-xs+ tracking-wide outline-none transition-[color,padding-left] duration-300 ease-in-out hover:pl-4">
+            <div className="flex items-center space-x-2">
+              <div className="size-1.5 rounded-full border border-current opacity-40" />
+              <span>Branch</span>
+            </div>
+          </Link>
+        </li>
+        <li>
+          <Link href="/admin/settings/staff-management" className="nav-link flex items-center justify-between p-2 text-xs+ tracking-wide outline-none transition-[color,padding-left] duration-300 ease-in-out hover:pl-4">
+            <div className="flex items-center space-x-2">
+              <div className="size-1.5 rounded-full border border-current opacity-40" />
+              <span>Staff</span>
+            </div>
+          </Link>
+        </li>
+        <li>
+          <Link href="/admin/accounts/license-cost" className="nav-link flex items-center justify-between p-2 text-xs+ tracking-wide outline-none transition-[color,padding-left] duration-300 ease-in-out hover:pl-4">
+            <div className="flex items-center space-x-2">
+              <div className="size-1.5 rounded-full border border-current opacity-40" />
+              <span>License Cost</span>
+            </div>
+          </Link>
+        </li>
+        <li>
+          <Link href="/admin/accounts/license-class" className="nav-link flex items-center justify-between p-2 text-xs+ tracking-wide outline-none transition-[color,padding-left] duration-300 ease-in-out hover:pl-4">
+            <div className="flex items-center space-x-2">
+              <div className="size-1.5 rounded-full border border-current opacity-40" />
+              <span>License Class</span>
+            </div>
+          </Link>
+        </li>
+      </ul>
+    </li>
+                      {/* accounts */}
                       <li>
                         <Link
                           href="/admin/accounts/daily-accounts"
@@ -933,101 +752,40 @@ fill="currentColor"
                         </Link>
                       </li>
 
-                      <li>
-                        <Link
-                          href="/admin/settings/site-info"
-                          className="nav-link flex items-center justify-between p-2 text-xs+ tracking-wide outline-none transition-[color,padding-left] duration-300 ease-in-out hover:pl-4"
-                          data-default-class="text-slate-600 hover:text-slate-800 dark:text-navy-200 dark:hover:text-navy-50"
-                          data-active-class="font-medium text-primary dark:text-accent-light"
-                        >
-                         
-                          <div className="flex items-center space-x-2">
-                            <div className="size-1.5 rounded-full border border-current opacity-40" />
-                            <span  onClick={toggleDrawer}>Site Information</span>
-                          </div>
-                         
-                        </Link>
-                      </li>
+                    
 
-           
-  <li className="ac nav-parent [&.is-active_svg]:rotate-90 [&.is-active_.ac-trigger]:font-semibold [&.is-active_.ac-trigger]:text-slate-800 dark:[&.is-active_.ac-trigger]:text-navy-50">
-    <button className="ac-trigger flex w-full items-center justify-between py-2 text-xs+ tracking-wide text-slate-600 outline-none transition-[color,padding-left] duration-300 ease-in-out hover:text-slate-800 dark:text-navy-200 dark:hover:text-navy-50">
-      <span>Settings</span>
-      <svg xmlns="http://www.w3.org/2000/svg" className="size-4 text-slate-400 transition-transform ease-in-out" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-      </svg>
-    </button>
-    <ul className="ac-panel">
-      <li>
-        <Link href="/admin/settings/service-management" className="nav-link flex items-center justify-between p-2 text-xs+ tracking-wide outline-none transition-[color,padding-left] duration-300 ease-in-out hover:pl-4" data-default-class="text-slate-600 hover:text-slate-800 dark:text-navy-200 dark:hover:text-navy-50" data-active-class="font-medium text-primary dark:text-accent-light">
-          <div className="flex items-center space-x-2">
-            <div className="size-1.5 rounded-full border border-current opacity-40" />
-            <span  onClick={toggleDrawer}>Service management</span>
-          </div>
-        </Link>
-      </li>
-      <li>
-        <Link href="/admin/settings/driver-management" className="nav-link flex items-center justify-between p-2 text-xs+ tracking-wide outline-none transition-[color,padding-left] duration-300 ease-in-out hover:pl-4" data-default-class="text-slate-600 hover:text-slate-800 dark:text-navy-200 dark:hover:text-navy-50" data-active-class="font-medium text-primary dark:text-accent-light">
-          <div className="flex items-center space-x-2">
-            <div className="size-1.5 rounded-full border border-current opacity-40" />
-            <span  onClick={toggleDrawer}>Driver management</span>
-          </div>
-        </Link>
-      </li>
-      <li>
-        <Link href="/admin/settings/vehicle-management" className="nav-link flex items-center justify-between p-2 text-xs+ tracking-wide outline-none transition-[color,padding-left] duration-300 ease-in-out hover:pl-4" data-default-class="text-slate-600 hover:text-slate-800 dark:text-navy-200 dark:hover:text-navy-50" data-active-class="font-medium text-primary dark:text-accent-light">
-          <div className="flex items-center space-x-2">
-            <div className="size-1.5 rounded-full border border-current opacity-40" />
-            <span  onClick={toggleDrawer}>Vehicle management</span>
-          </div>
-        </Link>
-      </li>
-      <li>
-        <Link href="/admin/settings/branch-management" className="nav-link flex items-center justify-between p-2 text-xs+ tracking-wide outline-none transition-[color,padding-left] duration-300 ease-in-out hover:pl-4" data-default-class="text-slate-600 hover:text-slate-800 dark:text-navy-200 dark:hover:text-navy-50" data-active-class="font-medium text-primary dark:text-accent-light">
-          <div className="flex items-center space-x-2">
-            <div className="size-1.5 rounded-full border border-current opacity-40" />
-            <span onClick={toggleDrawer}>Branch management</span>
-          </div>
-        </Link>
-      </li>
-      <li>
-        <Link href="/admin/settings/staff-management" className="nav-link flex items-center justify-between p-2 text-xs+ tracking-wide outline-none transition-[color,padding-left] duration-300 ease-in-out hover:pl-4" data-default-class="text-slate-600 hover:text-slate-800 dark:text-navy-200 dark:hover:text-navy-50" data-active-class="font-medium text-primary dark:text-accent-light">
-          <div className="flex items-center space-x-2">
-            <div className="size-1.5 rounded-full border border-current opacity-40" />
-            <span onClick={toggleDrawer}>Staff management</span>
-          </div>
-        </Link>
-      </li>
-      <li>
-        <Link href="/admin/accounts/license-cost" className="nav-link flex items-center justify-between p-2 text-xs+ tracking-wide outline-none transition-[color,padding-left] duration-300 ease-in-out hover:pl-4" data-default-class="text-slate-600 hover:text-slate-800 dark:text-navy-200 dark:hover:text-navy-50" data-active-class="font-medium text-primary dark:text-accent-light">
-          <div className="flex items-center space-x-2">
-            <div className="size-1.5 rounded-full border border-current opacity-40" />
-            <span onClick={toggleDrawer}>License cost</span>
-          </div>
-        </Link>
-      </li>
-    </ul>
-  </li>
+                                 {/* report */}
+ <li className="ac nav-parent [&.is-active_svg]:rotate-90 [&.is-active_.ac-trigger]:font-semibold [&.is-active_.ac-trigger]:text-slate-800 dark:[&.is-active_.ac-trigger]:text-navy-50">
+      <button
+        onClick={handleDropdownToggles} // Toggle the dropdown on button click
+        className="ac-trigger flex w-full items-center justify-between py-2 text-xs+ tracking-wide text-slate-600 outline-none transition-[color,padding-left] duration-300 ease-in-out hover:text-slate-800 dark:text-navy-200 dark:hover:text-navy-50"
+      >
+         <span>Reports</span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className={`size-4 text-slate-400 transition-transform ease-in-out ${isDropdownOpens ? 'rotate-90' : ''}`}
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
 
-  <li className="ac nav-parent [&.is-active_svg]:rotate-90 [&.is-active_.ac-trigger]:font-semibold [&.is-active_.ac-trigger]:text-slate-800 dark:[&.is-active_.ac-trigger]:text-navy-50">
-    <button className="ac-trigger flex w-full items-center justify-between py-2 text-xs+ tracking-wide text-slate-600 outline-none transition-[color,padding-left] duration-300 ease-in-out hover:text-slate-800 dark:text-navy-200 dark:hover:text-navy-50">
-      <span>Reports</span>
-      <svg xmlns="http://www.w3.org/2000/svg" className="size-4 text-slate-400 transition-transform ease-in-out" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-      </svg>
-    </button>
-    <ul className="ac-panel">
-      <li>
-        <Link href="/admin/report/payment-history" className="nav-link flex items-center justify-between p-2 text-xs+ tracking-wide outline-none transition-[color,padding-left] duration-300 ease-in-out hover:pl-4" data-default-class="text-slate-600 hover:text-slate-800 dark:text-navy-200 dark:hover:text-navy-50" data-active-class="font-medium text-primary dark:text-accent-light">
-          <div className="flex items-center space-x-2">
-            <div className="size-1.5 rounded-full border border-current opacity-40" />
-            <span onClick={toggleDrawer}>Payment History</span>
-          </div>
-        </Link>
-      </li>
-     
-    </ul>
-  </li>
+      {/* Toggle visibility of dropdown list */}
+      <ul className={`ac-panel ${isDropdownOpens ? 'block' : 'hidden'}`}>
+        <li>
+          <Link href="/admin/report/payment-history" className="nav-link flex items-center justify-between p-2 text-xs+ tracking-wide outline-none transition-[color,padding-left] duration-300 ease-in-out hover:pl-4">
+            <div className="flex items-center space-x-2">
+              <div className="size-1.5 rounded-full border border-current opacity-40" />
+              <span>Payment History</span>
+            </div>
+          </Link>
+        </li>
+      
+      </ul>
+    </li>
+
 
 
                     </ul>

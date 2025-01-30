@@ -221,7 +221,7 @@
 import { useAuth } from "@/app/context/AuthContext";
 import React, { useEffect, useState } from "react";
 type CreateProps = {
-  showmodals: boolean;
+  showmodal: boolean;
   togglemodals: () => void;
   formData?: {
     payment_method:string;

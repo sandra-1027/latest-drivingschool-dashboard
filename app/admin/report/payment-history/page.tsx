@@ -624,7 +624,7 @@ const Page = () => {
         >
           <option value="">select Status</option>
           <option value="pending">Pending</option>
-          <option value="remaining">Paritally Paid</option>
+          <option value="remaining">Partially Paid</option>
           <option value="completed">Fully paid</option>
         </select>
      

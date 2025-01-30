@@ -24,64 +24,64 @@ const Login = () => {
       // User is already authenticated, redirect based on role
       const rolePaths = {
         admin: "/admin",
-        driver: "/driver",
+        staff: "/staff",
         student: "/student",
       };
       router.push(rolePaths[role as keyof typeof rolePaths] || "/unauthorized");
     }
   }, [router]);
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
-// console.log(username,"username")
-    try {
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+//   const handleLogin = async (e: React.FormEvent) => {
+//     e.preventDefault();
+//     setError("");
+//     setLoading(true);
+// // console.log(username,"username")
+//     try {
+//       const response = await fetch("/api/auth/login", {
+//         method: "POST",
+//         headers: { "Content-Type": "application/json" },
        
-        body: JSON.stringify({ username:username, password }),
+//         body: JSON.stringify({ username:username, password }),
       
-      });
+//       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Invalid credentials.");
-      }
-      const data = await response.json();
-      console.log(data,"data")
-      const {token, user_type: role } = data?.data || {};
+//       if (!response.ok) {
+//         const errorData = await response.json();
+//         throw new Error(errorData.message || "Invalid credentials.");
+//       }
+//       const data = await response.json();
+//       console.log(data,"data")
+//       const {token, user_type: role } = data?.data || {};
 
-      if (!role || !token) {
-        throw new Error("Role or token missing in the response.");
-      }
+//       if (!role || !token) {
+//         throw new Error("Role or token missing in the response.");
+//       }
 
-      localStorage.setItem("token", token);
-      localStorage.setItem("role", role);
+//       localStorage.setItem("token", token);
+//       localStorage.setItem("role", role);
 
-      // Store user data in context (optional)
-      if (setAuthData) {
-        setAuthData({
-          user: data,
-          accessToken: token,
-          refreshToken: data.refreshToken, // Use the actual field name if available
-        });
-      }
-      const rolePaths = {
-        admin: "/admin",
-        driver: "/driver",
-        student: "/student",
-      };
+//       // Store user data in context (optional)
+//       if (setAuthData) {
+//         setAuthData({
+//           user: data,
+//           accessToken: token,
+//           refreshToken: data.refreshToken, // Use the actual field name if available
+//         });
+//       }
+//       const rolePaths = {
+//         admin: "/admin",
+//         driver: "/driver",
+//         student: "/student",
+//       };
 
-    await router.push(rolePaths[role as keyof typeof rolePaths] || "/unauthorized");
-    }catch (err: unknown) {
-      if (err instanceof Error) {
-        setError(err.message || "Something went wrong.");
-      } else {
-        setError("Something went wrong.");
-      }
-    }
+//     await router.push(rolePaths[role as keyof typeof rolePaths] || "/unauthorized");
+//     }catch (err: unknown) {
+//       if (err instanceof Error) {
+//         setError(err.message || "Something went wrong.");
+//       } else {
+//         setError("Something went wrong.");
+//       }
+//     }
 
 
    
@@ -89,8 +89,63 @@ const Login = () => {
     
 
     
-  };
+//   };
+const handleLogin = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setError("");
+  setLoading(true);
 
+  try {
+    const response = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username: username, password }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Invalid credentials.");
+    }
+
+    const data = await response.json();
+    const { token, user_type: role } = data?.data || {};
+
+    if (!role || !token) {
+      throw new Error("Role or token missing in the response.");
+    }
+
+    // Clear the session flag for the admin page
+    sessionStorage.removeItem("hasVisitedAdmin");
+
+    localStorage.setItem("token", token);
+    localStorage.setItem("role", role);
+
+    // Store user data in context (optional)
+    if (setAuthData) {
+      setAuthData({
+        user: data,
+        accessToken: token,
+        refreshToken: data.refreshToken,
+      });
+    }
+
+    const rolePaths = {
+      admin: "/admin",
+      staff: "/staff",
+      student: "/student",
+    };
+
+    await router.push(rolePaths[role as keyof typeof rolePaths] || "/unauthorized");
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      setError(err.message || "Something went wrong.");
+    } else {
+      setError("Something went wrong.");
+    }
+  } finally {
+    setLoading(false);
+  }
+};
   return (
         <div>
       <link rel="stylesheet" href="/css/base.css" />

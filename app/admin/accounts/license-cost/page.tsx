@@ -5,6 +5,7 @@ import withAuth from '@/hoc/withAuth';
 import React, { useEffect, useState } from 'react'
 import Add from './add';
 import { useAuth } from '@/app/context/AuthContext';
+import Edit from './edit';
 type Cost = {
   id?: string;
   status: string;
@@ -28,9 +29,13 @@ const page = () => {
   const [filters, setFilters] = useState({ service_name: '', status: '' });
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStatus, setSelectedStatus] = useState<string>("");
-  const togglemodal =()=>{
-    setShowmodal((prev)=> !prev)
-  }
+   const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
+ 
+  const togglemodal = (mode: 'add' | 'edit', cost: Cost | null = null) => {
+    setModalMode(mode);  // Set the modal mode to either "add" or "edit"
+    setSelectedCost(cost);  // Pass the selected driver if in edit mode
+    setShowmodal((prev) => !prev);  // Toggle the modal visibility
+  };
   
   const fetchlicenseData = async () => {
   
@@ -309,10 +314,13 @@ const page = () => {
                 <span className="text-lg font-medium text-slate-800 dark:text-navy-50">
                 License Cost
                 </span>
-                <button className="px-4 py-2 bg-[#4f46e5] text-white rounded-md" onClick={togglemodal}>  
+                <button className="px-4 py-2 bg-[#4f46e5] text-white rounded-md" 
+                // onClick={togglemodal}
+                onClick={() => togglemodal('add')}
+                >  
           Add License Cost
                 </button>
-                <Add showmodal={showmodal} togglemodal={togglemodal}/>
+                {/* <Add showmodal={showmodal} togglemodal={togglemodal}/> */}
             </div>
 
                              
@@ -410,7 +418,10 @@ onChange={handleSearchChange}
                 <span>
                       <div className="flex justify-center space-x-2">
                         <button className="btn size-8 p-0 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25">
-                          <i className="fa fa-edit" onClick={() => handleEdit(item)}/>
+                          <i className="fa fa-edit" 
+                          // onClick={() => handleEdit(item)}
+                          onClick={() => togglemodal('edit', item)}
+                          />
                         </button>
                         <button className="btn size-8 p-0 text-error hover:bg-error/20 focus:bg-error/20 active:bg-error/25">
                           <i className="fa fa-trash-alt" onClick={() => updateAccountStatus(item.id!, item.status)} />
@@ -470,7 +481,7 @@ onChange={handleSearchChange}
       </div>
   </div>
   </div>
-  <Add
+  {/* <Add
   showmodal={showmodal}
   togglemodal={togglemodal}
   formData={selectedCost ? { 
@@ -481,7 +492,31 @@ onChange={handleSearchChange}
     id:selectedCost.id || ""
   } : undefined}
   isEditing={!!selectedCost}
-/>
+/> */}
+
+{showmodal && (
+  modalMode === 'edit' ? (
+    <Edit
+      showModal={showmodal}
+      togglemodal={() => togglemodal('add')}  // Correct the mode here if you want to switch to 'edit'
+      costData={selectedCost}
+      onSave={(updatedCost) => {
+        setCostData((prevData) => prevData.map((cost) =>
+          cost.id === updatedCost.id ? updatedCost : cost
+        ));
+        togglemodal('add');  // Close modal after saving
+      }}
+    />
+  ) : (
+    <Add showmodal={showmodal} togglemodal={() => togglemodal('add')} />
+  )
+)}
+
+
+
+
+
+
   </div>
   
   )

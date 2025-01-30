@@ -1,86 +1,6 @@
 
 
 
-// import React from "react";
-// import { Bar } from "react-chartjs-2";
-// import {
-//   Chart as ChartJS,
-//   CategoryScale,
-//   LinearScale,
-//   BarElement,
-//   Title,
-//   Tooltip,
-//   Legend,
-// } from "chart.js";
-
-// // Register the required components
-// ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
-
-// const Chart = ({ data }) => {
-//   const data = {
-//     labels: data.months,
-//     datasets: [
-//       {
-//         label: data.income,
-//         data: [0, 0, 0, 0, 0],
-//         backgroundColor: "#007bff",
-//       },
-//       {
-//         label: data.expense,
-//         data: [0, 0, 0, 0, 0],
-//         backgroundColor: "#dc3545",
-//       },
-//       {
-//         label: data.profit,
-//         data: [0, 0, 0, 0, 0],
-//         backgroundColor: "#ffc107",
-//       },
-//     ],
-//   };
-
-//   const options = {
-//     responsive: true,
-//     plugins: {
-//       legend: { position: "top" },
-//       title: { display: true, text: "Accounts Overview" },
-//     },
-//     scales: {
-//       x: { stacked: false },
-//       y: { stacked: false ,
-//         ticks: {
-//           stepSize: 1, // Ensure steps of 1
-//           min: 1, // Start from 1
-//           max: 5, // End at 5
-//         },
-
-//       },
-//     },
-//   };
-
-//   return (
-//     <div className="card-body">
-//       {/* <h6>Accounts Overview</h6> */}
-//       <div className="total-revenue">
-//         {/* <div><label><span className="bg-primary" /> Income</label></div>
-//         <div><label><span className="bg-danger" /> Expense</label></div>
-//         <div><label><span className="bg-warning" /> Profit</label></div> */}
-//       </div>
-//       <Bar data={data}
-//        options={options} 
-//       />
-//     </div>
-//   );
-// };
-
-// export default Chart;
-
-
-
-
-
-
-
-
 import React from "react";
 import { Bar } from "react-chartjs-2";
 import {
@@ -93,23 +13,18 @@ import {
   Legend,
 } from "chart.js";
 
-// Register the required components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const Chart = ({ data }) => {
+
+  export default function Chart({ data }: { data: any }) {
   console.log('Data:', data);
- // Check if data is available and has the expected structure
+
  if (!data || !data.income || !data.expense || !data.profit || !data.months) {
   console.error("Invalid data received:", data);
   return <div>Error: Invalid chart data.</div>;
 }
 
 
-
-  // const incomeData = data.income.split(',').map(Number);
-  // const expenseData = data.expense.split(',').map(Number);
-  // const profitData = data.profit.split(',').map(Number);
-  // Remove surrounding quotes and split by comma
   const incomeData = data.income.replace(/'/g, '').split(',').map(Number);
   const expenseData = data.expense.replace(/'/g, '').split(',').map(Number);
   const profitData = data.profit.replace(/'/g, '').split(',').map(Number);
@@ -176,6 +91,12 @@ const Chart = ({ data }) => {
 
   return (
     <div className="card-body">
+       {/* <div className="total-revenue">
+         <div><label><span className="bg-primary" /> Income</label></div>
+        <div><label><span className="bg-danger" /> Expense</label></div>
+         <div><label><span className="bg-warning" /> Profit</label></div>
+       </div> */}
+
 
 {/* <h6 className="text-xl font-semibold text-slate-700 dark:text-navy-100">Accounts Overview</h6> */}
       <Bar data={chartData} options={options} height={100}/>
@@ -183,7 +104,6 @@ const Chart = ({ data }) => {
   );
 };
 
-export default Chart;
 
 
 

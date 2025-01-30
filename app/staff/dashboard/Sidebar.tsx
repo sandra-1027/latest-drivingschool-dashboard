@@ -368,6 +368,7 @@ const Sidebar = () => {
               <div className="flex h-18 w-full items-center justify-between pl-4 pr-1">
                 <p className="text-base tracking-wider text-slate-800 dark:text-navy-100">
                     Driver
+                    {/* {user.user_type} */}
                 </p>
                 <button className="sidebar-close btn size-7 rounded-full p-0 text-primary hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:text-accent-light/80 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25 xl:hidden">
                   <svg
@@ -403,14 +404,14 @@ const Sidebar = () => {
                       
                       <li>
                         <a
-                          href="/driver"
+                          href="/staff/student"
                           className="nav-link flex items-center justify-between p-2 text-xs+ tracking-wide outline-none transition-[color,padding-left] duration-300 ease-in-out hover:pl-4"
                           data-default-class="text-slate-600 hover:text-slate-800 dark:text-navy-200 dark:hover:text-navy-50"
                           data-active-class="font-medium text-primary dark:text-accent-light"
                         >
                           <div className="flex items-center space-x-2">
                             <div className="size-1.5 rounded-full border border-current opacity-40" />
-                            <span>Profile</span>
+                            <span>student</span>
                           </div>
                         </a>
                       </li>
@@ -426,14 +427,14 @@ const Sidebar = () => {
                     <ul className="ac-panel">
                       <li>
                         <a
-                          href="/driver"
+                          href="/staff/attendancelist"
                           className="nav-link flex items-center justify-between p-2 text-xs+ tracking-wide outline-none transition-[color,padding-left] duration-300 ease-in-out hover:pl-4"
                           data-default-class="text-slate-600 hover:text-slate-800 dark:text-navy-200 dark:hover:text-navy-50"
                           data-active-class="font-medium text-primary dark:text-accent-light"
                         >
                           <div className="flex items-center space-x-2">
                             <div className="size-1.5 rounded-full border border-current opacity-40" />
-                            <span>Driver</span>
+                            <span>staff</span>
                           </div>
                         </a>
                       </li>

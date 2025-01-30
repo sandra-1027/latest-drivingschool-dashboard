@@ -1,125 +1,4 @@
-// 'use client'
-// import withAuth from '@/hoc/withAuth';
-// import React from 'react'
 
-// const AdminPage = () => {
-//   return (
-
-//     <>
-
-// <div className="flex items-center space-x-4 py-5 lg:py-6">
-//     <h2 className="text-xl font-medium text-slate-800 dark:text-navy-50 lg:text-2xl">
-//    Hai Welcome back!!!
-//     </h2>
-//     <div className="hidden h-full py-1 sm:flex">
-//       <div className="h-full w-px bg-slate-300 dark:bg-navy-600" />
-//     </div>
-//     <ul className="hidden flex-wrap items-center space-x-2 sm:flex">
-//       <li className="flex items-center space-x-2">
-//         <a className="text-primary transition-colors hover:text-primary-focus dark:text-accent-light dark:hover:text-accent" href="#">Home
-//         </a>
-//         <svg xmlns="http://www.w3.org/2000/svg" className="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-//           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-//         </svg>
-//       </li>
-//       <li>Dashboard</li>
-//     </ul>
-//   </div>
-
-//   <div className="mt-4 grid grid-cols-1 gap-4 sm:mt-5 sm:gap-5 lg:mt-6 lg:gap-6">
-//     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4 lg:gap-6">
-//       <div
-//       // className="card flex-row justify-between p-4 bg-warning"
-//       // className="card rounded-lg flex-row justify-between p-4 bg-warning text-white sm:px-5"
-//       className="card flex-row justify-between p-4 rounded-lg bg-gradient-to-br from-amber-400 to-orange-600 px-4 py-4 text-white sm:px-5"
-//       >
-//         <div>
-//           <p className="text-xs+ uppercase">Total Customers</p>
-//           <div className="mt-8 flex items-baseline space-x-1">
-//             <p className="text-2xl font-semibold text-slate-700 dark:text-navy-100">
-//               1.3k
-//             </p>
-//             <p className="text-xs text-success">+21%</p>
-//           </div>
-//         </div>
-//         <div className="mask is-squircle flex size-10 items-center justify-center bg-warning/10"
-//         >
-//           <i className="fa-solid fa-user text-xl text-white/90" />
-//         </div>
-//         <div className="absolute bottom-0 right-0 overflow-hidden rounded-lg">
-//           <i className="fa-solid fa-user translate-x-1/4 translate-y-1/4 text-5xl opacity-15" />
-//         </div>
-//       </div>
-//       <div
-// className="card flex-row justify-between p-4 rounded-lg bg-gradient-to-br from-blue-400 to-cyan-600 px-4 py-4 text-white sm:px-5"
-//        >
-//         <div>
-//           <p className="text-xs+ uppercase">Monthly Customers</p>
-//           <div className="mt-8 flex items-baseline space-x-1">
-//             <p className="text-2xl font-semibold text-slate-700 dark:text-navy-100">
-//               30.6m
-//             </p>
-//             <p className="text-xs text-success">+4%</p>
-//           </div>
-//         </div>
-//         <div className="mask is-squircle flex size-10 items-center justify-center bg-info/10">
-//           <i className="fa-solid fa-user text-xl text-info" />
-//         </div>
-//         <div className="absolute bottom-0 right-0 overflow-hidden rounded-lg">
-//           <i className="fa-solid fa-user translate-x-1/4 translate-y-1/4 text-5xl opacity-15" />
-//         </div>
-//       </div>
-//       <div
-//       // className="card flex-row justify-between p-4 rounded-lg bg-gradient-to-br from-green-400 to-emerald-600 px-4 py-4 text-white sm:px-5"
-//       className="card flex-row justify-between p-4 rounded-lg bg-gradient-to-br from-green-600 to-emerald-800 px-4 py-4 text-white sm:px-5"
-
-//       >
-//         <div>
-//           <p className="text-xs+ uppercase">Today customers</p>
-//           <div className="mt-8 flex items-baseline space-x-1">
-//             <p className="text-2xl font-semibold text-slate-700 dark:text-navy-100">
-//               4.3m
-//             </p>
-//             <p className="text-xs text-success">+8%</p>
-//           </div>
-//         </div>
-//         <div className="mask is-squircle flex size-10 items-center justify-center bg-success/10">
-//           <i className="fa-solid fa-user text-xl text-success" />
-//         </div>
-//         <div className="absolute bottom-0 right-0 overflow-hidden rounded-lg">
-//           <i className="fa-solid fa-user translate-x-1/4 translate-y-1/4 text-5xl opacity-15" />
-//         </div>
-//       </div>
-//       <div
-//       // className="card flex-row justify-between p-4"
-//       className="card flex-row justify-between p-4 rounded-lg bg-gradient-to-br from-red-600 to-rose-800 px-4 py-4 text-white sm:px-5"
-
-//       >
-//         <div>
-//           <p className="text-xs+ uppercase">Today Income</p>
-//           <div className="mt-8 flex items-baseline space-x-1">
-//             <p className="text-2xl font-semibold text-slate-700 dark:text-navy-100">
-//               11.6k
-//             </p>
-//             <p className="text-xs text-error">-2.3%</p>
-//           </div>
-//         </div>
-//         <div className="mask is-squircle flex size-10 items-center justify-center bg-error/10">
-//           <i className="fa-solid fa-dollar-sign  text-xl text-error" />
-//         </div>
-//         <div className="absolute bottom-0 right-0 overflow-hidden rounded-lg">
-//           <i className="fa-solid fa-dollar-sign  translate-x-1/4 translate-y-1/4 text-5xl opacity-15" />
-//         </div>
-//       </div>
-//     </div>
-//   </div>
-
-// </>
-//   )
-// }
-
-// // export default page
-// export default withAuth(AdminPage, ['admin']);
 
 
 
@@ -128,10 +7,14 @@
 "use client";
 import withAuth from "@/hoc/withAuth";
 import React, { useEffect, useState } from "react";
-import Chart from "./chart/page";
-import ApexChart from "./chart/page";
+
+
 import { useAuth } from "../context/AuthContext";
 import { data } from "autoprefixer";
+import Chart from "./Chart";
+import { useRouter } from "next/navigation";
+
+
 
 type Dashboard = {
   id: string;
@@ -154,12 +37,33 @@ type Dashboard = {
 const AdminPage = () => {
   const { state } = useAuth();
   const [dashboardData, setDashboardData] = useState<Dashboard | null>(null);
-  const [graphData, setGraphData] = useState<Dashboard[]>([]);
+  // const [graphData, setGraphData] = useState<Dashboard[]>([]);
+  const [graphData, setGraphData] = useState<Dashboard | null>(null);
   const [expiryDatas, setexpiryDatas] = useState<Dashboard[]>([]);
-  const [today_income, setToday_income] = useState<Dashboard[]>([]);
+  // const [today_income, setToday_income] = useState<Dashboard[]>([]);
+  const [today_income, setToday_income] = useState<Dashboard | null>(null);
   today_income;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    // Check if this is the first load after login
+    const hasVisitedAdmin = sessionStorage.getItem("hasVisitedAdmin");
+
+    if (!hasVisitedAdmin) {
+      // Reload only on first access
+      sessionStorage.setItem("hasVisitedAdmin", "true");
+      window.location.reload();
+    }
+  }, []);
+
+
+
+  useEffect(() => {
+    console.log("Updated Graph Data:", graphData);
+  }, [graphData]); 
 
   const fetchDashboardData = async () => {
     try {
@@ -183,7 +87,7 @@ const AdminPage = () => {
       }
 
       const data = await response.json();
-
+ console.log("API Response:", data);
       if (data.success) {
         setDashboardData(data.data.dashboard_datas || []);
         setGraphData(data.data.graph || []);
@@ -390,6 +294,7 @@ const AdminPage = () => {
               />
             </div>
             {today_income ? (
+            // {today_income.length > 0 ? (
               <div className="overflow-x-auto">
                 <table className="w-full border-collapse border border-gray-200 dark:border-gray-700">
                   <thead>
@@ -434,12 +339,11 @@ const AdminPage = () => {
         </div>
       </div>
 
-      {/* <div className="card mt-4 p-4">
-        <Chart data={graphData} />
-      </div> */}
-<div className="card mt-4 p-4">
+{/* <div className="card mt-4 p-4">
    <h6 className="text-xl font-medium text-slate-700 dark:text-navy-100">Accounts Overview</h6>
-  {graphData.length > 0 ? (
+  
+  {graphData ? (
+ 
     <Chart data={graphData} />
   ) : (
     <div className="p-4 w-full flex items-center justify-center">
@@ -448,11 +352,16 @@ const AdminPage = () => {
       </p>
     </div>
   )}
+</div> */}
+<div className="card mt-4 p-4">
+   <h6 className="text-xl font-medium text-slate-700 dark:text-navy-100">Accounts Overview</h6>
+  
+  {graphData &&(
+ 
+    <Chart data={graphData} />
+  
+  )}
 </div>
-
-
-
-
     </>
   );
 };

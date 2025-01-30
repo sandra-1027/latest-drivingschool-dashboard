@@ -19,6 +19,7 @@ import { strict } from 'assert';
 import { useAuth } from '@/app/context/AuthContext';
 import Add from './add';
 import { FaRegCheckCircle } from 'react-icons/fa';
+import Edit from './edit';
 type Account = {
   id?: string;
   status: string;
@@ -48,9 +49,13 @@ const page = () => {
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [dailystatusselected, setdailystatusselected] = useState<string>("");
   const [selectedAccount, setSelectedAccount] = useState<Account | null>(null); 
-  const togglemodal =()=>{
-    setShowmodal((prev)=> !prev)
-  }
+  const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
+
+  const togglemodal = (mode: 'add' | 'edit', account: Account | null = null) => {
+    setModalMode(mode);  // Set the modal mode to either "add" or "edit"
+    setSelectedAccount(account);  // Pass the selected driver if in edit mode
+    setShowmodal((prev) => !prev);  // Toggle the modal visibility
+  };
 
 
   const fetchStaffData = async () => {
@@ -342,10 +347,12 @@ const page = () => {
                 <span className="text-lg font-medium text-slate-800 dark:text-navy-50">
                 Daily Accounts
                 </span>
-                <button className="px-4 py-2 bg-[#4f46e5] text-white rounded-md" onClick={togglemodal}>  
+                <button 
+                 onClick={() => togglemodal('add')}
+                className="px-4 py-2 bg-[#4f46e5] text-white rounded-md">  
           Add Accounts
                 </button>
-                <Add showmodal={showmodal} togglemodal={togglemodal}/>
+               
             </div>
 
                              
@@ -420,8 +427,10 @@ const page = () => {
                 <td className="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
                 <span>
                       <div className="flex  space-x-2">
-                        <button className="btn size-8 p-0 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25">
-                          <i className="fa fa-edit" onClick={() => handleEdit(item)}/>
+                        <button 
+                        onClick={() => togglemodal('edit', item)}
+                        className="btn size-8 p-0 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25">
+                          <i className="fa fa-edit"/>
                         </button>
                        
                         <button
@@ -489,18 +498,23 @@ const page = () => {
   </div>
   </div>
 
-  <Add
-  showmodal={showmodal}
-  togglemodal={togglemodal}
-  formData={selectedAccount ? { 
-    daily_status:selectedAccount.daily_status, 
-    amount: selectedAccount.amount, 
-    type: selectedAccount.type, 
-    expense_name: selectedAccount.expense_name,
-    id:selectedAccount.id || ""
-  } : undefined}
-  isEditing={!!selectedAccount}
-/>
+  {showmodal && (
+  modalMode === 'edit' ? (
+    <Edit
+      showModal={showmodal}
+      toggleModal={() => togglemodal('add')}  // Correct the mode here if you want to switch to 'edit'
+      AccountData={selectedAccount}
+      onSave={(updatedAccount) => {
+        setAccountData((prevData) => prevData.map((account) =>
+          account.id === updatedAccount.id ? updatedAccount: account
+        ));
+        togglemodal('add');  // Close modal after saving
+      }}
+    />
+  ) : (
+    <Add showmodal={showmodal} togglemodal={() => togglemodal('add')} />
+  )
+)}
 
   </div>
   

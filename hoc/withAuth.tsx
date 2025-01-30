@@ -12,7 +12,7 @@ import { jwtDecode } from 'jwt-decode';
 import Loader from '@/app/dashboard/Loader';
 
 // Define the allowed roles explicitly
-type Role = 'admin' | 'driver' | 'student';
+type Role = 'admin' | 'staff' | 'student';
 
 const withAuth = <P extends object>(
   WrappedComponent: React.ComponentType<P>,
@@ -46,7 +46,7 @@ const withAuth = <P extends object>(
             // router.push('/unauthorized');
             const rolePaths = {
               admin: "/admin",
-              driver: "/driver",
+              staff: "/staff",
               student: "/student",
             };
             router.push(rolePaths[role as keyof typeof rolePaths] || "/unauthorized");

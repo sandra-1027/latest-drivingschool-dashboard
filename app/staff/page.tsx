@@ -8,16 +8,16 @@ import { useRouter } from "next/navigation";
 // pages/driver/dashboard.js
 
 
-const DriverDashboard = () => {
+const StaffPage = () => {
   const { state, clearAuthData  } = useAuth();
 const router = useRouter();
 
   
   return (
 <div>
-  <h1>Driver Dashboard</h1>
+  <h1>Staff Dashboard</h1>
   
   </div>
 )};
 
-export default withAuth(DriverDashboard, ['driver']); // Only driver can access
+export default withAuth(StaffPage, ['staff']); // Only driver can access

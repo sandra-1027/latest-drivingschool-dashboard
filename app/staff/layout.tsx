@@ -18,7 +18,7 @@
 
 import dynamic from "next/dynamic";
 import MobileSearchbar from "../dashboard/MobileSearchbar";
-import RightSidebar from "../dashboard/RightSidebar";
+// import RightSidebar from "../dashboard/RightSidebar";
 import { useEffect, useState } from "react";
 import Sidebar from "./dashboard/Sidebar";
 import Topbar from "./dashboard/Topbar";
@@ -64,7 +64,7 @@ import Topbar from "./dashboard/Topbar";
           <Sidebar/>
           <Topbar/>
           <MobileSearchbar/>
-          <RightSidebar/>
+          {/* <RightSidebar/> */}
         
           <main className="main-content w-full px-[var(--margin-x)] pb-8">
             <div className="flex items-center space-x-4 py-5 lg:py-6">

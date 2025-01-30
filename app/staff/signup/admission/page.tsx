@@ -45,7 +45,7 @@ const Admission = () => {
    const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
 
   const [showmodals,setShowmodals]=useState(false);
-  const [admissionData, setAdmissionData] = useState<Admission []>([]);
+  const [costData, setCostData] = useState<Admission []>([]);
   const [filteredData, setFilteredData] = useState<Admission []>([]);
   const [selectedCost, setSelectedCost] = useState<Admission  | null>(null); 
   const [search, setSearch] = useState("");
@@ -90,7 +90,7 @@ const Admission = () => {
       const data = await response.json();
  
       if (data.success) {
-        setAdmissionData(data.data || []);
+        setCostData(data.data || []);
          setFilteredData(data.data || []);
       } else {
         // console.error("API error:", data.msg || "Unknown error");
@@ -154,7 +154,7 @@ const Admission = () => {
       setShowmodals(true); 
     };
     const applyFilters = () => {
-      let newFilteredData = admissionData;
+      let newFilteredData = costData;
     
       // Apply form filters
      
@@ -177,13 +177,13 @@ const Admission = () => {
       const value = e.target.value;
       setSearchTerm(value);
     
-      const searchFilteredData = admissionData.filter(
+      const searchFilteredData = costData.filter(
         (item) =>
           item.service_name.toLowerCase().includes(value.toLowerCase()) ||
           item.mobile.toLowerCase().includes(value.toLowerCase()) ||
           item.added_date.toLowerCase().includes(value.toLowerCase()) ||
-          item.email.toLowerCase().includes(value.toLowerCase())
-          
+          item.email.toLowerCase().includes(value.toLowerCase()) ||
+          item.status.toLowerCase().includes(value.toLowerCase())
       );
     
       setFilteredData(searchFilteredData); // Update filtered data in real-time
@@ -201,7 +201,7 @@ const Admission = () => {
       setSearchTerm("");
       setSelectedServices("");
       setSelectedStatus("");
-      setFilteredData(admissionData); // Reset to original data
+      setFilteredData(costData); // Reset to original data
 
       setCurrentPage(1); // Reset pagination to the first page
     };
@@ -263,7 +263,7 @@ const Admission = () => {
             className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
           >
             <option value="">select a mobile</option>
-            {admissionData.map((admission) => (
+            {costData.map((admission) => (
     <option key={admission.id} value={admission.mobile}>
       {admission.mobile}
     </option>
@@ -556,7 +556,7 @@ const Admission = () => {
       admissionData={editedAdmission}
       onSave={(updatedAdmission) => {
         setAdmissionData((prevData) => prevData.map((admission) =>
-          admission.id === updatedAdmission.id ? updatedAdmission : admission
+          admission.id === updatedAdmission.id ? updatedBranch : admission
         ));
         togglemodal('add');  // Close modal after saving
       }}

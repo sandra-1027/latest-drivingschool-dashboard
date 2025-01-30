@@ -1,9 +1,7 @@
 import { useAuth } from "@/app/context/AuthContext";
 import React, { useEffect, useState } from "react";
 
-// import "./create.css";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import "./create.css";
 
 interface Admission {
   id: number;
@@ -273,15 +271,15 @@ const Edit = ({ showmodal, togglemodal, admissionData, onSave }: EditProps) => {
       prevData ? { ...prevData, userfile: null } : null
     ); // Clear the image file from formData
   };
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-  
+  const handleSubmit = async () => {
     try {
       const formDataToSend = new FormData();
-      formDataToSend.append("update_service", formData.id.toString());
+
+      // Append your form data here...
+      formDataToSend.append("id", formData.id.toString());
       formDataToSend.append("name", formData.first_name);
-      formDataToSend.append("email", formData.email);
       formDataToSend.append("mobile", formData.mobile);
+      formDataToSend.append("email", formData.email);
       formDataToSend.append("blood_group", formData.blood_group);
       formDataToSend.append("gender", formData.gender);
       formDataToSend.append("document_type", formData.document_type || "");
@@ -289,87 +287,74 @@ const Edit = ({ showmodal, togglemodal, admissionData, onSave }: EditProps) => {
       formDataToSend.append("pay_amount", formData.pay_amount);
       formDataToSend.append("total_amount", formData.amount || "");
       formDataToSend.append("type", formData.type || "");
-      formDataToSend.append("payment_method", formData.payment_method || "cash");
+      formDataToSend.append(
+        "payment_method",
+        formData.payment_method || "cash"
+      );
       formDataToSend.append("tax", formData.tax || "");
       formDataToSend.append("pucc", formData.pucc || "0");
       formDataToSend.append("branch_id", formData.branch_id);
-      formDataToSend.append("id", formData?.customer_id);
-  
-          if (userchange && formData.userfile) {
-       
-        formDataToSend.append('userfile', formData.userfile);
-      }else  {
-        const response = await fetch(formData.user_photo); // Assuming rc_document is a URL
-        const blob = await response.blob();
-        const userFile = new File([blob], '', { type: blob.type }); // Empty name
-        formDataToSend.append('userfile', userFile);
-      }
-    
-  
-      if (documentchange && formData.document) {
-        formDataToSend.append('document', formData.document);
-      }else  {
-        const response = await fetch(formData.documents); // Assuming rc_document is a URL
-        const blob = await response.blob();
-        const documentFile = new File([blob], '', { type: blob.type }); // Empty name
-        formDataToSend.append('document', documentFile);
-      }
-      // Append file fields
-      const appendFile = async (key: string, file: File | string | null) => {
-        if (file instanceof File) {
-          formDataToSend.append(key, file);
-        } else if (file) {
-          const response = await fetch(file);
-          const blob = await response.blob();
-          const fileWithFallbackName = new File([blob], "", {
-            type: blob.type,
-          });
-          formDataToSend.append(key, fileWithFallbackName);
-        }
-      };
-  
-      await appendFile("userfile", formData.userfile);
-      await appendFile("document", formData.document);
-      await appendFile("old_rc", formData.old_rc);
-      await appendFile("adhar", formData.adhar);
-      await appendFile("insurence", formData.insurence);
-  
-      console.log("Submitting FormData:");
-      for (const [key, value] of formDataToSend.entries()) {
-        console.log(key, value);
-      }
-  
-      const response = await fetch(`/api/admin/signup/update_admission`, {
+
+      if (formData?.user_photo)
+        formDataToSend.append("userfile", formData.user_photo);
+      if (formData.document)
+        formDataToSend.append("document", formData.document);
+      if (formData.old_rc)
+        formDataToSend.append("old_rc", formData.old_rc || "");
+      if (formData.adhar) formDataToSend.append("adhar", formData.adhar || "");
+      if (formData.insurence)
+        formDataToSend.append("insurence", formData.insurence || "");
+
+      console.log(
+        "Submitting FormData:",
+        Object.fromEntries(formDataToSend.entries())
+      );
+
+      const response = await fetch("/api/admin/signup/update_admission", {
         method: "POST",
+        body: formDataToSend,
         headers: {
           authorizations: state?.accessToken ?? "",
           api_key: "10f052463f485938d04ac7300de7ec2b",
+          // Removed 'Content-Type': 'multipart/form-data'
         },
-        body: formDataToSend,
       });
-  
-      console.log("Response Status:", response.status);
-  
-      const responseText = await response.text(); // Read the raw response
-      console.log("Raw Response Text:", responseText);
-  
-      let data;
-      try {
-        data = JSON.parse(responseText); // Parse it manually
-      } catch (error) {
-        console.error("Error parsing JSON:", error);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
-  
-      console.log("Parsed API Response:", data);
-  
-      if (response.ok && data?.success) {
-        onSave(formData);
-        togglemodal();
+
+      const data = await response.json();
+      console.log(data);
+
+      if (data.success) {
+        console.log("Admission Updated:", data.msg);
       } else {
-        alert(`Failed to submit: ${data?.msg || "Unknown error"}`);
+        console.log("Error:", data.msg || "Unknown error");
       }
-    } catch (err) {
-      console.error("Error submitting form:", err);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      if (error instanceof Error) {
+        console.error("Error message:", error.message);
+        console.error("Error stack:", error.stack);
+      }
+      alert(
+        "An error occurred while submitting the form. Please try again later."
+      );
+    }
+
+    // Mock response for testing (remove when real backend is connected)
+    const mockResponse = {
+      success: true,
+      msg: "Admission Updated Successfully",
+    };
+
+    const data = mockResponse;
+
+    if (data.success) {
+      console.log("Admission Updated:", data.msg);
+    } else {
+      console.log("Error:", data.msg);
     }
   };
 
@@ -1061,22 +1046,6 @@ const Edit = ({ showmodal, togglemodal, admissionData, onSave }: EditProps) => {
           </div>
         </form>
       </div>
-
-
-      {/* ToastContainer is necessary to render the toast notifications */}
-      <ToastContainer
-              position="top-center"
-              autoClose={5000}
-              hideProgressBar
-              style={{
-                width: "100%",
-                padding: "0 20px", // Optional, to give some padding on the sides
-              }}
-              toastStyle={{
-                width: "100%", // Make each toast full width
-                marginBottom: "10px", // Optional, adds spacing between toasts
-              }}
-            />
     </div>
   );
 };
