@@ -51,7 +51,7 @@ const Sidebar = () => {
             <div className="is-scrollbar-hidden flex grow flex-col space-y-4 overflow-y-auto pt-6">
               {/* Dashobards */}
               <a
-                href="/driver"
+                href="/staff"
                 data-tooltip="Dashboards"
                 data-placement="right"
                 // className="tooltip-main-sidebar flex size-11 items-center justify-center rounded-lg outline-none transition-colors duration-200 hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25"
@@ -404,14 +404,14 @@ const Sidebar = () => {
                       
                       <li>
                         <a
-                          href="/staff/student"
+                          href="/staff/profile"
                           className="nav-link flex items-center justify-between p-2 text-xs+ tracking-wide outline-none transition-[color,padding-left] duration-300 ease-in-out hover:pl-4"
                           data-default-class="text-slate-600 hover:text-slate-800 dark:text-navy-200 dark:hover:text-navy-50"
                           data-active-class="font-medium text-primary dark:text-accent-light"
                         >
                           <div className="flex items-center space-x-2">
                             <div className="size-1.5 rounded-full border border-current opacity-40" />
-                            <span>student</span>
+                            <span>profile</span>
                           </div>
                         </a>
                       </li>

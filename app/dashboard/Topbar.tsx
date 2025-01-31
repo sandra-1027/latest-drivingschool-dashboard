@@ -1158,7 +1158,23 @@ import Link from "next/link";
 import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/navigation";
 
+type Notification = {
+  id: string;
+  // expiry_datas:string;
+  message: string;
+  total_users: string;
+  monthly_users: string;
+  today_users: string;
+  today_income: string;
+  income: string;
+  expense: string;
+  profit: string;
+  months: string;
+  date: string;
+  status: string;
+  total_amount:string;
 
+};
 const Topbar = () => {
    const { state, clearAuthData } = useAuth();
    const user = state?.user;
@@ -1185,6 +1201,11 @@ const [userData, setUserData] = useState<{
     userfile: null, // Default to null for file
     user_photo: "",
   });
+
+
+  const [recent_message, setrecent_message] = useState<Notification[]>([]);
+  const[recent_message_count,setrecent_message_count]=useState<Notification | null>(null);
+
 // console.log(photo,'user profile data')
   const { toggleDrawer } = useDrawer();
    const router = useRouter();
@@ -1236,6 +1257,46 @@ const [userData, setUserData] = useState<{
   // };
   useEffect(() => {
     fetchProfileData();
+  }, [state]);
+
+ const fetchNotificationData = async () => {
+    try {
+      const response = await fetch("/api/admin/dashboard/recent_messages", {
+        method: "POST",
+        headers: {
+          authorizations: state?.accessToken ?? "",
+          // 'authorizations': token ?? '',
+          api_key: "10f052463f485938d04ac7300de7ec2b", // Make sure the API key is correct
+        },
+        body: JSON.stringify({ user_id: null }),
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        // console.error('API error:', errorData);
+        throw new Error(
+          `HTTP error! Status: ${response.status} - ${
+            errorData.message || "Unknown error"
+          }`
+        );
+      }
+
+      const data = await response.json();
+ console.log("API Response:", data);
+      if (data.success) {
+        setrecent_message(data.data.graph || []);
+        setrecent_message_count(data.data.expiry_datas || []);
+        
+     
+      } else {
+        // console.error("API error:", data.msg || "Unknown error");
+      }
+    } catch (error) {
+      console.error("Fetch error:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchNotificationData();
   }, [state]);
 
 
@@ -1382,6 +1443,7 @@ const [userData, setUserData] = useState<{
                           </h3>
                           <div className="badge h-5 rounded-full bg-primary/10 px-1.5 text-primary dark:bg-accent-light/15 dark:text-accent-light">
                             26
+                            {/* {recent_message_count} */}
                           </div>
                         </div>
                         {/* <button className="btn -mr-1.5 size-7 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25">
@@ -1436,36 +1498,7 @@ const [userData, setUserData] = useState<{
                             </div>
                           </div>
                         </div>
-                        <div className="flex items-center space-x-3">
-                          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-info/10 dark:bg-info/15">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="size-5 text-info"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                              />
-                            </svg>
-                          </div>
-                          <div>
-                            <p className="font-medium text-slate-600 dark:text-navy-100">
-                              Mon, June 14, 2021
-                            </p>
-                            <div className="mt-1 flex text-xs text-slate-400 dark:text-navy-300">
-                              <span className="shrink-0">08:00 - 09:00</span>
-                              <div className="mx-2 my-1 w-px bg-slate-200 dark:bg-navy-500" />
-                              <span className="line-clamp-1">
-                                Frontend Conf
-                              </span>
-                            </div>
-                          </div>
-                        </div>
+                        
                         <div className="flex items-center space-x-3">
                           <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 dark:bg-accent-light/15">
                             <i className="fa-solid fa-image text-primary dark:text-accent-light" />
@@ -1476,91 +1509,6 @@ const [userData, setUserData] = useState<{
                             </p>
                             <div className="mt-1 text-xs text-slate-400 line-clamp-1 dark:text-navy-300">
                               Mores Clarke added new image gallery
-                            </div>
-                          </div>
-                        </div>
-                        <div className="flex items-center space-x-3">
-                          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-success/10 dark:bg-success/15">
-                            <i className="fa fa-leaf text-success" />
-                          </div>
-                          <div>
-                            <p className="font-medium text-slate-600 dark:text-navy-100">
-                              Design Completed
-                            </p>
-                            <div className="mt-1 text-xs text-slate-400 line-clamp-1 dark:text-navy-300">
-                              Robert Nolan completed the design of the CRM
-                              application
-                            </div>
-                          </div>
-                        </div>
-                        <div className="flex items-center space-x-3">
-                          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-info/10 dark:bg-info/15">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="size-5 text-info"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                              />
-                            </svg>
-                          </div>
-                          <div>
-                            <p className="font-medium text-slate-600 dark:text-navy-100">
-                              Wed, June 21, 2021
-                            </p>
-                            <div className="mt-1 flex text-xs text-slate-400 dark:text-navy-300">
-                              <span className="shrink-0">16:00 - 20:00</span>
-                              <div className="mx-2 my-1 w-px bg-slate-200 dark:bg-navy-500" />
-                              <span className="line-clamp-1">UI/UX Conf</span>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="flex items-center space-x-3">
-                          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-warning/10 dark:bg-warning/15">
-                            <i className="fa fa-project-diagram text-warning" />
-                          </div>
-                          <div>
-                            <p className="font-medium text-slate-600 dark:text-navy-100">
-                              ER Diagram
-                            </p>
-                            <div className="mt-1 text-xs text-slate-400 line-clamp-1 dark:text-navy-300">
-                              Team completed the ER diagram app
-                            </div>
-                          </div>
-                        </div>
-                        <div className="flex items-center space-x-3">
-                          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-warning/10 dark:bg-warning/15">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="size-5 text-warning"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
-                              />
-                            </svg>
-                          </div>
-                          <div>
-                            <p className="font-medium text-slate-600 dark:text-navy-100">
-                              THU, May 11, 2021
-                            </p>
-                            <div className="mt-1 flex text-xs text-slate-400 dark:text-navy-300">
-                              <span className="shrink-0">10:00 - 11:30</span>
-                              <div className="mx-2 my-1 w-px bg-slate-200 dark:bg-navy-500" />
-                              <span className="line-clamp-1">
-                                Interview, Konnor Guzman
-                              </span>
                             </div>
                           </div>
                         </div>

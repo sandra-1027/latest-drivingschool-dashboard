@@ -26,6 +26,11 @@ const nextConfig: NextConfig = {
         source: '/api/admin/:path*', 
         destination: 'https://our-demos.com/n/drivingschool_api/api/admin/:path*',
       },
+      {
+        // Rewrite for auth-related APIs
+        source: '/api/staff/:path*', 
+        destination: 'https://our-demos.com/n/drivingschool_api/api/staff/:path*',
+      },
      
     ];
   },
