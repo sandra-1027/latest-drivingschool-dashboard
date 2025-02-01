@@ -54,31 +54,57 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
     ],
   };
 
+  // const options = {
+  //   responsive: true,
+  //   plugins: {
+  //     legend: { position: "top" ,
+  //       align: "start",
+  //       labels: {
+  //         font: {
+  //           size: 14, // Increase the font size of the legend labels (Income, Expense, Profit)
+  //         },
+  //         padding: 20, 
+  //       },
+  //     },
+  //     // title: { display: true, 
+  //     //   text: "Accounts Overview",
+  //     //   font: {
+  //     //     size: 20, // Increase the font size (you can adjust this value)
+    
+  //     //   },
+  //     //   align: "start",
+  //     // },
+
+  //   },
+  //   scales: {
+  //     x: { stacked: false },
+  //     y: { 
+  //       stacked: false,
+  //       ticks: {
+  //         stepSize: 50,
+  //         min: 50,
+  //         max: 200,
+  //       },
+  //     },
+  //   },
+  // };
   const options = {
     responsive: true,
     plugins: {
-      legend: { position: "top" ,
-        align: "start",
+      legend: {
+        position: "top" as "top", // Explicitly defining the type
+        align: "start" as "start",
         labels: {
           font: {
             size: 14, // Increase the font size of the legend labels (Income, Expense, Profit)
           },
-          padding: 20, 
+          padding: 20,
         },
       },
-      // title: { display: true, 
-      //   text: "Accounts Overview",
-      //   font: {
-      //     size: 20, // Increase the font size (you can adjust this value)
-    
-      //   },
-      //   align: "start",
-      // },
-
     },
     scales: {
       x: { stacked: false },
-      y: { 
+      y: {
         stacked: false,
         ticks: {
           stepSize: 50,
@@ -88,7 +114,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
       },
     },
   };
-
+  
   return (
     <div className="card-body">
        {/* <div className="total-revenue">

@@ -326,12 +326,18 @@ const page = () => {
         
           <div className="flex list-group-item border p-2" >
             <p className='mr-8'>Total Income </p>
-            <span className='font-bold'>₹ {expenseData.total_income}</span>
+            <span className='font-bold'>₹ 
+              {/* {expenseData.total_income} */}
+              {expenseData[0]?.total_income}
+            </span>
           </div>
 
           <div className="flex list-group-item p-2">
             <p className='mr-8'>Total Expense </p>
-            <span className='font-bold'>₹ {expenseData.total_expense}</span>
+            <span className='font-bold'>₹ 
+              {/* {expenseData.total_expense} */}
+              {expenseData[0]?.total_expense}
+            </span>
           </div>
        
         </div>
@@ -505,7 +511,7 @@ const page = () => {
       toggleModal={() => togglemodal('add')}  // Correct the mode here if you want to switch to 'edit'
       AccountData={selectedAccount}
       onSave={(updatedAccount) => {
-        setAccountData((prevData) => prevData.map((account) =>
+        setAccountData((prevData: Account[]) => prevData.map((account) =>
           account.id === updatedAccount.id ? updatedAccount: account
         ));
         togglemodal('add');  // Close modal after saving
