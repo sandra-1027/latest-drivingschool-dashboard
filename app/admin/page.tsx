@@ -10,7 +10,7 @@ import React, { useEffect, useState } from "react";
 
 
 import { useAuth } from "../context/AuthContext";
-import { data } from "autoprefixer";
+
 import Chart from "./Chart";
 import { useRouter } from "next/navigation";
 
@@ -356,7 +356,7 @@ const AdminPage = () => {
 <div className="card mt-4 p-4">
    <h6 className="text-xl font-medium text-slate-700 dark:text-navy-100">Accounts Overview</h6>
   
-  {graphData &&(
+ {graphData &&(
  
     <Chart data={graphData} />
   

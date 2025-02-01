@@ -276,6 +276,9 @@
 import { useAuth } from '@/app/context/AuthContext';
 import { useState, useEffect } from 'react';
 import { IoEye, IoEyeOff } from 'react-icons/io5';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 interface Vehicle {
     id: number;
@@ -286,14 +289,14 @@ interface Vehicle {
     pucc_expiry_date: string;
     insurance_expiry_date:string;
     userfile: File | null;
-    rc_document:File | null;
+    rc_document:File;
    
   }
 interface EditProps {
   showModal: boolean;
   toggleModal: () => void;
   vehicleData: Vehicle | null;
-  onSave: (updatedDriver: Vehicle) => void;
+  onSave: (updatedVehicle: Vehicle) => void;
 }
 
 const Edit = ({ showModal, toggleModal, vehicleData, onSave }: EditProps) => {
@@ -368,8 +371,17 @@ const [loading, setLoading] = useState(false);
     formDataToSend.append('pucc_expiry_date', formData.pucc_expiry_date);
     formDataToSend.append('insurance_expiry_date', formData.insurance_expiry_date);
 
-    if (formData.userfile) {
+    // if (formData.userfile) {
+    //   formDataToSend.append('userfile', formData.userfile);
+    // }
+    if (imageChanged && formData.userfile) {
+     
       formDataToSend.append('userfile', formData.userfile);
+    }else  {
+      const response = await fetch(formData.rc_document); // Assuming rc_document is a URL
+      const blob = await response.blob();
+      const rcFile = new File([blob], '', { type: blob.type }); // Empty name
+      formDataToSend.append('userfile', rcFile);
     }
 
     console.log('Submitting FormData:', Object.fromEntries(formDataToSend.entries()));
@@ -385,6 +397,7 @@ const [loading, setLoading] = useState(false);
 
     const data = await response.json();
     console.log('API Response:', data);
+     toast.success('Vehicle updated successfully!');
 
     if (data.success) {
       setSuccess(true);
@@ -393,8 +406,9 @@ const [loading, setLoading] = useState(false);
     } else {
       setError(data.msg || 'Failed to update vehicle');
     }
-  } catch (err) {
-    setError('An error occurred while updating the vehicle.');
+  } catch (err:any) {
+    // setError('An error occurred while updating the vehicle.');
+     toast.error(err.message || 'An error occurred');
   } finally {
     setLoading(false);
   }
@@ -572,6 +586,7 @@ const handleRemoveImage = () => {
                       <input
                         id="imageUpload"
                         type="file"
+                        name='userfile'
                         accept="image/*"
                         onChange={handleImageChange}
                         className="hidden outline-dark border-[1px] border-dark font-bold py-2 px-4 rounded"
@@ -590,16 +605,17 @@ const handleRemoveImage = () => {
               </div>
             </div>
 
-            {loading && <p>Loading...</p>}
+            {/* {loading && <p>Loading...</p>}
                 {error && <p className="text-red-500">{error}</p>}
-                {success && <p className="text-green-500">updated successfully!</p>}
+                {success && <p className="text-green-500">updated successfully!</p>} */}
 
             <div className='mt-4'>
             <button
               type="submit"
               className="bg-primary text-white rounded p-2 w-1/5"
             >
-              {loading ? 'Updating...' : 'Update'}
+              {/* {loading ? 'Updating...' : 'Update'} */}
+              Update
             </button>
             </div>
           </form>

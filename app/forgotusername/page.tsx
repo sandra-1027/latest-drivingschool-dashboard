@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { useAuth } from '../context/AuthContext';
 import { useRouter } from 'next/navigation';
 
-function ForgotPassword() {
+function ForgotUsername() {
  const { state } = useAuth();
   const [user_name, setUser_name] =useState('');
   const [email, setEmail] =useState('');
@@ -38,7 +38,7 @@ console.log('forgotpassword',data)
 
     setMessage('A reset link has been sent to your email.');
     router.push('/changepassword')
-  } catch (err:any) {
+  } catch (err) {
     setError(err.message || 'Failed to send reset link.');
   } finally {
     setLoading(false);
@@ -191,4 +191,4 @@ console.log('forgotpassword',data)
   )
 }
 
-export default ForgotPassword
+export default ForgotUsername

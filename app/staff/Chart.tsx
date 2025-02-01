@@ -19,18 +19,21 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
   export default function Chart({ data }: { data: any }) {
   console.log('Data:', data);
 
- if (!data || !data.income || !data.expense || !data.profit || !data.months) {
-  console.error("Invalid data received:", data);
-  return <div>Error: Invalid chart data.</div>;
-}
+//  if (!data || !data.income || !data.expense || !data.profit || !data.months) {
+//   console.error("Invalid data received:", data);
+//   return <div>Error: Invalid chart data.</div>;
+// }
 
 
-  const incomeData = data.income.replace(/'/g, '').split(',').map(Number);
-  const expenseData = data.expense.replace(/'/g, '').split(',').map(Number);
-  const profitData = data.profit.replace(/'/g, '').split(',').map(Number);
-  const months = data.months.replace(/'/g, '').split(',');
+  // const incomeData = data.income.replace(/'/g, '').split(',').map(Number);
+  // const expenseData = data.expense.replace(/'/g, '').split(',').map(Number);
+  // const profitData = data.profit.replace(/'/g, '').split(',').map(Number);
+  // const months = data.months.replace(/'/g, '').split(',');
 
-
+  const incomeData = data.income;
+  const expenseData = data.expense;
+  const profitData = data.profit;
+  const months = data.months;
 
   const chartData = {
     // labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],

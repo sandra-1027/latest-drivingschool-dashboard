@@ -1174,6 +1174,7 @@ const handleInsurenceChange =(e:React.ChangeEvent<HTMLInputElement>)=>{
       });
   
       const data = await response.json();
+       toast.success('Admission added successfully!!');
       console.log("Backend response:", data);
   
       if (!response.ok) {
@@ -1181,22 +1182,11 @@ const handleInsurenceChange =(e:React.ChangeEvent<HTMLInputElement>)=>{
         alert(data.msg || "Failed to add Admission. Please check the required fields.");
         return;
       }
-  
-      // alert("Admission added successfully!");
-      toast.success("Admission added successfully!", {
-                position: "top-center",
-                autoClose: 3000,
-                hideProgressBar: true,
-              });
       togglemodal(); 
-    } catch (error) {
-      console.error("Error submitting form:", error);
+    } catch (err: any) {
+      console.error("Error submitting form:", err);
       // alert("An error occurred while adding the Admission.");
-      toast.error("Something went wrong. Please try again.", {
-              position: "top-center",
-              autoClose: 3000,
-              hideProgressBar: true,
-            });
+       toast.error(err.message || 'Something went wrong. Please try again.');
     }
   };
   
@@ -1993,7 +1983,7 @@ onClick={() => setmobileOpen(!isOpen)} >
       </div>
 
        {/* ToastContainer is necessary to render the toast notifications */}
-       <ToastContainer
+       {/* <ToastContainer
               position="top-center"
               autoClose={5000}
               hideProgressBar
@@ -2005,7 +1995,7 @@ onClick={() => setmobileOpen(!isOpen)} >
                 width: "100%", // Make each toast full width
                 marginBottom: "10px", // Optional, adds spacing between toasts
               }}
-            />
+            /> */}
     </div>
   );
 };

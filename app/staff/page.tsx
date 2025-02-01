@@ -39,9 +39,7 @@
 import withAuth from "@/hoc/withAuth";
 import React, { useEffect, useState } from "react";
 
-
 import { useAuth } from "../context/AuthContext";
-import { data } from "autoprefixer";
 
 import { useRouter } from "next/navigation";
 import Chart from "./Chart";

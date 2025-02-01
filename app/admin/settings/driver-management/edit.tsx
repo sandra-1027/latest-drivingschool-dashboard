@@ -169,7 +169,8 @@
 import { useAuth } from '@/app/context/AuthContext';
 import { useState, useEffect } from 'react';
 import { IoEye, IoEyeOff } from 'react-icons/io5';
-
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 interface Driver {
     id: number;
     first_name: string;
@@ -256,7 +257,7 @@ const [loading, setLoading] = useState(false);
   
         console.log('Response Status:', response.status);
         const data = await response.json();
-  
+  toast.success("Driver updated successfully")
         console.log('Response Data:', data);
   
         if (data.success) {
@@ -268,9 +269,10 @@ const [loading, setLoading] = useState(false);
           console.log('Error Messages:', data.error_msgs);
         }
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error('Error during API call:', err);
-      setError('An error occurred while updating the driver.');
+      // setError('An error occurred while updating the driver.');
+       toast.error(err.message || 'An error occurred while updating the driver.');
     } finally {
       setLoading(false);
     }
@@ -333,7 +335,7 @@ const [loading, setLoading] = useState(false);
           className="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" 
           placeholder="Enter name" 
           type="text" 
-          name=' first_name'
+          name='first_name'
           value={formData. first_name}
             onChange={handleChange}
           />
@@ -400,17 +402,11 @@ const [loading, setLoading] = useState(false);
                   </label>
     </div>
     
-    
-    {loading && <p>Loading...</p>}
-                {error && <p className="text-red-500">{error}</p>}
-                {success && <p className="text-green-500">updated successfully!</p>}
-    
-    
                 <button
                   type="submit"
                   className="bg-primary text-white rounded p-2 w-1/5 mt-4"
                 >
-                  {loading ? 'Updating...' : 'Update'}
+                  Update
                 </button>
               </form>
             </div>

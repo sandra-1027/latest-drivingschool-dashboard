@@ -2021,6 +2021,8 @@
 import React, { useState } from "react";
 import TextEditor from "./TextEditor";
 import { useAuth } from "@/app/context/AuthContext";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 type CreateProps = {
   showmodal: boolean;
@@ -2072,7 +2074,8 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal }) => {
       }
 
       const result = await response.json();
-      setSuccess(true);
+       toast.success('Branch added successfully!');
+      // setSuccess(true);
       console.log("Branch added successfully:", result);
 
       // Clear form fields
@@ -2084,7 +2087,8 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal }) => {
 
       setTimeout(() => togglemodal(), 2000);
     } catch (err: any) {
-      setError(err.message || "An error occurred");
+      // setError(err.message || "An error occurred");
+        toast.error(err.message || 'An error occurred');
       console.error(err);
     } finally {
       setLoading(false);
@@ -2134,16 +2138,7 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal }) => {
           <div className="modal-body">
             <form onSubmit={handleSubmit}>
               <div className="space-y-5 p-4">
-                {error && (
-                  <p className="text-red-500">
-                    {error}
-                  </p>
-                )}
-                {success && (
-                  <p className="text-green-500">
-                    Branch added successfully!
-                  </p>
-                )}
+               
                 <label className="block">
                   <input
                     className="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
@@ -2172,7 +2167,7 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal }) => {
                     className="bg-primary text-white rounded p-2 w-1/5"
                     disabled={loading}
                   >
-                    {loading ? "Adding..." : "Add"}
+                    Add
                   </button>
                 {/* </div> */}
               </div>

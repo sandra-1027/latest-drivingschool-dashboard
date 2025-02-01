@@ -351,6 +351,7 @@ const Edit = ({ showmodal, togglemodal, admissionData, onSave }: EditProps) => {
       console.log("Response Status:", response.status);
   
       const responseText = await response.text(); // Read the raw response
+       toast.success('Admission updated successfully!!');
       console.log("Raw Response Text:", responseText);
   
       let data;
@@ -368,8 +369,9 @@ const Edit = ({ showmodal, togglemodal, admissionData, onSave }: EditProps) => {
       } else {
         alert(`Failed to submit: ${data?.msg || "Unknown error"}`);
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error("Error submitting form:", err);
+        toast.error(err.message || 'Something went wrong. Please try again.');
     }
   };
 

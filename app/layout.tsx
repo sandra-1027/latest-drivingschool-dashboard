@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import DashboardLayout from "./dashboard/DashboardLayout";
 import { AuthProvider } from "./context/AuthContext";
 import { DrawerProvider } from "./dashboard/DrawerContext";
+import { ToastContainer } from "react-toastify";
 
 interface Props {
   children: React.ReactNode;
@@ -23,6 +24,7 @@ export default function RootLayout({ children }: Props) {
 
       <AuthProvider>
       <DrawerProvider>
+      <ToastContainer position="top-right" autoClose={3000} />
           {/* Conditional rendering based on the pathname */}
           {pathname.startsWith("/admin") ? (
             

@@ -2,6 +2,8 @@ import { useAuth } from '@/app/context/AuthContext';
 import { useState, useEffect } from 'react';
 import { IoEye, IoEyeOff } from 'react-icons/io5';
 import TextEditor from './TextEditor';
+import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
 interface Branch {
     id: number;
@@ -89,7 +91,7 @@ const [loading, setLoading] = useState(false);
   
         console.log('Response Status:', response.status);
         const data = await response.json();
-  
+   toast.success('Branch updated successfully!');
         console.log('Response Data:', data);
   
         if (data.success) {
@@ -97,13 +99,15 @@ const [loading, setLoading] = useState(false);
           onSave(formData);
           toggleModal();
         } else {
-          setError(data.msg || 'Failed to update driver');
+          // setError(data.msg || 'Failed to update driver');
+          toast.error(data.msg || 'Failed to update driver');
           console.log('Error Messages:', data.error_msgs);
         }
       }
-    } catch (err) {
+    } catch (err :any) {
       console.error('Error during API call:', err);
-      setError('An error occurred while updating the driver.');
+      // setError('An error occurred while updating the driver.');
+       toast.error(err.message || 'An error occurred');
     } finally {
       setLoading(false);
     }
@@ -157,16 +161,7 @@ const [loading, setLoading] = useState(false);
         <div className="modal-body">
           <form onSubmit={handleSubmit}>
             <div className="space-y-5 p-4">
-              {error && (
-                <p className="text-red-500">
-                  {error}
-                </p>
-              )}
-              {success && (
-                <p className="text-green-500">
-                  Branch updated successfully!
-                </p>
-              )}
+              
               <label className="block">
                 <input
                   className="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
@@ -195,7 +190,7 @@ const [loading, setLoading] = useState(false);
                   className="bg-primary text-white rounded p-2 w-1/5"
                   disabled={loading}
                 >
-                  {loading ? "Adding..." : "Add"}
+                 Edit
                 </button>
               {/* </div> */}
             </div>

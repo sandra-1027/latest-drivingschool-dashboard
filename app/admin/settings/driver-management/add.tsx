@@ -119,6 +119,9 @@ import { useAuth } from '@/app/context/AuthContext';
 import withAuth from '@/hoc/withAuth';
 import React, {  useState } from 'react';
 import { IoEye, IoEyeOff } from 'react-icons/io5';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 type CreateProps = {
   showModal: boolean;
@@ -146,11 +149,13 @@ const Add: React.FC<CreateProps> = ({ showModal, togglemodal }) => {
   const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
     if (!driverName || !mobile || !place || !drivingLicenceNo) {
-      setError('All fields are required');
+      // setError('All fields are required');
+      toast.error('All fields are required');
       return;
     }
     if (!/^\d+$/.test(mobile)) {
-      setError("Mobile number must be numeric.");
+      // setError("Mobile number must be numeric.");
+      toast.error('Mobile number must be numeric.');
       return;
     }
     setError("");
@@ -170,30 +175,7 @@ const Add: React.FC<CreateProps> = ({ showModal, togglemodal }) => {
     };
 
     try {
-      // const token = localStorage.getItem('token');
-      // console.log('adToken:', token);
-      // // Replace with your backend endpoint
-      // const response = await fetch('/api/admin/settings/add_driver', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     'authorizations': `Bearer ${token}`,
-      //     'api_key':'10f052463f485938d04ac7300de7ec2b',
-      //   },
-      //   body: JSON.stringify(formData),
-      // });
-
-      // if (!response.ok) {
-      //   const errorData = await response.json();
-      //   throw new Error(errorData.message || 'An error occurred');
-      // }
-
-      // const result = await response.json();
-      // setSuccess(true);
-      // console.log('Driver added successfully:', result);
-
-
-
+     
       const response = await fetch('/api/admin/settings/add_driver', {
         method: 'POST',
         headers: {
@@ -209,7 +191,8 @@ const Add: React.FC<CreateProps> = ({ showModal, togglemodal }) => {
       }
       
   const result = await response.json();
-      setSuccess(true);
+  toast.success('Driver added successfully!');
+      // setSuccess(true);
       console.log('Driver added successfully:', result);
 
       // Clear form fields
@@ -220,7 +203,8 @@ const Add: React.FC<CreateProps> = ({ showModal, togglemodal }) => {
       setPassword('');
       setTimeout(() => togglemodal(), 2000);
     } catch (err: any) {
-      setError(err.message || 'An error occurred');
+      // setError(err.message || 'An error occurred');
+      toast.error(err.message || 'An error occurred');
       console.error(err);
     } finally {
       setLoading(false);
@@ -338,18 +322,12 @@ const Add: React.FC<CreateProps> = ({ showModal, togglemodal }) => {
                 </span>
               </label>
 </div>
-
-
-{loading && <p>Loading...</p>}
-            {error && <p className="text-red-500">{error}</p>}
-            {success && <p className="text-green-500">Driver added successfully!</p>}
-
-
             <button
               type="submit"
               className="bg-primary text-white rounded p-2 w-1/5 mt-4"
             >
-              {loading ? 'Adding...' : 'Add'}
+              {/* {loading ? 'Adding...' : 'Add'} */}
+              Add
             </button>
           </form>
         </div>

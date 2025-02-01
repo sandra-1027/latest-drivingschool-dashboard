@@ -252,6 +252,9 @@
 // export default Add;
 import { useAuth } from '@/app/context/AuthContext';
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 type CreateProps = {
   showmodal: boolean;
@@ -302,17 +305,19 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal }) => {
   
       if (response.ok) {
         const data = await response.json();
+         toast.success('Vehicle added successfully!');
         console.log('Vehicle added successfully:', data);
-        alert('Vehicle added successfully!');
+        // alert('Vehicle added successfully!');
         resetForm();
       } else {
         const errorData = await response.json();
         console.error('Error adding vehicle:', errorData);
         alert(`Error: ${errorData.msg || 'Failed to add vehicle'}`);
       }
-    } catch (error) {
-      console.error('Error:', error);
-      alert('Something went wrong. Please try again.');
+    } catch (err:any) {
+      console.error('Error:', err);
+      // alert('Something went wrong. Please try again.');
+       toast.error(err.message || 'An error occurred');
     } finally {
       setLoading(false);
     }
@@ -512,7 +517,8 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal }) => {
           className="bg-primary text-white rounded p-2 w-1/5"
           disabled={loading}
         >
-          {loading ? 'Adding...' : 'Add'}
+          {/* {loading ? 'Adding...' : 'Add'} */}
+          Add
         </button>
       </div>
     </form>
