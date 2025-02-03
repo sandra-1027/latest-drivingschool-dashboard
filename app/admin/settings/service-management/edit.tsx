@@ -6,8 +6,8 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
-interface Service {
-    id: number;
+interface Branch {
+    id?: string;
     service_name: string;
     amount:string;
     status: string;
@@ -15,17 +15,21 @@ interface Service {
     
   }
 
-  
+  // interface Item {
+  //   id: number;
+  //   status: string;
+  //   // Other properties...
+  // }
 interface EditProps {
   showModal: boolean;
   toggleModal: () => void;
-  serviceData: Service | null;
-  onSave: (updatedDriver: Service) => void;
+  serviceData: Branch | null;
+  onSave: (updatedDriver: Branch) => void;
 }
 
 const Edit = ({ showModal, toggleModal, serviceData, onSave }: EditProps) => {
      const {state}=useAuth();
-  const [formData, setFormData] = useState<Service | null>(null);
+  const [formData, setFormData] = useState<Branch | null>(null);
 const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
@@ -47,9 +51,9 @@ const [loading, setLoading] = useState(false);
       setFormData((prevData) =>
         prevData ? { ...prevData, [fieldName]: e } : null
       );
-    } else if (e.target) {
+    } else if (e instanceof Event && 'target' in e) {
       // For standard input fields
-      const { name, value } = e.target;
+      const { name, value } = e.target as HTMLInputElement;
       setFormData((prevData) =>
         prevData ? { ...prevData, [name]: value } : null
       );
@@ -90,7 +94,7 @@ const [loading, setLoading] = useState(false);
   
         console.log('Response Status:', response.status);
         const data = await response.json();
-   toast.success('Service updated successfully!');
+   toast.success("Service updated successfully")
         console.log('Response Data:', data);
   
         if (data.success) {
@@ -102,9 +106,10 @@ const [loading, setLoading] = useState(false);
           console.log('Error Messages:', data.error_msgs);
         }
       }
-    } catch (err) {
+    } catch (err:any) {
       console.error('Error during API call:', err);
-      setError('An error occurred while updating the driver.');
+      // setError('An error occurred while updating the driver.');
+      toast.error(err.message || 'An error occurred while updating the service.');
     } finally {
       setLoading(false);
     }
@@ -158,7 +163,16 @@ const [loading, setLoading] = useState(false);
         <div className="modal-body">
           <form onSubmit={handleSubmit}>
             <div className="space-y-5 p-4">
-             
+              {error && (
+                <p className="text-red-500">
+                  {error}
+                </p>
+              )}
+              {success && (
+                <p className="text-green-500">
+                  Service updated successfully!
+                </p>
+              )}
               <label className="block">
                 <input
                   className="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
@@ -198,7 +212,7 @@ const [loading, setLoading] = useState(false);
                   className="bg-primary text-white rounded p-2 w-1/5"
                   disabled={loading}
                 >
-                  Update
+                  {loading ? "Adding..." : "Add"}
                 </button>
               {/* </div> */}
             </div>

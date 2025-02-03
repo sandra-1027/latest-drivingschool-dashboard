@@ -9,7 +9,7 @@ import Add from "./add";
 
 type Service = {
     service_name: string;
-  id: string;
+  id?: string;
   status: string;
   [key: string]: any;
   description: string;
@@ -453,7 +453,7 @@ const page = () => {
 
 
       </div> */}
-      <div className="flex flex-col sm:flex-row justify-between items-center mt-4 space-y-4 sm:space-y-0">
+     <div className="flex flex-col sm:flex-row justify-between items-center mt-4 space-y-4 sm:space-y-0">
   {/* Entries Info */}
   <div className="text-center sm:text-left">
     Showing {indexOfFirstEntry + 1} to {Math.min(indexOfLastEntry, totalEntries)} of {totalEntries} entries
@@ -510,6 +510,7 @@ const page = () => {
     </button>
   </div>
 </div>
+
       </div>
   </div>
   </div>

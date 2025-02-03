@@ -1,8 +1,9 @@
 
+
 import { useAuth } from "@/app/context/AuthContext";
 import React, { useEffect, useState } from "react";
 type CreateProps = {
-  showmodal: boolean;
+  showmodals: boolean;
   togglemodals: () => void;
   formData?: {
     payment_method:string;
@@ -16,28 +17,60 @@ type CreateProps = {
     amount: string;
     total_amount:string;
     service_name:string;
-    cus_service_id:string;
     
   };
   isEditing?: boolean;
 };
+interface Payment {
+  payment_method: string;
+  pay_amount: string;
+  id: string;
+  payed_amount: string;
+  due_amount: string;
+  customer_id: string;
+  service_id: string;
+  type: string;
+  amount: string;
+  total_amount: string; // Add this property
+  cus_service_id:string;
+}
 const Payment: React.FC<CreateProps> = ({ showmodals, togglemodals, formData }) => {
   const { state } = useAuth();
+  // const [localFormData, setLocalFormData] = useState({
+  //   payment_method: formData?.payment_method || '',
+  //   pay_amount: formData?.pay_amount || "",
+  //   id: formData?.id || "",
+  //   payed_amount: formData?.payed_amount || "",
+  //   due_amount: formData?.due_amount || "",
+  //   customer_id: formData?.customer_id || '',
+  //   service_id: formData?.service_id || "",
+  //   type: formData?.type || '',
+    
+  //   // amount: formData?.amount || "",
+  //   total_amount:formData?.amount || "",
+  //   amount_total: formData?.amount || "",
+  // });
   const [localFormData, setLocalFormData] = useState({
     payment_method:'',
     pay_amount:"",
     id: "",
     payed_amount:"",
-    total_amount:"",
     due_amount:"",
     customer_id:'',
     service_id: "",
     type: '',
     amount:'',
-    cus_service_id:'',
-    
-  });
+    total_amount: '',
+    cus_service_id: '',
 
+    // total_amount:formData?.amount || "",
+    // amount_total: formData?.amount || "",
+  });
+  // useEffect(() => {
+  //   if (formData) {
+  //     setLocalFormData(formData);
+  //   }
+  // }, [formData]);
   useEffect(() => {
     if (formData) {
       setLocalFormData({
@@ -45,13 +78,13 @@ const Payment: React.FC<CreateProps> = ({ showmodals, togglemodals, formData }) 
         pay_amount: formData.pay_amount || '',
         id: formData.id || '',
         payed_amount: formData.payed_amount || '',
-        total_amount: formData.amount || '',
         due_amount: formData.due_amount || '',
+        total_amount: formData.amount || '',
         customer_id: formData.customer_id || '',
         service_id: formData.service_id || '',
         type: formData.type || '',
         amount: formData.amount || '',
-        cus_service_id:formData.cus_service_id || '',
+        cus_service_id:formData.customer_id || '',
       });
     }
   }, [formData]);
@@ -79,23 +112,28 @@ const Payment: React.FC<CreateProps> = ({ showmodals, togglemodals, formData }) 
         },
         body: JSON.stringify(localFormData),
       });
-  
+      console.log("response", response);
       if (!response.ok) {
         const errorText = await response.text();
         console.error("Error response:", errorText); // Log the HTML response
         alert(`Failed to process payment: ${errorText}`);
         return;
       }
-  
+  if(response.ok){
+    alert("Payment added successfully!");
+    togglemodals(); 
+  }
       try {
         const responseJson = await response.json(); // Parse the response as JSON
         console.log("Response from backend:", responseJson);
+
       } catch (error) {
         console.error("Error parsing JSON:", error);
       }
     } catch (error) {
       console.error("Error submitting form:", error);
-      alert(`An error occurred while processing the payment: ${error.message || error}`);
+      const errorMessage = (error as Error).message || String(error);
+      alert(`An error occurred while processing the payment: ${errorMessage}`);
     }
   };
   
@@ -138,7 +176,7 @@ const Payment: React.FC<CreateProps> = ({ showmodals, togglemodals, formData }) 
 <form onSubmit={handleSubmit} className="p-4">
             
                        <h3 className="text-xl font-medium text-slate-700 dark:text-navy-100">
-                      Service Name : {formData.service_name}
+                      Service Name : {formData?.service_name}
                          </h3>
                         
                          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 mt-4">

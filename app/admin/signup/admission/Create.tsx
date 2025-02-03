@@ -2,7 +2,7 @@
 
 import { useAuth } from "@/app/context/AuthContext";
 import React, { useEffect, useState } from "react";
-import Select from 'react-select';
+
 
 interface Admission {
   user_name: string;

@@ -14,6 +14,7 @@ type Payment = {
   mobile: string;
   service_id: string;
   user_id: string;
+  cus_service_id:string;
 };
 
 const Page = () => {
@@ -108,104 +109,7 @@ const Page = () => {
   const totalPages = Math.ceil(totalEntries / entriesPerPage);
 
   return (
-    // <div className="w-full pb-8">
-    //   <div className="flex items-center space-x-4 py-5 lg:py-6">
-    //     <h2 className="text-xl font-medium text-slate-800 dark:text-navy-50 lg:text-2xl">
-    //       Payment History
-    //     </h2>
-    //   </div>
-
-    //   <div className="grid grid-cols-1 gap-4 sm:gap-5 lg:gap-6 mb-4">
-    //     <div className="card px-4 pb-4 sm:px-5 pt-4">
-    //       <form>
-    //         <div className="sm:col-span-2 flex flex-col sm:flex-row gap-4">
-    //           <div className="flex-1">
-    //             <label htmlFor="status" className="block text-sm font-medium text-slate-700 dark:text-navy-100">
-    //               Status
-    //             </label>
-    //             <select
-    //               className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm"
-    //               value={selectedStatus}
-    //               onChange={(e) => setSelectedStatus(e.target.value)}
-    //             >
-    //               <option value="">Select Status</option>
-    //               <option value="pending">Pending</option>
-    //               <option value="remaining">Partially Paid</option>
-    //               <option value="completed">Fully Paid</option>
-    //             </select>
-    //           </div>
-    //           <div className="flex-1">
-    //             <button
-    //               onClick={handleFilterSubmit}
-    //               type="submit"
-    //               className="mt-5 h-10 bg-primary text-white px-4 rounded-md"
-    //             >
-    //               Filter
-    //             </button>
-    //             <button
-    //               onClick={handleReset}
-    //               type="button"
-    //               className="ml-4 mt-5 h-10 bg-warning text-white px-4 rounded-md"
-    //             >
-    //               Reset
-    //             </button>
-    //           </div>
-    //         </div>
-    //       </form>
-    //     </div>
-    //   </div>
-
-    //   <div className="overflow-x-auto w-full">
-    //     <table className="is-hoverable w-full text-left">
-    //       <thead>
-    //         <tr>
-    //           <th>SL No</th>
-    //           <th>Mobile</th>
-    //           <th>Service Name</th>
-    //           <th>Amount</th>
-    //           <th>Status</th>
-    //           <th>Date</th>
-    //         </tr>
-    //       </thead>
-    //       <tbody>
-    //         {currentEntries.map((item, index) => (
-    //           <tr key={item.id}>
-    //             <td>{index + 1 + indexOfFirstEntry}</td>
-    //             <td>{item.mobile}</td>
-    //             <td>{item.service_name}</td>
-    //             <td>{item.amount}</td>
-    //             <td>{item.payment_status}</td>
-    //             <td>{item.added_date}</td>
-    //           </tr>
-    //         ))}
-    //       </tbody>
-    //     </table>
-    //   </div>
-
-    //   <div className="flex justify-between mt-4">
-    //     <button
-    //       onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-    //       disabled={currentPage === 1}
-    //     >
-    //       Previous
-    //     </button>
-    //     <span>
-    //       Page {currentPage} of {totalPages}
-    //     </span>
-    //     <button
-    //       onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-    //       disabled={currentPage === totalPages}
-    //     >
-    //       Next
-    //     </button>
-    //   </div>
-    // </div>
-
-
-
-
-
-
+  
         <div className=" w-full  pb-8">
  
         
@@ -343,10 +247,10 @@ onChange={handleSearchChange}
               </tr>
             </thead>
             <tbody>
-            {currentEntries.map((item, index) => (
+            {filteredData.map((item, index) => (
               <tr key={item.id} className="border-y border-transparent border-b-slate-200 dark:border-b-navy-500">
                 <td className="whitespace-nowrap rounded-l-lg px-4 py-3 sm:px-5">
-                {indexOfFirstEntry+index + 1}
+                {index + 1}
                 </td>
                 <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 {item.mobile}
@@ -390,7 +294,8 @@ onChange={handleSearchChange}
                      
                   
 <button 
-    onClick={() => window.open(`/admin/report/view-payment/${item.user_id}?service_id=${item.service_id}`, '_blank')}
+    // onClick={() => window.open(`/staff/report/view-payment/${item.cus_service_id}`, '_blank')}
+    onClick={() => window.open(`/staff/report/view-payment/${item.user_id}?cus_service_id=${item.cus_service_id}`, '_blank')}
     className="btn size-8 p-0 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25"
 >
     <RiBillFill />

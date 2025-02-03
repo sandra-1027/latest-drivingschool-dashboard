@@ -1,16 +1,4 @@
 
-
-
-
-
-
-
-
-
-
-
-
-
 'use client'
 import withAuth from '@/hoc/withAuth';
 import React, { useEffect, useState } from 'react'
@@ -20,6 +8,7 @@ import { useAuth } from '@/app/context/AuthContext';
 import Add from './add';
 import { FaRegCheckCircle } from 'react-icons/fa';
 import Edit from './edit';
+
 type Account = {
   id?: string;
   status: string;
@@ -41,7 +30,8 @@ const page = () => {
   const [showmodal,setShowmodal]=useState(false);
   const [accountData, setAccountData] = useState<Account[]>([]);
   const [filteredData, setFilteredData] = useState<Account[]>([]);
-  const [expenseData, setExpenseData] = useState<Account[]>([]);
+  //const [expenseData, setExpenseData] = useState<Account[]>([]);
+  const [expenseData, setExpenseData] = useState<Account | null>(null);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedBranch, setSelectedBranch] = useState<string>("");
@@ -165,10 +155,10 @@ const page = () => {
   const totalPages = Math.ceil(totalEntries / entriesPerPage);
 
 
-    const handleEdit = (staff: Account) => {
-      setSelectedAccount(staff); 
-      setShowmodal(true); 
-    };
+    // const handleEdit = (staff: Account) => {
+    //   setSelectedAccount(staff); 
+    //   setShowmodal(true); 
+    // };
 
 
     const updateAccountStatus = async (id: string, status: string) => {
@@ -326,18 +316,12 @@ const page = () => {
         
           <div className="flex list-group-item border p-2" >
             <p className='mr-8'>Total Income </p>
-            <span className='font-bold'>₹ 
-              {/* {expenseData.total_income} */}
-              {expenseData[0]?.total_income}
-            </span>
+            <span className='font-bold'>₹ {expenseData.total_income}</span>
           </div>
 
           <div className="flex list-group-item p-2">
             <p className='mr-8'>Total Expense </p>
-            <span className='font-bold'>₹ 
-              {/* {expenseData.total_expense} */}
-              {expenseData[0]?.total_expense}
-            </span>
+            <span className='font-bold'>₹ {expenseData.total_expense}</span>
           </div>
        
         </div>
@@ -413,8 +397,7 @@ const page = () => {
             {currentEntries.map((item, index) => (
               <tr key={item.id} className="border-y border-transparent border-b-slate-200 dark:border-b-navy-500">
                 <td className="whitespace-nowrap rounded-l-lg px-4 py-3 sm:px-5">
-                {/* {index + 1} */}
-                {indexOfFirstEntry+index + 1}
+                {index +indexOfFirstEntry+1}
                 </td>
                 <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 {item.daily_status}
@@ -511,17 +494,32 @@ const page = () => {
       showModal={showmodal}
       toggleModal={() => togglemodal('add')}  // Correct the mode here if you want to switch to 'edit'
       AccountData={selectedAccount}
+      // onSave={(updatedAccount) => {
+      //   setAccountData((prevData) => prevData.map((account) =>
+      //     account.id === updatedAccount.id ? updatedAccount: account
+      //   ));
+      //   togglemodal('add');  // Close modal after saving
+      // }}
       onSave={(updatedAccount) => {
-        setAccountData((prevData: Account[]) => prevData.map((account) =>
-          account.id === updatedAccount.id ? updatedAccount: account
-        ));
-        togglemodal('add');  // Close modal after saving
+        console.log("Updated Account:", updatedAccount);
+        console.log("Current Account Data:", accountData);
+      
+        setAccountData((prevData) =>
+          prevData.map((account) =>
+            account.id === updatedAccount.id ? updatedAccount : account
+          )
+        );
+        togglemodal("add");
       }}
+      
+      
     />
   ) : (
     <Add showmodal={showmodal} togglemodal={() => togglemodal('add')} />
   )
 )}
+
+
 
   </div>
   

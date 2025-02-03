@@ -19,3 +19,42 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@media print {
+  body {
+    margin: 0;
+    padding: 0;
+    font-size: 12pt;
+  }
+
+  table {
+    border: 1px solid black;
+    width: 100%;
+    border-collapse: collapse;
+    page-break-inside: auto;
+    table-layout: fixed;
+  }
+  th {
+    border-bottom:1px solid black;
+    padding: 8px;
+  }
+ td {
+    border: 1px 0px 1px 0px solid black;
+    padding: 8px;
+  }
+
+  .is-hoverable {
+    width: 100% !important;
+    overflow: hidden;
+  }
+
+  .whitespace-nowrap {
+    white-space: normal !important;
+  }
+  .printnone {
+    display: none !important;
+  }
+  .printable, .printable * {
+    display: block !important;
+  }
+}

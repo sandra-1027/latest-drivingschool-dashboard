@@ -1,5 +1,4 @@
 
-
 import { useAuth } from '@/app/context/AuthContext';
 import React, { useState, useEffect } from 'react';
 
@@ -15,40 +14,42 @@ type CreateProps = {
   };
   isEditing?: boolean;
 };
-// type CreateProps = {
-//   showmodal: boolean;
-//   togglemodal: () => void;
-// }
- const Add: React.FC<CreateProps> = ({ showmodal, togglemodal }) => {
-// const Add: React.FC<CreateProps> = ({ showmodal, togglemodal, formData, isEditing = false }) => {
+
+const Add: React.FC<CreateProps> = ({ showmodal, togglemodal, formData, isEditing = false }) => {
   const { state } = useAuth();
-  // const [accountType, setAccountType] = useState(formData?.daily_status || 'expense');
-  // const [expenseType, setExpenseType] = useState(formData?.type || '');
-  // const [expenseName, setExpenseName] = useState(formData?.expense_name || '');
-  // const [amount, setAmount] = useState(formData?.amount || '');
-  const [type, settype] = useState('');
-  const [dstatus, setdstatus] = useState('expense');
-  const [expenseName, setExpenseName] = useState('');
-  const [amount, setAmount] = useState('');
- 
+  const [accountType, setAccountType] = useState(formData?.daily_status || 'expense');
+  const [expenseType, setExpenseType] = useState(formData?.type || '');
+  const [amount, setAmount] = useState(formData?.amount || '');
+
+  useEffect(() => {
+    // Prefill form data when editing
+    if (isEditing && formData) {
+      setAccountType(formData.daily_status);
+      setExpenseType(formData.type);
+      setAmount(formData.amount);
+    }
+  }, [isEditing, formData]);
 
   if (!showmodal) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Prepare the data object
+  
+  
     const data: any = {
-      daily_status: dstatus,
-      // amount: parseFloat(amount), // Ensure amount is a number
-      amount:amount,
-      type: type || '',
-      // expense_name: expenseName === 'others' ? 'others' : '', // Adjust based on your logic
-      expense_name: expenseName, 
+      daily_status: accountType,
+      amount: parseFloat(amount), // Ensure amount is a number
+      type: expenseType || 'general',
+      expense_name: expenseType === 'others' ? 'others' : 'petrol', // Adjust based on your logic
     };
+  
+    // Include id only if editing
+  
+  
     console.log('Sending data to server:', data);
   
-    try {
-      const response = await fetch('/api/staff/accounts/add_accounts',{
+    try {                             
+      const response = await fetch('/api/staff/accounts/add_accounts', {
         method: "POST",
         headers: {
           authorizations: state?.accessToken ?? '',
@@ -60,16 +61,16 @@ type CreateProps = {
   
       if (!response.ok) {
         const errorData = await response.json();
-        console.error(`Error adding account:`, errorData.message || 'Unknown error');
-        alert(`Failed to add account`);
+        console.error(`Error ${isEditing ? 'updating' : 'adding'} account:`, errorData.message || 'Unknown error');
+        alert(`Failed to ${isEditing ? 'update' : 'add'} account`);
       } else {
         const responseData = await response.json();
-        console.log(`Account added successfully:`, responseData);
-        alert(`Account added successfully!`);
+        console.log(`Account ${isEditing ? 'updated' : 'added'} successfully:`, responseData);
+        alert(`Account ${isEditing ? 'updated' : 'added'} successfully!`);
       }
     } catch (error) {
       console.error(`Network error:`, error);
-      alert(`An error occurred while adding'} the account.`);
+      alert(`An error occurred while ${isEditing ? 'updating' : 'adding'} the account.`);
     } finally {
       togglemodal(); // Close the modal
     }
@@ -90,7 +91,7 @@ type CreateProps = {
         <div className="relative flex w-full max-w-3xl origin-top flex-col overflow-hidden rounded-lg bg-white transition-all duration-300 dark:bg-navy-700">
           <div className="flex justify-between rounded-t-lg bg-slate-200 px-4 py-3 dark:bg-navy-800 sm:px-5">
             <h3 className="text-xl font-medium text-slate-700 dark:text-navy-100">
-             Add Account
+              {isEditing ? 'Edit Account' : 'Add Account'}
             </h3>
             <button
               onClick={togglemodal}
@@ -122,8 +123,8 @@ type CreateProps = {
                   name="basic"
                   type="radio"
                   value="expense"
-                  checked={dstatus === 'expense'}
-                  onChange={() => setdstatus('expense')}
+                  checked={accountType === 'expense'}
+                  onChange={() => setAccountType('expense')}
                 />
                 <span className="ml-2">Expense</span>
               </label>
@@ -133,8 +134,8 @@ type CreateProps = {
                   name="basic"
                   type="radio"
                   value="income"
-                  checked={dstatus === 'income'}
-                  onChange={() => setdstatus('income')}
+                  checked={accountType === 'income'}
+                  onChange={() => setAccountType('income')}
                 />
                 <span className="ml-2">Income</span>
               </label>
@@ -142,13 +143,13 @@ type CreateProps = {
 
           
 
-{dstatus === 'expense' && (
+{accountType === 'expense' && (
   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
     {/* Expense Type Dropdown */}
     <label className="block">
       <select
-        value={expenseName}
-        onChange={(e) => setExpenseName(e.target.value)}
+        value={expenseType}
+        onChange={(e) => setExpenseType(e.target.value)}
         className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
       >
         <option value="">Please select Expense type</option>
@@ -160,14 +161,14 @@ type CreateProps = {
     </label>
 
   
-    {expenseName === 'others' ? (
+    {expenseType === 'others' ? (
   // Render Name field when expenseType is 'others'
   <label className="block">
     <input
       type="text"
       placeholder="Name"
-      value={type}
-      onChange={(e) => settype(e.target.value)}
+      value={amount}
+      onChange={(e) => setAmount(e.target.value)}
       className="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
     />
   </label>
@@ -185,28 +186,25 @@ type CreateProps = {
 )}
 
  
-    {expenseName === 'others' && (
+    {expenseType === 'others' && (
       <label className="block">
         <input
           type="text"
           placeholder="Amount"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
           className="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
         />
       </label>
     )}
   </div>
 )}
-{dstatus === 'income' && (
+{accountType === 'income' && (
   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
     {/* Name Field */}
     <label className="block">
       <input
         type="text"
         placeholder="Name"
-        value={type}
-        onChange={(e) => settype(e.target.value)}
+        value={expenseType}
         className="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
       />
     </label>
@@ -228,7 +226,7 @@ type CreateProps = {
               type="submit"
               className="bg-primary text-white rounded p-2 w-1/5 mt-4"
             >
-             Add
+              {isEditing ? 'Update' : 'Add'}
             </button>
           </form>
         </div>

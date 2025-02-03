@@ -12,7 +12,7 @@ const [loading, setLoading] =useState(false);
 const [error, setError] = useState('');
 const [message, setMessage] =useState('');
  const router = useRouter();
-const handleForgotPassword = async (e) => {
+const handleForgotPassword = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
   setLoading(true);
   setError('');
@@ -38,7 +38,7 @@ console.log('forgotpassword',data)
 
     setMessage('A reset link has been sent to your email.');
     router.push('/changepassword')
-  } catch (err) {
+  } catch (err:any) {
     setError(err.message || 'Failed to send reset link.');
   } finally {
     setLoading(false);

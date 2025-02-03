@@ -3,12 +3,24 @@ import React, { useEffect, useState } from "react";
 
 
 interface Account {
-  id?: string;
-  daily_status: string;
-  amount: string;
-  type: string;
+  // id?: string;
+  // daily_status: string;
+  // amount: string;
+  // type: string;
+  //  expense_name: string;
+   id?: string;
+   status: string;
+   daily_status: string; 
+   type: string;
    expense_name: string;
-
+   email: string;
+   branch_id: string;
+   branch_name:string;
+   added_date:string;
+   staff_name:string;
+   amount:string;
+   total_income:string;
+   total_expense:string;
   }
 
 interface EditProps {

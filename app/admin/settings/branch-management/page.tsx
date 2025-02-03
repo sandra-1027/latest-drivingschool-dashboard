@@ -11,10 +11,10 @@ import Edit from './edit';
 
 type Branch = {
   branch_name: string;
-  id: string;
+  id?: string;
   status: string;
   [key: string]: any;
- 
+  description:string;
 };
 type BranchData = {
   data: Branch[];
@@ -176,6 +176,7 @@ const page = () => {
         };
 
   return (
+  
     <div className=" w-full  pb-8">
  
         
@@ -205,12 +206,11 @@ const page = () => {
   <div className="grid grid-cols-1 gap-4 sm:gap-5 lg:gap-6 mb-4" >
   <div className="card px-4 pb-4 sm:px-5 pt-4">
   <div className="p-4 rounded-lg bg-slate-100 dark:bg-navy-800">
-    <form>
+  <form>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        {/* Driver Name Select */}
-        <div className='flex-1'>
+        <div>
           <label
-            htmlFor="serviceName"
+            htmlFor="branchName"
             className="block text-sm font-medium text-slate-700 dark:text-navy-100"
           >
             Branch Name
@@ -231,8 +231,7 @@ const page = () => {
        
           </select>
         </div>
-        {/* Status Select */}
-        <div className='flex-1'>
+        <div>
           <label
             htmlFor="status"
             className="block text-sm font-medium text-slate-700 dark:text-navy-100"
@@ -251,41 +250,31 @@ const page = () => {
             <option value="inactive">Inactive</option>
           </select>
         </div>
-
-        <div className='flex-1 mt-6'>
-        <button
-          type="submit"
-          onClick={handleFilterSubmit}
-          className="inline-flex justify-center rounded-md border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-        ><i className='fa fa-filter' style={{marginTop:'3px',marginRight:'3px'}}></i>
-          Filter
-        </button>
-        <button
-          type="button"
-          onClick={handleReset}
-          className="ml-4 inline-flex justify-center rounded-md border border-gray-300 bg-warning py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-warningfocus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-        ><i className='fa fa-refresh' style={{marginTop:'3px',marginRight:'3px'}}></i>
-          Reset
-        </button>
-        </div>
       </div>
-      {/* Buttons */}
-      {/* <div className="mt-4 flex space-x-4">
+      <div className="mt-4 flex space-x-4">
         <button
           type="submit"
           onClick={handleFilterSubmit}
           className="inline-flex justify-center rounded-md border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-        ><i className='fa fa-filter' style={{marginTop:'3px',marginRight:'3px'}}></i>
+        >
+          <i
+            className="fa fa-filter"
+            style={{ marginTop: "3px", marginRight: "3px" }}
+          ></i>
           Filter
         </button>
         <button
           type="button"
           onClick={handleReset}
           className="inline-flex justify-center rounded-md border border-gray-300 bg-warning py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-warningfocus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-        ><i className='fa fa-refresh' style={{marginTop:'3px',marginRight:'3px'}}></i>
+        >
+          <i
+            className="fa fa-refresh"
+            style={{ marginTop: "3px", marginRight: "3px" }}
+          ></i>
           Reset
         </button>
-      </div> */}
+      </div>
     </form>
   </div>
     </div>
@@ -348,11 +337,11 @@ const page = () => {
               </tr>
             </thead>
             <tbody>
-            {/* {filteredData.map((item, index) => ( */}
             {currentEntries.map((item, index) => (
+             
               <tr key={item.id} className="border-y border-transparent border-b-slate-200 dark:border-b-navy-500">
                 <td className="whitespace-nowrap rounded-l-lg px-4 py-3 sm:px-5">
-                {indexOfFirstEntry+index+1}
+                {index +indexOfFirstEntry+1}
                 </td>
                 <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 {item.branch_name}
@@ -364,7 +353,7 @@ const page = () => {
                 <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 {item.status}
                 </td>
-                <td className="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
+                <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 {item.added_date}
                 </td>
                 <td className="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
@@ -434,7 +423,7 @@ const page = () => {
           </button>
         </div>
       </div> */}
-      <div className="flex flex-col sm:flex-row justify-between items-center mt-4 space-y-4 sm:space-y-0">
+        <div className="flex flex-col sm:flex-row justify-between items-center mt-4 space-y-4 sm:space-y-0">
   {/* Entries Info */}
   <div className="text-center sm:text-left">
     Showing {indexOfFirstEntry + 1} to {Math.min(indexOfLastEntry, totalEntries)} of {totalEntries} entries
@@ -502,7 +491,9 @@ const page = () => {
     <Edit
       showModal={showmodal}
       toggleModal={() => togglemodal('add')}  // Correct the mode here if you want to switch to 'edit'
-      branchData={editedBranch}
+      // branchData={editedBranch}
+      branchData={editedBranch as Branch}
+
       onSave={(updatedBranch) => {
         setBranchData((prevData) => prevData.map((branch) =>
           branch.id === updatedBranch.id ? updatedBranch : branch
@@ -515,7 +506,7 @@ const page = () => {
   )
 )}
   </div>
-  
+
   )
 }
 

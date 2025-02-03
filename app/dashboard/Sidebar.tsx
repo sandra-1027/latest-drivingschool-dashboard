@@ -808,17 +808,40 @@
 
 
 'use client';
-import React, { useState } from "react";
+import React, {useState } from "react";
 import { useDrawer } from "./DrawerContext";
 import Link from "next/link";
 import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/navigation";
 
+interface User {
+  id: number;
+  name: string;
+  // other properties...
+}
+
+interface UserData {
+  user_type: string;
+  // other properties...
+}
+
+interface UserWithData extends User {
+  data?: UserData; // Make data optional if it might not always be present
+}
+
+interface AuthState {
+  user: UserWithData | null; // Ensure user can be UserWithData or null
+  // other properties...
+}
 const Sidebar = () => {
   const { state, clearAuthData ,setAuthData} = useAuth();
-const user =state?.user;
-const data =user?.data;
 
+  const user = state?.user as UserWithData | null; // Assert user as UserWithData or null
+
+  const userType = user?.data?.user_type; // Now TypeScript recognizes data
+  // console.log(userType, "userType");
+ const data = user?.data;
+  // console.log(data, "data");
 
 
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -867,13 +890,13 @@ const data =user?.data;
           <div className="flex h-full w-full flex-col items-center border-r border-slate-150 bg-white dark:border-navy-700 dark:bg-navy-800">
   {/* Application Logo */}
   <div className="flex pt-4">
-    
+    {/* <Link href="/"> */}
       <img
         className="size-11 transition-transform duration-500 ease-in-out hover:rotate-[360deg]"
         src="/logo.png"
         alt="logo"
       />
-    
+    {/* </Link> */}
   </div>
   {/* Main Sections Links */}
 
@@ -892,7 +915,6 @@ const data =user?.data;
       data-tooltip="Dashboards"
       data-placement="right"
     className="tooltip-main-sidebar flex size-11 items-center justify-center rounded-lg bg-primary/10 text-primary outline-none transition-colors duration-200 hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:bg-navy-600 dark:text-accent-light dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90"
-   
     >
       <svg
         className="size-7"

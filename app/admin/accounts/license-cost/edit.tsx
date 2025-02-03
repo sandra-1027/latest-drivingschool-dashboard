@@ -1,25 +1,17 @@
 import { useAuth } from "@/app/context/AuthContext";
 import React, { useEffect, useState } from "react";
-// type CreateProps = {
-//   showmodal: boolean;
-//   togglemodal: () => void;
-//   formData?: {
-//     f_cost: string;
-//     m_cost: string;
-//     service_id: string;
-//     vehicle_type: string;
-//     id:string;
-//   };
-//   isEditing?: boolean;
-// };
 
 interface Cost {
-    id: number;
+   
        f_cost: string;
     m_cost: string;
     service_id: string;
     vehicle_type: string;
-   
+    id?: string;
+    status: string;
+    service_name: string;
+    branch_name:string;
+    added_date:string;
   }
 
 
@@ -75,7 +67,7 @@ useEffect(() => {
     }
   }, [showModal]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => prevData ? { ...prevData, [name]: value } : null);
   };

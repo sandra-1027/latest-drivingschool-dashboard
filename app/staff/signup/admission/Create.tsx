@@ -1,9 +1,15 @@
 
 
+
+
 import { useAuth } from "@/app/context/AuthContext";
 import React, { useEffect, useState } from "react";
-import Select from 'react-select';
 
+
+interface Admission {
+  user_name: string;
+  // Add other properties that admission may have
+}
 
 type CreateProps = {
   showmodal: boolean;
@@ -35,7 +41,6 @@ type CreateProps = {
      user_photo:File | null;
     service_name: string;
     UserPhoto:File | null;
-   
   };
   isEditing?: boolean;
 };
@@ -90,19 +95,21 @@ const[insurencePreview,setInsurencePreview]=useState<string>('');
     mobile: "",
    email: "",
     blood_group: "",
+    document_type:'',
     gender:"",
-    branch_id:"",
+    userfile:'',
+    document:'',
     payment_method:'',
     service_id:'',
     total_amount:'',
     pay_amount:'',
     type:'',
-    document_type:'',
+    branch_id:"",
+    old_rc:'',
     tax:'',
     pucc:'',
-    userfile:'',
-    document:'',
-    old_rc:'',
+  //   dob:'',
+  //  address:'',
     adhar:'',
     insurence:'',
 
@@ -112,7 +119,6 @@ const[insurencePreview,setInsurencePreview]=useState<string>('');
   
 
     try {
-
       const response = await fetch('/api/staff/member/branch_details', {
         method: 'POST',
         headers: {
@@ -182,6 +188,8 @@ const[insurencePreview,setInsurencePreview]=useState<string>('');
   }, [state]);
 
   const fetchAdmissionData = async () => {
+  
+
     try {
 
       const response = await fetch('/api/staff/signup/get_admission_details', {
@@ -191,9 +199,8 @@ const[insurencePreview,setInsurencePreview]=useState<string>('');
           // 'authorizations': token ?? '',
           'api_key': '10f052463f485938d04ac7300de7ec2b',  // Make sure the API key is correct
         },
-        body: JSON.stringify({ user_id: null, mobile: null}),
+        body: JSON.stringify({ user_id:null}),
       });
- 
       if (!response.ok) {
         const errorData = await response.json();
         // console.error('API error:', errorData);
@@ -218,7 +225,7 @@ const[insurencePreview,setInsurencePreview]=useState<string>('');
   }, [state]);
 
 
-
+ 
   
   
   
@@ -269,18 +276,7 @@ const handleInsurenceChange =(e:React.ChangeEvent<HTMLInputElement>)=>{
 }
 
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, type: "photo" | "document") => {
-    const file = e.target.files?.[0];
-    if (file) {
-      if (type === "photo") {
-        setPhoto(file);
-        setImagePreview(URL.createObjectURL(file));
-      } else {
-        setDocuments(file);
-        setDocumentPreview(URL.createObjectURL(file));
-      }
-    }
-  };
+
   
 
   const handleRemove = (
@@ -326,9 +322,8 @@ const handleInsurenceChange =(e:React.ChangeEvent<HTMLInputElement>)=>{
       console.log(`${key}:`, value);
     }
   console.log('submitting formdata', Object.fromEntries(formData.entries()))
-
     try {
-      const response = await fetch('/api/staff/signup/admission', {
+      const response = await fetch("/api/staff/signup/admission", {
         method: "POST",
         headers: {
           authorizations: state?.accessToken ?? "",
@@ -348,7 +343,7 @@ const handleInsurenceChange =(e:React.ChangeEvent<HTMLInputElement>)=>{
       if (response.ok) {
       alert("Admission added successfully!");
       togglemodal(); 
-    }
+      }
     } catch (error) {
       console.error("Error submitting form:", error);
       alert("An error occurred while adding the Admission.");
@@ -364,16 +359,20 @@ const handleInsurenceChange =(e:React.ChangeEvent<HTMLInputElement>)=>{
   );
 
   
-  const handleSelect = (service:{id:string; service_name:string; amount:string}) => {
- 
-    setSelectedService(service.service_name);
-    setservice_id(service.id);
-    setSelectedAmount(service.amount); // Access the amount property directly
-    setIsOpen(false); // Close the dropdown
-  };
+// const handleSelect = (service:{id:string; service_name:string; amount:string}) => {
+//     setSelectedService(service.service_name);
+//     setservice_id(service.id);
+//     setSelectedAmount(service.amount); // Access the amount property directly
+//     setIsOpen(false); // Close the dropdown
+//   };
+const handleSelect = (service: { id: string; service_name: string; amount?: string }) => {
+  setSelectedService(service.service_name);
+  setservice_id(service.id);
+  setSelectedAmount(service.amount || '0'); // Provide a default value for `amount`
+  setIsOpen(false); // Close the dropdown
+};
 
-
-  const handleSelectmobile = (admission) => {
+  const handleSelectmobile = (admission : Admission) => {
     setmobile(admission.user_name);
     // setSelectedAmount(service.amount); 
     setmobileOpen(false); // Close the dropdown
@@ -482,7 +481,7 @@ onClick={() => setmobileOpen(!isOpen)} >
           <input
             type="text"
             placeholder="Search..."
-            className="w-full px-3 py-2 border-b dark:bg-navy-700"
+            className="dark:bg-navy-700 w-full px-3 py-2 border-b"
             value={searchMobile}
             onChange={(e) => setSearchMobile(e.target.value)}
           />
@@ -565,7 +564,7 @@ onClick={() => setmobileOpen(!isOpen)} >
                          name="blood_group"
                          value={blood_group}
                          onChange={(e) => setblood_group(e.target.value)}
-                          className="form-input peer mt-1.5 w-full rounded-lg border border-slate-300 dark:bg-navy-700 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                          className="dark:bg-navy-700 form-input peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                         >
                           <option>Select Blood Group</option>
                           <option value="A+ve">A+ve</option>
@@ -588,7 +587,7 @@ onClick={() => setmobileOpen(!isOpen)} >
                          name="gender"
                          value={gender}
                          onChange={(e) => setgender(e.target.value)}
-                          className="form-input peer mt-1.5 w-full rounded-lg border dark:bg-navy-700 border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                          className="dark:bg-navy-700 form-input peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                         >
                           <option>Select a Gender</option>
                           <option value="male">Male</option>
@@ -780,7 +779,7 @@ onClick={() => setmobileOpen(!isOpen)} >
             <div className="space-y-5 p-4 sm:p-5">
       <div className="relative w-full">
       <div
-        className="form-select peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9"
+        className="dark:bg-navy-700 form-select peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9"
         onClick={() => setIsOpen(!isOpen)} 
         
       >
@@ -788,20 +787,20 @@ onClick={() => setmobileOpen(!isOpen)} >
       </div>
 
       {isOpen && (
-        <div className="dark:bg-navy-700 absolute z-10 w-full mt-1 bg-white border border-slate-300 rounded-lg shadow-md">
+        <div className="absolute z-10 w-full mt-1 bg-white border border-slate-300 rounded-lg shadow-md">
           <input
             type="text"
             placeholder="Search services..."
-            className="w-full px-3 py-2 border-b dark:bg-navy-700"
+            className="dark:bg-navy-700 w-full px-3 py-2 border-b"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <div className="max-h-60 overflow-y-auto">
+          <div className="dark:bg-navy-700 max-h-60 overflow-y-auto">
             {filteredServices.length > 0 ? (
               filteredServices.map((service) => (
                 <div
                   key={service.id}
-                  className="cursor-pointer px-3 py-2 hover:bg-gray-200 "
+                  className="cursor-pointer px-3 py-2 hover:bg-gray-200"
                   onClick={() => handleSelect(service)}
                 >
                   {service.service_name}

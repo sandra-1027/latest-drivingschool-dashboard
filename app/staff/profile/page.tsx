@@ -104,7 +104,7 @@ const StaffProfile = () => {
     fetchProfileData();
   }, [state]);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setUserData((prevData) => ({
       ...prevData,
@@ -182,7 +182,7 @@ const StaffProfile = () => {
     }
   };
 
-  const handlePasswordInputChange = (e) => {
+  const handlePasswordInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setChangePasswordData((prevData) => ({
       ...prevData,

@@ -1,10 +1,20 @@
 'use client'
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, {Suspense, useState } from 'react'
 import { useAuth } from '../context/AuthContext';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Resetpassword() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ResetPasswordForm />
+    </Suspense>
+  );
+};
+
+const ResetPasswordForm = () => {
  const { state } = useAuth();
  const router = useRouter();
  const searchParams = useSearchParams();
@@ -17,7 +27,7 @@ const [loading, setLoading] =useState(false);
 const [error, setError] = useState('');
 const [message, setMessage] =useState('');
 
-const handleChangePassword = async (e) => {
+const handleChangePassword = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
   setLoading(true);
   setError('');
@@ -42,6 +52,7 @@ const handleChangePassword = async (e) => {
     });
 
     const data = await response.json();
+    toast.success('Password updated successfully!');
     console.log('Reset password', response);
     console.log('forgotpassword', data);
     console.log('Reset password', response);
@@ -54,14 +65,17 @@ console.log('forgotpassword',data)
     setMessage('A reset link has been sent to your email.');
     router.push('/login')
   } catch (err : any) {
-    setError(err.message || 'Failed to send reset link.');
+    // setError(err.message || 'Failed to send reset link.');
+     toast.error(err.message || 'Failed to send reset link.');
   } finally {
     setLoading(false);
   }
 };
 
   return (
+   
     <div>
+       
       <link rel="stylesheet" href="/css/base.css" />
       <link rel="stylesheet" href="/dist/css/app.css" />
       <main className="grid w-full grow grid-cols-1 place-items-center">
@@ -167,6 +181,7 @@ console.log('forgotpassword',data)
 
       </main>
     </div>
+   
   )
 }
 

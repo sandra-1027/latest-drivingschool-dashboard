@@ -14,12 +14,15 @@ import React, { useEffect, useState } from "react";
 // };
 
 interface Cost {
-    id: number;
        f_cost: string;
     m_cost: string;
     service_id: string;
     vehicle_type: string;
-   
+    id?: string;
+    status: string;
+    service_name: string;
+    branch_name:string;
+    added_date:string;
   }
 
 
@@ -27,7 +30,7 @@ interface EditProps {
   showModal: boolean;
   togglemodal: () => void;
   costData: Cost | null;
-  onSave: (updatedDriver: Cost) => void;
+  onSave: (updatedCost: Cost) => void;
 }
 
 
@@ -75,7 +78,7 @@ useEffect(() => {
     }
   }, [showModal]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => prevData ? { ...prevData, [name]: value } : null);
   };

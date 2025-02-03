@@ -13,7 +13,7 @@ const [error, setError] = useState('');
 const [message, setMessage] =useState('');
  const router = useRouter();
 
-const handleForgotPassword = async (e) => {
+const handleForgotPassword = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
   setLoading(true);
   setError('');
@@ -170,7 +170,7 @@ const handleForgotPassword = async (e) => {
             </button>
            
             </form>
-          {error && <p className="mt-3 text-red-500">{error}</p>} 
+          {/* {error && <p className="mt-3 text-red-500">{error}</p>}  */}
           </div>
 
 

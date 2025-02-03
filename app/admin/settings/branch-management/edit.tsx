@@ -2,15 +2,15 @@ import { useAuth } from '@/app/context/AuthContext';
 import { useState, useEffect } from 'react';
 import { IoEye, IoEyeOff } from 'react-icons/io5';
 import TextEditor from './TextEditor';
-import 'react-toastify/dist/ReactToastify.css';
-import { toast } from 'react-toastify';
 
 interface Branch {
-    id: number;
+    id?:string;
     branch_name: string;
     status: string;
     description: string;
-    
+  
+    [key: string]: any;
+  
   }
 
   // interface Item {
@@ -22,7 +22,7 @@ interface EditProps {
   showModal: boolean;
   toggleModal: () => void;
   branchData: Branch | null;
-  onSave: (updatedBranch: Branch) => void;
+  onSave: (updatedDriver: Branch) => void;
 }
 
 const Edit = ({ showModal, toggleModal, branchData, onSave }: EditProps) => {
@@ -43,20 +43,23 @@ const [loading, setLoading] = useState(false);
   //   const { name, value } = e.target;
   //   setFormData((prevData) => prevData ? { ...prevData, [name]: value } : null);
   // };
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement> | string, fieldName?: string) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement> | string,
+    fieldName?: string
+  ) => {
     if (typeof e === "string" && fieldName) {
-      // For TextEditor
       setFormData((prevData) =>
         prevData ? { ...prevData, [fieldName]: e } : null
       );
-    } else if (e.target) {
-      // For standard input fields
-      const { name, value } = e.target;
+    } else if (e instanceof Event && 'target' in e) { // Type guard to check if `e` is a ChangeEvent
+      const { name, value } = e.target as HTMLInputElement; // Type assertion
       setFormData((prevData) =>
         prevData ? { ...prevData, [name]: value } : null
       );
     }
   };
+  
+  
 
 
 
@@ -91,7 +94,7 @@ const [loading, setLoading] = useState(false);
   
         console.log('Response Status:', response.status);
         const data = await response.json();
-   toast.success('Branch updated successfully!');
+  
         console.log('Response Data:', data);
   
         if (data.success) {
@@ -99,15 +102,13 @@ const [loading, setLoading] = useState(false);
           onSave(formData);
           toggleModal();
         } else {
-          // setError(data.msg || 'Failed to update driver');
-          toast.error(data.msg || 'Failed to update driver');
+          setError(data.msg || 'Failed to update driver');
           console.log('Error Messages:', data.error_msgs);
         }
       }
-    } catch (err :any) {
+    } catch (err) {
       console.error('Error during API call:', err);
-      // setError('An error occurred while updating the driver.');
-       toast.error(err.message || 'An error occurred');
+      setError('An error occurred while updating the driver.');
     } finally {
       setLoading(false);
     }
@@ -161,7 +162,16 @@ const [loading, setLoading] = useState(false);
         <div className="modal-body">
           <form onSubmit={handleSubmit}>
             <div className="space-y-5 p-4">
-              
+              {/* {error && (
+                <p className="text-red-500">
+                  {error}
+                </p>
+              )}
+              {success && (
+                <p className="text-green-500">
+                  Branch updated successfully!
+                </p>
+              )} */}
               <label className="block">
                 <input
                   className="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
@@ -190,7 +200,7 @@ const [loading, setLoading] = useState(false);
                   className="bg-primary text-white rounded p-2 w-1/5"
                   disabled={loading}
                 >
-                 Edit
+                  {loading ? "Adding..." : "Add"}
                 </button>
               {/* </div> */}
             </div>

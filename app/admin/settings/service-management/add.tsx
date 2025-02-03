@@ -58,9 +58,9 @@ const { state } = useAuth();
       }
 
       const result = await response.json();
-      // setSuccess(true);
-      toast.success('Service added successfully!');
-      console.log("service added successfully", result);
+       toast.success('Service added successfully!');
+      setSuccess(true);
+      console.log("Branch added successfully:", result);
 
       // Clear form fields
       setFormData({
@@ -73,7 +73,7 @@ const { state } = useAuth();
       setTimeout(() => togglemodal(), 2000);
     } catch (err: any) {
       // setError(err.message || "An error occurred");
-      toast.error(err.message || 'An error occurred');
+       toast.error(err.message || 'An error occurred');
       console.error(err);
     } finally {
       setLoading(false);
@@ -122,7 +122,16 @@ const { state } = useAuth();
             {/* <div className="tabs flex flex-col">  */}
             <form onSubmit={handleSubmit}>
               <div className="space-y-5 p-4">
-               
+                {error && (
+                  <p className="text-red-500">
+                    {error}
+                  </p>
+                )}
+                {success && (
+                  <p className="text-green-500">
+                    Service added successfully!
+                  </p>
+                )}
                 <label className="block">
                   <input
                     className="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
@@ -170,7 +179,7 @@ const { state } = useAuth();
                     className="bg-primary text-white rounded p-2 w-1/5"
                     disabled={loading}
                   >
-                   Add
+                    {loading ? "Adding..." : "Add"}
                   </button>
                 {/* </div> */}
               </div>
