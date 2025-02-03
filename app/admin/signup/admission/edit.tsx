@@ -1,52 +1,64 @@
+
+
+
+
+
 import { useAuth } from "@/app/context/AuthContext";
 import React, { useEffect, useState } from "react";
 
-// import "./create.css";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import "./create.css";
+
+
 
 interface Admission {
-  id: number;
+  id?: string;
   name: string;
   mobile: string;
   email: string;
-  blood_group: string;
+  blood_group:string;
   gender: string;
-  document_type: string;
-  service_id: string;
-  total_amount: string;
-  pay_amount: string;
-  amount: string;
-  type: string;
-  payment_method: string;
-  tax: string;
-  pucc: string;
-  branch_id: string;
-  first_name: string;
+  document_type:string;
+  service_id:string;
+  due_amount:string;
+  amount?: string; 
+  type:string;
+  payment_method:string;
+  tax:string;
+  pucc:string;
+  branch_id:string;
+  first_name:string;
   userfile: File | null;
-  document: File | null;
-  old_rc: File | null;
-  adhar: File | null;
-  insurence: File | null;
-  user_photo: File | null;
+  document:File | null;
+  old_rc:File | null;
+  adhar:File | null;
+  insurence:File | null;
+   user_photo:File | null;
+   documents:File | null;
   service_name: string;
-  UserPhoto: File | null;
+  // User_photo:File;
+  customer_id:string;
+  pay_amount: string | undefined;
+  total_amount: string | undefined;
+  User_photo?: string;
+  
 }
 
 interface EditProps {
   showmodal: boolean;
   togglemodal: () => void;
-  admissionData: Admission | null;
+  AdmissionData: Admission | null;
   onSave: (updatedAdmission: Admission) => void;
 }
-const Edit = ({ showmodal, togglemodal, admissionData, onSave }: EditProps) => {
+
+
+const Edit = ({ showmodal, togglemodal, AdmissionData, onSave }: EditProps) => {
   const { state } = useAuth();
   const [selectedOption, setSelectedOption] = useState<string>("create");
   const [branch, setBranch] = useState<{ id: string; branch_name: string }[]>(
     []
   );
   const [service, setService] = useState<
-    { id: string; service_name: string; amount: string }[]
+    { id: string; service_name: string; amount:string }[]
   >([]);
 
   const [documentchange, setDocumentchange] = useState(false);
@@ -55,12 +67,15 @@ const Edit = ({ showmodal, togglemodal, admissionData, onSave }: EditProps) => {
   const [userPreview, setUserPreview] = useState<string | null>(null);
   const [userchange, setUserchange] = useState(false);
 
+ 
   const [Rcchange, setRcchange] = useState(false);
   const [RcPreview, setRcPreview] = useState<string | null>(null);
 
+  
   const [Aadhaarchange, setAadhaarchange] = useState(false);
   const [AadhaarPreview, setAadhaarPreview] = useState<string | null>(null);
 
+  
   const [Insurencechange, setInsurencechange] = useState(false);
   const [InsurencePreview, setInsurencePreview] = useState<string | null>(null);
 
@@ -74,13 +89,14 @@ const Edit = ({ showmodal, togglemodal, admissionData, onSave }: EditProps) => {
   const [selectedService, setSelectedService] = useState("");
 
   const [selectedAmount, setSelectedAmount] = useState("");
+  const [submission, setsubmission] = useState<Admission| null>(null);
 
-  const [formData, setFormData] = useState<Admission | null>(null);
+  const [formData, setFormData] = useState<Admission| null>(null);
   // const [imagePreview, setImagePreview] = useState<string | null>(null);
   // const [imageChanged, setImageChanged] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [imageChanged, setImageChanged] = useState(false);
-  ////
+////
   const fetchbranchData = async () => {
     try {
       const response = await fetch("/api/admin/settings/branch_details", {
@@ -158,243 +174,361 @@ const Edit = ({ showmodal, togglemodal, admissionData, onSave }: EditProps) => {
   useEffect(() => {
     fetchserviceData();
   }, [state]);
+
+
+// edit
+
   useEffect(() => {
-    if (admissionData) {
-      setFormData(admissionData);
+    if (AdmissionData) {
+      setFormData(AdmissionData);
     }
-  }, [admissionData]);
+  }, [AdmissionData]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) =>
-      prevData ? { ...prevData, [name]: value } : null
-    );
-  };
-
-  const handleDocumentchange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setDocumentPreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-      setFormData((prevData) =>
-        prevData ? { ...prevData, document: file } : null
-      ); // Store the file in formData
-      setDocumentchange(true); // Set the image change flag to true
+  useEffect(() => {
+    if (AdmissionData) {
+      setsubmission(AdmissionData);
     }
-  };
-  const handleRemovedocument = () => {
-    setDocumentPreview(null); // Clear the image preview
-    setFormData((prevData) =>
-      prevData ? { ...prevData, document: null } : null
-    ); // Clear the image file from formData
-  };
+  }, [AdmissionData]);
 
-  const handleRcchange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setRcPreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-      setFormData((prevData) =>
-        prevData ? { ...prevData, old_rc: file } : null
-      ); // Store the file in formData
-      setRcchange(true); // Set the image change flag to true
-    }
-  };
-  const handleRemoveRc = () => {
-    setRcPreview(null); // Clear the image preview
-    setFormData((prevData) =>
-      prevData ? { ...prevData, old_rc: null } : null
-    ); // Clear the image file from formData
-  };
+const handleChange = (
+  e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+) => {
+  const { name, value } = e.target;
+  setFormData((prevData) => (prevData ? { ...prevData, [name]: value } : null));
+};
 
-  const handleAadhaarchange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setAadhaarPreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-      setFormData((prevData) =>
-        prevData ? { ...prevData, adhar: file } : null
-      ); // Store the file in formData
-      setAadhaarchange(true); // Set the image change flag to true
-    }
-  };
-  const handleRemoveAadhaar = () => {
-    setAadhaarPreview(null); // Clear the image preview
-    setFormData((prevData) => (prevData ? { ...prevData, adhar: null } : null)); // Clear the image file from formData
-  };
 
-  const handleInsurencechange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setInsurencePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-      setFormData((prevData) =>
-        prevData ? { ...prevData, insurence: file } : null
-      ); // Store the file in formData
-      setInsurencechange(true); // Set the image change flag to true
-    }
-  };
-  const handleRemoveInsurence = () => {
-    setInsurencePreview(null); // Clear the image preview
-    setFormData((prevData) =>
-      prevData ? { ...prevData, insurence: null } : null
-    ); // Clear the image file from formData
-  };
+const handleDocumentchange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const file = e.target.files?.[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      setDocumentPreview(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+    setFormData((prevData) => (prevData ? { ...prevData, document: file } : null)); // Store the file in formData
+    setDocumentchange(true); // Set the image change flag to true
+  }
+};
+const handleRemovedocument = () => {
+  setDocumentPreview(null); // Clear the image preview
+  setFormData((prevData) => (prevData ? { ...prevData, document: null } : null)); // Clear the image file from formData
+};
 
-  const handleUserchange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setUserPreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-      setFormData((prevData) =>
-        prevData ? { ...prevData, userfile: file } : null
-      ); // Store the file in formData
-      setUserchange(true); // Set the image change flag to true
-    }
-  };
-  const handleRemoveuser = () => {
-    setUserPreview(null); // Clear the image preview
-    setFormData((prevData) =>
-      prevData ? { ...prevData, userfile: null } : null
-    ); // Clear the image file from formData
-  };
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+const handleRcchange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const file = e.target.files?.[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      setRcPreview(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+    setFormData((prevData) => (prevData ? { ...prevData, old_rc: file } : null)); // Store the file in formData
+    setRcchange(true); // Set the image change flag to true
+  }
+};
+const handleRemoveRc = () => {
+  setRcPreview(null); // Clear the image preview
+  setFormData((prevData) => (prevData ? { ...prevData, old_rc: null } : null)); // Clear the image file from formData
+};
+
+
+const handleAadhaarchange= (e: React.ChangeEvent<HTMLInputElement>) => {
+  const file = e.target.files?.[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      setAadhaarPreview(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+    setFormData((prevData) => (prevData ? { ...prevData,adhar: file } : null)); // Store the file in formData
+    setAadhaarchange(true); // Set the image change flag to true
+  }
+};
+const handleRemoveAadhaar = () => {
+  setAadhaarPreview(null); // Clear the image preview
+  setFormData((prevData) => (prevData ? { ...prevData, adhar: null } : null)); // Clear the image file from formData
+};
+
+
+const handleInsurencechange= (e: React.ChangeEvent<HTMLInputElement>) => {
+  const file = e.target.files?.[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      setInsurencePreview(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+    setFormData((prevData) => (prevData ? { ...prevData, insurence: file } : null)); // Store the file in formData
+    setInsurencechange(true); // Set the image change flag to true
+  }
+};
+const handleRemoveInsurence = () => {
+  setInsurencePreview(null); // Clear the image preview
+  setFormData((prevData) => (prevData ? { ...prevData, insurence: null } : null)); // Clear the image file from formData
+};
+
+const handleUserchange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const file = e.target.files?.[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      setUserPreview(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+    setFormData((prevData) => (prevData ? { ...prevData, userfile: file } : null)); // Store the file in formData
+    setUserchange(true); // Set the image change flag to true
+  }
+};
+const handleRemoveuser = () => {
+  setUserPreview(null); // Clear the image preview
+  setFormData((prevData) => (prevData ? { ...prevData,userfile: null } : null)); // Clear the image file from formData
+};
+
+// const handleSubmit = async (e: React.FormEvent) => {
+//   e.preventDefault();
+
+//   try {
+//     const formDataToSend = new FormData();
+//     formDataToSend.append("update_service", formData.id.toString());
+//     formDataToSend.append("name", formData.first_name);
+//     formDataToSend.append("email", formData.email);
+//     formDataToSend.append("mobile", formData.mobile);
+//     formDataToSend.append("blood_group", formData.blood_group);
+//     formDataToSend.append("gender", formData.gender);
+//     formDataToSend.append("document_type", formData.document_type || "");
+//     formDataToSend.append("service_id", formData.service_id);
+//     formDataToSend.append("pay_amount", formData.pay_amount);
+//     formDataToSend.append("total_amount", formData.amount || "");
+//     formDataToSend.append("type", formData.type || "");
+//     formDataToSend.append("payment_method", formData.payment_method || "cash");
+//     formDataToSend.append("tax", formData.tax || "");
+//     formDataToSend.append("pucc", formData.pucc || "0");
+//     formDataToSend.append("branch_id", formData.branch_id);
+//     formDataToSend.append("id", formData?.customer_id);
+
+//         if (userchange && formData.userfile) {
+     
+//       formDataToSend.append('userfile', formData.userfile);
+//     }else  {
+//       const response = await fetch(formData.user_photo); // Assuming rc_document is a URL
+//       const blob = await response.blob();
+//       const userFile = new File([blob], '', { type: blob.type }); // Empty name
+//       formDataToSend.append('userfile', userFile);
+//     }
   
-    try {
-      const formDataToSend = new FormData();
-      formDataToSend.append("update_service", formData.id.toString());
-      formDataToSend.append("name", formData.first_name);
-      formDataToSend.append("email", formData.email);
-      formDataToSend.append("mobile", formData.mobile);
-      formDataToSend.append("blood_group", formData.blood_group);
-      formDataToSend.append("gender", formData.gender);
-      formDataToSend.append("document_type", formData.document_type || "");
-      formDataToSend.append("service_id", formData.service_id);
-      formDataToSend.append("pay_amount", formData.pay_amount);
-      formDataToSend.append("total_amount", formData.amount || "");
-      formDataToSend.append("type", formData.type || "");
-      formDataToSend.append("payment_method", formData.payment_method || "cash");
-      formDataToSend.append("tax", formData.tax || "");
-      formDataToSend.append("pucc", formData.pucc || "0");
-      formDataToSend.append("branch_id", formData.branch_id);
-      formDataToSend.append("id", formData?.customer_id);
-  
-          if (userchange && formData.userfile) {
-       
-        formDataToSend.append('userfile', formData.userfile);
-      }else  {
-        const response = await fetch(formData.user_photo); // Assuming rc_document is a URL
+
+//     if (documentchange && formData.document) {
+//       formDataToSend.append('document', formData.document);
+//     }else  {
+//       const response = await fetch(formData.documents); // Assuming rc_document is a URL
+//       const blob = await response.blob();
+//       const documentFile = new File([blob], '', { type: blob.type }); // Empty name
+//       formDataToSend.append('document', documentFile);
+//     }
+//     // Append file fields
+//     const appendFile = async (key: string, file: File | string | null) => {
+//       if (file instanceof File) {
+//         formDataToSend.append(key, file);
+//       } else if (file) {
+//         const response = await fetch(file);
+//         const blob = await response.blob();
+//         const fileWithFallbackName = new File([blob], "", {
+//           type: blob.type,
+//         });
+//         formDataToSend.append(key, fileWithFallbackName);
+//       }
+//     };
+
+//     await appendFile("userfile", formData.userfile);
+//     await appendFile("document", formData.document);
+//     await appendFile("old_rc", formData.old_rc);
+//     await appendFile("adhar", formData.adhar);
+//     await appendFile("insurence", formData.insurence);
+
+//     console.log("Submitting FormData:");
+//     for (const [key, value] of formDataToSend.entries()) {
+//       console.log(key, value);
+//     }
+
+//     const response = await fetch(`/api/admin/signup/update_admission`, {
+//       method: "POST",
+//       headers: {
+//         authorizations: state?.accessToken ?? "",
+//         api_key: "10f052463f485938d04ac7300de7ec2b",
+//       },
+//       body: formDataToSend,
+//     });
+
+//     console.log("Response Status:", response.status);
+
+//     const responseText = await response.text(); // Read the raw response
+//     console.log("Raw Response Text:", responseText);
+
+//     let data;
+//     try {
+//       data = JSON.parse(responseText); // Parse it manually
+//     } catch (error) {
+//       console.error("Error parsing JSON:", error);
+//     }
+
+//     console.log("Parsed API Response:", data);
+//     // if (response.ok) {
+//     //   alert("Admission added successfully!");
+//     //   togglemodal(); 
+//     // }
+//     if (response.ok && data?.success) {
+//       // onSave(formData);
+//       togglemodal();
+//     } else {
+//       alert(`Failed to submit: ${data?.msg || "Unknown error"}`);
+//     }
+//   } catch (err) {
+//     console.error("Error submitting form:", err);
+//   }
+// };
+
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  if (!formData) {
+    console.error("formData is null or undefined");
+    return;
+  }
+
+  try {
+    const formDataToSend = new FormData();
+    formDataToSend.append("update_service", (formData.id ?? "").toString());
+    formDataToSend.append("name", formData.first_name ?? "");
+    formDataToSend.append("email", formData.email ?? "");
+    formDataToSend.append("mobile", formData.mobile ?? "");
+    formDataToSend.append("blood_group", formData.blood_group ?? "");
+    formDataToSend.append("gender", formData.gender ?? "");
+    formDataToSend.append("document_type", formData.document_type ?? "");
+    formDataToSend.append("service_id", formData.service_id ?? "");
+    formDataToSend.append("pay_amount", formData.pay_amount ?? "0");
+    formDataToSend.append("total_amount", formData.amount ?? "0");
+    formDataToSend.append("type", formData.type ?? "");
+    formDataToSend.append("payment_method", formData.payment_method ?? "cash");
+    formDataToSend.append("tax", formData.tax ?? "");
+    formDataToSend.append("pucc", formData.pucc ?? "0");
+    formDataToSend.append("branch_id", formData.branch_id ?? "");
+    formDataToSend.append("id", formData.customer_id ?? "");
+
+    const handleFileUpload = async (key: string, file: File | string | null) => {
+      if (file instanceof File) {
+        formDataToSend.append(key, file);
+      } else if (file && typeof file === 'string') {
+        const response = await fetch(file);
         const blob = await response.blob();
-        const userFile = new File([blob], '', { type: blob.type }); // Empty name
-        formDataToSend.append('userfile', userFile);
-      }
-    
-  
-      if (documentchange && formData.document) {
-        formDataToSend.append('document', formData.document);
-      }else  {
-        const response = await fetch(formData.documents); // Assuming rc_document is a URL
-        const blob = await response.blob();
-        const documentFile = new File([blob], '', { type: blob.type }); // Empty name
-        formDataToSend.append('document', documentFile);
-      }
-      // Append file fields
-      const appendFile = async (key: string, file: File | string | null) => {
-        if (file instanceof File) {
-          formDataToSend.append(key, file);
-        } else if (file) {
-          const response = await fetch(file);
-          const blob = await response.blob();
-          const fileWithFallbackName = new File([blob], "", {
-            type: blob.type,
-          });
-          formDataToSend.append(key, fileWithFallbackName);
-        }
-      };
-  
-      await appendFile("userfile", formData.userfile);
-      await appendFile("document", formData.document);
-      await appendFile("old_rc", formData.old_rc);
-      await appendFile("adhar", formData.adhar);
-      await appendFile("insurence", formData.insurence);
-  
-      console.log("Submitting FormData:");
-      for (const [key, value] of formDataToSend.entries()) {
-        console.log(key, value);
-      }
-  
-      const response = await fetch(`/api/admin/signup/update_admission`, {
-        method: "POST",
-        headers: {
-          authorizations: state?.accessToken ?? "",
-          api_key: "10f052463f485938d04ac7300de7ec2b",
-        },
-        body: formDataToSend,
-      });
-  
-      console.log("Response Status:", response.status);
-  
-      const responseText = await response.text(); // Read the raw response
-       toast.success('Admission updated successfully!!');
-      console.log("Raw Response Text:", responseText);
-  
-      let data;
-      try {
-        data = JSON.parse(responseText); // Parse it manually
-      } catch (error) {
-        console.error("Error parsing JSON:", error);
-      }
-  
-      console.log("Parsed API Response:", data);
-  
-      if (response.ok && data?.success) {
-        onSave(formData);
-        togglemodal();
+        const fileWithFallbackName = new File([blob], "", { type: blob.type });
+        formDataToSend.append(key, fileWithFallbackName);
       } else {
-        alert(`Failed to submit: ${data?.msg || "Unknown error"}`);
+        console.error(`${key} is not a valid file or URL`);
       }
-    } catch (err: any) {
-      console.error("Error submitting form:", err);
-        toast.error(err.message || 'Something went wrong. Please try again.');
-    }
-  };
+    };
 
-  const handleSelect = (service: {
-    id: string;
-    service_name: string;
-    amount: string;
-  }) => {
-    setFormData((prev) => ({
+    // Handle file uploads
+    await handleFileUpload("userfile", formData.userfile);
+    await handleFileUpload("document", formData.document);
+    await handleFileUpload("old_rc", formData.old_rc);
+    await handleFileUpload("adhar", formData.adhar);
+    await handleFileUpload("insurence", formData.insurence);
+
+    console.log("Submitting FormData:");
+    for (const [key, value] of formDataToSend.entries()) {
+      console.log(key, value);
+    }
+
+    const response = await fetch(`/api/admin/signup/update_admission`, {
+      method: "POST",
+      headers: {
+        authorizations: state?.accessToken ?? "",
+        api_key: "10f052463f485938d04ac7300de7ec2b",
+      },
+      body: formDataToSend,
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const responseText = await response.text();
+    console.log("Raw Response Text:", responseText);
+
+    let data;
+    try {
+      data = JSON.parse(responseText);
+    } catch (error) {
+      console.error("Error parsing JSON:", error);
+    }
+
+    console.log("Parsed API Response:", data);
+
+    if (response.ok && data?.success) {
+      togglemodal();
+    } else {
+      alert(`Failed to submit: ${data?.msg || "Unknown error"}`);
+    }
+  } catch (err) {
+    console.error("Error submitting form:", err);
+  }
+};
+
+
+
+
+
+// const handleSelect = (service: { id: string; service_name: string; amount:string }) => {
+//   setFormData((prev) => ({
+//     ...prev,
+//     service_id: service.id, // Set the service_id to send to the backend
+//     service_name: service.service_name, // Set the service_name to display
+//   }));
+//   setSelectedService(service.service_name); // Update the displayed name
+//   setSelectedAmount(service.amount);
+//   setIsOpen(false); // Close the dropdown
+// };
+
+
+const handleSelect = (service: { id: string; service_name: string; amount: string | undefined }) => {
+  setFormData((prev) => {
+    if (!prev) return null; // Return null if prev is null
+
+    return {
       ...prev,
-      service_id: service.id, // Set the service_id to send to the backend
-      service_name: service.service_name, // Set the service_name to display
-    }));
-    setSelectedService(service.service_name); // Update the displayed name
-    setSelectedAmount(service.amount);
-    setIsOpen(false); // Close the dropdown
-  };
+      service_id: service.id ?? '', // Ensure 'service_id' is always a string (fallback if `id` is undefined)
+      service_name: service.service_name ?? '', // Ensure 'service_name' is always a string
+      name: prev.name ?? '', // Fallback for 'name'
+      mobile: prev.mobile ?? '', // Fallback for 'mobile'
+      email: prev.email ?? '', // Fallback for 'email'
+      blood_group: prev.blood_group ?? '', // Fallback for 'blood_group'
+      gender: prev.gender ?? '', // Fallback for 'gender'
+      document_type: prev.document_type ?? '', // Fallback for 'document_type'
+      total_amount: service.amount ?? '', // Ensure 'amount' is a string (fallback if undefined)
+      pay_amount: prev.pay_amount ?? '', // Ensure 'pay_amount' is always a string
+      customer_id: prev.customer_id ?? '', // Fallback for 'customer_id'
+      User_photo: prev.User_photo, // Preserve previous value
+      // Add more fields here, ensuring valid types or fallback values
+    };
+  });
+
+  setSelectedService(service.service_name); // Update the displayed service name
+  setSelectedAmount(service.amount ?? ''); // Set the selected amount, fallback to ''
+  setIsOpen(false); // Close the dropdown
+};
+
+
+
 
   const filteredServices = service.filter((service) =>
     service.service_name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+
+
   if (!showmodal) return null;
+
   return (
     <div
       className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden px-4 py-6 sm:px-5"
@@ -405,6 +539,7 @@ const Edit = ({ showmodal, togglemodal, admissionData, onSave }: EditProps) => {
         className="absolute inset-0 bg-slate-900/60 transition-opacity duration-300"
         onClick={togglemodal}
       ></div>
+
       {/* Modal content */}
       <div className="relative flex w-full max-w-6xl origin-top flex-col overflow-hidden rounded-lg bg-white transition-all duration-300 dark:bg-navy-700">
         {/* Modal Header */}
@@ -451,7 +586,8 @@ const Edit = ({ showmodal, togglemodal, admissionData, onSave }: EditProps) => {
                         <span className="relative mt-1.5 flex">
                           <input
                             name="first_name"
-                            value={formData?.first_name || ""}
+                          //  value={formData.name}
+                          value={formData?.first_name|| ""}
                             onChange={handleChange}
                             className="form-input peer  mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                             placeholder="name"
@@ -463,9 +599,9 @@ const Edit = ({ showmodal, togglemodal, admissionData, onSave }: EditProps) => {
                         <span>Mobile</span>
                         <span className="relative mt-1.5 flex">
                           <input
-                            name="mobile"
-                            //  value={formData.mobile}
-                            value={formData?.mobile || ""}
+                           name="mobile"
+                          //  value={formData.mobile}
+                          value={formData?.mobile|| ""}
                             onChange={handleChange}
                             className="form-input peer  mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                             placeholder="mobile"
@@ -481,9 +617,9 @@ const Edit = ({ showmodal, togglemodal, admissionData, onSave }: EditProps) => {
                         <span>Email</span>
                         <span className="relative mt-1.5 flex">
                           <input
-                            name="email"
-                            //  value={formData.email}
-                            value={formData?.email || ""}
+                           name="email"
+                          //  value={formData.email}
+                          value={formData?.email || ""}
                             onChange={handleChange}
                             type="text"
                             placeholder="email"
@@ -495,11 +631,10 @@ const Edit = ({ showmodal, togglemodal, admissionData, onSave }: EditProps) => {
                         <span>Blood Group</span>
                         <span className="relative mt-1.5 flex">
                           <select
-                            //  value={formData.blood_group}
-                            name="blood_group"
-                            value={formData?.blood_group || ""}
-                            onChange={handleChange}
-                            className="form-input peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                          name="blood_group"
+                          value={formData?.blood_group || ""}
+                          onChange={handleChange}
+                          className="dark:bg-navy-700 form-input peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                           >
                             <option value="">Select Blood Group</option>
                             <option value="A+">A+ve</option>
@@ -518,11 +653,10 @@ const Edit = ({ showmodal, togglemodal, admissionData, onSave }: EditProps) => {
                         <span>Gender</span>
                         <span className="relative mt-1.5 flex">
                           <select
-                            name="gender"
+                          name="gender"
                             value={formData?.gender || ""}
                             onChange={handleChange}
-                            className="form-input peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                          >
+                          className="dark:bg-navy-700 form-input peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
                             <option value="">Select a Gender</option>
                             <option value="male">Male</option>
                             <option value="female">Female</option>
@@ -530,14 +664,15 @@ const Edit = ({ showmodal, togglemodal, admissionData, onSave }: EditProps) => {
                           </select>
                         </span>
                       </label>
+
                       <label className="block ">
                         <span>Branch Name</span>
                         <span className="relative mt-1.5 flex">
                           <select
-                            name="branch_id"
-                            value={formData?.branch_id || ""}
-                            onChange={handleChange}
-                            className="form-select peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                          name="branch_id"
+                          value={formData?.branch_id || ""}
+                          onChange={handleChange}
+                            className="dark:bg-navy-700 form-select peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                           >
                             <option>Select a Branch</option>
                             {branch.map((branch) => (
@@ -553,155 +688,167 @@ const Edit = ({ showmodal, togglemodal, admissionData, onSave }: EditProps) => {
                     <label className="block mt-2">
                       <span>Choose Document</span>
                       <span className="relative mt-1.5 flex">
-                        <select
-                          name="document_type"
-                          value={formData?.document_type || ""}
-                          onChange={handleChange}
-                          className="form-select peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                        >
+                        <select        
+                        name="document_type"               
+                        value={formData?. document_type|| ""}
+                        onChange={handleChange}
+                        className="dark:bg-navy-700 form-select peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
                           <option value="">Choose Document Type</option>
                           <option value="sslc">SSLC</option>
                           <option value="aadhaar">Aadhaar</option>
-                          <option value="birth_certificate">
-                            Birth Certificate
-                          </option>
+                          <option value="birth_certificate">Birth Certificate</option>
                           <option value="passport">Passport</option>
                         </select>
                       </span>
                     </label>
+
                     <div className="w-full max-w-3xl mx-auto space-y-6">
                       {/* Grid Container */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        {/* Upload User Photo Section */}
+                         {/* Upload User Photo Section */}
+             
+                         <div>
+                          <label className="block mb-2 mt-4">
+                          userphoto
+                          </label>
 
-                        <div>
-                          <label className="block mb-2 mt-4">userphoto</label>
-
+                         
                           <div className="ml-2">
-                            {userPreview ? (
-                              // If an image is selected, show the preview
-                              <div className="mb-2">
-                                <img
-                                  src={userPreview}
-                                  alt="Selected"
-                                  className="w-32 h-32 object-cover border rounded"
-                                />
-                              </div>
-                            ) : (
-                              // If no image is selected, show the default rc_document image
-                              <div className="mb-2">
-                                <img
-                                  src={`https://our-demos.com/n/drivingschool_api/assets/images/documents/${formData?.user_photo}`}
-                                  alt="RC Document"
-                                  className="w-32 h-32 object-cover border rounded"
-                                />
-                              </div>
-                            )}
+               
+               {userPreview? (
+       // If an image is selected, show the preview
+       <div className="mb-2">
+         <img
+           src={userPreview}
+           alt="Selected"
+           className="w-32 h-32 object-cover border rounded"
+         />
+       </div>
+     ) : (
+       // If no image is selected, show the default rc_document image
+       <div className="mb-2">
+         <img
+  src={`https://our-demos.com/n/drivingschool_api/assets/images/documents/${formData?.user_photo}`}
+           alt="RC Document"
+           className="w-32 h-32 object-cover border rounded"
+         />
+       </div>
+     )}
+               
+                {!userPreview && (
+               <label className="flex items-center justify-center border rounded p-2 cursor-pointer bg-blue-500 text-white">
+                 Select Image
+                 <input
+                   type="file"
+                   accept="image/*"
+                   onChange={handleUserchange}
+                   className="hidden"
+                 />
+               </label>
+             )}
 
-                            {!userPreview && (
-                              <label className="flex items-center justify-center border rounded p-2 cursor-pointer bg-blue-500 text-white">
-                                Select Image
-                                <input
-                                  type="file"
-                                  accept="image/*"
-                                  onChange={handleUserchange}
-                                  className="hidden"
-                                />
-                              </label>
-                            )}
+             {userPreview  && (
+               <div className="mt-2 flex">
+                 
 
-                            {userPreview && (
-                              <div className="mt-2 flex">
-                                <label
-                                  className="bg-blue-500 text-white p-2 rounded cursor-pointer"
-                                  htmlFor="imageUpload"
-                                >
-                                  Change
-                                </label>
-                                <input
-                                  id="imageUpload"
-                                  type="file"
-                                  accept="image/*"
-                                  onChange={handleUserchange}
-                                  className="hidden outline-dark border-[1px] border-dark font-bold py-2 px-4 rounded"
-                                />
-                                <button
-                                  type="button"
-                                  onClick={handleRemoveuser}
-                                  className="outline-dark border-[1px] border-dark font-bold py-1.5 px-4 rounded ml-3"
-                                >
-                                  Remove
-                                </button>
-                              </div>
-                            )}
-                          </div>
+                 <label
+                       className="bg-blue-500 text-white p-2 rounded cursor-pointer"
+                       htmlFor="imageUpload"
+                     >
+                       Change
+                     </label>
+                     <input
+                       id="imageUpload"
+                       type="file"
+                       accept="image/*"
+                       onChange={handleUserchange}
+                       className="hidden outline-dark border-[1px] border-dark font-bold py-2 px-4 rounded"
+                     />
+
+<button
+                   type="button"
+                   onClick={handleRemoveuser}
+                  className="outline-dark border-[1px] border-dark font-bold py-1.5 px-4 rounded ml-3"
+                 >
+                   Remove
+                 </button>
+               </div>
+             )}
+             </div>
                         </div>
                         {/* Upload Document Proof Image Section */}
                         <div>
                           <label className="block mb-2 mt-4">
-                            Document Upload
+                          Document Upload
                           </label>
 
+                         
                           <div className="ml-2">
-                            {documentPreview ? (
-                              // If an image is selected, show the preview
-                              <div className="mb-2">
-                                <img
-                                  src={documentPreview}
-                                  alt="Selected"
-                                  className="w-32 h-32 object-cover border rounded"
-                                />
-                              </div>
-                            ) : (
-                              // If no image is selected, show the default rc_document image
-                              <div className="mb-2">
-                                <img
-                                  src={`https://our-demos.com/n/drivingschool_api/assets/images/documents/${formData?.documents}`}
-                                  alt="RC Document"
-                                  className="w-32 h-32 object-cover border rounded"
-                                />
-                              </div>
-                            )}
+               
+               {documentPreview? (
+       // If an image is selected, show the preview
+       <div className="mb-2">
+         <img
+           src={documentPreview}
+           alt="Selected"
+           className="w-32 h-32 object-cover border rounded"
+         />
+       </div>
+     ) : (
+       // If no image is selected, show the default rc_document image
+       <div className="mb-2">
+         <img
+  src={`https://our-demos.com/n/drivingschool_api/assets/images/documents/${formData?.documents}`}
+           alt="RC Document"
+           className="w-32 h-32 object-cover border rounded"
+         />
+       </div>
+     )}
+               
+                {!documentPreview && (
+               <label className="flex items-center justify-center border rounded p-2 cursor-pointer bg-blue-500 text-white">
+                 Select Image
+                 <input
+                   type="file"
+                   accept="image/*"
+                   onChange={handleDocumentchange}
+                   className="hidden"
+                 />
+               </label>
+             )}
 
-                            {!documentPreview && (
-                              <label className="flex items-center justify-center border rounded p-2 cursor-pointer bg-blue-500 text-white">
-                                Select Image
-                                <input
-                                  type="file"
-                                  accept="image/*"
-                                  onChange={handleDocumentchange}
-                                  className="hidden"
-                                />
-                              </label>
-                            )}
+             {documentPreview  && (
+               <div className="mt-2 flex">
+                 
 
-                            {documentPreview && (
-                              <div className="mt-2 flex">
-                                <label
-                                  className="bg-blue-500 text-white p-2 rounded cursor-pointer"
-                                  htmlFor="imageUpload"
-                                >
-                                  Change
-                                </label>
-                                <input
-                                  id="imageUpload"
-                                  type="file"
-                                  accept="image/*"
-                                  onChange={handleDocumentchange}
-                                  className="hidden outline-dark border-[1px] border-dark font-bold py-2 px-4 rounded"
-                                />
+                 <label
+                       className="bg-blue-500 text-white p-2 rounded cursor-pointer"
+                       htmlFor="imageUpload"
+                     >
+                       Change
+                     </label>
+                     <input
+                       id="imageUpload"
+                       type="file"
+                       accept="image/*"
+                       onChange={handleDocumentchange}
+                       className="hidden outline-dark border-[1px] border-dark font-bold py-2 px-4 rounded"
+                     />
 
-                                <button
-                                  type="button"
-                                  onClick={handleRemovedocument}
-                                  className="outline-dark border-[1px] border-dark font-bold py-1.5 px-4 rounded ml-3"
-                                >
-                                  Remove
-                                </button>
-                              </div>
-                            )}
-                          </div>
+<button
+                   type="button"
+                   onClick={handleRemovedocument}
+                  className="outline-dark border-[1px] border-dark font-bold py-1.5 px-4 rounded ml-3"
+                 >
+                   Remove
+                 </button>
+               </div>
+             )}
+             </div>
                         </div>
+
+            
+                       
                       </div>
                     </div>
                   </div>
@@ -714,54 +861,56 @@ const Edit = ({ showmodal, togglemodal, admissionData, onSave }: EditProps) => {
                 Service Information
               </label>
               <div className="space-y-5 p-4 sm:p-5">
-                <div className="flex">
-                  <div className="flex-1">
-                    <div
-                      className="form-select peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9"
-                      onClick={() => setIsOpen(!isOpen)}
-                    >
-                      <span>
-                        {formData?.service_name || "Select a Service"}
-                      </span>{" "}
-                      {/* Display the service_name */}
-                    </div>
+                {/* <div className="flex">
+                  
+                 
+<div className="flex-1">
+  <div
+    className="form-select peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9"
+    onClick={() => setIsOpen(!isOpen)}
+  >
+    <span>{formData?.service_name || "Select a Service"}</span> 
+  </div>
 
-                    {isOpen && (
-                      <div className="z-10 w-full mt-1 rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm">
-                        <input
-                          type="text"
-                          placeholder="Search services..."
-                          className="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2"
-                          value={searchTerm}
-                          onChange={(e) => setSearchTerm(e.target.value)}
-                        />
-                        <div className="max-h-60 overflow-y-auto no-scrollbar">
-                          {filteredServices.length > 0 ? (
-                            filteredServices.map((service) => (
-                              <div
-                                key={service.id}
-                                className="cursor-pointer px-3 py-2 hover:bg-gray-100"
-                                onClick={() => handleSelect(service)}
-                              >
-                                {service.service_name}
-                              </div>
-                            ))
-                          ) : (
-                            <div className="px-3 py-2 text-gray-400">
-                              No results found
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                  <label className="block flex-1 ml-4">
+  {isOpen && (
+    <div className="z-10 w-full mt-1 rounded-md border border-slate-300  py-2 px-3 shadow-sm">
+      <input
+        type="text"
+        placeholder="Search services..."
+        className="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+      <div className="max-h-60 overflow-y-auto no-scrollbar">
+        {filteredServices.length > 0 ? (
+          filteredServices.map((service) => (
+            <div
+              key={service.id}
+              className="cursor-pointer px-3 py-2 hover:bg-gray-700"
+              onClick={() => handleSelect(service)}
+            >
+              {service.service_name}
+            </div>
+          ))
+        ) : (
+          <div className="px-3 py-2 text-gray-400">
+            No results found
+          </div>
+        )}
+      </div>
+    </div>
+  )}
+</div>
+
+                   <label className="block flex-1 ml-4">
+                   
                     <span className="relative  flex">
                       <input
                         name="amount"
                         // value={formData?.amount || ""}
                         //   onChange={handleChange}
-                        value={formData?.amount || selectedAmount || ""}
+                        // value={formData?.amount || selectedAmount || ''}
+                        value={selectedAmount || formData?.amount}
                         readOnly
                         type="text"
                         placeholder="Total Amount"
@@ -769,7 +918,77 @@ const Edit = ({ showmodal, togglemodal, admissionData, onSave }: EditProps) => {
                       />
                     </span>
                   </label>
-                </div>
+                </div> */}
+                   <div className="flex">
+              <div className="relative flex-1 w-full">
+    <div
+      className="form-select peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9"
+      onClick={() => setIsOpen(!isOpen)} 
+      
+    >
+      <span>{formData?.service_name || "Select a Service"}</span> 
+    </div>
+
+    {isOpen && (
+      <div className="dark:bg-navy-700 absolute z-10 w-full mt-1 bg-white border border-slate-300 rounded-lg shadow-md">
+        <input
+          type="text"
+          placeholder="Search services..."
+          className="w-full px-3 py-2 border-b dark:bg-navy-700"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <div className="max-h-60 overflow-y-auto">
+          {filteredServices.length > 0 ? (
+            filteredServices.map((service) => (
+              <div
+                key={service.id}
+                className="cursor-pointer px-3 py-2 hover:bg-gray-200 "
+                onClick={() => handleSelect(service)}
+              >
+                {service.service_name}
+              </div>
+            ))
+          ) : (
+            <div className="px-3 py-2 text-gray-400">No results found</div>
+          )}
+        </div>
+      </div>
+    )}
+  </div>
+
+<label className="block ml-3 flex-1">
+                 
+                 <span className="relative  flex">
+                   <input
+                     name="amount"
+                     // value={formData?.amount || ""}
+                     //   onChange={handleChange}
+                    //  value={formData?.amount || selectedAmount || ""}
+                    value={selectedAmount || formData?.amount}
+                     readOnly
+                     type="text"
+                     placeholder="Total Amount"
+                     className="form-input peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                   />
+                 </span>
+               </label>
+                 {/* <label className="block flex-1 ml-4">
+                 
+                  <span className="relative  flex">
+                    <input
+                      name="amount"
+                      // value={formData?.amount || ""}
+                      //   onChange={handleChange}
+                      value={formData?.amount || selectedAmount || ''}
+                      readOnly
+                      type="text"
+                      placeholder="Total Amount"
+                      className="form-input peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                    />
+                  </span>
+                </label> */}
+              </div>
                 {/* Additional Fields */}
                 {/* Common Fields */}
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -780,7 +999,7 @@ const Edit = ({ showmodal, togglemodal, admissionData, onSave }: EditProps) => {
                         name="pay_amount"
                         value={formData?.pay_amount || ""}
                         readOnly
-                        // onChange={handleChange}
+                          // onChange={handleChange}
                         type="text"
                         placeholder="Paid Amount"
                         className="form-input peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
@@ -792,9 +1011,9 @@ const Edit = ({ showmodal, togglemodal, admissionData, onSave }: EditProps) => {
                     <span>Due Amount</span>
                     <span className="relative mt-1.5 flex">
                       <input
-                        name="due_amount"
-                        value={formData?.due_amount || ""}
-                        readOnly
+                       name="due_amount"
+                       value={formData?.due_amount || ""}
+                       readOnly
                         //  onChange={handleChange}
                         type="text"
                         placeholder="Due Amount"
@@ -812,13 +1031,12 @@ const Edit = ({ showmodal, togglemodal, admissionData, onSave }: EditProps) => {
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 mt-2">
                     <label className="block ">
                       <span className="relative mt-1.5 flex">
-                        <select
-                          value={formData?.type || ""}
-                          onChange={handleChange}
-                          name="type"
-                          className="form-input peer mt-1.5  w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                        >
-                          <option value="">Select Type</option>
+                        <select 
+                         value={formData?.type || ""}
+                        onChange={handleChange}
+                        name="type"
+                        className="form-input peer mt-1.5  w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
+                          <option value=''>Select Type</option>
                           <option value="lmc">LMC</option>
                           <option value="mc">MC</option>
                           <option value="both">BOTH</option>
@@ -827,6 +1045,7 @@ const Edit = ({ showmodal, togglemodal, admissionData, onSave }: EditProps) => {
                     </label>
                   </div>
                 )}
+
                 {(formData?.service_name === "rc transfer" ||
                   formData?.service_name === "cf" ||
                   formData?.service_name === "cf renewal" ||
@@ -836,8 +1055,8 @@ const Edit = ({ showmodal, togglemodal, admissionData, onSave }: EditProps) => {
                     <label className="block ">
                       <span className="relative mt-1.5 flex">
                         <input
-                          value={formData?.tax || ""}
-                          onChange={handleChange}
+                           value={formData?.tax || ""}
+                           onChange={handleChange}
                           type="text"
                           placeholder="Tax"
                           className="form-input peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
@@ -847,9 +1066,9 @@ const Edit = ({ showmodal, togglemodal, admissionData, onSave }: EditProps) => {
                     <label className="block ">
                       <span className="relative mt-1.5 flex">
                         <input
-                          value={formData?.pucc || ""}
-                          onChange={handleChange}
-                          name="pucc"
+                           value={formData?.pucc || ""}
+                           onChange={handleChange}
+                           name="pucc"
                           type="text"
                           placeholder="Pucc"
                           className="form-input peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
@@ -859,226 +1078,228 @@ const Edit = ({ showmodal, togglemodal, admissionData, onSave }: EditProps) => {
 
                     {/* Upload old rc Section */}
                     <div>
-                      <label className="block mb-2 mt-4">Old RC</label>
-                      <div className="ml-2">
-                        {RcPreview ? (
-                          // If an image is selected, show the preview
-                          <div className="mb-2">
-                            <img
-                              src={RcPreview}
-                              alt="Selected"
-                              className="w-32 h-32 object-cover border rounded"
-                            />
-                          </div>
-                        ) : (
-                          // If no image is selected, show the default rc_document image
-                          <div className="mb-2">
-                            <img
-                              src={`https://our-demos.com/n/drivingschool_api/assets/images/documents/${formData?.old_rc}`}
-                              alt="RC Document"
-                              className="w-32 h-32 object-cover border rounded"
-                            />
-                          </div>
-                        )}
-
-                        {!RcPreview && (
-                          <label className="flex items-center justify-center border rounded p-2 cursor-pointer bg-blue-500 text-white">
-                            Select Image
-                            <input
-                              type="file"
-                              accept="image/*"
-                              onChange={handleRcchange}
-                              className="hidden"
-                            />
+                          <label className="block mb-2 mt-4">
+                          Old RC
                           </label>
-                        )}
+                          <div className="ml-2">
+               
+               {RcPreview? (
+       // If an image is selected, show the preview
+       <div className="mb-2">
+         <img
+           src={RcPreview}
+           alt="Selected"
+           className="w-32 h-32 object-cover border rounded"
+         />
+       </div>
+     ) : (
+       // If no image is selected, show the default rc_document image
+       <div className="mb-2">
+         <img
+  src={`https://our-demos.com/n/drivingschool_api/assets/images/documents/${formData.old_rc}`}
+           alt="RC Document"
+           className="w-32 h-32 object-cover border rounded"
+         />
+       </div>
+     )}
+               
+                {!RcPreview && (
+               <label className="flex items-center justify-center border rounded p-2 cursor-pointer bg-blue-500 text-white">
+                 Select Image
+                 <input
+                   type="file"
+                   accept="image/*"
+                   onChange={handleRcchange}
+                   className="hidden"
+                 />
+               </label>
+             )}
 
-                        {RcPreview && (
-                          <div className="mt-2 flex">
-                            <label
-                              className="bg-blue-500 text-white p-2 rounded cursor-pointer"
-                              htmlFor="imageUpload"
-                            >
-                              Change
-                            </label>
-                            <input
-                              id="imageUpload"
-                              type="file"
-                              accept="image/*"
-                              onChange={handleRcchange}
-                              className="hidden outline-dark border-[1px] border-dark font-bold py-2 px-4 rounded"
-                            />
+             {RcPreview  && (
+               <div className="mt-2 flex">
+                 
 
-                            <button
-                              type="button"
-                              onClick={handleRemoveRc}
-                              className="outline-dark border-[1px] border-dark font-bold py-1.5 px-4 rounded ml-3"
-                            >
-                              Remove
-                            </button>
-                          </div>
-                        )}
-                      </div>
+                 <label
+                       className="bg-blue-500 text-white p-2 rounded cursor-pointer"
+                       htmlFor="imageUpload"
+                     >
+                       Change
+                     </label>
+                     <input
+                       id="imageUpload"
+                       type="file"
+                       accept="image/*"
+                       onChange={handleRcchange}
+                       className="hidden outline-dark border-[1px] border-dark font-bold py-2 px-4 rounded"
+                     />
+
+<button
+                   type="button"
+                   onClick={handleRemoveRc}
+                  className="outline-dark border-[1px] border-dark font-bold py-1.5 px-4 rounded ml-3"
+                 >
+                   Remove
+                 </button>
+               </div>
+             )}
+                           </div>
                     </div>
+
                     {/* Upload Aadhaar  Section */}
                     <div>
-                      <label className="block mb-2 mt-4">Aadhaar</label>
-
-                      <div className="ml-2">
-                        {AadhaarPreview ? (
-                          // If an image is selected, show the preview
-                          <div className="mb-2">
-                            <img
-                              src={AadhaarPreview}
-                              alt="Selected"
-                              className="w-32 h-32 object-cover border rounded"
-                            />
-                          </div>
-                        ) : (
-                          // If no image is selected, show the default rc_document image
-                          <div className="mb-2">
-                            <img
-                              src={`https://our-demos.com/n/drivingschool_api/assets/images/documents/${formData?.adhar}`}
-                              alt="RC Document"
-                              className="w-32 h-32 object-cover border rounded"
-                            />
-                          </div>
-                        )}
-
-                        {!AadhaarPreview && (
-                          <label className="flex items-center justify-center border rounded p-2 cursor-pointer bg-blue-500 text-white">
-                            Select Image
-                            <input
-                              type="file"
-                              accept="image/*"
-                              onChange={handleAadhaarchange}
-                              className="hidden"
-                            />
+                          <label className="block mb-2 mt-4">
+                          Aadhaar
                           </label>
-                        )}
 
-                        {AadhaarPreview && (
-                          <div className="mt-2 flex">
-                            <label
-                              className="bg-blue-500 text-white p-2 rounded cursor-pointer"
-                              htmlFor="imageUpload"
-                            >
-                              Change
-                            </label>
-                            <input
-                              id="imageUpload"
-                              type="file"
-                              accept="image/*"
-                              onChange={handleAadhaarchange}
-                              className="hidden outline-dark border-[1px] border-dark font-bold py-2 px-4 rounded"
-                            />
+                         
+                          <div className="ml-2">
+               
+               {AadhaarPreview? (
+       // If an image is selected, show the preview
+       <div className="mb-2">
+         <img
+           src={AadhaarPreview}
+           alt="Selected"
+           className="w-32 h-32 object-cover border rounded"
+         />
+       </div>
+     ) : (
+       // If no image is selected, show the default rc_document image
+       <div className="mb-2">
+         <img
+  src={`https://our-demos.com/n/drivingschool_api/assets/images/documents/${formData?.adhar}`}
+           alt="RC Document"
+           className="w-32 h-32 object-cover border rounded"
+         />
+       </div>
+     )}
+               
+                {!AadhaarPreview && (
+               <label className="flex items-center justify-center border rounded p-2 cursor-pointer bg-blue-500 text-white">
+                 Select Image
+                 <input
+                   type="file"
+                   accept="image/*"
+                   onChange={handleAadhaarchange}
+                   className="hidden"
+                 />
+               </label>
+             )}
 
-                            <button
-                              type="button"
-                              onClick={handleRemoveAadhaar}
-                              className="outline-dark border-[1px] border-dark font-bold py-1.5 px-4 rounded ml-3"
-                            >
-                              Remove
-                            </button>
-                          </div>
-                        )}
-                      </div>
-                    </div>
+             {AadhaarPreview  && (
+               <div className="mt-2 flex">
+                 
+
+                 <label
+                       className="bg-blue-500 text-white p-2 rounded cursor-pointer"
+                       htmlFor="imageUpload"
+                     >
+                       Change
+                     </label>
+                     <input
+                       id="imageUpload"
+                       type="file"
+                       accept="image/*"
+                       onChange={handleAadhaarchange}
+                       className="hidden outline-dark border-[1px] border-dark font-bold py-2 px-4 rounded"
+                     />
+
+<button
+                   type="button"
+                   onClick={handleRemoveAadhaar}
+                  className="outline-dark border-[1px] border-dark font-bold py-1.5 px-4 rounded ml-3"
+                 >
+                   Remove
+                 </button>
+               </div>
+             )}
+             </div>
+                        </div>
 
                     {/* Upload Insurence Section */}
                     <div>
-                      <label className="block mb-2 mt-4">Insurence</label>
-
-                      <div className="ml-2">
-                        {InsurencePreview ? (
-                          // If an image is selected, show the preview
-                          <div className="mb-2">
-                            <img
-                              src={InsurencePreview}
-                              alt="Selected"
-                              className="w-32 h-32 object-cover border rounded"
-                            />
-                          </div>
-                        ) : (
-                          // If no image is selected, show the default rc_document image
-                          <div className="mb-2">
-                            <img
-                              src={`https://our-demos.com/n/drivingschool_api/assets/images/documents/${formData?.insurence}`}
-                              alt="RC Document"
-                              className="w-32 h-32 object-cover border rounded"
-                            />
-                          </div>
-                        )}
-
-                        {!InsurencePreview && (
-                          <label className="flex items-center justify-center border rounded p-2 cursor-pointer bg-blue-500 text-white">
-                            Select Image
-                            <input
-                              type="file"
-                              accept="image/*"
-                              onChange={handleInsurencechange}
-                              className="hidden"
-                            />
+                          <label className="block mb-2 mt-4">
+                          Insurence
                           </label>
-                        )}
 
-                        {InsurencePreview && (
-                          <div className="mt-2 flex">
-                            <label
-                              className="bg-blue-500 text-white p-2 rounded cursor-pointer"
-                              htmlFor="imageUpload"
-                            >
-                              Change
-                            </label>
-                            <input
-                              id="imageUpload"
-                              type="file"
-                              accept="image/*"
-                              onChange={handleInsurencechange}
-                              className="hidden outline-dark border-[1px] border-dark font-bold py-2 px-4 rounded"
-                            />
+                         
+                          <div className="ml-2">
+               
+               {InsurencePreview? (
+       // If an image is selected, show the preview
+       <div className="mb-2">
+         <img
+           src={InsurencePreview}
+           alt="Selected"
+           className="w-32 h-32 object-cover border rounded"
+         />
+       </div>
+     ) : (
+       // If no image is selected, show the default rc_document image
+       <div className="mb-2">
+         <img
+  src={`https://our-demos.com/n/drivingschool_api/assets/images/documents/${formData?.insurence}`}
+           alt="RC Document"
+           className="w-32 h-32 object-cover border rounded"
+         />
+       </div>
+     )}
+               
+                {!InsurencePreview && (
+               <label className="flex items-center justify-center border rounded p-2 cursor-pointer bg-blue-500 text-white">
+                 Select Image
+                 <input
+                   type="file"
+                   accept="image/*"
+                   onChange={handleInsurencechange}
+                   className="hidden"
+                 />
+               </label>
+             )}
 
-                            <button
-                              type="button"
-                              onClick={handleRemoveInsurence}
-                              className="outline-dark border-[1px] border-dark font-bold py-1.5 px-4 rounded ml-3"
-                            >
-                              Remove
-                            </button>
-                          </div>
-                        )}
-                      </div>
-                    </div>
+             {InsurencePreview  && (
+               <div className="mt-2 flex">
+                 
+
+                 <label
+                       className="bg-blue-500 text-white p-2 rounded cursor-pointer"
+                       htmlFor="imageUpload"
+                     >
+                       Change
+                     </label>
+                     <input
+                       id="imageUpload"
+                       type="file"
+                       accept="image/*"
+                       onChange={handleInsurencechange}
+                       className="hidden outline-dark border-[1px] border-dark font-bold py-2 px-4 rounded"
+                     />
+
+<button
+                   type="button"
+                   onClick={handleRemoveInsurence}
+                  className="outline-dark border-[1px] border-dark font-bold py-1.5 px-4 rounded ml-3"
+                 >
+                   Remove
+                 </button>
+               </div>
+             )}
+             </div>
+                        </div>
                   </div>
                 )}
 
-                <button
-                  type="submit"
-                  className="bg-primary text-white rounded p-2 w-1/5"
-                >
-                  {loading ? "Updating..." : "Update"}
-                </button>
+<button
+              type="submit"
+              className="bg-primary text-white rounded p-2"
+            >
+           {loading ? 'Updating...' : 'Update'}
+            </button>
               </div>
             </div>
           </div>
         </form>
       </div>
-
-
-      {/* ToastContainer is necessary to render the toast notifications */}
-      <ToastContainer
-              position="top-center"
-              autoClose={5000}
-              hideProgressBar
-              style={{
-                width: "100%",
-                padding: "0 20px", // Optional, to give some padding on the sides
-              }}
-              toastStyle={{
-                width: "100%", // Make each toast full width
-                marginBottom: "10px", // Optional, adds spacing between toasts
-              }}
-            />
     </div>
   );
 };

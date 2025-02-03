@@ -7,11 +7,12 @@ import { useRouter } from 'next/navigation';
 function ForgotPassword() {
  const { state } = useAuth();
   const [user_name, setUser_name] =useState('');
-  const [email, setEmail] =useState('');
+  const [mail, setEmail] =useState('');
 const [loading, setLoading] =useState(false);
 const [error, setError] = useState('');
 const [message, setMessage] =useState('');
  const router = useRouter();
+
 const handleForgotPassword = async (e) => {
   e.preventDefault();
   setLoading(true);
@@ -19,25 +20,26 @@ const handleForgotPassword = async (e) => {
   setMessage('');
 
   try {
-    const response = await fetch('/api/admin/member/forgot_password', {
+    const response = await fetch('/api/auth/forgot_password', {
       method: 'POST',
       headers: {
         'authorizations': state?.accessToken ?? "",
         api_key: "10f052463f485938d04ac7300de7ec2b",
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ user_name,email }),
+      body: JSON.stringify({ user_name,mail }),
     });
 
     const data = await response.json();
-    console.log('Response:', response);
-console.log('forgotpassword',data)
+//     console.log('Response:', response);
+ console.log('forgotpassword',data)
     if (!response.ok) {
       throw new Error(data.message || 'Something went wrong');
     }
 
     setMessage('A reset link has been sent to your email.');
-    router.push('/changepassword')
+    // router.push('/resetpassword')
+    router.push(`/resetpassword?token=${data.keyword_encode}`);
   } catch (err:any) {
     setError(err.message || 'Failed to send reset link.');
   } finally {
@@ -109,7 +111,7 @@ console.log('forgotpassword',data)
                   className="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:z-10 hover:border-slate-400 focus:z-10 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                   placeholder="Email address"
                   type="text"
-                  value={email}
+                  value={mail}
                   onChange={(e) => setEmail(e.target.value)} // Update state
                   required
                 />

@@ -343,10 +343,10 @@ onChange={handleSearchChange}
               </tr>
             </thead>
             <tbody>
-            {filteredData.map((item, index) => (
+            {currentEntries.map((item, index) => (
               <tr key={item.id} className="border-y border-transparent border-b-slate-200 dark:border-b-navy-500">
                 <td className="whitespace-nowrap rounded-l-lg px-4 py-3 sm:px-5">
-                {index + 1}
+                {indexOfFirstEntry+index + 1}
                 </td>
                 <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 {item.mobile}

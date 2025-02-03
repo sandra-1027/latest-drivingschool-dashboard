@@ -1,891 +1,50 @@
-// import React, { useState } from "react";
-
-// type CreateProps = {
-//   showmodal: boolean;
-//   togglemodal: () => void;
-// };
-
-
-// const Create: React.FC<CreateProps> = ({
-//   showmodal,
-//   togglemodal,
-//   formData,
-//   isEditing,
-// }) => {
-//   const [selectedOption, setSelectedOption] = useState<string>("create");
-
-
-//   const [document, setDocument] = useState<string | null>(null);
-//   const [photo, setPhoto] = useState<string | null>(null);
-
-
-//   const handleFileChange = (
-//     e: React.ChangeEvent<HTMLInputElement>,
-//     setImage: React.Dispatch<React.SetStateAction<string | null>>
-//   ) => {
-//     const file = e.target.files?.[0];
-//     if (file) {
-//       const reader = new FileReader();
-//       reader.onloadend = () => {
-//         setImage(reader.result as string);
-//       };
-//       reader.readAsDataURL(file);
-//     }
-//   };
-
-
-//   const handleRemove = (
-//     setImage: React.Dispatch<React.SetStateAction<string | null>>
-//   ) => {
-//     setImage(null);
-//   };
-
-//   if (!showmodal) return null;
-
-//   return (
-//     <div
-//       className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden px-4 py-6 sm:px-5"
-//       role="dialog"
-//     >
-//       {/* Background overlay */}
-//       <div
-//         className="absolute inset-0 bg-slate-900/60 transition-opacity duration-300"
-//         onClick={togglemodal}
-//       ></div>
-
-//       {/* Modal content */}
-//       <div className="relative flex w-full max-w-6xl origin-top flex-col overflow-hidden rounded-lg bg-white transition-all duration-300 dark:bg-navy-700">
-//         {/* Modal Header */}
-//         <div className="flex justify-between rounded-t-lg bg-slate-200 px-4 py-3 dark:bg-navy-800 sm:px-5">
-//           <h3 className="text-base font-medium text-slate-700 dark:text-navy-100">
-//             Add Admission
-//           </h3>
-//           <button
-//             onClick={togglemodal}
-//             className="btn -mr-1.5 size-7 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25"
-//           >
-//             <svg
-//               xmlns="http://www.w3.org/2000/svg"
-//               className="size-4.5"
-//               fill="none"
-//               viewBox="0 0 24 24"
-//               stroke="currentColor"
-//               strokeWidth="2"
-//             >
-//               <path
-//                 strokeLinecap="round"
-//                 strokeLinejoin="round"
-//                 d="M6 18L18 6M6 6l12 12"
-//               />
-//             </svg>
-//           </button>
-//         </div>
-
-//         {/* Modal Body */}
-
-//         <div className="flex flex-col sm:flex-row max-h-[80vh] overflow-y-auto px-4 py-4 sm:px-5">
-//           <div className="flex-1">
-//             <label className="block mb-2 text-lg font-medium text-slate-700 dark:text-navy-100">
-//               Profile Information
-//             </label>
-
-//             <div className="flex flex-col space-y-8 sm:flex-row sm:space-y-0 sm:space-x-8 mt-2">
-//               <div className="flex-1 ">
-//                 {/* Radio Buttons */}
-//                 <div className="flex items-center space-x-4 mb-4">
-//                   <label className="inline-flex items-center space-x-2">
-//                     <input
-//                       value="create"
-//                       checked={selectedOption === "create"}
-//                       onChange={(e) => setSelectedOption(e.target.value)}
-//                       className="form-radio is-basic size-4 rounded-full border-slate-400/70 checked:border-primary checked:bg-primary hover:border-primary focus:border-primary dark:border-navy-400 dark:checked:border-accent dark:checked:bg-accent dark:hover:border-accent dark:focus:border-accent"
-//                       name="basic"
-//                       type="radio"
-//                     />
-//                     <span>Create</span>
-//                   </label>
-
-//                   <label className="inline-flex items-center space-x-2">
-//                     <input
-//                       value="alreadyCreated"
-//                       checked={selectedOption === "alreadyCreated"}
-//                       onChange={(e) => setSelectedOption(e.target.value)}
-//                       className="form-radio is-basic size-4 rounded-full border-slate-400/70 checked:border-primary checked:bg-primary hover:border-primary focus:border-primary dark:border-navy-400 dark:checked:border-accent dark:checked:bg-accent dark:hover:border-accent dark:focus:border-accent"
-//                       name="basic"
-//                       type="radio"
-//                     />
-//                     <span>Already Created</span>
-//                   </label>
-//                 </div>
-
-//                 {/* Conditional Input Field */}
-//                 {selectedOption === "alreadyCreated" && (
-//                   <div className="mb-4">
-//                     <label className="block">
-//                       <span>Enter Mobile No:</span>
-//                       <select className="form-select mt-1.5 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:bg-navy-700 dark:hover:border-navy-400 dark:focus:border-accent">
-//                         <option>Select a mobile</option>
-//                         <option>345678</option>
-//                         <option>78907654</option>
-//                         <option>0098765434</option>
-//                       </select>
-//                     </label>
-//                   </div>
-//                 )}
-
-//                 {/* Profile Information */}
-//                 <div className="mb-4 mt-4 ">
-//                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-//                     <label className="block">
-//                       <span>Name</span>
-//                       <span className="relative mt-1.5 flex">
-//                         <input
-//                           className="form-input peer  mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-//                           placeholder="name"
-//                           type="text"
-//                         />
-//                       </span>
-//                     </label>
-//                     <label className="block">
-//                       <span>Mobile</span>
-//                       <span className="relative mt-1.5 flex">
-//                         <input
-//                           className="form-input peer  mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-//                           placeholder="mobile"
-//                           type="text"
-//                         />
-//                       </span>
-//                     </label>
-//                   </div>
-
-//                   {/* Additional Fields */}
-//                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 mt-2">
-//                     <label className="block">
-//                       <span>Email</span>
-//                       <span className="relative mt-1.5 flex">
-//                         <input
-//                           type="text"
-//                           placeholder="email"
-//                           className="form-input peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-//                         />
-//                       </span>
-//                     </label>
-//                     <label className="block ">
-//                       <span>Blood Group</span>
-//                       <span className="relative mt-1.5 flex">
-//                         <select
-//                           className="form-input peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-//                         >
-//                           <option>Select Blood Group</option>
-//                           <option>A+ve</option>
-//                           <option>O+ve</option>
-//                           <option>B+ve</option>
-//                           <option>AB+ve</option>
-//                           <option>B-ve</option>
-//                           <option>A-ve</option>
-//                           <option>O-ve</option>
-//                         </select>
-//                       </span>
-//                     </label>
-//                   </div>
-//                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 mt-2">
-//                     <label className="block ">
-//                       <span>Gender</span>
-//                       <span className="relative mt-1.5 flex">
-//                         <select
-//                           className="form-input peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-//                         >
-//                           <option>Select a Gender</option>
-//                           <option>Male</option>
-//                           <option>Female</option>
-//                           <option>Others</option>
-//                         </select>
-//                       </span>
-//                     </label>
-
-//                     <label className="block ">
-//                       <span>Branch Name</span>
-//                       <span className="relative mt-1.5 flex">
-//                         <select
-//                           // className="form-select mt-1.5 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:bg-navy-700 dark:hover:border-navy-400 dark:focus:border-accent"
-//                           className="form-select peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-//                         >
-//                           <option>Choose Document Type</option>
-//                           <option>SSLC</option>
-//                           <option>Adhar</option>
-//                           <option>Birth Certificate</option>
-//                           <option>Passport</option>
-//                         </select>
-//                       </span>
-//                     </label>
-//                   </div>
-
-//                   <label className="block mt-2">
-//                     <span>Choose Document</span>
-//                     <span className="relative mt-1.5 flex">
-//                       <select
-//                         className="form-select peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-//                       >
-//                         <option>Choose Document Type</option>
-//                         <option>SSLC</option>
-//                         <option>Adhar</option>
-//                         <option>Birth Certificate</option>
-//                         <option>Passport</option>
-//                       </select>
-//                     </span>
-//                   </label>
-
-//                   <div className="w-full max-w-3xl mx-auto space-y-6">
-//                     {/* Grid Container */}
-//                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-//                       {/* Upload Document Proof Image Section */}
-//                       <div>
-//                         <label className="block mb-2 mt-4">
-//                           Document Proof
-//                         </label>
-//                         <div
-//                           className={`border-2 rounded-lg flex items-center justify-center h-42 w-42 sm:h-40 sm:w-40 ${
-//                             document ? "border-gray-300" : "border-blue-500"
-//                           }`}
-//                         >
-//                           {document ? (
-//                             <img
-//                               src={document}
-//                               alt="Uploaded Document"
-//                               className="max-h-full max-w-full object-contain"
-//                             />
-//                           ) : (
-//                             <span className="text-gray-500 text-sm text-center">
-//                               No image selected
-//                             </span>
-//                           )}
-//                         </div>
-//                         <div className="mt-4 flex space-x-2">
-//                           {!document ? (
-//                             <label className="cursor-pointer bg-primary hover:bg-primary-focus text-white font-bold py-2 px-4 rounded">
-//                               Select Image
-//                               <input
-//                                 type="file"
-//                                 accept="image/*"
-//                                 onChange={(e) =>
-//                                   handleFileChange(e, setDocument)
-//                                 }
-//                                 className="hidden"
-//                               />
-//                             </label>
-//                           ) : (
-//                             <>
-//                               <label className="cursor-pointer bg-primary hover:bg-primary-focus text-white font-bold py-2 px-4 rounded">
-//                                 Change
-//                                 <input
-//                                   type="file"
-//                                   accept="image/*"
-//                                   onChange={(e) =>
-//                                     handleFileChange(e, setDocument)
-//                                   }
-//                                   className="hidden"
-//                                 />
-//                               </label>
-//                               <button
-//                                 onClick={() => handleRemove(setDocument)}
-//                                 className="outline-dark border-[1px] border-dark font-bold py-2 px-4 rounded"
-//                               >
-//                                 Remove
-//                               </button>
-//                             </>
-//                           )}
-//                         </div>
-//                       </div>
-
-//                       {/* Upload User Photo Section */}
-//                       <div>
-//                         <label className="block mb-2 mt-4">User Photo</label>
-//                         <div
-//                           className={`border-2 rounded-lg flex items-center justify-center h-42 w-42 sm:h-40 sm:w-40 ${
-//                             photo ? "border-gray-300" : "border-blue-500"
-//                           }`}
-//                         >
-//                           {photo ? (
-//                             <img
-//                               src={photo}
-//                               alt="Uploaded Photo"
-//                               className="max-h-full max-w-full object-contain"
-//                             />
-//                           ) : (
-//                             <span className="text-gray-500 text-sm text-center">
-//                               No image selected
-//                             </span>
-//                           )}
-//                         </div>
-//                         <div className="mt-4 flex space-x-2">
-//                           {!photo ? (
-//                             <label className="cursor-pointer bg-primary hover:bg-primary-focus text-white font-bold py-2 px-4 rounded">
-//                               Select Image
-//                               <input
-//                                 type="file"
-//                                 accept="image/*"
-//                                 onChange={(e) => handleFileChange(e, setPhoto)}
-//                                 className="hidden"
-//                               />
-//                             </label>
-//                           ) : (
-//                             <>
-//                               <label className="cursor-pointer bg-primary hover:bg-primary-focus text-white font-bold py-2 px-4 rounded">
-//                                 Change
-//                                 <input
-//                                   type="file"
-//                                   accept="image/*"
-//                                   onChange={(e) =>
-//                                     handleFileChange(e, setPhoto)
-//                                   }
-//                                   className="hidden"
-//                                 />
-//                               </label>
-//                               <button
-//                                 onClick={() => handleRemove(setPhoto)}
-//                                 className="outline-dark border-[1px] border-dark font-bold py-2 px-4 rounded"
-//                               >
-//                                 Remove
-//                               </button>
-//                             </>
-//                           )}
-//                         </div>
-//                       </div>
-//                     </div>
-//                   </div>
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
-//           {/* Right Section: Service Information */}
-//           <div className="flex-1 mt-4 sm:mt-0">
-//             <label className="block mb-2 text-lg  font-medium text-slate-700 dark:text-navy-100 mt-4">
-//               Service Information
-//             </label>
-//             <div className="space-y-5 p-4 sm:p-5">
-//               <label className="block">
-//                 <select
-//                   className="form-input peer  mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-//                 >
-//                   <option>Select a Service</option>
-//                   <option>Licence Fresh</option>
-//                   <option>Renewal Licence</option>
-//                   <option>Duplicate Licence</option>
-//                   <option>RC Renewal</option>
-//                 </select>
-//               </label>
-//               {/* Additional Fields */}
-//               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-//                 <label className="block ">
-//                   <span>Payment Method</span>
-//                   <span className="relative mt-1.5 flex">
-//                     <select
-//                       className="form-input peer mt-1.5  w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-//                     >
-//                       <option>Cash</option>
-//                       <option value="digital">Online</option>
-//                     </select>
-//                   </span>
-//                 </label>
-//                 <label className="block">
-//                   <span>Total Amount</span>
-//                   <span className="relative mt-1.5 flex">
-//                     <input
-//                       type="text"
-//                       placeholder="Total amount"
-//                       className="form-input peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-//                     />
-//                   </span>
-//                 </label>
-//               </div>
-//               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 mt-2">
-//                 <label className="block ">
-//                   <span>Pay Amount</span>
-//                   <span className="relative mt-1.5 flex">
-//                     <input
-//                       type="number"
-//                       placeholder=""
-//                       className="form-input peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-//                     />
-//                   </span>
-//                 </label>
-//               </div>
-//               <button className="btn bg-primary font-medium text-white hover:bg-primary-focus focus:bg-primary-focus active:bg-primary-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90">
-//                 Add
-//               </button>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Create;
-
-
-
-
-
-
-
-
-
-
-// import React, { useEffect, useState } from "react";
-
-// type CreateProps = {
-//   showmodal: boolean;
-//   togglemodal: () => void;
-  
-// };
-
-// // const Create: React.FC<CreateProps> = ({showmodal,togglemodal, formDatas, isEditing,}) => {
-//   const Create: React.FC<CreateProps> = ({ showmodal, togglemodal}) => {
-//   const [selectedOption, setSelectedOption] = useState<string>("create");
-
-
-//   const [document, setDocument] = useState<string | null>(null);
-//   const [photo, setPhoto] = useState<string | null>(null);
-
-
-//   const handleFileChange = (
-//     e: React.ChangeEvent<HTMLInputElement>,
-//     setImage: React.Dispatch<React.SetStateAction<string | null>>
-//   ) => {
-//     const file = e.target.files?.[0];
-//     if (file) {
-//       const reader = new FileReader();
-//       reader.onloadend = () => {
-//         setImage(reader.result as string);
-//       };
-//       reader.readAsDataURL(file);
-//     }
-//   };
-
-
-//   const handleRemove = (
-//     setImage: React.Dispatch<React.SetStateAction<string | null>>
-//   ) => {
-//     setImage(null);
-//   };
-
-//   if (!showmodal) return null;
-
-//   return (
-//     <div
-//       className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden px-4 py-6 sm:px-5"
-//       role="dialog"
-//     >
-//       {/* Background overlay */}
-//       <div
-//         className="absolute inset-0 bg-slate-900/60 transition-opacity duration-300"
-//         onClick={togglemodal}
-//       ></div>
-
-//       {/* Modal content */}
-//       <div className="relative flex w-full max-w-6xl origin-top flex-col overflow-hidden rounded-lg bg-white transition-all duration-300 dark:bg-navy-700">
-//         {/* Modal Header */}
-//         <div className="flex justify-between rounded-t-lg bg-slate-200 px-4 py-3 dark:bg-navy-800 sm:px-5">
-//           <h3 className="text-base font-medium text-slate-700 dark:text-navy-100">
-//           Add Admission
-//           </h3>
-//           <button
-//             onClick={togglemodal}
-//             className="btn -mr-1.5 size-7 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25"
-//           >
-//             <svg
-//               xmlns="http://www.w3.org/2000/svg"
-//               className="size-4.5"
-//               fill="none"
-//               viewBox="0 0 24 24"
-//               stroke="currentColor"
-//               strokeWidth="2"
-//             >
-//               <path
-//                 strokeLinecap="round"
-//                 strokeLinejoin="round"
-//                 d="M6 18L18 6M6 6l12 12"
-//               />
-//             </svg>
-//           </button>
-//         </div>
-
-//         {/* Modal Body */}
-
-//         <div className="flex flex-col sm:flex-row max-h-[80vh] overflow-y-auto px-4 py-4 sm:px-5">
-//           <div className="flex-1">
-//             <label className="block mb-2 text-lg font-medium text-slate-700 dark:text-navy-100">
-//               Profile Information
-//             </label>
-
-//             <div className="flex flex-col space-y-8 sm:flex-row sm:space-y-0 sm:space-x-8 mt-2">
-//               <div className="flex-1 ">
-//                 {/* Radio Buttons */}
-//                 <div className="flex items-center space-x-4 mb-4">
-//                   <label className="inline-flex items-center space-x-2">
-//                     <input
-//                       value="create"
-//                       checked={selectedOption === "create"}
-//                       onChange={(e) => setSelectedOption(e.target.value)}
-//                       className="form-radio is-basic size-4 rounded-full border-slate-400/70 checked:border-primary checked:bg-primary hover:border-primary focus:border-primary dark:border-navy-400 dark:checked:border-accent dark:checked:bg-accent dark:hover:border-accent dark:focus:border-accent"
-//                       name="basic"
-//                       type="radio"
-//                     />
-//                     <span>Create</span>
-//                   </label>
-
-//                   <label className="inline-flex items-center space-x-2">
-//                     <input
-//                       value="alreadyCreated"
-//                       checked={selectedOption === "alreadyCreated"}
-//                       onChange={(e) => setSelectedOption(e.target.value)}
-//                       className="form-radio is-basic size-4 rounded-full border-slate-400/70 checked:border-primary checked:bg-primary hover:border-primary focus:border-primary dark:border-navy-400 dark:checked:border-accent dark:checked:bg-accent dark:hover:border-accent dark:focus:border-accent"
-//                       name="basic"
-//                       type="radio"
-//                     />
-//                     <span>Already Created</span>
-//                   </label>
-//                 </div>
-
-//                 {/* Conditional Input Field */}
-//                 {selectedOption === "alreadyCreated" && (
-//                   <div className="mb-4">
-//                     <label className="block">
-//                       <span>Enter Mobile No:</span>
-//                       <select className="form-select mt-1.5 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:bg-navy-700 dark:hover:border-navy-400 dark:focus:border-accent">
-//                         <option>Select a mobile</option>
-//                         <option>345678</option>
-//                         <option>78907654</option>
-//                         <option>0098765434</option>
-//                       </select>
-//                     </label>
-//                   </div>
-//                 )}
-
-//                 {/* Profile Information */}
-//                 <div className="mb-4 mt-4 ">
-//                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-//                     <label className="block">
-//                       <span>Name</span>
-//                       <span className="relative mt-1.5 flex">
-//                         <input
-//                          value={ localFormData.user_name}
-//              onChange={handleChange}
-//                           className="form-input peer  mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-//                           placeholder="name"
-//                           type="text"
-//                         />
-//                       </span>
-//                     </label>
-//                     <label className="block">
-//                       <span>Mobile</span>
-//                       <span className="relative mt-1.5 flex">
-//                         <input
-//                           className="form-input peer  mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-//                           placeholder="mobile"
-//                           type="text"
-//                         />
-//                       </span>
-//                     </label>
-//                   </div>
-
-//                   {/* Additional Fields */}
-//                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 mt-2">
-//                     <label className="block">
-//                       <span>Email</span>
-//                       <span className="relative mt-1.5 flex">
-//                         <input
-//                           type="text"
-//                           placeholder="email"
-//                           className="form-input peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-//                         />
-//                       </span>
-//                     </label>
-//                     <label className="block ">
-//                       <span>Blood Group</span>
-//                       <span className="relative mt-1.5 flex">
-//                         <select
-//                           className="form-input peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-//                         >
-//                           <option>Select Blood Group</option>
-//                           <option>A+ve</option>
-//                           <option>O+ve</option>
-//                           <option>B+ve</option>
-//                           <option>AB+ve</option>
-//                           <option>B-ve</option>
-//                           <option>A-ve</option>
-//                           <option>O-ve</option>
-//                         </select>
-//                       </span>
-//                     </label>
-//                   </div>
-//                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 mt-2">
-//                     <label className="block ">
-//                       <span>Gender</span>
-//                       <span className="relative mt-1.5 flex">
-//                         <select
-//                           className="form-input peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-//                         >
-//                           <option>Select a Gender</option>
-//                           <option>Male</option>
-//                           <option>Female</option>
-//                           <option>Others</option>
-//                         </select>
-//                       </span>
-//                     </label>
-
-//                     <label className="block ">
-//                       <span>Branch Name</span>
-//                       <span className="relative mt-1.5 flex">
-//                         <select
-//                           // className="form-select mt-1.5 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:bg-navy-700 dark:hover:border-navy-400 dark:focus:border-accent"
-//                           className="form-select peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-//                         >
-//                           <option>Choose Document Type</option>
-//                           <option>SSLC</option>
-//                           <option>Adhar</option>
-//                           <option>Birth Certificate</option>
-//                           <option>Passport</option>
-//                         </select>
-//                       </span>
-//                     </label>
-//                   </div>
-
-//                   <label className="block mt-2">
-//                     <span>Choose Document</span>
-//                     <span className="relative mt-1.5 flex">
-//                       <select
-//                         className="form-select peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-//                       >
-//                         <option>Choose Document Type</option>
-//                         <option>SSLC</option>
-//                         <option>Adhar</option>
-//                         <option>Birth Certificate</option>
-//                         <option>Passport</option>
-//                       </select>
-//                     </span>
-//                   </label>
-
-//                   <div className="w-full max-w-3xl mx-auto space-y-6">
-//                     {/* Grid Container */}
-//                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-//                       {/* Upload Document Proof Image Section */}
-//                       <div>
-//                         <label className="block mb-2 mt-4">
-//                           Document Proof
-//                         </label>
-//                         <div
-//                           className={`border-2 rounded-lg flex items-center justify-center h-42 w-42 sm:h-40 sm:w-40 ${
-//                             document ? "border-gray-300" : "border-blue-500"
-//                           }`}
-//                         >
-//                           {document ? (
-//                             <img
-//                               src={document}
-//                               alt="Uploaded Document"
-//                               className="max-h-full max-w-full object-contain"
-//                             />
-//                           ) : (
-//                             <span className="text-gray-500 text-sm text-center">
-//                               No image selected
-//                             </span>
-//                           )}
-//                         </div>
-//                         <div className="mt-4 flex space-x-2">
-//                           {!document ? (
-//                             <label className="cursor-pointer bg-primary hover:bg-primary-focus text-white font-bold py-2 px-4 rounded">
-//                               Select Image
-//                               <input
-//                                 type="file"
-//                                 accept="image/*"
-//                                 onChange={(e) =>
-//                                   handleFileChange(e, setDocument)
-//                                 }
-//                                 className="hidden"
-//                               />
-//                             </label>
-//                           ) : (
-//                             <>
-//                               <label className="cursor-pointer bg-primary hover:bg-primary-focus text-white font-bold py-2 px-4 rounded">
-//                                 Change
-//                                 <input
-//                                   type="file"
-//                                   accept="image/*"
-//                                   onChange={(e) =>
-//                                     handleFileChange(e, setDocument)
-//                                   }
-//                                   className="hidden"
-//                                 />
-//                               </label>
-//                               <button
-//                                 onClick={() => handleRemove(setDocument)}
-//                                 className="outline-dark border-[1px] border-dark font-bold py-2 px-4 rounded"
-//                               >
-//                                 Remove
-//                               </button>
-//                             </>
-//                           )}
-//                         </div>
-//                       </div>
-
-//                       {/* Upload User Photo Section */}
-//                       <div>
-//                         <label className="block mb-2 mt-4">User Photo</label>
-//                         <div
-//                           className={`border-2 rounded-lg flex items-center justify-center h-42 w-42 sm:h-40 sm:w-40 ${
-//                             photo ? "border-gray-300" : "border-blue-500"
-//                           }`}
-//                         >
-//                           {photo ? (
-//                             <img
-//                               src={photo}
-//                               alt="Uploaded Photo"
-//                               className="max-h-full max-w-full object-contain"
-//                             />
-//                           ) : (
-//                             <span className="text-gray-500 text-sm text-center">
-//                               No image selected
-//                             </span>
-//                           )}
-//                         </div>
-//                         <div className="mt-4 flex space-x-2">
-//                           {!photo ? (
-//                             <label className="cursor-pointer bg-primary hover:bg-primary-focus text-white font-bold py-2 px-4 rounded">
-//                               Select Image
-//                               <input
-//                                 type="file"
-//                                 accept="image/*"
-//                                 onChange={(e) => handleFileChange(e, setPhoto)}
-//                                 className="hidden"
-//                               />
-//                             </label>
-//                           ) : (
-//                             <>
-//                               <label className="cursor-pointer bg-primary hover:bg-primary-focus text-white font-bold py-2 px-4 rounded">
-//                                 Change
-//                                 <input
-//                                   type="file"
-//                                   accept="image/*"
-//                                   onChange={(e) =>
-//                                     handleFileChange(e, setPhoto)
-//                                   }
-//                                   className="hidden"
-//                                 />
-//                               </label>
-//                               <button
-//                                 onClick={() => handleRemove(setPhoto)}
-//                                 className="outline-dark border-[1px] border-dark font-bold py-2 px-4 rounded"
-//                               >
-//                                 Remove
-//                               </button>
-//                             </>
-//                           )}
-//                         </div>
-//                       </div>
-//                     </div>
-//                   </div>
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
-//           {/* Right Section: Service Information */}
-//           <div className="flex-1 mt-4 sm:mt-0">
-//             <label className="block mb-2 text-lg  font-medium text-slate-700 dark:text-navy-100 mt-4">
-//               Service Information
-//             </label>
-//             <div className="space-y-5 p-4 sm:p-5">
-//               <label className="block">
-//                 <select
-//                   className="form-input peer  mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-//                 >
-//                   <option>Select a Service</option>
-//                   <option>Licence Fresh</option>
-//                   <option>Renewal Licence</option>
-//                   <option>Duplicate Licence</option>
-//                   <option>RC Renewal</option>
-//                 </select>
-//               </label>
-//               {/* Additional Fields */}
-//               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-//                 <label className="block ">
-//                   <span>Payment Method</span>
-//                   <span className="relative mt-1.5 flex">
-//                     <select
-//                       className="form-input peer mt-1.5  w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-//                     >
-//                       <option>Cash</option>
-//                       <option value="digital">Online</option>
-//                     </select>
-//                   </span>
-//                 </label>
-//                 <label className="block">
-//                   <span>Total Amount</span>
-//                   <span className="relative mt-1.5 flex">
-//                     <input
-//                       type="text"
-//                       placeholder="Total amount"
-//                       className="form-input peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-//                     />
-//                   </span>
-//                 </label>
-//               </div>
-//               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 mt-2">
-//                 <label className="block ">
-//                   <span>Pay Amount</span>
-//                   <span className="relative mt-1.5 flex">
-//                     <input
-//                       type="number"
-//                       placeholder=""
-//                       className="form-input peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-//                     />
-//                   </span>
-//                 </label>
-//               </div>
-//               <button className="btn bg-primary font-medium text-white hover:bg-primary-focus focus:bg-primary-focus active:bg-primary-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90">
-//                 Add
-//               </button>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Create;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 import { useAuth } from "@/app/context/AuthContext";
 import React, { useEffect, useState } from "react";
+import Select from 'react-select';
 
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+interface Admission {
+  user_name: string;
+  // Add other properties that admission may have
+}
 
 type CreateProps = {
   showmodal: boolean;
   togglemodal: () => void;
-  
+  formDatas?: {
+    service_id: string;
+    vehicle_type: string;
+    id:string;
+    name: string;
+    mobile: string;
+    email: string;
+    blood_group:string;
+    gender: string;
+    document_type:string;
+    total_amount:string;
+    pay_amount:string;
+    amount:string;
+    type:string;
+    payment_method:string;
+    tax:string;
+    pucc:string;
+    branch_id:string;
+    first_name:string;
+    userfile: File | null;
+    document:File | null;
+    old_rc:File | null;
+    adhar:File | null;
+    insurence:File | null;
+     user_photo:File | null;
+    service_name: string;
+    UserPhoto:File | null;
+  };
+  isEditing?: boolean;
 };
 
-// const Create: React.FC<CreateProps> = ({showmodal,togglemodal, formDatas, isEditing,}) => {
-  const Create: React.FC<CreateProps> = ({ showmodal, togglemodal}) => {
+  // const Create: React.FC<CreateProps> = ({ showmodal, togglemodal}) => {
+    const Create: React.FC<CreateProps> = ({ showmodal, togglemodal, formDatas, isEditing }) => {
     const { state } = useAuth();
   const [selectedOption, setSelectedOption] = useState<string>("create");
   const [branch, setBranch] = useState<{ id: string; branch_name: string }[]>([]);
@@ -929,7 +88,30 @@ const[insurencePreview,setInsurencePreview]=useState<string>('');
   const [tax, settax] = useState('');
   const [pucc, setpucc] = useState('');
  
+  const [localFormData, setLocalFormData] = useState(formDatas || {
+    name: "",
+    mobile: "",
+   email: "",
+    blood_group: "",
+    document_type:'',
+    gender:"",
+    userfile:'',
+    document:'',
+    payment_method:'',
+    service_id:'',
+    total_amount:'',
+    pay_amount:'',
+    type:'',
+    branch_id:"",
+    old_rc:'',
+    tax:'',
+    pucc:'',
+  //   dob:'',
+  //  address:'',
+    adhar:'',
+    insurence:'',
 
+  });
 
   const fetchbranchData = async () => {
   
@@ -1042,20 +224,7 @@ const[insurencePreview,setInsurencePreview]=useState<string>('');
   }, [state]);
 
 
-  // const handleFileChange = (
-  //   e: React.ChangeEvent<HTMLInputElement>,
-  //   setImage: React.Dispatch<React.SetStateAction<string | null>>
-  // ) => {
-  //   const file = e.target.files?.[0];
-  //   if (file) {
-  //     const reader = new FileReader();
-  //     reader.onloadend = () => {
-  //       setImage(reader.result as string);
-  //     };
-  //     reader.readAsDataURL(file);
-        
-  //   }
-  // };
+ 
   
   
   
@@ -1106,18 +275,7 @@ const handleInsurenceChange =(e:React.ChangeEvent<HTMLInputElement>)=>{
 }
 
 
-  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, type: "photo" | "document") => {
-  //   const file = e.target.files?.[0];
-  //   if (file) {
-  //     if (type === "photo") {
-  //       setPhoto(file);
-  //       setImagePreview(URL.createObjectURL(file));
-  //     } else {
-  //       setDocuments(file);
-  //       setDocumentPreview(URL.createObjectURL(file));
-  //     }
-  //   }
-  // };
+
   
 
   const handleRemove = (
@@ -1174,7 +332,6 @@ const handleInsurenceChange =(e:React.ChangeEvent<HTMLInputElement>)=>{
       });
   
       const data = await response.json();
-       toast.success('Admission added successfully!!');
       console.log("Backend response:", data);
   
       if (!response.ok) {
@@ -1182,11 +339,13 @@ const handleInsurenceChange =(e:React.ChangeEvent<HTMLInputElement>)=>{
         alert(data.msg || "Failed to add Admission. Please check the required fields.");
         return;
       }
+      if (response.ok) {
+      alert("Admission added successfully!");
       togglemodal(); 
-    } catch (err: any) {
-      console.error("Error submitting form:", err);
-      // alert("An error occurred while adding the Admission.");
-       toast.error(err.message || 'Something went wrong. Please try again.');
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert("An error occurred while adding the Admission.");
     }
   };
   
@@ -1199,16 +358,20 @@ const handleInsurenceChange =(e:React.ChangeEvent<HTMLInputElement>)=>{
   );
 
   
-  const handleSelect = (service:{id:string; service_name:string; amount:string}) => {
- 
-    setSelectedService(service.service_name);
-    setservice_id(service.id);
-    setSelectedAmount(service.amount); // Access the amount property directly
-    setIsOpen(false); // Close the dropdown
-  };
+// const handleSelect = (service:{id:string; service_name:string; amount:string}) => {
+//     setSelectedService(service.service_name);
+//     setservice_id(service.id);
+//     setSelectedAmount(service.amount); // Access the amount property directly
+//     setIsOpen(false); // Close the dropdown
+//   };
+const handleSelect = (service: { id: string; service_name: string; amount?: string }) => {
+  setSelectedService(service.service_name);
+  setservice_id(service.id);
+  setSelectedAmount(service.amount || '0'); // Provide a default value for `amount`
+  setIsOpen(false); // Close the dropdown
+};
 
-
-  const handleSelectmobile = (admission) => {
+  const handleSelectmobile = (admission : Admission) => {
     setmobile(admission.user_name);
     // setSelectedAmount(service.amount); 
     setmobileOpen(false); // Close the dropdown
@@ -1233,7 +396,8 @@ const handleInsurenceChange =(e:React.ChangeEvent<HTMLInputElement>)=>{
         {/* Modal Header */}
         <div className="flex justify-between rounded-t-lg bg-slate-200 px-4 py-3 dark:bg-navy-800 sm:px-5">
           <h3 className="text-base font-medium text-slate-700 dark:text-navy-100">
-          Add Admission
+          {/* Add Admission */}
+          {isEditing ? "Edit Admission" : "Add Admission"}
           </h3>
           <button
             onClick={togglemodal}
@@ -1299,24 +463,11 @@ const handleInsurenceChange =(e:React.ChangeEvent<HTMLInputElement>)=>{
                 {/* Conditional Input Field */}
                 {selectedOption === "alreadyCreated" && (
                   <div className="mb-4">
-                    {/* <label className="block"
-                     onClick={() => setmobileOpen(!isOpen)} >
-                      <span>Enter Mobile No:</span>
-                      <select 
-                      value={mobile}
-                      onChange={(e) => setmobile(e.target.value)}
-                      className="form-select mt-1.5 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:bg-navy-700 dark:hover:border-navy-400 dark:focus:border-accent">
-                        <option>Select a mobile</option>
-                        <option>
-                        </option>
-                        <option>78907654</option>
-                        <option>0098765434</option>
-                      </select>
-                    </label> */}
+                   
 <div className="relative w-full"
 onClick={() => setmobileOpen(!isOpen)} >
       <div
-        className="form-select peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9"
+        className="dark:bg-navy-700 form-select peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9"
         
        
       >
@@ -1325,14 +476,11 @@ onClick={() => setmobileOpen(!isOpen)} >
       </div>
 
                     {mobileOpen && (
-        <div 
-        // className="z-10 w-full mt-1 bg-white border border-slate-300 rounded-lg shadow-md"
-        className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
-        >
+        <div className="dark:bg-navy-700 z-10 w-full mt-1 bg-white border border-slate-300 rounded-lg shadow-md">
           <input
             type="text"
             placeholder="Search..."
-            className="w-full px-3 py-2 border-b"
+            className="dark:bg-navy-700 w-full px-3 py-2 border-b"
             value={searchMobile}
             onChange={(e) => setSearchMobile(e.target.value)}
           />
@@ -1370,7 +518,7 @@ onClick={() => setmobileOpen(!isOpen)} >
                       <span className="relative mt-1.5 flex">
                         <input
                         name="name"
-                       value={name}
+                        value={name}
                        onChange={(e) => setname(e.target.value)}
                           className="form-input peer  mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                           placeholder="name"
@@ -1415,8 +563,7 @@ onClick={() => setmobileOpen(!isOpen)} >
                          name="blood_group"
                          value={blood_group}
                          onChange={(e) => setblood_group(e.target.value)}
-                          // className="form-input peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                        className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+                          className="dark:bg-navy-700 form-input peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                         >
                           <option>Select Blood Group</option>
                           <option value="A+ve">A+ve</option>
@@ -1439,8 +586,7 @@ onClick={() => setmobileOpen(!isOpen)} >
                          name="gender"
                          value={gender}
                          onChange={(e) => setgender(e.target.value)}
-                          // className="form-input peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                        className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+                          className="dark:bg-navy-700 form-input peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                         >
                           <option>Select a Gender</option>
                           <option value="male">Male</option>
@@ -1458,8 +604,7 @@ onClick={() => setmobileOpen(!isOpen)} >
                          value={branch_id}
                          onChange={(e) => setbranch_id(e.target.value)}
                           // className="form-select mt-1.5 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:bg-navy-700 dark:hover:border-navy-400 dark:focus:border-accent"
-                          // className="form-select peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                        className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+                          className="dark:bg-navy-700 form-select peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                         >
                           <option>Select a Branch</option>
                           {branch.map((branch) => (
@@ -1480,8 +625,7 @@ onClick={() => setmobileOpen(!isOpen)} >
                        name="document_type"
                        value={document_type}
                        onChange={(e) => setdocument_type(e.target.value)}
-                        // className="form-select peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                      className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+                        className="dark:bg-navy-700 form-select peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                       >
                         <option>Choose Document Type</option>
                         <option value="sslc">SSLC</option>
@@ -1634,7 +778,7 @@ onClick={() => setmobileOpen(!isOpen)} >
             <div className="space-y-5 p-4 sm:p-5">
       <div className="relative w-full">
       <div
-        className="form-select peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9"
+        className="dark:bg-navy-700 form-select peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9"
         onClick={() => setIsOpen(!isOpen)} 
         
       >
@@ -1642,18 +786,15 @@ onClick={() => setmobileOpen(!isOpen)} >
       </div>
 
       {isOpen && (
-        <div 
-        // className="absolute z-10 w-full mt-1 bg-white border border-slate-300 rounded-lg shadow-md"
-        className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
-        >
+        <div className="absolute z-10 w-full mt-1 bg-white border border-slate-300 rounded-lg shadow-md">
           <input
             type="text"
             placeholder="Search services..."
-            className="w-full px-3 py-2 border-b"
+            className="dark:bg-navy-700 w-full px-3 py-2 border-b"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <div className="max-h-60 overflow-y-auto">
+          <div className="dark:bg-navy-700 max-h-60 overflow-y-auto">
             {filteredServices.length > 0 ? (
               filteredServices.map((service) => (
                 <div
@@ -1681,8 +822,7 @@ onClick={() => setmobileOpen(!isOpen)} >
     <select
     value={type}
     onChange={(e) => settype(e.target.value)}
-      // className="form-input peer mt-1.5  w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-      className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+      className="dark:bg-navy-700 form-input peer mt-1.5  w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
     >
       <option>Select Type</option>
       <option value="lmc">LMC</option>
@@ -1927,8 +1067,7 @@ onClick={() => setmobileOpen(!isOpen)} >
                     <select
                     value={payment_method}
                     onChange={(e) => setpayment_method(e.target.value)}
-                      // className="form-input peer mt-1.5  w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                    className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+                      className="dark:bg-navy-700 form-input peer mt-1.5  w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                     >
                       <option >Select payment method</option>
                       <option value="cash">Cash</option>
@@ -1976,28 +1115,10 @@ onClick={() => setmobileOpen(!isOpen)} >
           
         </div>
         </form>
-
-
-
-           
       </div>
-
-       {/* ToastContainer is necessary to render the toast notifications */}
-       {/* <ToastContainer
-              position="top-center"
-              autoClose={5000}
-              hideProgressBar
-              style={{
-                width: "100%",
-                padding: "0 20px", // Optional, to give some padding on the sides
-              }}
-              toastStyle={{
-                width: "100%", // Make each toast full width
-                marginBottom: "10px", // Optional, adds spacing between toasts
-              }}
-            /> */}
     </div>
   );
 };
 
 export default Create;
+

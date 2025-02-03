@@ -292,7 +292,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
            </label>
             </div>
             <button type="submit" className="bg-primary text-white rounded p-2 w-1/5 mt-4">
-              {isEditing ? "Update" : "Add"}
+             Add
             </button>
           </form>
         </div>

@@ -35,35 +35,49 @@ type Admission = {
   document:File;
   total_amount:string;
   payment_method:string;
+  status:string;
+  tax: string;
+  pucc: string;
+  first_name: string;
+  old_rc:File | null;
+  adhar:File | null;
+  insurence:File | null;
+   user_photo:File | null;
+   documents:File | null;
  
 };
 
 const Admission = () => {
 
   const { state } = useAuth();
-  const [showmodal,setShowmodal]=useState(false);
-   const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
-
   const [showmodals,setShowmodals]=useState(false);
-  const [admissionData, setAdmissionData] = useState<Admission []>([]);
+  const [showmodal,setShowmodal]=useState(false);
+
+  // const [costData, setCostData] = useState<Admission []>([]);
+  const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
+
+  const [ AdmissionData,  setAdmissionData] = useState<Admission []>([]);
   const [filteredData, setFilteredData] = useState<Admission []>([]);
   const [selectedCost, setSelectedCost] = useState<Admission  | null>(null); 
   const [search, setSearch] = useState("");
   const [selectedServices, setSelectedServices] = useState<string>("");
   const [selectedAdmission,  setSelectedAdmission] = useState<Admission  | null>(null); 
-  const [editedAdmission,  setEditedAdmission] = useState<Admission  | null>(null); 
+
+  const [editedAdmission, setEditedAdmission] = useState<Admission | null>(null);
+
+
   const [service, setService] = useState<{ id: string; service_name: string }[]>([]);
   const [filters, setFilters] = useState({ service_name: '', status: '' });
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStatus, setSelectedStatus] = useState<string>("");
-  // const togglemodal =()=>{
-  //   setShowmodal((prev)=> !prev)
-  // }
+
+  
   const togglemodal = (mode: 'add' | 'edit', admission: Admission | null = null) => {
     setModalMode(mode);  // Set the modal mode to either "add" or "edit"
     setEditedAdmission(admission);  // Pass the selected driver if in edit mode
     setShowmodal((prev) => !prev);  // Toggle the modal visibility
   };
+
   const togglemodals =()=>{
     setShowmodals((prev)=> !prev)
   }
@@ -136,7 +150,7 @@ const Admission = () => {
   
       if (data.success) {
        
-        fetchlicenseData();
+        fetchAdmissionData();
       } else {
         console.error("API error:", data.msg || "Unknown error");
       }
@@ -154,63 +168,64 @@ const Admission = () => {
       setShowmodals(true); 
     };
     const applyFilters = () => {
-      let newFilteredData = admissionData;
-    
-      // Apply form filters
-     
-      if (selectedServices) {
-        newFilteredData = newFilteredData.filter(
-          (item) => item.mobile === selectedServices
-        );
-      }
-      if (selectedStatus) {
-        newFilteredData = newFilteredData.filter(
-          (item) => item.status === selectedStatus
-        );
-      }
-    
-      return newFilteredData; // Return filtered data
-    };
+            let newFilteredData = AdmissionData;
+          
+            // Apply form filters
+           
+            if (selectedServices) {
+              newFilteredData = newFilteredData.filter(
+                (item) => item.mobile === selectedServices
+              );
+            }
+            if (selectedStatus) {
+              newFilteredData = newFilteredData.filter(
+                (item) => item.status === selectedStatus
+              );
+            }
+          
+            return newFilteredData; // Return filtered data
+          };
     
     // Handle real-time search filtering
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
       setSearchTerm(value);
     
-      const searchFilteredData = admissionData.filter(
+      const searchFilteredData = AdmissionData.filter(
         (item) =>
           item.service_name.toLowerCase().includes(value.toLowerCase()) ||
-          item.mobile.toLowerCase().includes(value.toLowerCase()) ||
-          item.added_date.toLowerCase().includes(value.toLowerCase()) ||
-          item.email.toLowerCase().includes(value.toLowerCase())
+          item.user_name.toLowerCase().includes(value.toLowerCase()) ||
+          item.email.toLowerCase().includes(value.toLowerCase()) ||
+          item.pay_status.toLowerCase().includes(value.toLowerCase())
           
       );
     
       setFilteredData(searchFilteredData); // Update filtered data in real-time
     };
     
-    const handleFilterSubmit = (e: React.FormEvent) => {
+     const handleFilterSubmit = (e: React.FormEvent) => {
       e.preventDefault(); // Prevent page reload
       const newFilteredData = applyFilters();
       setFilteredData(newFilteredData); // Update filtered data
 
       setCurrentPage(1); // Reset pagination to the first page
     };
-    
-    const handleReset = () => {
+
+
+        const handleReset = () => {
       setSearchTerm("");
       setSelectedServices("");
       setSelectedStatus("");
-      setFilteredData(admissionData); // Reset to original data
+      setFilteredData(AdmissionData); // Reset to original data
 
       setCurrentPage(1); // Reset pagination to the first page
     };
-
-
-
     const indexOfLastEntry = currentPage * entriesPerPage;
     const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
-    const currentEntries = filteredData.slice(indexOfFirstEntry, indexOfLastEntry);
+    const currentEntries = filteredData.slice(
+      indexOfFirstEntry,
+      indexOfLastEntry
+    );
     const totalEntries = filteredData.length;
     const totalPages = Math.ceil(totalEntries / entriesPerPage);
    
@@ -241,14 +256,13 @@ const Admission = () => {
     </ul>
   </div>
 
- 
-  <div className="grid grid-cols-1 gap-4 sm:gap-5 lg:gap-6 mb-4" >
-  <div className="card px-4 pb-4 sm:px-5 pt-4">
-  <div className="p-4 rounded-lg bg-slate-100 dark:bg-navy-800">
-    <form>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        {/* Driver Name Select */}
-        <div className='flex-1'>
+   <div className="grid grid-cols-1 gap-4 sm:gap-5 lg:gap-6 mb-4" >
+   <div className="card px-4 pb-4 sm:px-5 pt-4">
+   <div className="p-4 rounded-lg bg-slate-100 dark:bg-navy-800">
+     <form>
+       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+         {/* Driver Name Select */}
+         <div className='flex-1'>
           <label
             htmlFor="serviceName"
             className="block text-sm font-medium text-slate-700 dark:text-navy-100"
@@ -263,33 +277,14 @@ const Admission = () => {
             className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
           >
             <option value="">select a mobile</option>
-            {admissionData.map((admission) => (
+            {AdmissionData.map((admission) => (
     <option key={admission.id} value={admission.mobile}>
       {admission.mobile}
     </option>
   ))}
           </select>
         </div>
-        {/* Status Select */}
-        {/* <div className='flex-1'>
-          <label
-            htmlFor="status"
-            className="block text-sm font-medium text-slate-700 dark:text-navy-100"
-          >
-            Status
-          </label>
-          <select
-            id="status"
-            name="status"
-            value={selectedStatus}
-            onChange={(e) => setSelectedStatus(e.target.value)}
-            className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
-          >
-            <option value="">All Status</option>
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
-          </select>
-        </div> */}
+      
         <div className='flex-1 mt-6'>
         <button
           type="submit"
@@ -313,21 +308,14 @@ const Admission = () => {
     </div>
   </div>
 
-
-
-
-
-
   <div className="flex items-center justify-between py-5 lg:py-6">
                 <span className="text-lg font-medium text-slate-800 dark:text-navy-50">
               
                 </span>
                 <button className="px-4 py-2 bg-[#4f46e5] text-white rounded-md" 
-                 onClick={() => togglemodal('add')}>  
+                onClick={() => togglemodal('add')}>  
           Add admission
                 </button>
-                
-              
             </div>
 
                              
@@ -381,7 +369,7 @@ const Admission = () => {
             {currentEntries.map((item, index) => (
               <tr key={item.id} className="border-y border-transparent border-b-slate-200 dark:border-b-navy-500">
                 <td className="whitespace-nowrap rounded-l-lg px-4 py-3 sm:px-5">
-                {indexOfFirstEntry+index + 1}
+                {indexOfFirstEntry + index + 1}
                 </td>
                 <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 {item.user_name}
@@ -436,8 +424,8 @@ const Admission = () => {
                 <span>
                       <div className="flex justify-center space-x-2">
                         <button className="btn size-8 p-0 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25">
-                          <i className="fa fa-edit"  
-                           onClick={() => togglemodal('edit', item)}
+                          <i className="fa fa-edit" 
+                         onClick={() => togglemodal('edit',item)}
                           />
                         </button>
                         {/* <button className="btn size-8 p-0 text-error hover:bg-error/20 focus:bg-error/20 active:bg-error/25 border-error">
@@ -543,23 +531,38 @@ const Admission = () => {
     type: selectedCost.type,
     amount: selectedCost.amount, 
     service_name:selectedCost.service_name,
+    payment_method: selectedCost.payment_method ?? '',
+     total_amount: selectedCost.total_amount ?? '',
     id:selectedCost.id || ""
   } : undefined}
   isEditing={!!selectedCost}
 />
-
 {showmodal && (
   modalMode === 'edit' ? (
     <Edit
       showmodal={showmodal}
       togglemodal={() => togglemodal('add')}  // Correct the mode here if you want to switch to 'edit'
-      admissionData={editedAdmission}
+      // AdmissionData={editedAdmission as Admission}
+      AdmissionData={editedAdmission}
+      // onSave={(updatedAdmission) => {
+      //   // setAdmissionData((prevData) => prevData.map((admission) =>
+      //   //   admission.id === updatedAdmission.id ? updatedAdmission : admission
+      //   // ));
+      //   setAdmissionData((prevData) =>
+      //     prevData.map((admission) =>
+      //       admission.id === updatedAdmission.id ? updatedAdmission : admission
+      //     )
+      //   );
+      //   togglemodal('add');  // Close modal after saving
+      // }}
       onSave={(updatedAdmission) => {
-        setAdmissionData((prevData) => prevData.map((admission) =>
-          admission.id === updatedAdmission.id ? updatedAdmission : admission
-        ));
-        togglemodal('add');  // Close modal after saving
-      }}
+        setAdmissionData((prevData) => 
+          prevData.map((admission) =>
+              admission.id === updatedAdmission.id ? updatedAdmission as Admission : admission
+          )
+      );
+        togglemodal('add');
+    }}
     />
   ) : (
     <Create showmodal={showmodal} togglemodal={() => togglemodal('add')} />
@@ -572,3 +575,5 @@ const Admission = () => {
 }
 
 export default Admission
+
+

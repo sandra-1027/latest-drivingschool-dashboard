@@ -2,43 +2,58 @@
 import Link from 'next/link'
 import React, { useState } from 'react'
 import { useAuth } from '../context/AuthContext';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
-function Changepassword() {
+function Resetpassword() {
  const { state } = useAuth();
-  const [new_password, setNew_password] =useState('');
-  const [confirm_password, setConfirm_password] =useState('');
+ const router = useRouter();
+ const searchParams = useSearchParams();
+ const token = searchParams.get('token');
+
+  const [newpass, setNew_password] =useState('');
+  const [conpass, setConfirm_password] =useState('');
+  const[keyword_encode,setKeyword_encode] = useState('');
 const [loading, setLoading] =useState(false);
 const [error, setError] = useState('');
 const [message, setMessage] =useState('');
- const router = useRouter();
+
 const handleChangePassword = async (e) => {
   e.preventDefault();
   setLoading(true);
   setError('');
   setMessage('');
-
+  console.log('Reset token:', keyword_encode); // Debugging
   try {
-    const response = await fetch('/api/admin/member/change_password', {
+    // const response = await fetch('/api/admin/member/change_password', {
+        const response = await fetch('/api/auth/reset_password', {
+       
       method: 'POST',
       headers: {
-        'authorizations': state?.accessToken ?? "",
+        'Authorizations': state?.accessToken ?? "",
         api_key: "10f052463f485938d04ac7300de7ec2b",
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({new_password,confirm_password }),
+      body: JSON.stringify({
+        newpass,conpass,keyword_encode:token 
+       
+
+      }),
+    
     });
 
     const data = await response.json();
-    console.log('Response:', response);
+    console.log('Reset password', response);
+    console.log('forgotpassword', data);
+    console.log('Reset password', response);
 console.log('forgotpassword',data)
+
     if (!response.ok) {
       throw new Error(data.message || 'Something went wrong');
     }
 
     setMessage('A reset link has been sent to your email.');
     router.push('/login')
-  } catch (err) {
+  } catch (err : any) {
     setError(err.message || 'Failed to send reset link.');
   } finally {
     setLoading(false);
@@ -76,7 +91,7 @@ console.log('forgotpassword',data)
                   className="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:z-10 hover:border-slate-400 focus:z-10 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                   placeholder="New password"
                   type="text"
-                  value={new_password}
+                  value={newpass}
                   onChange={(e) => setNew_password(e.target.value)}
                   required
                 />
@@ -98,7 +113,7 @@ console.log('forgotpassword',data)
                   className="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:z-10 hover:border-slate-400 focus:z-10 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                   placeholder="Confirm password"
                   type="text"
-                  value={confirm_password}
+                  value={conpass}
                   onChange={(e) => setConfirm_password(e.target.value)} // Update state
                   required
                 />
@@ -155,4 +170,4 @@ console.log('forgotpassword',data)
   )
 }
 
-export default Changepassword
+export default Resetpassword
