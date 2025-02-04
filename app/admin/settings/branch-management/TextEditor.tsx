@@ -124,7 +124,7 @@ const handleInput = () => {
   }
 };
   return (
-    <div className="w-full border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+    <div className="w-full border mt-4 border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
       <div className="px-3 py-2 border-b dark:border-gray-600">
         <div className="flex items-center space-x-1">
           <button

@@ -858,12 +858,12 @@ const page = () => {
         
           <div className="flex list-group-item border p-2" >
             <p className='mr-8'>Total Income </p>
-            <span className='font-bold'>₹ {expenseData.total_income}</span>
+            <span className='font-bold'>{expenseData.total_income}</span>
           </div>
 
           <div className="flex list-group-item p-2">
             <p className='mr-8'>Total Expense </p>
-            <span className='font-bold'>₹ {expenseData.total_expense}</span>
+            <span className='font-bold'>{expenseData.total_expense}</span>
           </div>
        
         </div>
@@ -950,20 +950,22 @@ const page = () => {
                 {/* {item.daily_status} */}
                 {item.daily_status === "income" ? (
 
-    <div className="badge space-x-2.5 rounded-lg bg-success/10 text-success">
-                  <span className="badge bg-orange-transparent">
+    <div className="badge space-x-2.5 rounded-full bg-success/10 text-success">
+                  <span>
                  Income
-                  <HiOutlineArrowNarrowUp className='ml-2'/>
+                 
                   </span>
+                  <HiOutlineArrowNarrowUp/>
                 </div>
   ) : (
     <>
-      <div className="badge space-x-2.5 rounded-lg bg-error/10 text-error">
+      <div className="badge space-x-2.5 rounded-full bg-error/10 text-error">
                   
-                  <span className="badge bg-orange-transparent">
+                  <span>
                   Expense
-                  <HiOutlineArrowNarrowDown className='ml-2'/>
+                 
   </span>
+  <HiOutlineArrowNarrowDown/>
                 </div>
     </>
   )}

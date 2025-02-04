@@ -8,6 +8,7 @@ import { useAuth } from '@/app/context/AuthContext';
 import Add from './add';
 import { FaRegCheckCircle } from 'react-icons/fa';
 import Edit from './edit';
+import { HiOutlineArrowNarrowDown, HiOutlineArrowNarrowUp } from 'react-icons/hi';
 
 type Account = {
   id?: string;
@@ -23,6 +24,7 @@ type Account = {
   amount:string;
   total_income:string;
   total_expense:string;
+  added_by:string;
 };
 
 const page = () => {
@@ -316,12 +318,12 @@ const page = () => {
         
           <div className="flex list-group-item border p-2" >
             <p className='mr-8'>Total Income </p>
-            <span className='font-bold'>₹ {expenseData.total_income}</span>
+            <span className='font-bold'>{expenseData.total_income}</span>
           </div>
 
           <div className="flex list-group-item p-2">
             <p className='mr-8'>Total Expense </p>
-            <span className='font-bold'>₹ {expenseData.total_expense}</span>
+            <span className='font-bold'>{expenseData.total_expense}</span>
           </div>
        
         </div>
@@ -371,11 +373,15 @@ const page = () => {
                 SL No
                 </th>
                 <th className="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-               Type
-                </th>
-                <th className="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                Source
                 </th>
+                <th className="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
+               Added By
+                </th>
+                <th className="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
+               Type
+                </th>
+          
                 <th className="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                Amount
                 </th>
@@ -400,11 +406,28 @@ const page = () => {
                 {index +indexOfFirstEntry+1}
                 </td>
                 <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                {item.daily_status}
+                {item.daily_status === "income" ? item.type : item.expense_name}
                 </td>
                 <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                {/* {item.type} */}
-                {item.daily_status === "income" ? item.type : item.expense_name}
+                {item.added_by}
+                </td>
+                {/* <td className="whitespace-nowrap px-4 py-3 sm:px-5">
+                {item.daily_status}
+                </td> */}
+               <td className="whitespace-nowrap px-4 py-3 sm:px-5">
+                {item.daily_status === "income" ? (
+    <div className="badge space-x-2.5 rounded-lg bg-success/10 text-success">
+      <span>Income</span>
+      <HiOutlineArrowNarrowUp/>
+                </div>
+  ) : (
+    <>
+      <div className="badge space-x-2.5 rounded-full bg-error/10 text-error"> 
+               <span>Expense</span>
+               <HiOutlineArrowNarrowDown/>
+                </div>
+    </>
+  )}
                 </td>
                 <td className="whitespace-nowrap  px-4 py-3 sm:px-5">
                 {item.amount}

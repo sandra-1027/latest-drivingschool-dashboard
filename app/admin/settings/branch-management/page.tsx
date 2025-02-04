@@ -206,7 +206,7 @@ const page = () => {
   <div className="grid grid-cols-1 gap-4 sm:gap-5 lg:gap-6 mb-4" >
   <div className="card px-4 pb-4 sm:px-5 pt-4">
   <div className="p-4 rounded-lg bg-slate-100 dark:bg-navy-800">
-  <form>
+  {/* <form>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <div>
           <label
@@ -251,7 +251,7 @@ const page = () => {
           </select>
         </div>
       </div>
-      <div className="mt-4 flex space-x-4">
+      <div className="mt-6 flex-1 ">
         <button
           type="submit"
           onClick={handleFilterSubmit}
@@ -266,7 +266,7 @@ const page = () => {
         <button
           type="button"
           onClick={handleReset}
-          className="inline-flex justify-center rounded-md border border-gray-300 bg-warning py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-warningfocus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          className="ml-4 inline-flex justify-center rounded-md border border-gray-300 bg-warning py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-warningfocus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
         >
           <i
             className="fa fa-refresh"
@@ -275,7 +275,73 @@ const page = () => {
           Reset
         </button>
       </div>
+    </form> */}
+<form>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        {/* Driver Name Select */}
+        <div className='flex-1'>
+          <label
+            htmlFor="serviceName"
+            className="block text-sm font-medium text-slate-700 dark:text-navy-100"
+          >
+            Branch Name
+          </label>
+          <select
+            id="driverName"
+            name="branch_name"
+            value={selectedBranch}
+            onChange={(e) => setSelectedBranch(e.target.value)}
+            className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+          >
+            <option value="">select a Branch</option>
+            {branchData.map((branch) => (
+    <option key={branch.id} value={branch.branch_name}>
+      {branch.branch_name}
+    </option>
+  ))}
+       
+          </select>
+        </div>
+        {/* Status Select */}
+        <div className='flex-1'>
+          <label
+            htmlFor="status"
+            className="block text-sm font-medium text-slate-700 dark:text-navy-100"
+          >
+            Status
+          </label>
+          <select
+            id="status"
+            name="status"
+            value={selectedStatus}
+            onChange={(e) => setSelectedStatus(e.target.value)}
+            className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+          >
+            <option value="">All Status</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </div>
+
+        <div className='flex-1 mt-6'>
+        <button
+          type="submit"
+          onClick={handleFilterSubmit}
+          className="inline-flex justify-center rounded-md border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+        ><i className='fa fa-filter' style={{marginTop:'3px',marginRight:'3px'}}></i>
+          Filter
+        </button>
+        <button
+          type="button"
+          onClick={handleReset}
+          className="ml-4 inline-flex justify-center rounded-md border border-gray-300 bg-warning py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-warningfocus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+        ><i className='fa fa-refresh' style={{marginTop:'3px',marginRight:'3px'}}></i>
+          Reset
+        </button>
+        </div>
+      </div>
     </form>
+
   </div>
     </div>
   </div>

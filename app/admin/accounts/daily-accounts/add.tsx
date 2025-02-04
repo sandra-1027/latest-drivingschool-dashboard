@@ -2,6 +2,8 @@
 
 import { useAuth } from '@/app/context/AuthContext';
 import React, { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 type CreateProps = {
   showmodal: boolean;
@@ -36,9 +38,7 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal, formData, isEditin
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
   
-    const endpoint = isEditing
-      ? `/api/admin/accounts/update_accounts/${formData?.id}` // Example update endpoint
-      : '/api/admin/accounts/add_accounts';
+   
   
     // Prepare the data object
     const data: any = {
@@ -49,14 +49,12 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal, formData, isEditin
     };
   
     // Include id only if editing
-    if (isEditing) {
-      data.id = formData?.id; // Add id only when editing
-    }
+  
   
     console.log('Sending data to server:', data);
   
     try {
-      const response = await fetch(endpoint, {
+      const response = await fetch('/api/admin/accounts/add_accounts', {
         method: "POST",
         headers: {
           authorizations: state?.accessToken ?? '',
@@ -68,16 +66,18 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal, formData, isEditin
   
       if (!response.ok) {
         const errorData = await response.json();
-        console.error(`Error ${isEditing ? 'updating' : 'adding'} account:`, errorData.message || 'Unknown error');
-        alert(`Failed to ${isEditing ? 'update' : 'add'} account`);
+        console.error(`Error adding account:`, errorData.message || 'Unknown error');
+        alert(`Failed to add account`);
       } else {
         const responseData = await response.json();
-        console.log(`Account ${isEditing ? 'updated' : 'added'} successfully:`, responseData);
-        alert(`Account ${isEditing ? 'updated' : 'added'} successfully!`);
+        console.log(`Account added successfully:`, responseData);
+        // alert(`Account added successfully!`);
+         toast.success('Account added successfully!')
       }
-    } catch (error) {
+    } catch (error :any) {
       console.error(`Network error:`, error);
-      alert(`An error occurred while ${isEditing ? 'updating' : 'adding'} the account.`);
+     
+      toast.error(error.message || 'An error occurred while adding the account.')
     } finally {
       togglemodal(); // Close the modal
     }
@@ -98,7 +98,7 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal, formData, isEditin
         <div className="relative flex w-full max-w-3xl origin-top flex-col overflow-hidden rounded-lg bg-white transition-all duration-300 dark:bg-navy-700">
           <div className="flex justify-between rounded-t-lg bg-slate-200 px-4 py-3 dark:bg-navy-800 sm:px-5">
             <h3 className="text-xl font-medium text-slate-700 dark:text-navy-100">
-              {isEditing ? 'Edit Account' : 'Add Account'}
+             Add Account
             </h3>
             <button
               onClick={togglemodal}
@@ -233,7 +233,7 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal, formData, isEditin
               type="submit"
               className="bg-primary text-white rounded p-2 w-1/5 mt-4"
             >
-              {isEditing ? 'Update' : 'Add'}
+             Add
             </button>
           </form>
         </div>

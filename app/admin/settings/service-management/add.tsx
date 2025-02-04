@@ -122,17 +122,9 @@ const { state } = useAuth();
             {/* <div className="tabs flex flex-col">  */}
             <form onSubmit={handleSubmit}>
               <div className="space-y-5 p-4">
-                {error && (
-                  <p className="text-red-500">
-                    {error}
-                  </p>
-                )}
-                {success && (
-                  <p className="text-green-500">
-                    Service added successfully!
-                  </p>
-                )}
+               
                 <label className="block">
+                  <span>Service Name</span>
                   <input
                     className="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                     placeholder="Service Name"
@@ -145,6 +137,7 @@ const { state } = useAuth();
                   />
                 </label>
                 <label className="block">
+                <span>Amount</span>
                   <input
                     className="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                     placeholder="amount"
@@ -157,20 +150,14 @@ const { state } = useAuth();
                   />
                 </label>
                 <div className="mt-1.5 w-full">
+                <span>Description</span>
                   <TextEditor
                     value={formData.description}
                     onChange={(value: string) =>
                       setFormData({ ...formData, description: value })
                     }
                   />
-                  {/* <textarea
-  value={formData.description}
-  onChange={(e) =>
-    setFormData({ ...formData, description: e.target.value })
-  }
-  className="w-full border border-gray-300 rounded"
-></textarea> */}
-
+            
                 </div>
 
                 {/* <div className="flex justify-end"> */}
@@ -179,7 +166,7 @@ const { state } = useAuth();
                     className="bg-primary text-white rounded p-2 w-1/5"
                     disabled={loading}
                   >
-                    {loading ? "Adding..." : "Add"}
+                   Add
                   </button>
                 {/* </div> */}
               </div>

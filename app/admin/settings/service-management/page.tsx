@@ -520,13 +520,13 @@ const page = () => {
   modalMode === 'edit' ? (
     <Edit
       showModal={showmodal}
-      toggleModal={() => togglemodal('add')}  // Correct the mode here if you want to switch to 'edit'
+      toggleModal={() => togglemodal('add')} 
       serviceData={editedService}
       onSave={(updatedService) => {
         setServiceData((prevData) => prevData.map((service) =>
           service.id === updatedService.id ? updatedService : service
         ));
-        togglemodal('add');  // Close modal after saving
+        togglemodal('add'); 
       }}
     />
   ) : (

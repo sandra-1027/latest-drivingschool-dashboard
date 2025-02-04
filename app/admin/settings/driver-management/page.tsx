@@ -226,10 +226,77 @@ const handleReset = () => {
   <div className="grid grid-cols-1 gap-4 sm:gap-5 lg:gap-6 mb-4" >
   <div className="card px-4 pb-4 sm:px-5 pt-4">
   <div className="p-4 rounded-lg bg-slate-100 dark:bg-navy-800">
-    <form>
+    {/* <form>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        {/* Driver Name Select */}
+     
         <div>
+          <label
+            htmlFor="driverName"
+            className="block text-sm font-medium text-slate-700 dark:text-navy-100"
+          >
+            Driver Name
+          </label>
+          <select
+            id="driverName"
+            name="driverName"
+           
+            value={selectedVehicle}
+            onChange={(e) => setSelectedVehicle(e.target.value)}
+            className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+          >
+            <option value="">All Drivers</option>
+            {driverData.map((driver) => (
+    <option key={driver.id} value={driver.first_name}>
+      {driver.first_name}
+    </option>
+  ))}
+          </select>
+        </div>
+        
+        <div>
+          <label
+            htmlFor="status"
+            className="block text-sm font-medium text-slate-700 dark:text-navy-100"
+          >
+            Status
+          </label>
+          <select
+            id="status"
+            name="status"
+           
+            value={selectedStatus}
+            onChange={(e) => setSelectedStatus(e.target.value)}
+            className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+          >
+            <option value="">All Status</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </div>
+      </div>
+   
+      <div className="mt-4 flex space-x-4">
+        <button
+          type="button"
+          className="inline-flex justify-center rounded-md border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          onClick={handleFilterSubmit}
+        ><i className='fa fa-filter' style={{marginTop:'3px',marginRight:'3px'}}></i>
+          Filter
+        </button>
+        <button
+          type="button"
+          className="inline-flex justify-center rounded-md border border-gray-300 bg-warning py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-warningfocus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+       
+          onClick={handleReset}
+        ><i className='fa fa-refresh' style={{marginTop:'3px',marginRight:'3px'}}></i>
+          Reset
+        </button>
+      </div>
+    </form> */}
+<form>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        {/* Driver Name Select */}
+        <div className='flex-1'>
           <label
             htmlFor="driverName"
             className="block text-sm font-medium text-slate-700 dark:text-navy-100"
@@ -254,7 +321,7 @@ const handleReset = () => {
           </select>
         </div>
         {/* Status Select */}
-        <div>
+        <div  className='flex-1'>
           <label
             htmlFor="status"
             className="block text-sm font-medium text-slate-700 dark:text-navy-100"
@@ -275,9 +342,8 @@ const handleReset = () => {
             <option value="inactive">Inactive</option>
           </select>
         </div>
-      </div>
-      {/* Buttons */}
-      <div className="mt-4 flex space-x-4">
+
+        <div className='flex-1 mt-6'>
         <button
           type="button"
           className="inline-flex justify-center rounded-md border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
@@ -287,14 +353,18 @@ const handleReset = () => {
         </button>
         <button
           type="button"
-          className="inline-flex justify-center rounded-md border border-gray-300 bg-warning py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-warningfocus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-          // onClick={() => setFilters({ driverName: '', status: '' })}
+          className="ml-4 inline-flex justify-center rounded-md border border-gray-300 bg-warning py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-warningfocus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+       
           onClick={handleReset}
         ><i className='fa fa-refresh' style={{marginTop:'3px',marginRight:'3px'}}></i>
           Reset
         </button>
+        </div>
       </div>
+     
     </form>
+
+
   </div>
     </div>
   </div>

@@ -1,6 +1,7 @@
 import { useAuth } from "@/app/context/AuthContext";
 import React, { useEffect, useState } from "react";
-
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 interface Account {
   // id?: string;
@@ -21,6 +22,7 @@ interface Account {
    amount:string;
    total_income:string;
    total_expense:string;
+   added_by:string;
   }
 
 interface EditProps {
@@ -84,7 +86,7 @@ const Edit = ({ showModal, toggleModal, AccountData, onSave }: EditProps) => {
   
         console.log('Response Status:', response.status);
         const data = await response.json();
-  
+  toast.success('Account updated successfully!')
         console.log('Response Data:', data);
   
         if (data.success) {
@@ -96,9 +98,10 @@ const Edit = ({ showModal, toggleModal, AccountData, onSave }: EditProps) => {
           console.log('Error Messages:', data.error_msgs);
         }
       }
-    } catch (err) {
+    } catch (err:any) {
       console.error('Error during API call:', err);
       setError('An error occurred while updating the Cost.');
+      toast.error(err.message ||'An error occurred while updating the Account.')
     } finally {
       setLoading(false);
     }

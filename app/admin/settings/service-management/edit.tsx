@@ -163,7 +163,7 @@ const [loading, setLoading] = useState(false);
         <div className="modal-body">
           <form onSubmit={handleSubmit}>
             <div className="space-y-5 p-4">
-              {error && (
+              {/* {error && (
                 <p className="text-red-500">
                   {error}
                 </p>
@@ -172,8 +172,9 @@ const [loading, setLoading] = useState(false);
                 <p className="text-green-500">
                   Service updated successfully!
                 </p>
-              )}
+              )} */}
               <label className="block">
+                <span>Service Name</span>
                 <input
                   className="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                   placeholder="service Name"
@@ -187,6 +188,7 @@ const [loading, setLoading] = useState(false);
                 />
               </label>
               <label className="block">
+                <span>Amount</span>
                 <input
                   className="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                   placeholder="amount"
@@ -199,6 +201,7 @@ const [loading, setLoading] = useState(false);
               </label>
 
               <div className="mt-1.5 w-full">
+                <span>Description</span>
                 <TextEditor
                   value={formData.description}
                   onChange={(value: string) => handleChange(value, "description")}
@@ -212,7 +215,7 @@ const [loading, setLoading] = useState(false);
                   className="bg-primary text-white rounded p-2 w-1/5"
                   disabled={loading}
                 >
-                  {loading ? "Adding..." : "Add"}
+                  Update
                 </button>
               {/* </div> */}
             </div>
