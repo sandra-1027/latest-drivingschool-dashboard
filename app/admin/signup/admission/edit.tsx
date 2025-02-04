@@ -227,7 +227,7 @@ const handleRcchange = (e: React.ChangeEvent<HTMLInputElement>) => {
 };
 const handleRemoveRc = () => {
   setRcPreview(null); 
-  setFormData((prevData) => (prevData ? { ...prevData, old_rc: null } : null)); /
+  setFormData((prevData) => (prevData ? { ...prevData, old_rc: null } : null)); 
 };
 
 
