@@ -3,6 +3,9 @@
 
 import { useAuth } from '@/app/context/AuthContext';
 import React, { useEffect, useState } from 'react';
+import { CgNotes } from 'react-icons/cg';
+import { FiClock } from 'react-icons/fi';
+import { IoMdCheckmark } from 'react-icons/io';
 import { RiBillFill } from 'react-icons/ri';
 
 type Payment = {
@@ -247,10 +250,10 @@ onChange={handleSearchChange}
               </tr>
             </thead>
             <tbody>
-            {filteredData.map((item, index) => (
+            {currentEntries.map((item, index) => (
               <tr key={item.id} className="border-y border-transparent border-b-slate-200 dark:border-b-navy-500">
                 <td className="whitespace-nowrap rounded-l-lg px-4 py-3 sm:px-5">
-                {index + 1}
+                {index+indexOfFirstEntry + 1}
                 </td>
                 <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 {item.mobile}
@@ -263,26 +266,30 @@ onChange={handleSearchChange}
                 </td>
               
                 <td className="whitespace-nowrap  px-4 py-3 sm:px-5">
-                {/* {item.payment_status} */}
+              
                 {item.payment_status === "completed" && (
                 <div className="badge space-x-2.5 rounded-full bg-success/10 text-success">
-                  <div className="size-2 rounded-full bg-current"/>
+                  {/* <div className="size-2 rounded-full bg-current"/> */}
+                   <IoMdCheckmark className='mr-2'/>
                   <span>Fully paid</span>
                 </div>
                 )}
                  {item.payment_status === "pending" && (
                 <div className="badge space-x-2.5 rounded-full bg-error/10 text-error">
-                  <div className="size-2 rounded-full bg-current"/>
+                  {/* <div className="size-2 rounded-full bg-current"/> */}
+                   <FiClock className='mr-2'/>
                   <span>Pending</span>
                 </div>
                 )}
                  {item.payment_status === "remaining" && (
                 <div className="badge space-x-2.5 rounded-full bg-info/10 text-info">
-                  <div className="size-2 rounded-full bg-current"/>
-                  <span>Paritally Paid </span>
+                  {/* <div className="size-2 rounded-full bg-current"/> */}
+                  <CgNotes className='mr-2'/>
+                  <span>Partially Paid </span>
                 </div>
                 )}
                   </td>
+                
                 
                 <td className="whitespace-nowrap  px-4 py-3 sm:px-5">
                 {item.added_date}

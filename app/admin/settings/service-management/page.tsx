@@ -354,11 +354,11 @@ const page = () => {
                 <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 {item.amount}
                 </td>
-                <td className="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
+                <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 <div dangerouslySetInnerHTML={{ __html: item.description }}/>
                 </td>
 
-                <td className="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
+                <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                
                  {item.status === "active" && (
                 <div className="badge space-x-2.5 rounded-full bg-success/10 text-success">
@@ -375,7 +375,7 @@ const page = () => {
                  
                 </td>
 
-                <td className="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
+                <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 {item.added_date}
                 </td>
                 <td className="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">

@@ -273,13 +273,13 @@ type Site = {
         <td className="whitespace-nowrap px-4 py-3 sm:px-5">
           {item.pay_amount}
         </td>
-        <td className="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
+        <td className="whitespace-nowrap px-4 py-3 sm:px-5">
           {item.pending_amount}
         </td>
-        <td className="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
+        <td className="whitespace-nowrap px-4 py-3 sm:px-5">
           {item.payment_status}
         </td>
-        <td className="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
+        <td className="whitespace-nowrap px-4 py-3 sm:px-5">
           {item.payment_method}
         </td>
         <td className="whitespace-normal max-w-xs px-4 py-3 sm:px-5">

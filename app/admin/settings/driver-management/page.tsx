@@ -372,13 +372,13 @@ const handleReset = () => {
                 <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 {item.mobile}
                 </td>
-                <td className="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
+                <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 {item.address}
                 </td>
-                <td className="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
+                <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 {item.driving_licence_no}
                 </td>
-                <td className="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
+                <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 {item.date_of_joining}
                 </td>
                 <td className="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
