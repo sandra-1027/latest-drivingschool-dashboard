@@ -13,11 +13,7 @@ interface Branch {
   
   }
 
-  // interface Item {
-  //   id: number;
-  //   status: string;
-  //   // Other properties...
-  // }
+  
 interface EditProps {
   showModal: boolean;
   toggleModal: () => void;
@@ -39,10 +35,7 @@ const [loading, setLoading] = useState(false);
     }
   }, [branchData]);
 
-  // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const { name, value } = e.target;
-  //   setFormData((prevData) => prevData ? { ...prevData, [name]: value } : null);
-  // };
+ 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement> | string,
     fieldName?: string
@@ -51,8 +44,8 @@ const [loading, setLoading] = useState(false);
       setFormData((prevData) =>
         prevData ? { ...prevData, [fieldName]: e } : null
       );
-    } else if (e instanceof Event && 'target' in e) { // Type guard to check if `e` is a ChangeEvent
-      const { name, value } = e.target as HTMLInputElement; // Type assertion
+    } else if (e instanceof Event && 'target' in e) { 
+      const { name, value } = e.target as HTMLInputElement; 
       setFormData((prevData) =>
         prevData ? { ...prevData, [name]: value } : null
       );
@@ -73,7 +66,6 @@ const [loading, setLoading] = useState(false);
       if (formData) {
         const transformedData = {
           id: formData.id,
-        //   name: `${formData.first_name}`,
           type: 'branch',
           branch_name:formData.branch_name,
           description: formData.description,
@@ -116,7 +108,7 @@ const [loading, setLoading] = useState(false);
   
 
   if (!showModal || !formData) return null;
-  // if (!showModal) return null; 
+ 
 
   return (
     
@@ -162,16 +154,7 @@ const [loading, setLoading] = useState(false);
         <div className="modal-body">
           <form onSubmit={handleSubmit}>
             <div className="space-y-5 p-4">
-              {/* {error && (
-                <p className="text-red-500">
-                  {error}
-                </p>
-              )}
-              {success && (
-                <p className="text-green-500">
-                  Branch updated successfully!
-                </p>
-              )} */}
+             
               <label className="block">
                 <span>Branch Name</span>
                 <input
@@ -180,9 +163,7 @@ const [loading, setLoading] = useState(false);
                   name="branch_name"
                   type="text"
                   value={formData.branch_name}
-                //   onChange={(e) =>
-                //     setFormData({ ...formData, branch_name: e.target.value })
-                //   }
+               
                 onChange={handleChange}
                 />
               </label>
@@ -192,11 +173,11 @@ const [loading, setLoading] = useState(false);
                 <TextEditor
                   value={formData.description}
                   onChange={(value: string) => handleChange(value, "description")}
-                // onChange={handleChange}
+              
                 />
               </div>
 
-              {/* <div className="flex justify-end"> */}
+             
                 <button
                   type="submit"
                   className="bg-primary text-white rounded p-2 w-1/5"
@@ -204,7 +185,7 @@ const [loading, setLoading] = useState(false);
                 >
                  Update
                 </button>
-              {/* </div> */}
+              
             </div>
           </form>
         </div>

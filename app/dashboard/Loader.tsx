@@ -1,4 +1,4 @@
-// components/Loader.tsx
+
 // const Loader: React.FC = () => {
 //     return (
 //       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
@@ -39,7 +39,6 @@
 
 
 
-// components/Loader.tsx
 "use client";
 
 import React from "react";

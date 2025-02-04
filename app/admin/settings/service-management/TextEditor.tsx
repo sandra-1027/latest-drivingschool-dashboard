@@ -1,7 +1,4 @@
-
-
 // import React, { useState, useRef } from 'react';
-
 
 // type TextEditorProps = {
 //   value: string;
@@ -20,8 +17,7 @@
 //   const [selectedFont, setSelectedFont] = useState<string>('Arial');
 //   const [selectedColor, setSelectedColor] = useState<string>('#000000');
 //   const [isColorDropdownVisible, setIsColorDropdownVisible] = useState(false);
- 
- 
+
 //   const editorRef = useRef(null);
 
 //   const handleCommand = (command: string) => {
@@ -62,7 +58,7 @@
 //     updateToolbarState();
 //   };
 //    // Function to insert an image
-  
+
 //    const insertImage = (event: React.ChangeEvent<HTMLInputElement>) => {
 //     const file = event.target.files?.[0];
 //     if (file) {
@@ -75,7 +71,7 @@
 //       reader.readAsDataURL(file);
 //     }
 //   };
-  
+
 // // Function to insert a video URL (YouTube, Vimeo, etc.)
 // const insertVideoFromURL = () => {
 //   const url = prompt('Enter the video URL (YouTube, Vimeo, etc.):');
@@ -101,7 +97,6 @@
 //   document.execCommand('foreColor', false, '#000000'); // Reset to black color
 //   setSelectedColor('#000000');
 // };
-
 
 //  React.useEffect(() => {
 //     if (editorRef.current && editorRef.current.innerHTML !== value) {
@@ -186,7 +181,6 @@
 //             <span className="sr-only">Underline</span>
 //           </button>
 
- 
 //           <button
 //             onClick={() => handleCommand('strikeThrough')}
 //             className={`p-1.5 rounded cursor-pointer ${
@@ -212,7 +206,6 @@
 //             <span className="sr-only">Strike-through</span>
 //           </button>
 
- 
 //           <button
 //             onClick={applyBlockquote}
 //             className={`p-1.5 rounded cursor-pointer ${
@@ -236,7 +229,6 @@
 //             <span className="sr-only">Blockquote</span>
 //           </button>
 
-    
 //           <button
 //             onClick={applyCodeFormatting}
 //             className={`p-1.5 rounded cursor-pointer ${
@@ -262,7 +254,6 @@
 //             <span className="sr-only">Code</span>
 //           </button>
 
-
 //           <button
 //             onClick={() => {
 //               const url = prompt('Enter the URL for the link:');
@@ -273,21 +264,20 @@
 //             }}
 //             className={`p-1.5 rounded cursor-pointer ${linkUrl ? 'text-blue-500' : 'text-gray-500'} hover:text-gray-900 dark:hover:text-white`}
 //           >
-         
+
 //             <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width={24} height={24} fill="none" viewBox="0 0 24 24">
 //             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.213 9.787a3.391 3.391 0 0 0-4.795 0l-3.425 3.426a3.39 3.39 0 0 0 4.795 4.794l.321-.304m-.321-4.49a3.39 3.39 0 0 0 4.795 0l3.424-3.426a3.39 3.39 0 0 0-4.794-4.795l-1.028.961" />
 //           </svg>
 //             <span className="sr-only">Insert Link</span>
 //           </button>
 
-          
 //           <label className="p-1.5 rounded cursor-pointer text-gray-500 hover:text-gray-900 dark:hover:text-white">
 //           <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width={24} height={24} fill="currentColor" viewBox="0 0 24 24">
 //           <path fillRule="evenodd" d="M13 10a1 1 0 0 1 1-1h.01a1 1 0 1 1 0 2H14a1 1 0 0 1-1-1Z" clipRule="evenodd" />
 //           <path fillRule="evenodd" d="M2 6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12c0 .556-.227 1.06-.593 1.422A.999.999 0 0 1 20.5 20H4a2.002 2.002 0 0 1-2-2V6Zm6.892 12 3.833-5.356-3.99-4.322a1 1 0 0 0-1.549.097L4 12.879V6h16v9.95l-3.257-3.619a1 1 0 0 0-1.557.088L11.2 18H8.892Z" clipRule="evenodd" />
 //         </svg>
 //             <span className="sr-only">Upload Image</span>
-   
+
 //             <input
 //               type="file"
 //               accept="image/*"
@@ -300,14 +290,13 @@
 //             onClick={insertVideoFromURL}
 //             className={`p-1.5 rounded cursor-pointer text-gray-500 hover:text-gray-900 dark:hover:text-white`}
 //           >
-        
+
 //             <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width={24} height={24} fill="currentColor" viewBox="0 0 24 24">
 //           <path fillRule="evenodd" d="M9 7V2.221a2 2 0 0 0-.5.365L4.586 6.5a2 2 0 0 0-.365.5H9Zm2 0V2h7a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9h5a2 2 0 0 0 2-2Zm-2 4a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2H9Zm0 2h2v2H9v-2Zm7.965-.557a1 1 0 0 0-1.692-.72l-1.268 1.218a1 1 0 0 0-.308.721v.733a1 1 0 0 0 .37.776l1.267 1.032a1 1 0 0 0 1.631-.776v-2.984Z" clipRule="evenodd" />
 //         </svg>
 //             <span className="sr-only">Insert Video URL</span>
 //           </button>
 
-     
 //            <select
 //             value={selectedFont}
 //             onChange={(e) => applyFontFamily(e.target.value)}
@@ -322,12 +311,6 @@
 //             <option value="Comic Sans MS">Comic Sans MS</option>
 //           </select>
 
-
-
-
-
-
-
 //  <button
 //             onClick={toggleColorDropdown}
 //             className="p-1.5 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
@@ -338,7 +321,6 @@
 //             <span className="sr-only">Text color</span>
 //           </button>
 
- 
 //           {isColorDropdownVisible && (
 //             <div id="textColorDropdown" className="z-10 w-48 rounded bg-white p-2 shadow dark:bg-gray-700">
 //               <div className="grid grid-cols-6 gap-2 mb-3 items-center p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600">
@@ -357,7 +339,7 @@
 //                 </label>
 //               </div>
 //               <div className="grid grid-cols-6 gap-1 mb-3">
-                
+
 //                 {['#1A56DB', '#0E9F6E', '#FACA15', '#F05252', '#FF8A4C'].map((color) => (
 //                   <button
 //                     key={color}
@@ -380,15 +362,9 @@
 //             </div>
 //           )}
 
-
-
-
-
 //         </div>
 //       </div>
 
-      
-    
 //     <div
 //         ref={editorRef}
 //         contentEditable
@@ -398,58 +374,55 @@
 //         className="p-4 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-600 rounded-b-lg min-h-[200px]"
 //        />
 
-
-// </div> 
+// </div>
 
 //   );
 // };
 
 // export default TextEditor;
 
-
-import React, { useState, useRef } from 'react';
-
+import React, { useState, useRef } from "react";
 
 type TextEditorProps = {
   value: string;
   onChange: (value: string) => void;
 };
 
-    const TextEditor: React.FC<TextEditorProps> = ({ value, onChange }) => {
-
+const TextEditor: React.FC<TextEditorProps> = ({ value, onChange }) => {
   const [isBold, setIsBold] = useState(false);
   const [isItalic, setIsItalic] = useState(false);
   const [isUnderline, setIsUnderline] = useState(false);
   const [isStrikethrough, setIsStrikethrough] = useState(false);
   const [isBlockquote, setIsBlockquote] = useState(false);
   const [isCode, setIsCode] = useState(false);
-  const [linkUrl, setLinkUrl] = useState('');
-  const [selectedFont, setSelectedFont] = useState<string>('Arial');
-  const [selectedColor, setSelectedColor] = useState<string>('#000000');
+  const [linkUrl, setLinkUrl] = useState("");
+  const [selectedFont, setSelectedFont] = useState<string>("Arial");
+  const [selectedColor, setSelectedColor] = useState<string>("#000000");
   const [isColorDropdownVisible, setIsColorDropdownVisible] = useState(false);
- 
- 
+
   // const editorRef = useRef(null);
   const editorRef = React.useRef<HTMLDivElement | null>(null);
 
   const handleCommand = (command: string) => {
-    document.execCommand(command, false,'');
+    document.execCommand(command, false, "");
     updateToolbarState();
   };
 
   const updateToolbarState = () => {
-    setIsBold(document.queryCommandState('bold'));
-    setIsItalic(document.queryCommandState('italic'));
-    setIsUnderline(document.queryCommandState('underline'));
-    setIsStrikethrough(document.queryCommandState('strikeThrough'));
-    setIsBlockquote(document.queryCommandState('blockquote'));
-    setIsCode(document.queryCommandState('insertHTML') && document.queryCommandValue('insertHTML') === 'code');
-
+    setIsBold(document.queryCommandState("bold"));
+    setIsItalic(document.queryCommandState("italic"));
+    setIsUnderline(document.queryCommandState("underline"));
+    setIsStrikethrough(document.queryCommandState("strikeThrough"));
+    setIsBlockquote(document.queryCommandState("blockquote"));
+    setIsCode(
+      document.queryCommandState("insertHTML") &&
+        document.queryCommandValue("insertHTML") === "code"
+    );
   };
 
   // Apply blockquote formatting
   const applyBlockquote = () => {
-    document.execCommand('formatBlock', false, 'blockquote');
+    document.execCommand("formatBlock", false, "blockquote");
     updateToolbarState();
   };
 
@@ -459,80 +432,77 @@ type TextEditorProps = {
     if (selection && selection.toString()) {
       const selectedText = selection.toString();
       const formattedCode = `<pre><code>${selectedText}</code></pre>`;
-      document.execCommand('insertHTML', false, formattedCode);
+      document.execCommand("insertHTML", false, formattedCode);
     }
   };
-  
+
   // Function to insert a link
   const insertLink = () => {
     if (linkUrl) {
-      document.execCommand('createLink', false, linkUrl);
-      setLinkUrl(''); // Clear the link input after inserting
+      document.execCommand("createLink", false, linkUrl);
+      setLinkUrl(""); // Clear the link input after inserting
     }
     updateToolbarState();
   };
-   // Function to insert an image
-  
-   const insertImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+  // Function to insert an image
+
+  const insertImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
         const imageUrl = reader.result as string;
         const imgTag = `<img src="${imageUrl}" alt="Image" class="max-w-full h-auto" />`;
-        document.execCommand('insertHTML', false, imgTag);
+        document.execCommand("insertHTML", false, imgTag);
       };
       reader.readAsDataURL(file);
     }
   };
-  
-// Function to insert a video URL (YouTube, Vimeo, etc.)
-const insertVideoFromURL = () => {
-  const url = prompt('Enter the video URL (YouTube, Vimeo, etc.):');
-  if (url) {
-    const embedCode = `<iframe width="560" height="315" src="${url}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-    document.execCommand('insertHTML', false, embedCode);
-  }
-};
-// apply font family
-const applyFontFamily = (font: string) => {
-  document.execCommand('fontName', false, font);
-  setSelectedFont(font); // Update the selected font in state
-};
-// apply text color
-const applyTextColor = (color: string) => {
-  document.execCommand('foreColor', false, color);
-  setSelectedColor(color); // Update the selected color in state
-};
-const toggleColorDropdown = () => {
-  setIsColorDropdownVisible(!isColorDropdownVisible);
-};
-const resetColor = () => {
-  document.execCommand('foreColor', false, '#000000'); // Reset to black color
-  setSelectedColor('#000000');
-};
 
+  // Function to insert a video URL (YouTube, Vimeo, etc.)
+  const insertVideoFromURL = () => {
+    const url = prompt("Enter the video URL (YouTube, Vimeo, etc.):");
+    if (url) {
+      const embedCode = `<iframe width="560" height="315" src="${url}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+      document.execCommand("insertHTML", false, embedCode);
+    }
+  };
+  // apply font family
+  const applyFontFamily = (font: string) => {
+    document.execCommand("fontName", false, font);
+    setSelectedFont(font); // Update the selected font in state
+  };
+  // apply text color
+  const applyTextColor = (color: string) => {
+    document.execCommand("foreColor", false, color);
+    setSelectedColor(color); // Update the selected color in state
+  };
+  const toggleColorDropdown = () => {
+    setIsColorDropdownVisible(!isColorDropdownVisible);
+  };
+  const resetColor = () => {
+    document.execCommand("foreColor", false, "#000000"); // Reset to black color
+    setSelectedColor("#000000");
+  };
 
-
-
-React.useEffect(() => {
-  if (editorRef.current && editorRef.current.innerHTML !== value) {
-    editorRef.current.innerHTML = value;
-  }
-}, [value]);
-const handleInput = () => {
-  if (editorRef.current) {
-    onChange(editorRef.current.innerHTML);
-  }
-};
+  React.useEffect(() => {
+    if (editorRef.current && editorRef.current.innerHTML !== value) {
+      editorRef.current.innerHTML = value;
+    }
+  }, [value]);
+  const handleInput = () => {
+    if (editorRef.current) {
+      onChange(editorRef.current.innerHTML);
+    }
+  };
   return (
     <div className="w-full border mt-4 border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
       <div className="px-3 py-2 border-b dark:border-gray-600">
         <div className="flex items-center space-x-1">
           <button
-            onClick={() => handleCommand('bold')}
+            onClick={() => handleCommand("bold")}
             className={`p-1.5 rounded cursor-pointer ${
-              isBold ? 'text-blue-500' : 'text-gray-500'
+              isBold ? "text-blue-500" : "text-gray-500"
             } hover:text-gray-900 dark:hover:text-white`}
           >
             <svg
@@ -553,9 +523,9 @@ const handleInput = () => {
           </button>
 
           <button
-            onClick={() => handleCommand('italic')}
+            onClick={() => handleCommand("italic")}
             className={`p-1.5 rounded cursor-pointer ${
-              isItalic ? 'text-blue-500' : 'text-gray-500'
+              isItalic ? "text-blue-500" : "text-gray-500"
             } hover:text-gray-900 dark:hover:text-white`}
           >
             <svg
@@ -576,9 +546,9 @@ const handleInput = () => {
           </button>
 
           <button
-            onClick={() => handleCommand('underline')}
+            onClick={() => handleCommand("underline")}
             className={`p-1.5 rounded cursor-pointer ${
-              isUnderline ? 'text-blue-500' : 'text-gray-500'
+              isUnderline ? "text-blue-500" : "text-gray-500"
             } hover:text-gray-900 dark:hover:text-white`}
           >
             <svg
@@ -599,9 +569,9 @@ const handleInput = () => {
 
           {/* Strike-through Button */}
           <button
-            onClick={() => handleCommand('strikeThrough')}
+            onClick={() => handleCommand("strikeThrough")}
             className={`p-1.5 rounded cursor-pointer ${
-              isStrikethrough ? 'text-blue-500' : 'text-gray-500'
+              isStrikethrough ? "text-blue-500" : "text-gray-500"
             } hover:text-gray-900 dark:hover:text-white`}
           >
             <svg
@@ -627,7 +597,7 @@ const handleInput = () => {
           <button
             onClick={applyBlockquote}
             className={`p-1.5 rounded cursor-pointer ${
-              isBlockquote ? 'text-blue-500' : 'text-gray-500'
+              isBlockquote ? "text-blue-500" : "text-gray-500"
             } hover:text-gray-900 dark:hover:text-white`}
           >
             <svg
@@ -651,7 +621,7 @@ const handleInput = () => {
           <button
             onClick={applyCodeFormatting}
             className={`p-1.5 rounded cursor-pointer ${
-              isCode ? 'text-blue-500' : 'text-gray-500'
+              isCode ? "text-blue-500" : "text-gray-500"
             } hover:text-gray-900 dark:hover:text-white`}
           >
             <svg
@@ -673,30 +643,61 @@ const handleInput = () => {
             <span className="sr-only">Code</span>
           </button>
 
-
           <button
             onClick={() => {
-              const url = prompt('Enter the URL for the link:');
+              const url = prompt("Enter the URL for the link:");
               if (url) {
                 setLinkUrl(url);
                 insertLink(); // Insert the link after setting the URL
               }
             }}
-            className={`p-1.5 rounded cursor-pointer ${linkUrl ? 'text-blue-500' : 'text-gray-500'} hover:text-gray-900 dark:hover:text-white`}
+            className={`p-1.5 rounded cursor-pointer ${
+              linkUrl ? "text-blue-500" : "text-gray-500"
+            } hover:text-gray-900 dark:hover:text-white`}
           >
             {/* Link button icon */}
-            <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width={24} height={24} fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.213 9.787a3.391 3.391 0 0 0-4.795 0l-3.425 3.426a3.39 3.39 0 0 0 4.795 4.794l.321-.304m-.321-4.49a3.39 3.39 0 0 0 4.795 0l3.424-3.426a3.39 3.39 0 0 0-4.794-4.795l-1.028.961" />
-          </svg>
+            <svg
+              className="w-5 h-5"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width={24}
+              height={24}
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M13.213 9.787a3.391 3.391 0 0 0-4.795 0l-3.425 3.426a3.39 3.39 0 0 0 4.795 4.794l.321-.304m-.321-4.49a3.39 3.39 0 0 0 4.795 0l3.424-3.426a3.39 3.39 0 0 0-4.794-4.795l-1.028.961"
+              />
+            </svg>
             <span className="sr-only">Insert Link</span>
           </button>
 
           {/* Image Upload Button */}
           <label className="p-1.5 rounded cursor-pointer text-gray-500 hover:text-gray-900 dark:hover:text-white">
-          <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width={24} height={24} fill="currentColor" viewBox="0 0 24 24">
-          <path fillRule="evenodd" d="M13 10a1 1 0 0 1 1-1h.01a1 1 0 1 1 0 2H14a1 1 0 0 1-1-1Z" clipRule="evenodd" />
-          <path fillRule="evenodd" d="M2 6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12c0 .556-.227 1.06-.593 1.422A.999.999 0 0 1 20.5 20H4a2.002 2.002 0 0 1-2-2V6Zm6.892 12 3.833-5.356-3.99-4.322a1 1 0 0 0-1.549.097L4 12.879V6h16v9.95l-3.257-3.619a1 1 0 0 0-1.557.088L11.2 18H8.892Z" clipRule="evenodd" />
-        </svg>
+            <svg
+              className="w-5 h-5"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width={24}
+              height={24}
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                fillRule="evenodd"
+                d="M13 10a1 1 0 0 1 1-1h.01a1 1 0 1 1 0 2H14a1 1 0 0 1-1-1Z"
+                clipRule="evenodd"
+              />
+              <path
+                fillRule="evenodd"
+                d="M2 6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12c0 .556-.227 1.06-.593 1.422A.999.999 0 0 1 20.5 20H4a2.002 2.002 0 0 1-2-2V6Zm6.892 12 3.833-5.356-3.99-4.322a1 1 0 0 0-1.549.097L4 12.879V6h16v9.95l-3.257-3.619a1 1 0 0 0-1.557.088L11.2 18H8.892Z"
+                clipRule="evenodd"
+              />
+            </svg>
             <span className="sr-only">Upload Image</span>
             {/* Hidden file input */}
             <input
@@ -706,20 +707,32 @@ const handleInput = () => {
               className="hidden"
             />
           </label>
- {/* Video URL Insert Button */}
- <button
+          {/* Video URL Insert Button */}
+          <button
             onClick={insertVideoFromURL}
             className={`p-1.5 rounded cursor-pointer text-gray-500 hover:text-gray-900 dark:hover:text-white`}
           >
             {/* Video URL button icon */}
-            <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width={24} height={24} fill="currentColor" viewBox="0 0 24 24">
-          <path fillRule="evenodd" d="M9 7V2.221a2 2 0 0 0-.5.365L4.586 6.5a2 2 0 0 0-.365.5H9Zm2 0V2h7a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9h5a2 2 0 0 0 2-2Zm-2 4a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2H9Zm0 2h2v2H9v-2Zm7.965-.557a1 1 0 0 0-1.692-.72l-1.268 1.218a1 1 0 0 0-.308.721v.733a1 1 0 0 0 .37.776l1.267 1.032a1 1 0 0 0 1.631-.776v-2.984Z" clipRule="evenodd" />
-        </svg>
+            <svg
+              className="w-5 h-5"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width={24}
+              height={24}
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                fillRule="evenodd"
+                d="M9 7V2.221a2 2 0 0 0-.5.365L4.586 6.5a2 2 0 0 0-.365.5H9Zm2 0V2h7a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9h5a2 2 0 0 0 2-2Zm-2 4a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2H9Zm0 2h2v2H9v-2Zm7.965-.557a1 1 0 0 0-1.692-.72l-1.268 1.218a1 1 0 0 0-.308.721v.733a1 1 0 0 0 .37.776l1.267 1.032a1 1 0 0 0 1.631-.776v-2.984Z"
+                clipRule="evenodd"
+              />
+            </svg>
             <span className="sr-only">Insert Video URL</span>
           </button>
 
-           {/* Font Family Dropdown */}
-           <select
+          {/* Font Family Dropdown */}
+          <select
             value={selectedFont}
             onChange={(e) => applyFontFamily(e.target.value)}
             className="p-1.5 rounded cursor-pointer text-gray-500 hover:text-gray-900 dark:hover:text-white"
@@ -733,25 +746,36 @@ const handleInput = () => {
             <option value="Comic Sans MS">Comic Sans MS</option>
           </select>
 
-
-
-
-
-
- {/* Text Color Button with Dropdown */}
- <button
+          {/* Text Color Button with Dropdown */}
+          <button
             onClick={toggleColorDropdown}
             className="p-1.5 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
           >
-            <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width={25} height={24} fill="none" viewBox="0 0 25 24">
-              <path stroke="currentColor" strokeLinecap="round" strokeWidth={2} d="m6.532 15.982 1.573-4m-1.573 4h-1.1m1.1 0h1.65m-.077-4 2.725-6.93a.11.11 0 0 1 .204 0l2.725 6.93m-5.654 0H8.1m.006 0h5.654m0 0 .617 1.569m5.11 4.453c0 1.102-.854 1.996-1.908 1.996-1.053 0-1.907-.894-1.907-1.996 0-1.103 1.907-4.128 1.907-4.128s1.909 3.025 1.909 4.128Z" />
+            <svg
+              className="w-5 h-5"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width={25}
+              height={24}
+              fill="none"
+              viewBox="0 0 25 24"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeWidth={2}
+                d="m6.532 15.982 1.573-4m-1.573 4h-1.1m1.1 0h1.65m-.077-4 2.725-6.93a.11.11 0 0 1 .204 0l2.725 6.93m-5.654 0H8.1m.006 0h5.654m0 0 .617 1.569m5.11 4.453c0 1.102-.854 1.996-1.908 1.996-1.053 0-1.907-.894-1.907-1.996 0-1.103 1.907-4.128 1.907-4.128s1.909 3.025 1.909 4.128Z"
+              />
             </svg>
             <span className="sr-only">Text color</span>
           </button>
 
           {/* Color Picker Dropdown */}
           {isColorDropdownVisible && (
-            <div id="textColorDropdown" className="z-10 w-48 rounded bg-white p-2 shadow dark:bg-gray-700">
+            <div
+              id="textColorDropdown"
+              className="z-10 w-48 rounded bg-white p-2 shadow dark:bg-gray-700"
+            >
               <div className="grid grid-cols-6 gap-2 mb-3 items-center p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600">
                 <input
                   type="color"
@@ -768,18 +792,19 @@ const handleInput = () => {
                 </label>
               </div>
               <div className="grid grid-cols-6 gap-1 mb-3">
-                
-                {['#1A56DB', '#0E9F6E', '#FACA15', '#F05252', '#FF8A4C'].map((color) => (
-                  <button
-                    key={color}
-                    type="button"
-                    onClick={() => applyTextColor(color)}
-                    style={{ backgroundColor: color }}
-                    className="w-6 h-6 rounded-md"
-                  >
-                    <span className="sr-only">{color}</span>
-                  </button>
-                ))}
+                {["#1A56DB", "#0E9F6E", "#FACA15", "#F05252", "#FF8A4C"].map(
+                  (color) => (
+                    <button
+                      key={color}
+                      type="button"
+                      onClick={() => applyTextColor(color)}
+                      style={{ backgroundColor: color }}
+                      className="w-6 h-6 rounded-md"
+                    >
+                      <span className="sr-only">{color}</span>
+                    </button>
+                  )
+                )}
               </div>
               <button
                 type="button"
@@ -790,42 +815,19 @@ const handleInput = () => {
               </button>
             </div>
           )}
-
-
-
-
-
-
         </div>
       </div>
 
-    
-  
-        
- <div
-    ref={editorRef}
-    contentEditable
-    dir="ltr"
-    style={{ direction: 'ltr', textAlign: 'left' }}
-    onInput={handleInput}
-    className="p-4 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-600 rounded-b-lg min-h-[200px]"
- />
-</div> 
-
+      <div
+        ref={editorRef}
+        contentEditable
+        dir="ltr"
+        style={{ direction: "ltr", textAlign: "left" }}
+        onInput={handleInput}
+        className="p-4 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-600 rounded-b-lg min-h-[200px]"
+      />
+    </div>
   );
 };
 
 export default TextEditor;
-
-
-
-
-
-
-
-
-
-
-
-
-

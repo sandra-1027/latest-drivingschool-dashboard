@@ -1,24 +1,13 @@
-
-
-
-
-
-
 "use client";
 import withAuth from "@/hoc/withAuth";
 import React, { useEffect, useState } from "react";
-
 
 import { useAuth } from "../context/AuthContext";
 
 import Chart from "./Chart";
 import { useRouter } from "next/navigation";
 
-
-
 type Dashboard = {
-  id: string;
-  // expiry_datas:string;
   message: string;
   total_users: string;
   monthly_users: string;
@@ -30,17 +19,16 @@ type Dashboard = {
   months: string;
   date: string;
   status: string;
-  total_amount:string;
-
+  total_amount: string;
 };
 
 const AdminPage = () => {
   const { state } = useAuth();
   const [dashboardData, setDashboardData] = useState<Dashboard | null>(null);
-  // const [graphData, setGraphData] = useState<Dashboard[]>([]);
+
   const [graphData, setGraphData] = useState<Dashboard | null>(null);
   const [expiryDatas, setexpiryDatas] = useState<Dashboard[]>([]);
-  // const [today_income, setToday_income] = useState<Dashboard[]>([]);
+
   const [today_income, setToday_income] = useState<Dashboard | null>(null);
   today_income;
   const [loading, setLoading] = useState(true);
@@ -49,21 +37,17 @@ const AdminPage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    // Check if this is the first load after login
     const hasVisitedAdmin = sessionStorage.getItem("hasVisitedAdmin");
 
     if (!hasVisitedAdmin) {
-      // Reload only on first access
       sessionStorage.setItem("hasVisitedAdmin", "true");
       window.location.reload();
     }
   }, []);
 
-
-
   useEffect(() => {
     console.log("Updated Graph Data:", graphData);
-  }, [graphData]); 
+  }, [graphData]);
 
   const fetchDashboardData = async () => {
     try {
@@ -71,14 +55,14 @@ const AdminPage = () => {
         method: "POST",
         headers: {
           authorizations: state?.accessToken ?? "",
-          // 'authorizations': token ?? '',
-          api_key: "10f052463f485938d04ac7300de7ec2b", // Make sure the API key is correct
+
+          api_key: "10f052463f485938d04ac7300de7ec2b",
         },
         body: JSON.stringify({ user_id: null }),
       });
       if (!response.ok) {
         const errorData = await response.json();
-        // console.error('API error:', errorData);
+
         throw new Error(
           `HTTP error! Status: ${response.status} - ${
             errorData.message || "Unknown error"
@@ -87,13 +71,12 @@ const AdminPage = () => {
       }
 
       const data = await response.json();
- console.log("API Response:", data);
+      console.log("API Response:", data);
       if (data.success) {
         setDashboardData(data.data.dashboard_datas || []);
         setGraphData(data.data.graph || []);
         setexpiryDatas(data.data.expiry_datas || []);
         setToday_income(data.data.today_income || []);
-     
       } else {
         // console.error("API error:", data.msg || "Unknown error");
       }
@@ -146,10 +129,7 @@ const AdminPage = () => {
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4 lg:gap-6">
             <div className="card flex-row justify-between p-4">
               <div>
-                <p
-                  // className="text-xs+ uppercase"
-                  className="text-xl font-medium text-slate-700 dark:text-navy-100"
-                >
+                <p className="text-xl font-medium text-slate-700 dark:text-navy-100">
                   Total <br />
                   Customers
                 </p>
@@ -157,7 +137,6 @@ const AdminPage = () => {
                   <p className="text-2xl font-semibold text-warning">
                     {dashboardData.total_users}
                   </p>
-                  {/* <p className="text-xs text-success"></p> */}
                 </div>
               </div>
               <div className="mask is-squircle flex size-10 items-center justify-center bg-warning/10">
@@ -169,10 +148,7 @@ const AdminPage = () => {
             </div>
             <div className="card flex-row justify-between p-4">
               <div>
-                <p
-                  // className="text-xs+ uppercase"
-                  className="text-xl font-medium text-slate-700 dark:text-navy-100"
-                >
+                <p className="text-xl font-medium text-slate-700 dark:text-navy-100">
                   Monthly <br />
                   Customers
                 </p>
@@ -180,7 +156,6 @@ const AdminPage = () => {
                   <p className="text-2xl font-semibold text-info">
                     {dashboardData.monthly_users}
                   </p>
-                  {/* <p className="text-xs text-success"></p> */}
                 </div>
               </div>
               <div className="mask is-squircle flex size-10 items-center justify-center bg-info/10">
@@ -192,10 +167,7 @@ const AdminPage = () => {
             </div>
             <div className="card flex-row justify-between p-4">
               <div>
-                <p
-                  // className="text-xs+ uppercase"
-                  className="text-xl font-medium text-slate-700 dark:text-navy-100"
-                >
+                <p className="text-xl font-medium text-slate-700 dark:text-navy-100">
                   Today <br />
                   Customers
                 </p>
@@ -203,7 +175,6 @@ const AdminPage = () => {
                   <p className="text-2xl font-semibold text-success">
                     {dashboardData.today_users}
                   </p>
-                  {/* <p className="text-xs text-success"></p> */}
                 </div>
               </div>
               <div className="mask is-squircle flex size-10 items-center justify-center bg-success/10">
@@ -215,10 +186,7 @@ const AdminPage = () => {
             </div>
             <div className="card flex-row justify-between p-4">
               <div>
-                <p
-                  // className="text-xs+ uppercase"
-                  className="text-xl font-medium text-slate-700 dark:text-navy-100"
-                >
+                <p className="text-xl font-medium text-slate-700 dark:text-navy-100">
                   Today <br />
                   Income
                 </p>
@@ -226,7 +194,6 @@ const AdminPage = () => {
                   <p className="text-2xl font-semibold text-error">
                     {dashboardData.today_income}
                   </p>
-                  {/* <p className="text-xs text-error"></p> */}
                 </div>
               </div>
               <div className="mask is-squircle flex size-10 items-center justify-center bg-error/10">
@@ -246,12 +213,9 @@ const AdminPage = () => {
             <div className="flex justify-between space-x-2">
               <div className="flex flex-1 flex-col justify-between">
                 <div>
-                  <p
-                   className="font-medium text-xl text-slate-700 outline-none transition-colors line-clamp-2 hover:text-primary focus:text-primary dark:text-navy-100 dark:hover:text-accent-light dark:focus:text-accent-light"
-                  >
+                  <p className="font-medium text-xl text-slate-700 outline-none transition-colors line-clamp-2 hover:text-primary focus:text-primary dark:text-navy-100 dark:hover:text-accent-light dark:focus:text-accent-light">
                     Vehicle Details
                   </p>
-
                 </div>
               </div>
               <img
@@ -279,12 +243,9 @@ const AdminPage = () => {
             <div className="flex justify-between space-x-2">
               <div className="flex flex-1 flex-col justify-between">
                 <div>
-                  <p
-                    className="font-medium text-xl text-slate-700 outline-none transition-colors line-clamp-2 hover:text-primary focus:text-primary dark:text-navy-100 dark:hover:text-accent-light dark:focus:text-accent-light"
-                  >
+                  <p className="font-medium text-xl text-slate-700 outline-none transition-colors line-clamp-2 hover:text-primary focus:text-primary dark:text-navy-100 dark:hover:text-accent-light dark:focus:text-accent-light">
                     Today Accounts
                   </p>
-                 
                 </div>
               </div>
               <img
@@ -294,14 +255,10 @@ const AdminPage = () => {
               />
             </div>
             {today_income ? (
-            // {today_income.length > 0 ? (
               <div className="overflow-x-auto">
                 <table className="w-full border-collapse border border-gray-200 dark:border-gray-700">
                   <thead>
-                    <tr 
-                    // className="bg-green-500 text-white"
-                    className="bg-success text-white"
-                    >
+                    <tr className="bg-success text-white">
                       <th className="px-4 py-3 text-left border border-gray-300 dark:border-gray-600">
                         Income
                       </th>
@@ -339,33 +296,15 @@ const AdminPage = () => {
         </div>
       </div>
 
-{/* <div className="card mt-4 p-4">
-   <h6 className="text-xl font-medium text-slate-700 dark:text-navy-100">Accounts Overview</h6>
-  
-  {graphData ? (
- 
-    <Chart data={graphData} />
-  ) : (
-    <div className="p-4 w-full flex items-center justify-center">
-      <p className="text-gray-500 dark:text-gray-300 text-lg">
-        No details found
-      </p>
-    </div>
-  )}
-</div> */}
-<div className="card mt-4 p-4">
-   <h6 className="text-xl font-medium text-slate-700 dark:text-navy-100">Accounts Overview</h6>
-  
- {graphData &&(
- 
-    <Chart data={graphData} />
-  
-  )}
-</div>
+      <div className="card mt-4 p-4">
+        <h6 className="text-xl font-medium text-slate-700 dark:text-navy-100">
+          Accounts Overview
+        </h6>
+
+        {graphData && <Chart data={graphData} />}
+      </div>
     </>
   );
 };
 
-// export default page
 export default withAuth(AdminPage, ["admin"]);
-

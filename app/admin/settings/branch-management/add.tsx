@@ -1,8 +1,8 @@
 import { useAuth } from "@/app/context/AuthContext";
 import React, { useEffect, useState } from "react";
 import TextEditor from "./TextEditor";
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type CreateProps = {
   showmodal: boolean;
@@ -49,7 +49,9 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal }) => {
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(
-          `HTTP error! Status: ${response.status} - ${errorData.message || "Unknown error"}`
+          `HTTP error! Status: ${response.status} - ${
+            errorData.message || "Unknown error"
+          }`
         );
       }
 
@@ -116,16 +118,6 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal }) => {
           <div className="modal-body">
             <form onSubmit={handleSubmit}>
               <div className="space-y-5 p-4">
-                {/* {error && (
-                  <p className="text-red-500">
-                    {error}
-                  </p>
-                )}
-                {success && (
-                  <p className="text-green-500">
-                    Branch added successfully!
-                  </p>
-                )} */}
                 <label className="block">
                   <span>Branch Name</span>
                   <input
@@ -150,15 +142,13 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal }) => {
                   />
                 </div>
 
-                {/* <div className="flex justify-end"> */}
-                  <button
-                    type="submit"
-                    className="bg-primary text-white rounded p-2 w-1/5"
-                    disabled={loading}
-                  >
-                    Add
-                  </button>
-                {/* </div> */}
+                <button
+                  type="submit"
+                  className="bg-primary text-white rounded p-2 w-1/5"
+                  disabled={loading}
+                >
+                  Add
+                </button>
               </div>
             </form>
           </div>

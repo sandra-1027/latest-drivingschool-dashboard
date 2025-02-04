@@ -1806,6 +1806,41 @@ fill="currentColor"
                          
                         </Link>
                       </li>
+
+ {/*scanner */}
+ <li>
+                        <Link
+                          href="/staff/driver/scanner"
+                          className="nav-link flex items-center justify-between p-2 text-xs+ tracking-wide outline-none transition-[color,padding-left] duration-300 ease-in-out hover:pl-4"
+                          data-default-class="text-slate-600 hover:text-slate-800 dark:text-navy-200 dark:hover:text-navy-50"
+                          data-active-class="font-medium text-primary dark:text-accent-light"
+                        >
+                         
+                          <div className="flex items-center space-x-2">
+                            <div className="size-1.5 rounded-full border border-current opacity-40" />
+                            <span>Scanner</span>
+                          </div>
+                         
+                        </Link>
+                      </li>
+
+{/*QR code */}
+<li>
+                        <Link
+                          href="/staff/driver/qrcode"
+                          className="nav-link flex items-center justify-between p-2 text-xs+ tracking-wide outline-none transition-[color,padding-left] duration-300 ease-in-out hover:pl-4"
+                          data-default-class="text-slate-600 hover:text-slate-800 dark:text-navy-200 dark:hover:text-navy-50"
+                          data-active-class="font-medium text-primary dark:text-accent-light"
+                        >
+                         
+                          <div className="flex items-center space-x-2">
+                            <div className="size-1.5 rounded-full border border-current opacity-40" />
+                            <span>qrcode</span>
+                          </div>
+                         
+                        </Link>
+                      </li>
+
                     
   {/* accounts */}
   <li>

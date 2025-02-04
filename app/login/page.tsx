@@ -7,14 +7,14 @@ import { useAuth } from "../context/AuthContext";
 import Link from "next/link";
 
 const Login = () => {
-  const [username, setUsername] = useState(""); // State for username
-  const [password, setPassword] = useState(""); // State for password
+  const [username, setUsername] = useState(""); 
+  const [password, setPassword] = useState(""); 
   const [error, setError] = useState(""); 
 
 
-  const [loading, setLoading] = useState(false); // Loading state
+  const [loading, setLoading] = useState(false); 
 
-  const { state, setAuthData, isAuthenticated } = useAuth(); // Destructure state and setAuthData
+  const { state, setAuthData, isAuthenticated } = useAuth(); 
   const router = useRouter();
 
   useEffect(() => {
@@ -31,65 +31,6 @@ const Login = () => {
     }
   }, [router]);
 
-//   const handleLogin = async (e: React.FormEvent) => {
-//     e.preventDefault();
-//     setError("");
-//     setLoading(true);
-// // console.log(username,"username")
-//     try {
-//       const response = await fetch("/api/auth/login", {
-//         method: "POST",
-//         headers: { "Content-Type": "application/json" },
-       
-//         body: JSON.stringify({ username:username, password }),
-      
-//       });
-
-//       if (!response.ok) {
-//         const errorData = await response.json();
-//         throw new Error(errorData.message || "Invalid credentials.");
-//       }
-//       const data = await response.json();
-//       console.log(data,"data")
-//       const {token, user_type: role } = data?.data || {};
-
-//       if (!role || !token) {
-//         throw new Error("Role or token missing in the response.");
-//       }
-
-//       localStorage.setItem("token", token);
-//       localStorage.setItem("role", role);
-
-//       // Store user data in context (optional)
-//       if (setAuthData) {
-//         setAuthData({
-//           user: data,
-//           accessToken: token,
-//           refreshToken: data.refreshToken, // Use the actual field name if available
-//         });
-//       }
-//       const rolePaths = {
-//         admin: "/admin",
-//         driver: "/driver",
-//         student: "/student",
-//       };
-
-//     await router.push(rolePaths[role as keyof typeof rolePaths] || "/unauthorized");
-//     }catch (err: unknown) {
-//       if (err instanceof Error) {
-//         setError(err.message || "Something went wrong.");
-//       } else {
-//         setError("Something went wrong.");
-//       }
-//     }
-
-
-   
-    
-    
-
-    
-//   };
 const handleLogin = async (e: React.FormEvent) => {
   e.preventDefault();
   setError("");
@@ -155,7 +96,6 @@ const handleLogin = async (e: React.FormEvent) => {
           <div className="text-center">
             <img
               className="mx-auto size-16"
-              // src="/images/app-logo.svg"
               src="/logo.png"
               alt="logo"
             />
@@ -207,7 +147,7 @@ const handleLogin = async (e: React.FormEvent) => {
                   placeholder="Enter Password"
                   type="password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)} // Update state
+                  onChange={(e) => setPassword(e.target.value)} 
                   required
                 />
                 <span className="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400 peer-focus:text-primary dark:text-navy-300 dark:peer-focus:text-accent">
@@ -249,7 +189,7 @@ const handleLogin = async (e: React.FormEvent) => {
             </button>
            
             </form>
-          {error && <p className="mt-3 text-red-500">{error}</p>} 
+         
           </div>
         </div>
       </main>

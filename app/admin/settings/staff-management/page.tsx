@@ -1,4 +1,3 @@
-
 "use client";
 import withAuth from "@/hoc/withAuth";
 import React, { useEffect, useState } from "react";
@@ -9,19 +8,16 @@ type Staff = {
   id?: string;
   status: string;
   staff_name: string;
-  first_name:string;
+  first_name: string;
   mobile: string;
   address: string;
   email: string;
   branch_id: string;
-  branch_name:string;
-  date_of_joining:string;
+  branch_name: string;
+  date_of_joining: string;
 };
 const page = () => {
-
   const { state } = useAuth();
-
-
 
   const [showmodal, setShowmodal] = useState(false);
   const togglemodal = () => {
@@ -34,37 +30,41 @@ const page = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [entriesPerPage] = useState(10);
   const [staffData, setStaffData] = useState<Staff[]>([]);
-  const [selectedStaff, setSelectedStaff] = useState<Staff | null>(null); 
+  const [selectedStaff, setSelectedStaff] = useState<Staff | null>(null);
   const [staffselected, setStaffselected] = useState<string>("");
   const [filteredData, setFilteredData] = useState<Staff[]>([]);
 
-  const [searchTerm, setSearchTerm] = useState('');
-  const [branches, setBranches] = useState<{ id: string; branch_name: string }[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [branches, setBranches] = useState<
+    { id: string; branch_name: string }[]
+  >([]);
   const [selectedBranch, setSelectedBranch] = useState<string>("");
   const [selectedStatus, setSelectedStatus] = useState<string>("");
 
- 
   const fetchStaffData = async () => {
-  
-
     try {
-
-      const response = await fetch('/api/admin/settings/staff_details', {
-        method: 'POST',
+      const response = await fetch("/api/admin/settings/staff_details", {
+        method: "POST",
         headers: {
-           'authorizations': state?.accessToken ?? '', 
-          'api_key': '10f052463f485938d04ac7300de7ec2b',  // Make sure the API key is correct
+          authorizations: state?.accessToken ?? "",
+          api_key: "10f052463f485938d04ac7300de7ec2b",
         },
-        body: JSON.stringify({ /* request body */ }),
+        body: JSON.stringify({
+          /* request body */
+        }),
       });
       if (!response.ok) {
         const errorData = await response.json();
         // console.error('API error:', errorData);
-        throw new Error(`HTTP error! Status: ${response.status} - ${errorData.message || 'Unknown error'}`);
+        throw new Error(
+          `HTTP error! Status: ${response.status} - ${
+            errorData.message || "Unknown error"
+          }`
+        );
       }
-      
+
       const data = await response.json();
-     
+
       if (data.success) {
         setStaffData(data.data || []);
         setFilteredData(data.data || []);
@@ -75,36 +75,37 @@ const page = () => {
       console.error("Fetch error:", error);
     }
   };
-  
+
   useEffect(() => {
     fetchStaffData();
   }, [state]);
-  
 
   const fetchBranchData = async () => {
-  
-
     try {
-
-      const response = await fetch('/api/admin/settings/branch_details', {
-        method: 'POST',
+      const response = await fetch("/api/admin/settings/branch_details", {
+        method: "POST",
         headers: {
-          'authorizations': state?.accessToken ?? '',
-          'api_key': '10f052463f485938d04ac7300de7ec2b',  // Make sure the API key is correct
+          authorizations: state?.accessToken ?? "",
+          api_key: "10f052463f485938d04ac7300de7ec2b",
         },
-        body: JSON.stringify({ /* request body */ }),
+        body: JSON.stringify({
+          /* request body */
+        }),
       });
       if (!response.ok) {
         const errorData = await response.json();
-        console.error('API error:', errorData);
-        throw new Error(`HTTP error! Status: ${response.status} - ${errorData.message || 'Unknown error'}`);
+        console.error("API error:", errorData);
+        throw new Error(
+          `HTTP error! Status: ${response.status} - ${
+            errorData.message || "Unknown error"
+          }`
+        );
       }
-      
+
       const data = await response.json();
-     
+
       if (data.success) {
         setBranches(data.data || []);
-       
       } else {
         // console.error("API error:", data.msg || "Unknown error");
       }
@@ -112,20 +113,19 @@ const page = () => {
       console.error("Fetch error:", error);
     }
   };
-  
+
   useEffect(() => {
     fetchBranchData();
   }, [state]);
-  
+
   const handleEdit = (staff: Staff) => {
-    setSelectedStaff(staff); 
-    setShowmodal(true); 
+    setSelectedStaff(staff);
+    setShowmodal(true);
   };
 
   const applyFilters = () => {
     let newFilteredData = staffData;
-  
-    // Apply form filters
+
     if (staffselected) {
       newFilteredData = newFilteredData.filter(
         (item) => item.first_name === staffselected
@@ -141,51 +141,35 @@ const page = () => {
         (item) => item.status === selectedStatus
       );
     }
-  
-    return newFilteredData; // Return filtered data
-  };
-  
 
-  // Handle real-time search filtering
-  // const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const value = e.target.value;
-  //   setSearchTerm(value);
-  
-  //   const searchFilteredData = staffData.filter(
-  //     (item) =>
-  //       item.first_name.toLowerCase().includes(value.toLowerCase()) ||
-  //       item.branch_name.toLowerCase().includes(value.toLowerCase()) ||
-  //       item.address.toLowerCase().includes(value.toLowerCase()) ||
-  //       item.status.toLowerCase().includes(value.toLowerCase())
-  //   );
-  
-  //   setFilteredData(searchFilteredData); // Update filtered data in real-time
-  // };
+    return newFilteredData;
+  };
+
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchTerm(value);
-  
+
     const searchFilteredData = staffData.filter(
       (item) =>
         item.status.toLowerCase().includes(value.toLowerCase()) ||
         item.first_name.toLowerCase().includes(value.toLowerCase()) ||
         item.address.toLowerCase().includes(value.toLowerCase())
     );
-  
-    setFilteredData(searchFilteredData); // Update filtered data in real-time
+
+    setFilteredData(searchFilteredData);
   };
   const handleFilterSubmit = (e: React.FormEvent) => {
-    e.preventDefault(); // Prevent page reload
+    e.preventDefault();
     const newFilteredData = applyFilters();
-    setFilteredData(newFilteredData); // Update filtered data
+    setFilteredData(newFilteredData);
   };
-  
+
   const handleReset = () => {
     setSearchTerm("");
     setStaffselected("");
     setSelectedBranch("");
     setSelectedStatus("");
-    setFilteredData(staffData); // Reset to original data
+    setFilteredData(staffData);
   };
 
   const indexOfLastEntry = currentPage * entriesPerPage;
@@ -249,93 +233,91 @@ const page = () => {
       <div className="grid grid-cols-1 gap-4 sm:gap-5 lg:gap-6 mb-4">
         <div className="card px-4 pb-4 sm:px-5 pt-4">
           <div className="p-4 rounded-lg bg-slate-100 dark:bg-navy-800">
-
-
-<form>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <div>
-          <label
-            htmlFor="staffName"
-            className="block text-sm font-medium text-slate-700 dark:text-navy-100"
-          >
-            Staff Name
-          </label>
-          <select
-            className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
-            value={staffselected}
-            onChange={(e) => setStaffselected(e.target.value)} >
-              
-            <option>Select a Staff</option>
-            {staffData.map((item) => (
-              <option key={item.id} value={item.first_name}>
-                {item.first_name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label
-            htmlFor="branchName"
-            className="block text-sm font-medium text-slate-700 dark:text-navy-100"
-          >
-            Branch Name
-          </label>
-          <select
-            className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
-            value={selectedBranch}
-            onChange={(e) => setSelectedBranch(e.target.value)}
-          >
-            <option value="">Select a Branch</option>
-            {branches.map((branch) => (
-              <option key={branch.id} value={branch.branch_name}>
-                {branch.branch_name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label
-            htmlFor="status"
-            className="block text-sm font-medium text-slate-700 dark:text-navy-100"
-          >
-            Status
-          </label>
-          <select
-            className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
-            value={selectedStatus}
-            onChange={(e) => setSelectedStatus(e.target.value)}
-          >
-            <option value="">All Status</option>
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
-          </select>
-        </div>
-      </div>
-      <div className="mt-4 flex space-x-4">
-        <button
-          type="submit"
-          className="inline-flex justify-center rounded-md border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-          onClick={handleFilterSubmit}
-        >
-          <i
-            className="fa fa-filter"
-            style={{ marginTop: "3px", marginRight: "3px" }}
-          ></i>
-          Filter
-        </button>
-        <button
-          type="button"
-          className="inline-flex justify-center rounded-md border border-gray-300 bg-warning py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-warningfocus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-          onClick={handleReset}
-        >
-          <i
-            className="fa fa-refresh"
-            style={{ marginTop: "3px", marginRight: "3px" }}
-          ></i>
-          Reset
-        </button>
-      </div>
-    </form>
+            <form>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                <div>
+                  <label
+                    htmlFor="staffName"
+                    className="block text-sm font-medium text-slate-700 dark:text-navy-100"
+                  >
+                    Staff Name
+                  </label>
+                  <select
+                    className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+                    value={staffselected}
+                    onChange={(e) => setStaffselected(e.target.value)}
+                  >
+                    <option>Select a Staff</option>
+                    {staffData.map((item) => (
+                      <option key={item.id} value={item.first_name}>
+                        {item.first_name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label
+                    htmlFor="branchName"
+                    className="block text-sm font-medium text-slate-700 dark:text-navy-100"
+                  >
+                    Branch Name
+                  </label>
+                  <select
+                    className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+                    value={selectedBranch}
+                    onChange={(e) => setSelectedBranch(e.target.value)}
+                  >
+                    <option value="">Select a Branch</option>
+                    {branches.map((branch) => (
+                      <option key={branch.id} value={branch.branch_name}>
+                        {branch.branch_name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label
+                    htmlFor="status"
+                    className="block text-sm font-medium text-slate-700 dark:text-navy-100"
+                  >
+                    Status
+                  </label>
+                  <select
+                    className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+                    value={selectedStatus}
+                    onChange={(e) => setSelectedStatus(e.target.value)}
+                  >
+                    <option value="">All Status</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                  </select>
+                </div>
+              </div>
+              <div className="mt-4 flex space-x-4">
+                <button
+                  type="submit"
+                  className="inline-flex justify-center rounded-md border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                  onClick={handleFilterSubmit}
+                >
+                  <i
+                    className="fa fa-filter"
+                    style={{ marginTop: "3px", marginRight: "3px" }}
+                  ></i>
+                  Filter
+                </button>
+                <button
+                  type="button"
+                  className="inline-flex justify-center rounded-md border border-gray-300 bg-warning py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-warningfocus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                  onClick={handleReset}
+                >
+                  <i
+                    className="fa fa-refresh"
+                    style={{ marginTop: "3px", marginRight: "3px" }}
+                  ></i>
+                  Reset
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
@@ -349,25 +331,20 @@ const page = () => {
         >
           Add Staff
         </button>
-        <Add 
-        showmodal={showmodal} 
-        togglemodal={togglemodal}
-        />
+        <Add showmodal={showmodal} togglemodal={togglemodal} />
       </div>
       <div className="grid grid-cols-1 gap-4 sm:gap-5 lg:gap-6">
         <div className="card px-4 pb-4 sm:px-5">
           <div className="mt-5">
             <div className="gridjs-head">
-            {/* <form onClick={handleFilterSubmit}> */}
               <div className="gridjs-search">
-              <input
-      type="text"
-      value={searchTerm}
-      onChange={handleSearchChange}
-      placeholder="Search by name, branch, or place..."
-     className="form-input peer w-1/4 rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-1 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-    />
-  
+                <input
+                  type="text"
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                  placeholder="Search by name, branch, or place..."
+                  className="form-input peer w-1/4 rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-1 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                />
               </div>
             </div>
             <div className="overflow-x-auto w-full">
@@ -401,73 +378,67 @@ const page = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {/* {filteredData.map((item, index) => ( */}
                   {currentEntries.map((item, index) => {
-    const formattedDate = new Date(item.date_of_joining).toLocaleDateString('en-GB', {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric',
-    });
+                    const formattedDate = new Date(
+                      item.date_of_joining
+                    ).toLocaleDateString("en-GB", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    });
 
-    return (
-                    <tr
-                      key={item.id}
-                      className="border-y border-transparent border-b-slate-200 dark:border-b-navy-500"
-                    >
-                      <td className="whitespace-nowrap rounded-l-lg px-4 py-3 sm:px-5">
-                        {indexOfFirstEntry+index + 1}
-                      </td>
-                      <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                        {item.first_name}
-                      </td>
-                      <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                        {item.branch_name}
-                      </td>
-                      <td className="whitespace-nowrap  px-4 py-3 sm:px-5">
-                        {item.mobile}
-                      </td>
-                      <td className="whitespace-nowrap  px-4 py-3 sm:px-5">
-                        {item.address}
-                      </td>
-                      <td className="whitespace-nowrap  px-4 py-3 sm:px-5">
-                        {item.email}
-                      </td>
-                      <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                        {/* {item.date_of_joining} */}
-                        {formattedDate}
-                      </td>
-                      <td className="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
-                        <span>
-                          <div className="flex justify-center space-x-2">
-                            <button className="btn size-8 p-0 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25">
-                              <i className="fa fa-edit" onClick={() => handleEdit(item)} />
-                            </button>
-    
-                            {/* <button className="btn size-8 p-0 text-error hover:bg-error/20 focus:bg-error/20 active:bg-error/25">
-                              <i className="fa fa-trash-alt" />
-                            </button> */}
-                            
-  {item.status === 'active' ? (
-    <button
-    className="btn size-8 p-0 text-error hover:bg-error/20 focus:bg-error/20 active:bg-error/25"
-  >
-    <i className="fa fa-trash-alt" />
-    </button>
-  ) : (
-    <button
-    className="btn size-8 p-0 text-primary hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25"
-  >
-    <FaRegCheckCircle className="fa fa-trash-alt"/>
-    </button>
-  )}
+                    return (
+                      <tr
+                        key={item.id}
+                        className="border-y border-transparent border-b-slate-200 dark:border-b-navy-500"
+                      >
+                        <td className="whitespace-nowrap rounded-l-lg px-4 py-3 sm:px-5">
+                          {indexOfFirstEntry + index + 1}
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-3 sm:px-5">
+                          {item.first_name}
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-3 sm:px-5">
+                          {item.branch_name}
+                        </td>
+                        <td className="whitespace-nowrap  px-4 py-3 sm:px-5">
+                          {item.mobile}
+                        </td>
+                        <td className="whitespace-nowrap  px-4 py-3 sm:px-5">
+                          {item.address}
+                        </td>
+                        <td className="whitespace-nowrap  px-4 py-3 sm:px-5">
+                          {item.email}
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-3 sm:px-5">
+                          {/* {item.date_of_joining} */}
+                          {formattedDate}
+                        </td>
+                        <td className="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
+                          <span>
+                            <div className="flex justify-center space-x-2">
+                              <button className="btn size-8 p-0 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25">
+                                <i
+                                  className="fa fa-edit"
+                                  onClick={() => handleEdit(item)}
+                                />
+                              </button>
 
-                          </div>
-                        </span>
-                      </td>
-                    </tr>
-                  // ))}
-                );
-              })}
+                              {item.status === "active" ? (
+                                <button className="btn size-8 p-0 text-error hover:bg-error/20 focus:bg-error/20 active:bg-error/25">
+                                  <i className="fa fa-trash-alt" />
+                                </button>
+                              ) : (
+                                <button className="btn size-8 p-0 text-primary hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25">
+                                  <FaRegCheckCircle className="fa fa-trash-alt" />
+                                </button>
+                              )}
+                            </div>
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
@@ -526,25 +497,25 @@ const page = () => {
           </div>
         </div>
       </div>
-<Add
-  showmodal={showmodal}
-  togglemodal={togglemodal}
-  formData={selectedStaff ? { 
-    name: selectedStaff.first_name, 
-    mobile: selectedStaff.mobile, 
-    place: selectedStaff.address, 
-    email: selectedStaff.email, 
-    branch_id: selectedStaff.branch_id,
-    id:selectedStaff.id || ""
-  } : undefined}
-  isEditing={!!selectedStaff}
-/>
+      <Add
+        showmodal={showmodal}
+        togglemodal={togglemodal}
+        formData={
+          selectedStaff
+            ? {
+                name: selectedStaff.first_name,
+                mobile: selectedStaff.mobile,
+                place: selectedStaff.address,
+                email: selectedStaff.email,
+                branch_id: selectedStaff.branch_id,
+                id: selectedStaff.id || "",
+              }
+            : undefined
+        }
+        isEditing={!!selectedStaff}
+      />
     </div>
   );
 };
- export default page;
-// export default withAuth(page,["admin"],);
-
-
-
+export default page;
 

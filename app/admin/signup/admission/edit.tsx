@@ -35,7 +35,6 @@ interface Admission {
    user_photo:File | null;
    documents:File | null;
   service_name: string;
-  // User_photo:File;
   customer_id:string;
   pay_amount: string | undefined;
   total_amount: string | undefined;
@@ -92,18 +91,17 @@ const Edit = ({ showmodal, togglemodal, AdmissionData, onSave }: EditProps) => {
   const [submission, setsubmission] = useState<Admission| null>(null);
 
   const [formData, setFormData] = useState<Admission| null>(null);
-  // const [imagePreview, setImagePreview] = useState<string | null>(null);
-  // const [imageChanged, setImageChanged] = useState(false);
+ 
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [imageChanged, setImageChanged] = useState(false);
-////
+
   const fetchbranchData = async () => {
     try {
       const response = await fetch("/api/admin/settings/branch_details", {
         method: "POST",
         headers: {
           authorizations: state?.accessToken ?? "",
-          // 'authorizations': token ?? '',
+         
           api_key: "10f052463f485938d04ac7300de7ec2b", // Make sure the API key is correct
         },
         body: JSON.stringify({
@@ -143,7 +141,7 @@ const Edit = ({ showmodal, togglemodal, AdmissionData, onSave }: EditProps) => {
         headers: {
           authorizations: state?.accessToken ?? "",
           // 'authorizations': token ?? '',
-          api_key: "10f052463f485938d04ac7300de7ec2b", // Make sure the API key is correct
+          api_key: "10f052463f485938d04ac7300de7ec2b",
         },
         body: JSON.stringify({
           /* request body */
@@ -206,13 +204,13 @@ const handleDocumentchange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setDocumentPreview(reader.result as string);
     };
     reader.readAsDataURL(file);
-    setFormData((prevData) => (prevData ? { ...prevData, document: file } : null)); // Store the file in formData
-    setDocumentchange(true); // Set the image change flag to true
+    setFormData((prevData) => (prevData ? { ...prevData, document: file } : null)); 
+    setDocumentchange(true); 
   }
 };
 const handleRemovedocument = () => {
-  setDocumentPreview(null); // Clear the image preview
-  setFormData((prevData) => (prevData ? { ...prevData, document: null } : null)); // Clear the image file from formData
+  setDocumentPreview(null); 
+  setFormData((prevData) => (prevData ? { ...prevData, document: null } : null)); 
 };
 
 const handleRcchange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -223,13 +221,13 @@ const handleRcchange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setRcPreview(reader.result as string);
     };
     reader.readAsDataURL(file);
-    setFormData((prevData) => (prevData ? { ...prevData, old_rc: file } : null)); // Store the file in formData
-    setRcchange(true); // Set the image change flag to true
+    setFormData((prevData) => (prevData ? { ...prevData, old_rc: file } : null)); 
+    setRcchange(true); 
   }
 };
 const handleRemoveRc = () => {
-  setRcPreview(null); // Clear the image preview
-  setFormData((prevData) => (prevData ? { ...prevData, old_rc: null } : null)); // Clear the image file from formData
+  setRcPreview(null); 
+  setFormData((prevData) => (prevData ? { ...prevData, old_rc: null } : null)); /
 };
 
 
@@ -241,13 +239,13 @@ const handleAadhaarchange= (e: React.ChangeEvent<HTMLInputElement>) => {
       setAadhaarPreview(reader.result as string);
     };
     reader.readAsDataURL(file);
-    setFormData((prevData) => (prevData ? { ...prevData,adhar: file } : null)); // Store the file in formData
-    setAadhaarchange(true); // Set the image change flag to true
+    setFormData((prevData) => (prevData ? { ...prevData,adhar: file } : null)); 
+    setAadhaarchange(true);
   }
 };
 const handleRemoveAadhaar = () => {
-  setAadhaarPreview(null); // Clear the image preview
-  setFormData((prevData) => (prevData ? { ...prevData, adhar: null } : null)); // Clear the image file from formData
+  setAadhaarPreview(null); 
+  setFormData((prevData) => (prevData ? { ...prevData, adhar: null } : null)); 
 };
 
 
@@ -259,13 +257,13 @@ const handleInsurencechange= (e: React.ChangeEvent<HTMLInputElement>) => {
       setInsurencePreview(reader.result as string);
     };
     reader.readAsDataURL(file);
-    setFormData((prevData) => (prevData ? { ...prevData, insurence: file } : null)); // Store the file in formData
-    setInsurencechange(true); // Set the image change flag to true
+    setFormData((prevData) => (prevData ? { ...prevData, insurence: file } : null)); 
+    setInsurencechange(true); 
   }
 };
 const handleRemoveInsurence = () => {
-  setInsurencePreview(null); // Clear the image preview
-  setFormData((prevData) => (prevData ? { ...prevData, insurence: null } : null)); // Clear the image file from formData
+  setInsurencePreview(null); 
+  setFormData((prevData) => (prevData ? { ...prevData, insurence: null } : null)); 
 };
 
 const handleUserchange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -276,117 +274,15 @@ const handleUserchange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setUserPreview(reader.result as string);
     };
     reader.readAsDataURL(file);
-    setFormData((prevData) => (prevData ? { ...prevData, userfile: file } : null)); // Store the file in formData
-    setUserchange(true); // Set the image change flag to true
+    setFormData((prevData) => (prevData ? { ...prevData, userfile: file } : null)); 
   }
 };
 const handleRemoveuser = () => {
-  setUserPreview(null); // Clear the image preview
-  setFormData((prevData) => (prevData ? { ...prevData,userfile: null } : null)); // Clear the image file from formData
+  setUserPreview(null); 
+  setFormData((prevData) => (prevData ? { ...prevData,userfile: null } : null)); 
 };
 
-// const handleSubmit = async (e: React.FormEvent) => {
-//   e.preventDefault();
 
-//   try {
-//     const formDataToSend = new FormData();
-//     formDataToSend.append("update_service", formData.id.toString());
-//     formDataToSend.append("name", formData.first_name);
-//     formDataToSend.append("email", formData.email);
-//     formDataToSend.append("mobile", formData.mobile);
-//     formDataToSend.append("blood_group", formData.blood_group);
-//     formDataToSend.append("gender", formData.gender);
-//     formDataToSend.append("document_type", formData.document_type || "");
-//     formDataToSend.append("service_id", formData.service_id);
-//     formDataToSend.append("pay_amount", formData.pay_amount);
-//     formDataToSend.append("total_amount", formData.amount || "");
-//     formDataToSend.append("type", formData.type || "");
-//     formDataToSend.append("payment_method", formData.payment_method || "cash");
-//     formDataToSend.append("tax", formData.tax || "");
-//     formDataToSend.append("pucc", formData.pucc || "0");
-//     formDataToSend.append("branch_id", formData.branch_id);
-//     formDataToSend.append("id", formData?.customer_id);
-
-//         if (userchange && formData.userfile) {
-     
-//       formDataToSend.append('userfile', formData.userfile);
-//     }else  {
-//       const response = await fetch(formData.user_photo); // Assuming rc_document is a URL
-//       const blob = await response.blob();
-//       const userFile = new File([blob], '', { type: blob.type }); // Empty name
-//       formDataToSend.append('userfile', userFile);
-//     }
-  
-
-//     if (documentchange && formData.document) {
-//       formDataToSend.append('document', formData.document);
-//     }else  {
-//       const response = await fetch(formData.documents); // Assuming rc_document is a URL
-//       const blob = await response.blob();
-//       const documentFile = new File([blob], '', { type: blob.type }); // Empty name
-//       formDataToSend.append('document', documentFile);
-//     }
-//     // Append file fields
-//     const appendFile = async (key: string, file: File | string | null) => {
-//       if (file instanceof File) {
-//         formDataToSend.append(key, file);
-//       } else if (file) {
-//         const response = await fetch(file);
-//         const blob = await response.blob();
-//         const fileWithFallbackName = new File([blob], "", {
-//           type: blob.type,
-//         });
-//         formDataToSend.append(key, fileWithFallbackName);
-//       }
-//     };
-
-//     await appendFile("userfile", formData.userfile);
-//     await appendFile("document", formData.document);
-//     await appendFile("old_rc", formData.old_rc);
-//     await appendFile("adhar", formData.adhar);
-//     await appendFile("insurence", formData.insurence);
-
-//     console.log("Submitting FormData:");
-//     for (const [key, value] of formDataToSend.entries()) {
-//       console.log(key, value);
-//     }
-
-//     const response = await fetch(`/api/admin/signup/update_admission`, {
-//       method: "POST",
-//       headers: {
-//         authorizations: state?.accessToken ?? "",
-//         api_key: "10f052463f485938d04ac7300de7ec2b",
-//       },
-//       body: formDataToSend,
-//     });
-
-//     console.log("Response Status:", response.status);
-
-//     const responseText = await response.text(); // Read the raw response
-//     console.log("Raw Response Text:", responseText);
-
-//     let data;
-//     try {
-//       data = JSON.parse(responseText); // Parse it manually
-//     } catch (error) {
-//       console.error("Error parsing JSON:", error);
-//     }
-
-//     console.log("Parsed API Response:", data);
-//     // if (response.ok) {
-//     //   alert("Admission added successfully!");
-//     //   togglemodal(); 
-//     // }
-//     if (response.ok && data?.success) {
-//       // onSave(formData);
-//       togglemodal();
-//     } else {
-//       alert(`Failed to submit: ${data?.msg || "Unknown error"}`);
-//     }
-//   } catch (err) {
-//     console.error("Error submitting form:", err);
-//   }
-// };
 
 const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
@@ -428,7 +324,7 @@ const handleSubmit = async (e: React.FormEvent) => {
       }
     };
 
-    // Handle file uploads
+   
     await handleFileUpload("userfile", formData.userfile);
     await handleFileUpload("document", formData.document);
     await handleFileUpload("old_rc", formData.old_rc);
@@ -479,43 +375,34 @@ const handleSubmit = async (e: React.FormEvent) => {
 
 
 
-// const handleSelect = (service: { id: string; service_name: string; amount:string }) => {
-//   setFormData((prev) => ({
-//     ...prev,
-//     service_id: service.id, // Set the service_id to send to the backend
-//     service_name: service.service_name, // Set the service_name to display
-//   }));
-//   setSelectedService(service.service_name); // Update the displayed name
-//   setSelectedAmount(service.amount);
-//   setIsOpen(false); // Close the dropdown
-// };
+
 
 
 const handleSelect = (service: { id: string; service_name: string; amount: string | undefined }) => {
   setFormData((prev) => {
-    if (!prev) return null; // Return null if prev is null
+    if (!prev) return null; 
 
     return {
       ...prev,
-      service_id: service.id ?? '', // Ensure 'service_id' is always a string (fallback if `id` is undefined)
-      service_name: service.service_name ?? '', // Ensure 'service_name' is always a string
-      name: prev.name ?? '', // Fallback for 'name'
-      mobile: prev.mobile ?? '', // Fallback for 'mobile'
-      email: prev.email ?? '', // Fallback for 'email'
-      blood_group: prev.blood_group ?? '', // Fallback for 'blood_group'
-      gender: prev.gender ?? '', // Fallback for 'gender'
-      document_type: prev.document_type ?? '', // Fallback for 'document_type'
-      total_amount: service.amount ?? '', // Ensure 'amount' is a string (fallback if undefined)
-      pay_amount: prev.pay_amount ?? '', // Ensure 'pay_amount' is always a string
-      customer_id: prev.customer_id ?? '', // Fallback for 'customer_id'
-      User_photo: prev.User_photo, // Preserve previous value
-      // Add more fields here, ensuring valid types or fallback values
+      service_id: service.id ?? '', 
+      service_name: service.service_name ?? '', 
+      name: prev.name ?? '', 
+      mobile: prev.mobile ?? '', 
+      email: prev.email ?? '', 
+      blood_group: prev.blood_group ?? '', 
+      gender: prev.gender ?? '', 
+      document_type: prev.document_type ?? '', 
+      total_amount: service.amount ?? '', 
+      pay_amount: prev.pay_amount ?? '', 
+      customer_id: prev.customer_id ?? '', 
+      User_photo: prev.User_photo, 
+
     };
   });
 
-  setSelectedService(service.service_name); // Update the displayed service name
-  setSelectedAmount(service.amount ?? ''); // Set the selected amount, fallback to ''
-  setIsOpen(false); // Close the dropdown
+  setSelectedService(service.service_name); 
+  setSelectedAmount(service.amount ?? ''); 
+  setIsOpen(false); 
 };
 
 
@@ -534,15 +421,15 @@ const handleSelect = (service: { id: string; service_name: string; amount: strin
       className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden px-4 py-6 sm:px-5"
       role="dialog"
     >
-      {/* Background overlay */}
+    
       <div
         className="absolute inset-0 bg-slate-900/60 transition-opacity duration-300"
         onClick={togglemodal}
       ></div>
 
-      {/* Modal content */}
+     
       <div className="relative flex w-full max-w-6xl origin-top flex-col overflow-hidden rounded-lg bg-white transition-all duration-300 dark:bg-navy-700">
-        {/* Modal Header */}
+      
         <div className="flex justify-between rounded-t-lg bg-slate-200 px-4 py-3 dark:bg-navy-800 sm:px-5">
           <h3 className="text-base font-medium text-slate-700 dark:text-navy-100">
             Edit Admission
@@ -568,7 +455,6 @@ const handleSelect = (service: { id: string; service_name: string; amount: strin
           </button>
         </div>
 
-        {/* Modal Body */}
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col sm:flex-row max-h-[80vh] overflow-y-auto px-4 py-4 sm:px-5 gap-8">
             <div className="flex-1  p-4">
@@ -578,7 +464,7 @@ const handleSelect = (service: { id: string; service_name: string; amount: strin
 
               <div className="flex flex-col space-y-8 sm:flex-row sm:space-y-0 sm:space-x-8 mt-2">
                 <div className="flex-1 ">
-                  {/* Profile Information */}
+                 
                   <div className="mb-4 mt-4 ">
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                       <label className="block">
@@ -586,7 +472,7 @@ const handleSelect = (service: { id: string; service_name: string; amount: strin
                         <span className="relative mt-1.5 flex">
                           <input
                             name="first_name"
-                          //  value={formData.name}
+                         
                           value={formData?.first_name|| ""}
                             onChange={handleChange}
                             className="form-input peer  mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
@@ -600,7 +486,7 @@ const handleSelect = (service: { id: string; service_name: string; amount: strin
                         <span className="relative mt-1.5 flex">
                           <input
                            name="mobile"
-                          //  value={formData.mobile}
+                         
                           value={formData?.mobile|| ""}
                             onChange={handleChange}
                             className="form-input peer  mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
@@ -611,14 +497,14 @@ const handleSelect = (service: { id: string; service_name: string; amount: strin
                       </label>
                     </div>
 
-                    {/* Additional Fields */}
+                
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 mt-2">
                       <label className="block">
                         <span>Email</span>
                         <span className="relative mt-1.5 flex">
                           <input
                            name="email"
-                          //  value={formData.email}
+                        
                           value={formData?.email || ""}
                             onChange={handleChange}
                             type="text"
@@ -703,9 +589,9 @@ const handleSelect = (service: { id: string; service_name: string; amount: strin
                     </label>
 
                     <div className="w-full max-w-3xl mx-auto space-y-6">
-                      {/* Grid Container */}
+                      
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                         {/* Upload User Photo Section */}
+                        
              
                          <div>
                           <label className="block mb-2 mt-4">
@@ -716,7 +602,7 @@ const handleSelect = (service: { id: string; service_name: string; amount: strin
                           <div className="ml-2">
                
                {userPreview? (
-       // If an image is selected, show the preview
+      
        <div className="mb-2">
          <img
            src={userPreview}
@@ -725,7 +611,7 @@ const handleSelect = (service: { id: string; service_name: string; amount: strin
          />
        </div>
      ) : (
-       // If no image is selected, show the default rc_document image
+      
        <div className="mb-2">
          <img
   src={`https://our-demos.com/n/drivingschool_api/assets/images/documents/${formData?.user_photo}`}
@@ -776,7 +662,7 @@ const handleSelect = (service: { id: string; service_name: string; amount: strin
              )}
              </div>
                         </div>
-                        {/* Upload Document Proof Image Section */}
+                      
                         <div>
                           <label className="block mb-2 mt-4">
                           Document Upload
@@ -786,7 +672,7 @@ const handleSelect = (service: { id: string; service_name: string; amount: strin
                           <div className="ml-2">
                
                {documentPreview? (
-       // If an image is selected, show the preview
+     
        <div className="mb-2">
          <img
            src={documentPreview}
@@ -795,7 +681,7 @@ const handleSelect = (service: { id: string; service_name: string; amount: strin
          />
        </div>
      ) : (
-       // If no image is selected, show the default rc_document image
+      
        <div className="mb-2">
          <img
   src={`https://our-demos.com/n/drivingschool_api/assets/images/documents/${formData?.documents}`}
@@ -855,70 +741,13 @@ const handleSelect = (service: { id: string; service_name: string; amount: strin
                 </div>
               </div>
             </div>
-            {/* Right Section: Service Information */}
+          
             <div className="flex-1 mt-4 sm:mt-0  p-4">
               <label className="block mb-2 text-lg  font-medium text-slate-700 dark:text-navy-100 mt-4">
                 Service Information
               </label>
               <div className="space-y-5 p-4 sm:p-5">
-                {/* <div className="flex">
-                  
-                 
-<div className="flex-1">
-  <div
-    className="form-select peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9"
-    onClick={() => setIsOpen(!isOpen)}
-  >
-    <span>{formData?.service_name || "Select a Service"}</span> 
-  </div>
-
-  {isOpen && (
-    <div className="z-10 w-full mt-1 rounded-md border border-slate-300  py-2 px-3 shadow-sm">
-      <input
-        type="text"
-        placeholder="Search services..."
-        className="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-      <div className="max-h-60 overflow-y-auto no-scrollbar">
-        {filteredServices.length > 0 ? (
-          filteredServices.map((service) => (
-            <div
-              key={service.id}
-              className="cursor-pointer px-3 py-2 hover:bg-gray-700"
-              onClick={() => handleSelect(service)}
-            >
-              {service.service_name}
-            </div>
-          ))
-        ) : (
-          <div className="px-3 py-2 text-gray-400">
-            No results found
-          </div>
-        )}
-      </div>
-    </div>
-  )}
-</div>
-
-                   <label className="block flex-1 ml-4">
-                   
-                    <span className="relative  flex">
-                      <input
-                        name="amount"
-                        // value={formData?.amount || ""}
-                        //   onChange={handleChange}
-                        // value={formData?.amount || selectedAmount || ''}
-                        value={selectedAmount || formData?.amount}
-                        readOnly
-                        type="text"
-                        placeholder="Total Amount"
-                        className="form-input peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                      />
-                    </span>
-                  </label>
-                </div> */}
+          
                    <div className="flex">
               <div className="relative flex-1 w-full">
     <div
@@ -962,9 +791,7 @@ const handleSelect = (service: { id: string; service_name: string; amount: strin
                  <span className="relative  flex">
                    <input
                      name="amount"
-                     // value={formData?.amount || ""}
-                     //   onChange={handleChange}
-                    //  value={formData?.amount || selectedAmount || ""}
+                    
                     value={selectedAmount || formData?.amount}
                      readOnly
                      type="text"
@@ -973,24 +800,9 @@ const handleSelect = (service: { id: string; service_name: string; amount: strin
                    />
                  </span>
                </label>
-                 {/* <label className="block flex-1 ml-4">
-                 
-                  <span className="relative  flex">
-                    <input
-                      name="amount"
-                      // value={formData?.amount || ""}
-                      //   onChange={handleChange}
-                      value={formData?.amount || selectedAmount || ''}
-                      readOnly
-                      type="text"
-                      placeholder="Total Amount"
-                      className="form-input peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                    />
-                  </span>
-                </label> */}
+                
               </div>
-                {/* Additional Fields */}
-                {/* Common Fields */}
+               
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <label className="block">
                     <span>Paid Amount</span>
@@ -999,7 +811,7 @@ const handleSelect = (service: { id: string; service_name: string; amount: strin
                         name="pay_amount"
                         value={formData?.pay_amount || ""}
                         readOnly
-                          // onChange={handleChange}
+                          
                         type="text"
                         placeholder="Paid Amount"
                         className="form-input peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
@@ -1014,7 +826,7 @@ const handleSelect = (service: { id: string; service_name: string; amount: strin
                        name="due_amount"
                        value={formData?.due_amount || ""}
                        readOnly
-                        //  onChange={handleChange}
+                        
                         type="text"
                         placeholder="Due Amount"
                         className="form-input peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
@@ -1076,7 +888,7 @@ const handleSelect = (service: { id: string; service_name: string; amount: strin
                       </span>
                     </label>
 
-                    {/* Upload old rc Section */}
+                   
                     <div>
                           <label className="block mb-2 mt-4">
                           Old RC
@@ -1084,7 +896,7 @@ const handleSelect = (service: { id: string; service_name: string; amount: strin
                           <div className="ml-2">
                
                {RcPreview? (
-       // If an image is selected, show the preview
+       
        <div className="mb-2">
          <img
            src={RcPreview}
@@ -1093,7 +905,7 @@ const handleSelect = (service: { id: string; service_name: string; amount: strin
          />
        </div>
      ) : (
-       // If no image is selected, show the default rc_document image
+       
        <div className="mb-2">
          <img
   src={`https://our-demos.com/n/drivingschool_api/assets/images/documents/${formData.old_rc}`}
@@ -1145,7 +957,7 @@ const handleSelect = (service: { id: string; service_name: string; amount: strin
                            </div>
                     </div>
 
-                    {/* Upload Aadhaar  Section */}
+                   
                     <div>
                           <label className="block mb-2 mt-4">
                           Aadhaar
@@ -1155,7 +967,7 @@ const handleSelect = (service: { id: string; service_name: string; amount: strin
                           <div className="ml-2">
                
                {AadhaarPreview? (
-       // If an image is selected, show the preview
+       
        <div className="mb-2">
          <img
            src={AadhaarPreview}
@@ -1164,7 +976,7 @@ const handleSelect = (service: { id: string; service_name: string; amount: strin
          />
        </div>
      ) : (
-       // If no image is selected, show the default rc_document image
+       
        <div className="mb-2">
          <img
   src={`https://our-demos.com/n/drivingschool_api/assets/images/documents/${formData?.adhar}`}
@@ -1216,7 +1028,7 @@ const handleSelect = (service: { id: string; service_name: string; amount: strin
              </div>
                         </div>
 
-                    {/* Upload Insurence Section */}
+                   
                     <div>
                           <label className="block mb-2 mt-4">
                           Insurence
@@ -1226,7 +1038,7 @@ const handleSelect = (service: { id: string; service_name: string; amount: strin
                           <div className="ml-2">
                
                {InsurencePreview? (
-       // If an image is selected, show the preview
+      
        <div className="mb-2">
          <img
            src={InsurencePreview}
@@ -1235,7 +1047,7 @@ const handleSelect = (service: { id: string; service_name: string; amount: strin
          />
        </div>
      ) : (
-       // If no image is selected, show the default rc_document image
+      
        <div className="mb-2">
          <img
   src={`https://our-demos.com/n/drivingschool_api/assets/images/documents/${formData?.insurence}`}
@@ -1293,7 +1105,7 @@ const handleSelect = (service: { id: string; service_name: string; amount: strin
               type="submit"
               className="bg-primary text-white rounded p-2"
             >
-           {loading ? 'Updating...' : 'Update'}
+           Update
             </button>
               </div>
             </div>

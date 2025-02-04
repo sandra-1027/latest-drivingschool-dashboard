@@ -107,12 +107,6 @@ const resetColor = () => {
 };
 
 
-//  React.useEffect(() => {
-//     if (editorRef.current && editorRef.current.innerHTML !== value) {
-//       editorRef.current.innerHTML = value;
-//     }
-//   }, [value]);
-
 React.useEffect(() => {
   if (editorRef.current && editorRef.current.innerHTML !== value) {
     editorRef.current.innerHTML = value;
@@ -289,19 +283,6 @@ const handleInput = () => {
             <span className="sr-only">Insert Link</span>
           </button>
 
-          {/* Image Button */}
-          {/* <button
-            onClick={insertImage}
-            className="p-1.5 rounded cursor-pointer text-gray-500 hover:text-gray-900 dark:hover:text-white"
-          >
-          
-            <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width={24} height={24} fill="currentColor" viewBox="0 0 24 24">
-          <path fillRule="evenodd" d="M13 10a1 1 0 0 1 1-1h.01a1 1 0 1 1 0 2H14a1 1 0 0 1-1-1Z" clipRule="evenodd" />
-          <path fillRule="evenodd" d="M2 6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12c0 .556-.227 1.06-.593 1.422A.999.999 0 0 1 20.5 20H4a2.002 2.002 0 0 1-2-2V6Zm6.892 12 3.833-5.356-3.99-4.322a1 1 0 0 0-1.549.097L4 12.879V6h16v9.95l-3.257-3.619a1 1 0 0 0-1.557.088L11.2 18H8.892Z" clipRule="evenodd" />
-        </svg>
-            <span className="sr-only">Insert Image</span>
-          </button> */}
-          {/* Image Upload Button */}
           <label className="p-1.5 rounded cursor-pointer text-gray-500 hover:text-gray-900 dark:hover:text-white">
           <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width={24} height={24} fill="currentColor" viewBox="0 0 24 24">
           <path fillRule="evenodd" d="M13 10a1 1 0 0 1 1-1h.01a1 1 0 1 1 0 2H14a1 1 0 0 1-1-1Z" clipRule="evenodd" />
