@@ -167,20 +167,7 @@ export default function StudentProfile() {
   const gender = "male";
   const defaultAvatar = gender === "male" ? "/male.webp" : "/female.webp";
 
-  // useEffect(() => {
-  //   const generateQrCode = async () => {
-  //     if (qrCodeRef.current) {
-  //       const qrCodeText = `Name: ${studentDetails.name}, ID: ${studentDetails.mobileNo}`;
-  //       try {
-  //         await QRCode.toCanvas(qrCodeRef.current, qrCodeText, { width: 200 });
-  //       } catch (err) {
-  //         console.error("Error generating QR code:", err);
-  //       }
-  //     }
-  //   };
-
-  //   generateQrCode(); // ✅ Auto-generate QR code on component mount
-  // }, [studentDetails]);
+ 
   useEffect(() => {
     const generateQrCode = async () => {
       if (qrCodeRef.current) {
@@ -202,6 +189,7 @@ export default function StudentProfile() {
         }
       }
     };
+
   
     generateQrCode();
   }, [studentDetails]);

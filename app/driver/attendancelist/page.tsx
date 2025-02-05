@@ -320,27 +320,41 @@ const DriverView = () => {
   }, []);
 
   // Handle QR Scan
+  // const handleScan = (decodedText: string) => {
+  //   try {
+  //     const studentData = JSON.parse(decodedText);
+
+  //     if (!studentData.name || !studentData.phone || !studentData.driver) {
+  //       console.error("Invalid student data format.");
+  //       return;
+  //     }
+
+  //     // Add student with default values if missing
+  //     const newStudent = {
+  //       id: students.length + 1,
+  //       phone: studentData.phone || "Unknown",
+  //       name: studentData.name || "Unknown",
+  //       status: studentData.status || "Not Joined",
+  //       totalclass: studentData.totalclass || "0 Days",
+  //       completedClasses: studentData.completedClasses || 0,
+  //       classType: studentData.classType || "Days",
+  //     };
+
+  //     const updatedStudents = [...students, newStudent];
+  //     setStudents(updatedStudents);
+
+  //     if (typeof window !== "undefined") {
+  //       localStorage.setItem("students", JSON.stringify(updatedStudents));
+  //     }
+  //   } catch (error) {
+  //     console.error("Invalid QR code:", error);
+  //   }
+  // };
+
   const handleScan = (decodedText: string) => {
     try {
       const studentData = JSON.parse(decodedText);
-
-      if (!studentData.name || !studentData.phone || !studentData.driver) {
-        console.error("Invalid student data format.");
-        return;
-      }
-
-      // Add student with default values if missing
-      const newStudent = {
-        id: students.length + 1,
-        phone: studentData.phone || "Unknown",
-        name: studentData.name || "Unknown",
-        status: studentData.status || "Not Joined",
-        totalclass: studentData.totalclass || "0 Days",
-        completedClasses: studentData.completedClasses || 0,
-        classType: studentData.classType || "Days",
-      };
-
-      const updatedStudents = [...students, newStudent];
+      const updatedStudents = [...students, studentData];
       setStudents(updatedStudents);
 
       if (typeof window !== "undefined") {
@@ -350,6 +364,9 @@ const DriverView = () => {
       console.error("Invalid QR code:", error);
     }
   };
+
+
+
 
   const handleStatusChange = (id: number, newStatus: string) => {
     const updatedStudents = students.map((student) =>
