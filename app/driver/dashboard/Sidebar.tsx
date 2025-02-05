@@ -421,7 +421,6 @@ import { useAuth } from "@/app/context/AuthContext";
 
 
 
-
 const Sidebar = () => {
   const { state, clearAuthData  } = useAuth();
   const user = state?.user;
@@ -735,7 +734,7 @@ const Sidebar = () => {
             
               <div className="flex h-18 w-full items-center justify-between pl-4 pr-1">
                 <p className="text-base tracking-wider text-slate-800 dark:text-navy-100">
-                  Student
+                 Driver
                 </p>
                 <button className="sidebar-close btn size-7 rounded-full p-0 text-primary hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:text-accent-light/80 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25 xl:hidden">
                   <svg
@@ -764,41 +763,42 @@ const Sidebar = () => {
                 
                     <ul className="ac-panel">
                       
-                      <li>
-                        <a
-                          href="/student"
-                          className="nav-link flex items-center justify-between p-2 text-xs+ tracking-wide outline-none transition-[color,padding-left] duration-300 ease-in-out hover:pl-4"
-                          data-default-class="text-slate-600 hover:text-slate-800 dark:text-navy-200 dark:hover:text-navy-50"
-                          data-active-class="font-medium text-primary dark:text-accent-light"
-                        >
-                          <div className="flex items-center space-x-2">
-                            <div className="size-1.5 rounded-full border border-current opacity-40" />
-                            <span>Student</span>
-                          </div>
-                        </a>
-                      </li>
-                    </ul>
-                  </li>
-                  <li className="ac nav-parent [&.is-active_svg]:rotate-90 [&.is-active_.ac-trigger]:font-semibold [&.is-active_.ac-trigger]:text-slate-800 dark:[&.is-active_.ac-trigger]:text-navy-50">
+                    <li className="ac nav-parent [&.is-active_svg]:rotate-90 [&.is-active_.ac-trigger]:font-semibold [&.is-active_.ac-trigger]:text-slate-800 dark:[&.is-active_.ac-trigger]:text-navy-50">
                 
-                    <ul className="ac-panel">
+                <ul className="ac-panel">
+                  <li>
+                    <a
+                      href="/driver"
+                      className="nav-link flex items-center justify-between p-2 text-xs+ tracking-wide outline-none transition-[color,padding-left] duration-300 ease-in-out hover:pl-4"
+                      data-default-class="text-slate-600 hover:text-slate-800 dark:text-navy-200 dark:hover:text-navy-50"
+                      data-active-class="font-medium text-primary dark:text-accent-light"
+                    >
+                      <div className="flex items-center space-x-2">
+                        <div className="size-1.5 rounded-full border border-current opacity-40" />
+                        <span>Driver</span>
+                      </div>
+                    </a>
+                  </li>
+                 
+                
+                </ul>
+              </li>
                       <li>
                         <a
-                          href="/student/profile"
+                          href="/driver/attendancelist"
                           className="nav-link flex items-center justify-between p-2 text-xs+ tracking-wide outline-none transition-[color,padding-left] duration-300 ease-in-out hover:pl-4"
                           data-default-class="text-slate-600 hover:text-slate-800 dark:text-navy-200 dark:hover:text-navy-50"
                           data-active-class="font-medium text-primary dark:text-accent-light"
                         >
                           <div className="flex items-center space-x-2">
                             <div className="size-1.5 rounded-full border border-current opacity-40" />
-                            <span>Profile</span>
+                            <span>Attendance List</span>
                           </div>
                         </a>
                       </li>
-                     
-                    
                     </ul>
                   </li>
+                 
                 </ul>
               </div>
             </div>

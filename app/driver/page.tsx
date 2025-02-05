@@ -5,18 +5,16 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "../context/AuthContext";
 
 
-const StudentDashboard = () => {
+
+const DriverDashboard = () => {
    const { state, clearAuthData  } = useAuth();
   
    
     return (
       <div>
-        <h1>Student Dashboard</h1>
+        <h1>Driver Dashboard</h1>
        
         </div>
       )};
-
-      export default StudentDashboard
-// export default withAuth(StudentDashboard, ['student']); 
-
-
+      
+export default DriverDashboard; 
