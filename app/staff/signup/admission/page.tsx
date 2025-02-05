@@ -44,7 +44,7 @@ type Admission = {
   insurence:File | null;
    user_photo:File | null;
    documents:File | null;
- 
+   branch_name:string;
 };
 
 const Admission = () => {
@@ -378,7 +378,7 @@ const Admission = () => {
                   <p><span className="font-bold mr-2">Email: </span>{item.email}</p>
                   <p><span className="font-bold mr-2">Blood Group:</span>{item.blood_group}</p>
                   <p><span className="font-bold mr-2">Gender:</span>{item.gender}</p>
-               
+                  <p><span className="font-bold mr-2">Branch:</span>{item.branch_name}</p>
                 </td>
                 <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 {item.service_name}

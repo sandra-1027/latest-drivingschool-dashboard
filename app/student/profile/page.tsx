@@ -152,12 +152,12 @@ export default function StudentProfile() {
   //   completedClasses: 15,
   // }
   {
-    "name": "John Doe",
-    "phone": "1234567890",
-    "status": "Joined",
-    "totalclass": "30 Days",
-    "completedClasses": 10,
-    "classType": "Days"
+    name: "John Doe",
+    phone: "1234567890",
+    status: "Joined",
+    totalclass: "30 Days",
+    completedClasses: 10,
+    classType: "Days"
   }
 );
 
@@ -173,27 +173,28 @@ export default function StudentProfile() {
       if (qrCodeRef.current) {
         const studentData = {
           name: studentDetails.name,
-  phone: studentDetails.phone,
-  status: "Not Joined",
-  totalclass: "30 Days",
-  completedClasses: 0,
-  classType: "Days"
+          phone: studentDetails.phone,
+          status: studentDetails.status,  // Use actual status
+          totalclass: studentDetails.totalclass,
+          completedClasses: studentDetails.completedClasses,
+          classType: studentDetails.classType,
         };
   
         try {
           await QRCode.toCanvas(qrCodeRef.current, JSON.stringify(studentData), {
             width: 200,
           });
+          console.log("Generated QR Code Data:", studentData);
         } catch (err) {
           console.error("Error generating QR code:", err);
         }
       }
     };
-
   
     generateQrCode();
-  }, [studentDetails]);
+  }, [studentDetails]); // Dependency ensures QR updates if studentDetails change
   
+
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     const reader = new FileReader();
@@ -244,12 +245,13 @@ export default function StudentProfile() {
             
 
         {/* </div> */}
+       
         <div className="flex items-center justify-between py-4">
+ 
           <p className="text-xl font-semibold text-primary dark:text-accent-light">Name</p>
-          {/* <div className="badge rounded-full border border-primary text-primary dark:border-accent-light dark:text-accent-light">
-            Primary
-          </div> */}
+        
         </div>
+        
         <div className="space-y-4">
          
                  {/* QR Code */}

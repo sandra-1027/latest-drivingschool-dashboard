@@ -40,7 +40,7 @@ interface Admission {
   pay_amount: string | undefined;
   total_amount: string | undefined;
   User_photo?: string;
-  
+  branch_name:string;
 }
 
 interface EditProps {

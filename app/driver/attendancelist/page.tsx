@@ -287,9 +287,11 @@
 
 "use client";
 import { useEffect, useState } from "react";
-import Scanner from "./Scanner";
+// import Scanner from "./Scanner";
+import { Html5QrcodeScanner } from "html5-qrcode";
 import { MdQrCodeScanner } from "react-icons/md";
 import withAuth from "@/hoc/withAuth";
+import Scanner from "./Scanner";
 
 
 type Student = {
@@ -320,27 +322,12 @@ const DriverView = () => {
   }, []);
 
   // Handle QR Scan
+  
+
   // const handleScan = (decodedText: string) => {
   //   try {
   //     const studentData = JSON.parse(decodedText);
-
-  //     if (!studentData.name || !studentData.phone || !studentData.driver) {
-  //       console.error("Invalid student data format.");
-  //       return;
-  //     }
-
-  //     // Add student with default values if missing
-  //     const newStudent = {
-  //       id: students.length + 1,
-  //       phone: studentData.phone || "Unknown",
-  //       name: studentData.name || "Unknown",
-  //       status: studentData.status || "Not Joined",
-  //       totalclass: studentData.totalclass || "0 Days",
-  //       completedClasses: studentData.completedClasses || 0,
-  //       classType: studentData.classType || "Days",
-  //     };
-
-  //     const updatedStudents = [...students, newStudent];
+  //     const updatedStudents = [...students, studentData];
   //     setStudents(updatedStudents);
 
   //     if (typeof window !== "undefined") {
@@ -350,13 +337,15 @@ const DriverView = () => {
   //     console.error("Invalid QR code:", error);
   //   }
   // };
-
   const handleScan = (decodedText: string) => {
     try {
+      console.log("Scanned QR Data:", decodedText); // Debugging output
+  
       const studentData = JSON.parse(decodedText);
       const updatedStudents = [...students, studentData];
+  
       setStudents(updatedStudents);
-
+  
       if (typeof window !== "undefined") {
         localStorage.setItem("students", JSON.stringify(updatedStudents));
       }
@@ -364,7 +353,7 @@ const DriverView = () => {
       console.error("Invalid QR code:", error);
     }
   };
-
+  
 
 
 
@@ -378,6 +367,10 @@ const DriverView = () => {
       localStorage.setItem("students", JSON.stringify(updatedStudents));
     }
   };
+
+
+
+
 
 
 
@@ -397,60 +390,12 @@ const DriverView = () => {
         </button>
       </div>
 
-      {isScannerOpen && <Scanner onScan={handleScan} onClose={() => setIsScannerOpen(false)} />}
+      {isScannerOpen && 
+      <Scanner onScan={handleScan} onClose={() => setIsScannerOpen(false)} />
+     
+      }
 
       <div className="overflow-x-auto w-full">
-        {/* <table className="is-hoverable w-full text-left">
-          <thead>
-            <tr>
-              <th>SL No</th>
-              <th>Phone</th>
-              <th>Driver Name</th>
-              <th>Student Name</th>
-              <th>Total Classes</th>
-              <th>Completed Classes</th>
-              <th>Pending Classes</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredStudents.map((item, index) => {
-              const totalClasses = parseInt(item.totalclass);
-              const pendingClasses = totalClasses - item.completedClasses;
-              return (
-                <tr key={item.id}>
-                  <td>{index + 1}</td>
-                  <td>{item.phone}</td>
-                  <td>{item.driver}</td>
-                  <td>{item.name}</td>
-                  <td>{`${totalClasses} ${item.classType}`}</td>
-                  <td>{`${item.completedClasses} ${item.classType}`}</td>
-                  <td>{`${pendingClasses} ${item.classType}`}</td>
-                  <td>
-                    {item.status === "Not Joined" ? (
-                      <button
-                        className="bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded"
-                        onClick={() => handleStatusChange(item.id, "Joined")}
-                      >
-                        Drive
-                      </button>
-                    ) : (
-                      <button
-                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded"
-                        onClick={() => handleStatusChange(item.id, "Not Joined")}
-                      >
-                        Stop
-                      </button>
-                    )}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table> */}
-
-
-
 
 <table className="is-hoverable w-full text-left">
              <thead>
@@ -555,62 +500,17 @@ export default DriverView;
 
 
 
-// "use client";
-// import { useState, useEffect } from "react";
-// import { Html5QrcodeScanner } from "html5-qrcode";
 
-// const Scanner = () => {
-//   const [students, setStudents] = useState<{ name: string; phone: string }[]>([]);
 
-//   useEffect(() => {
-//     if (typeof window !== "undefined") {
-//       const savedStudents = localStorage.getItem("students");
-//       if (savedStudents) {
-//         setStudents(JSON.parse(savedStudents));
-//       }
-//     }
-//   }, []);
 
-//   useEffect(() => {
-//     // const scanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: { width: 250, height: 250 } });
-//     const scanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: { width: 250, height: 250 } }, false);
 
-//     scanner.render(
-//       (decodedText) => handleScan(decodedText),
-//       (error) => console.error("QR Scanner Error:", error)
-//     );
 
-//     return () => {
-//       scanner.clear().then(() => console.log("Scanner stopped")).catch(console.error);
-//     };
-//   }, []);
 
-//   const handleScan = (decodedText: string) => {
-//     try {
-//       const studentData = JSON.parse(decodedText);
-//       const updatedStudents = [...students, studentData];
-//       setStudents(updatedStudents);
 
-//       if (typeof window !== "undefined") {
-//         localStorage.setItem("students", JSON.stringify(updatedStudents));
-//       }
-//     } catch (error) {
-//       console.error("Invalid QR code:", error);
-//     }
-//   };
 
-//   return (
-//     <div className="p-4">
-//       <h2 className="text-xl font-bold">Scan Student QR Code</h2>
-//       <div id="reader" className="border border-gray-300 p-2" />
-//       <h3 className="text-lg font-bold mt-4">Scanned Students</h3>
-//       <ul>
-//         {students.map((student, index) => (
-//           <li key={index}>{student.name} - {student.phone}</li>
-//         ))}
-//       </ul>
-//     </div>
-//   );
-// };
 
-// export default Scanner;
+
+
+
+
+
