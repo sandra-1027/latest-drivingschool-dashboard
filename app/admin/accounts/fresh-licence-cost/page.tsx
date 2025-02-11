@@ -515,12 +515,12 @@ type Cost = {
   id?: string;
   status: string;
   service_name: string;
-  f_cost: string;
-  m_cost: string;
+  cost: string;
   vehicle_type: string;
   service_id: string;
   branch_name:string;
   added_date:string;
+  gender:string;
 };
 const page = () => {
   const { state } = useAuth();
@@ -528,7 +528,6 @@ const page = () => {
   const [costData, setCostData] = useState<Cost[]>([]);
   const [filteredData, setFilteredData] = useState<Cost[]>([]);
   const [selectedCost, setSelectedCost] = useState<Cost | null>(null); 
-  
   const [search, setSearch] = useState("");
   const [selectedServices, setSelectedServices] = useState<string>("");
   const [service, setService] = useState<{ id: string; service_name: string }[]>([]);
@@ -549,7 +548,7 @@ const page = () => {
 
     try {
 
-      const response = await fetch('/api/admin/accounts/license_class_details', {
+      const response = await fetch('/api/admin/accounts/fresh_license_cost_details', {
         method: 'POST',
         headers: {
            'authorizations': state?.accessToken ?? '', 
@@ -626,7 +625,7 @@ const page = () => {
 
   const updateAccountStatus = async (id: string, status: string) => {
     try {
-      const response = await fetch('/api/admin/accounts/inactivate_license_cost', {
+      const response = await fetch('/api/admin/accounts/inactivate_fresh_license_cost', {
         method: 'POST',
         headers: {
           'authorizations': state?.accessToken ?? '', 
@@ -635,7 +634,7 @@ const page = () => {
         body: JSON.stringify({
           id: id,
           status: status,
-          table: "license_class"
+          table: "fresh_license_cost"
         }),
       });
   
@@ -725,7 +724,7 @@ const page = () => {
         
     <div className="flex items-center space-x-4 py-5 lg:py-6">
     <h2 className="text-xl font-medium text-slate-800 dark:text-navy-50 lg:text-2xl">
-    License Class
+    Fresh Licence cost
     </h2>
     <div className="hidden h-full py-1 sm:flex">
       <div className="h-full w-px bg-slate-300 dark:bg-navy-600" />
@@ -742,7 +741,8 @@ const page = () => {
       <svg xmlns="http://www.w3.org/2000/svg" className="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
         </svg>
-      <li>License Class</li>
+      {/* <li>License Class</li> */}
+      <li>Fresh Licence cost</li>
     </ul>
   </div>
 
@@ -752,7 +752,7 @@ const page = () => {
     <form>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         {/* Driver Name Select */}
-        <div className='flex-1'>
+        {/* <div className='flex-1'>
           <label
             htmlFor="serviceName"
             className="block text-sm font-medium text-slate-700 dark:text-navy-100"
@@ -774,7 +774,7 @@ const page = () => {
               ))}
 </select>
 
-        </div>
+        </div> */}
         {/* Status Select */}
         <div className='flex-1'>
           <label
@@ -788,7 +788,7 @@ const page = () => {
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
           >
-            <option value="">All Status</option>
+            <option value="">select Status</option>
             <option value="active">Active</option>
             <option value="inactive">Inactive</option>
           </select>
@@ -834,12 +834,12 @@ const page = () => {
 
   <div className="flex items-center justify-between py-5 lg:py-6">
                 <span className="text-lg font-medium text-slate-800 dark:text-navy-50">
-                License Class
+                 Licence cost
                 </span>
                 <button className="px-4 py-2 bg-[#4f46e5] text-white rounded-md" 
                  onClick={() => togglemodal('add')}
                 >  
-          Add License Class
+         Add Licence cost
                 </button>
                
             </div>
@@ -873,16 +873,13 @@ onChange={handleSearchChange}
                 SL No
                 </th>
                 <th className="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                Service Name
-                </th>
-                <th className="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                Vehicle Type
                 </th>
                 <th className="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                Female cost
+               Gender
                 </th>
                 <th className="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                Male cost
+               Cost
                 </th>            
                 <th className="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                Status
@@ -903,16 +900,13 @@ onChange={handleSearchChange}
                 {index +indexOfFirstEntry+1}
                 </td>
                 <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                {item.service_name}
-                </td>
-                <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 {item.vehicle_type}
                 </td>
                 <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                {item.f_cost}
+                {item.gender}
                 </td>
                 <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                {item.m_cost}
+                {item.cost}
                 </td>
                 <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                
@@ -947,9 +941,33 @@ onChange={handleSearchChange}
                           onClick={() => togglemodal('edit', item)}
                             />
                         </button>
-                        <button className="btn size-8 p-0 text-error hover:bg-error/20 focus:bg-error/20 active:bg-error/25">
+                        {/* <button className="btn size-8 p-0 text-error hover:bg-error/20 focus:bg-error/20 active:bg-error/25">
                           <i className="fa fa-trash-alt" onClick={() => updateAccountStatus(item.id!, item.status)}/>
-                        </button>
+                        </button> */}
+                           <button
+                              onClick={() =>
+                                updateAccountStatus(item.id!, item.status)
+                              }
+                              className={`btn size-8 p-0 ${
+                                item.status === "active"
+                                  ? "text-error"
+                                  : "text-primary"
+                              } hover:bg-${
+                                item.status === "active" ? "error" : "primary"
+                              }/20 focus:bg-${
+                                item.status === "active" ? "error" : "primary"
+                              }/20 active:bg-${
+                                item.status === "active" ? "error" : "primary"
+                              }/25`}
+                            >
+                              <i
+                                className={`fa ${
+                                  item.status === "active"
+                                    ? "fa-trash-alt"
+                                    : "fa-check-circle"
+                                }`}
+                              />
+                            </button>
                       </div>
                     </span>
                 </td>

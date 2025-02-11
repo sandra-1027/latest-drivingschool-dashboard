@@ -283,7 +283,7 @@ const page = () => {
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
           >
-            <option value="">All Status</option>
+            <option value="">Select Status</option>
             <option value="active">Active</option>
             <option value="inactive">Inactive</option>
           </select>
@@ -356,11 +356,11 @@ onChange={handleSearchChange}
                Vehicle Type
                 </th>
                 <th className="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                Female cost
+                cost
                 </th>
-                <th className="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
+                {/* <th className="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                 Male cost
-                </th>            
+                </th>             */}
                 <th className="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                Status
                 </th> 
@@ -388,9 +388,9 @@ onChange={handleSearchChange}
                 <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 {item.f_cost}
                 </td>
-                <td className="whitespace-nowrap px-4 py-3 sm:px-5">
+                {/* <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 {item.m_cost}
-                </td>
+                </td> */}
                 <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                
                  {item.status === "active" && (
@@ -424,9 +424,33 @@ onChange={handleSearchChange}
                           onClick={() => togglemodal('edit', item)}
                           />
                         </button>
-                        <button className="btn size-8 p-0 text-error hover:bg-error/20 focus:bg-error/20 active:bg-error/25">
+                        {/* <button className="btn size-8 p-0 text-error hover:bg-error/20 focus:bg-error/20 active:bg-error/25">
                           <i className="fa fa-trash-alt" onClick={() => updateAccountStatus(item.id!, item.status)} />
-                        </button>
+                        </button> */}
+                           <button
+                              onClick={() =>
+                                updateAccountStatus(item.id!, item.status)
+                              }
+                              className={`btn size-8 p-0 ${
+                                item.status === "active"
+                                  ? "text-error"
+                                  : "text-primary"
+                              } hover:bg-${
+                                item.status === "active" ? "error" : "primary"
+                              }/20 focus:bg-${
+                                item.status === "active" ? "error" : "primary"
+                              }/20 active:bg-${
+                                item.status === "active" ? "error" : "primary"
+                              }/25`}
+                            >
+                              <i
+                                className={`fa ${
+                                  item.status === "active"
+                                    ? "fa-trash-alt"
+                                    : "fa-check-circle"
+                                }`}
+                              />
+                            </button>
                       </div>
                     </span>
                 </td>

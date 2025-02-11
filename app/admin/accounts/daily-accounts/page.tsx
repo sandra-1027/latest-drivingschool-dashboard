@@ -260,7 +260,7 @@ const page = () => {
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
           >
-            <option value="">All Status</option>
+            <option value="">select Status</option>
             <option value="active">Active</option>
             <option value="inactive">Inactive</option>
           </select>

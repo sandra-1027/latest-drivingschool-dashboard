@@ -371,8 +371,9 @@ const page = () => {
                       <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                         {item.amount}
                       </td>
-                      <td className="whitespace-nowrap px-4 py-3 sm:px-5">
+                      <td className="max-w-[350px] px-4 py-3 ">
                         <div
+                        className="prose prose-sm dark-prose-invert"
                           dangerouslySetInnerHTML={{ __html: item.description }}
                         />
                       </td>
@@ -393,7 +394,11 @@ const page = () => {
                       </td>
 
                       <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                        {item.added_date}
+                        <div className="flex flex-col">
+                          <span>{item.added_date.split(" ")[0]}</span>
+                          <span>{item.added_date.split(" ")[1]}</span>
+                        </div>
+                       
                       </td>
                       <td className="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
                         <span>

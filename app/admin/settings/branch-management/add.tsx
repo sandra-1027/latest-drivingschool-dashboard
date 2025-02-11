@@ -56,7 +56,8 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal }) => {
       }
 
       const result = await response.json();
-      setSuccess(true);
+      // setSuccess(true);
+      toast.success("Branch added successfully!");
       console.log("Branch added successfully:", result);
 
       // Clear form fields
@@ -68,7 +69,8 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal }) => {
 
       setTimeout(() => togglemodal(), 2000);
     } catch (err: any) {
-      setError(err.message || "An error occurred");
+      // setError(err.message || "An error occurred");
+       toast.error(err.message || "An error occurred");
       console.error(err);
     } finally {
       setLoading(false);
@@ -89,7 +91,7 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal }) => {
           onClick={togglemodal}
         ></div>
 
-        <div className="relative flex w-full max-w-3xl origin-top flex-col overflow-hidden rounded-lg bg-white transition-all duration-300 dark:bg-navy-700">
+        <div className="relative flex w-full max-w-3xl origin-top flex-col overflow-y-auto hide-scrollbar rounded-lg bg-white transition-all duration-300 dark:bg-navy-700">
           <div className="flex justify-between rounded-t-lg bg-slate-200 px-4 py-3 dark:bg-navy-800 sm:px-5">
             <h3 className="text-xl font-medium text-slate-700 dark:text-navy-100">
               Add Branch

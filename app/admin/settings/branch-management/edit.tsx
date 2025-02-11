@@ -2,6 +2,8 @@ import { useAuth } from '@/app/context/AuthContext';
 import { useState, useEffect } from 'react';
 import { IoEye, IoEyeOff } from 'react-icons/io5';
 import TextEditor from './TextEditor';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface Branch {
     id?:string;
@@ -36,6 +38,22 @@ const [loading, setLoading] = useState(false);
   }, [branchData]);
 
  
+  // const handleChange = (
+  //   e: React.ChangeEvent<HTMLInputElement> | string,
+  //   fieldName?: string
+  // ) => {
+  //   if (typeof e === "string" && fieldName) {
+  //     setFormData((prevData) =>
+  //       prevData ? { ...prevData, [fieldName]: e } : null
+  //     );
+  //   } else if (e instanceof Event && 'target' in e) { 
+  //     const { name, value } = e.target as HTMLInputElement; 
+  //     setFormData((prevData) =>
+  //       prevData ? { ...prevData, [name]: value } : null
+  //     );
+  //   }
+  // };
+  
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement> | string,
     fieldName?: string
@@ -44,15 +62,14 @@ const [loading, setLoading] = useState(false);
       setFormData((prevData) =>
         prevData ? { ...prevData, [fieldName]: e } : null
       );
-    } else if (e instanceof Event && 'target' in e) { 
-      const { name, value } = e.target as HTMLInputElement; 
+    } else{
+      const event =e as React.ChangeEvent<HTMLInputElement>;
+      const { name, value } = event.target;
       setFormData((prevData) =>
         prevData ? { ...prevData, [name]: value } : null
       );
     }
   };
-  
-  
 
 
 
@@ -86,7 +103,7 @@ const [loading, setLoading] = useState(false);
   
         console.log('Response Status:', response.status);
         const data = await response.json();
-  
+   toast.success("Branch Updated successfully!");
         console.log('Response Data:', data);
   
         if (data.success) {
@@ -98,9 +115,10 @@ const [loading, setLoading] = useState(false);
           console.log('Error Messages:', data.error_msgs);
         }
       }
-    } catch (err) {
+    } catch (err:any) {
       console.error('Error during API call:', err);
-      setError('An error occurred while updating the driver.');
+      // setError('An error occurred while updating the driver.');
+      toast.error(err.message || "An error occurred while updating the driver.");
     } finally {
       setLoading(false);
     }
@@ -125,7 +143,7 @@ const [loading, setLoading] = useState(false);
         onClick={toggleModal}
       ></div>
 
-      <div className="relative flex w-full max-w-3xl origin-top flex-col overflow-hidden rounded-lg bg-white transition-all duration-300 dark:bg-navy-700">
+      <div className="relative flex w-full max-w-3xl origin-top flex-col overflow-y-auto hide-scrollbar rounded-lg bg-white transition-all duration-300 dark:bg-navy-700">
         <div className="flex justify-between rounded-t-lg bg-slate-200 px-4 py-3 dark:bg-navy-800 sm:px-5">
           <h3 className="text-xl font-medium text-slate-700 dark:text-navy-100">
             Edit Branch
@@ -164,7 +182,7 @@ const [loading, setLoading] = useState(false);
                   type="text"
                   value={formData.branch_name}
                
-                onChange={handleChange}
+                  onChange={(e)=> handleChange(e)}
                 />
               </label>
 

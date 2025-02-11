@@ -35,6 +35,8 @@ type CreateProps = {
     user_photo: File | null;
     service_name: string;
     UserPhoto: File | null;
+    dob:string;
+    address:string;
   };
   isEditing?: boolean;
 };
@@ -90,6 +92,8 @@ const Create: React.FC<CreateProps> = ({
   const [document_type, setdocument_type] = useState("");
   const [tax, settax] = useState("");
   const [pucc, setpucc] = useState("");
+  const [dob, setdob] = useState("");
+  const [address, setaddress] = useState("");
 
   const [localFormData, setLocalFormData] = useState(
     formDatas || {
@@ -110,8 +114,8 @@ const Create: React.FC<CreateProps> = ({
       old_rc: "",
       tax: "",
       pucc: "",
-      //   dob:'',
-      //  address:'',
+        dob:'',
+       address:'',
       adhar: "",
       insurence: "",
     }
@@ -490,7 +494,24 @@ const Create: React.FC<CreateProps> = ({
 
                   {/* Profile Information */}
                   <div className="mb-4 mt-4 ">
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+
+
+                  <label className="block">
+                        <span>Application No:</span>
+                        <span className="relative mt-1.5 flex">
+                          <input
+                            name="name"
+                            value={name}
+                            onChange={(e) => setname(e.target.value)}
+                            className="form-input peer  mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                            placeholder="Application No"
+                            type="text"
+                          />
+                        </span>
+                      </label>
+
+
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 mt-2">
                       <label className="block">
                         <span>Name</span>
                         <span className="relative mt-1.5 flex">
@@ -514,6 +535,36 @@ const Create: React.FC<CreateProps> = ({
                             className="form-input peer  mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                             placeholder="mobile"
                             type="text"
+                          />
+                        </span>
+                      </label>
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 mt-2">
+                      <label className="block">
+                        <span>D-O-B</span>
+                        <span className="relative mt-1.5 flex">
+                          <input
+                            name="dob"
+                            value={dob}
+                            onChange={(e) => setdob(e.target.value)}
+                            className="form-input peer  mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                            placeholder="name"
+                            type="date"
+                          />
+                        </span>
+                      </label>
+                      <label className="block">
+                        <span>Address</span>
+                        <span className="relative mt-1.5 flex">
+                          <textarea 
+                          rows={2}
+                            name="address"
+                            value={address}
+                            onChange={(e) => setaddress(e.target.value)}
+                            className="form-input peer  mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                          
+                            
                           />
                         </span>
                       </label>
@@ -744,7 +795,9 @@ const Create: React.FC<CreateProps> = ({
                 Service Information
               </label>
               <div className="space-y-5 p-4 sm:p-5">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div className="relative w-full">
+                <span>Service</span>
                   <div
                     className="dark:bg-navy-700 form-select peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9"
                     onClick={() => setIsOpen(!isOpen)}
@@ -781,6 +834,25 @@ const Create: React.FC<CreateProps> = ({
                     </div>
                   )}
                 </div>
+
+
+
+                <label className="block">
+                        <span>Bill No:</span>
+                        <span className="relative  flex">
+                          <input
+                            name="name"
+                            value={name}
+                            onChange={(e) => setname(e.target.value)}
+                            className="form-input peer  mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                            placeholder="Bill No:"
+                            type="text"
+                          />
+                        </span>
+                      </label>
+                      </div>
+
+
 
                 {(selectedService === "licence fresh" ||
                   selectedService === "renewal licence" ||
@@ -1000,6 +1072,11 @@ const Create: React.FC<CreateProps> = ({
                     </div>
                   </div>
                 )}
+
+
+
+
+
                 {/* Common Fields */}
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <label className="block ">
@@ -1031,7 +1108,7 @@ const Create: React.FC<CreateProps> = ({
                 </div>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 mt-2">
                   <label className="block ">
-                    <span>Pay Amount</span>
+                    <span>Payable Amount</span>
                     <span className="relative mt-1.5 flex">
                       <input
                         type="number"

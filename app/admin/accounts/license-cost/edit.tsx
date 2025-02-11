@@ -167,6 +167,7 @@ useEffect(() => {
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <label className="block">
+              <span>Service</span>
             <select name="service_id" value={formData.service_id} onChange={handleChange}
             className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
             >
@@ -182,6 +183,7 @@ useEffect(() => {
 
 
               <label className="block">
+                <span>Vehicle Type</span>
               <select name="vehicle_type" value={formData.vehicle_type} onChange={handleChange} 
               className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
               >
@@ -192,6 +194,7 @@ useEffect(() => {
               </select>
               </label>
               <label className="block">
+                <span>Female cost</span>
             <input 
             name="f_cost"
              value={formData.f_cost}
@@ -201,6 +204,7 @@ useEffect(() => {
                 className="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" />
             </label>
             <label className="block">
+              <span>Male Cost</span>
             <input name="m_cost"
              value={formData.m_cost}
               onChange={handleChange}

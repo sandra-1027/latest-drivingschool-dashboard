@@ -381,6 +381,32 @@
 
 // export default TextEditor;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import React, { useState, useRef } from "react";
 
 type TextEditorProps = {
@@ -399,6 +425,9 @@ const TextEditor: React.FC<TextEditorProps> = ({ value, onChange }) => {
   const [selectedFont, setSelectedFont] = useState<string>("Arial");
   const [selectedColor, setSelectedColor] = useState<string>("#000000");
   const [isColorDropdownVisible, setIsColorDropdownVisible] = useState(false);
+  const [isOrderedList, setIsOrderedList] = useState(false);
+const [isUnorderedList, setIsUnorderedList] = useState(false);
+
 
   // const editorRef = useRef(null);
   const editorRef = React.useRef<HTMLDivElement | null>(null);
@@ -418,6 +447,9 @@ const TextEditor: React.FC<TextEditorProps> = ({ value, onChange }) => {
       document.queryCommandState("insertHTML") &&
         document.queryCommandValue("insertHTML") === "code"
     );
+
+    setIsOrderedList(document.queryCommandState("insertOrderedList"));
+  setIsUnorderedList(document.queryCommandState("insertUnorderedList"));
   };
 
   // Apply blockquote formatting
@@ -485,21 +517,55 @@ const TextEditor: React.FC<TextEditorProps> = ({ value, onChange }) => {
     setSelectedColor("#000000");
   };
 
+
+
+  const applyOrderedList = () => {
+    document.execCommand("insertOrderedList", false, "");
+  };
+  
+  const applyUnorderedList = () => {
+    document.execCommand("insertUnorderedList", false, "");
+  };
+  
+
+
   React.useEffect(() => {
     if (editorRef.current && editorRef.current.innerHTML !== value) {
       editorRef.current.innerHTML = value;
     }
   }, [value]);
+
+  // const handleInput = () => {
+  //   if (editorRef.current) {
+  //     onChange(editorRef.current.innerHTML);
+  //   }
+  // };
   const handleInput = () => {
     if (editorRef.current) {
-      onChange(editorRef.current.innerHTML);
+      const newValue = editorRef.current.innerHTML;
+      if (newValue !== value) {
+        onChange(newValue); // Only update if value changes
+      }
     }
+  };
+  
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Enter") {
+      event.preventDefault(); // Prevents form submission
+      document.execCommand("insertLineBreak"); // Adds a line break instead of submitting
+    }
+  };
+  
+  const handleClickInsideEditor = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
   };
   return (
     <div className="w-full border mt-4 border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
       <div className="px-3 py-2 border-b dark:border-gray-600">
         <div className="flex items-center space-x-1">
           <button
+          type="button"
             onClick={() => handleCommand("bold")}
             className={`p-1.5 rounded cursor-pointer ${
               isBold ? "text-blue-500" : "text-gray-500"
@@ -523,6 +589,7 @@ const TextEditor: React.FC<TextEditorProps> = ({ value, onChange }) => {
           </button>
 
           <button
+          type="button"
             onClick={() => handleCommand("italic")}
             className={`p-1.5 rounded cursor-pointer ${
               isItalic ? "text-blue-500" : "text-gray-500"
@@ -546,6 +613,7 @@ const TextEditor: React.FC<TextEditorProps> = ({ value, onChange }) => {
           </button>
 
           <button
+          type="button"
             onClick={() => handleCommand("underline")}
             className={`p-1.5 rounded cursor-pointer ${
               isUnderline ? "text-blue-500" : "text-gray-500"
@@ -569,6 +637,7 @@ const TextEditor: React.FC<TextEditorProps> = ({ value, onChange }) => {
 
           {/* Strike-through Button */}
           <button
+          type="button"
             onClick={() => handleCommand("strikeThrough")}
             className={`p-1.5 rounded cursor-pointer ${
               isStrikethrough ? "text-blue-500" : "text-gray-500"
@@ -595,6 +664,7 @@ const TextEditor: React.FC<TextEditorProps> = ({ value, onChange }) => {
 
           {/* Blockquote Button */}
           <button
+          type="button"
             onClick={applyBlockquote}
             className={`p-1.5 rounded cursor-pointer ${
               isBlockquote ? "text-blue-500" : "text-gray-500"
@@ -619,6 +689,7 @@ const TextEditor: React.FC<TextEditorProps> = ({ value, onChange }) => {
 
           {/* Format Code Button */}
           <button
+          type="button"
             onClick={applyCodeFormatting}
             className={`p-1.5 rounded cursor-pointer ${
               isCode ? "text-blue-500" : "text-gray-500"
@@ -644,6 +715,7 @@ const TextEditor: React.FC<TextEditorProps> = ({ value, onChange }) => {
           </button>
 
           <button
+          type="button"
             onClick={() => {
               const url = prompt("Enter the URL for the link:");
               if (url) {
@@ -709,6 +781,7 @@ const TextEditor: React.FC<TextEditorProps> = ({ value, onChange }) => {
           </label>
           {/* Video URL Insert Button */}
           <button
+          type="button"
             onClick={insertVideoFromURL}
             className={`p-1.5 rounded cursor-pointer text-gray-500 hover:text-gray-900 dark:hover:text-white`}
           >
@@ -731,6 +804,112 @@ const TextEditor: React.FC<TextEditorProps> = ({ value, onChange }) => {
             <span className="sr-only">Insert Video URL</span>
           </button>
 
+
+         {/* list */}
+         <div>
+      {/* Toggle List Button */}
+      <button
+        id="toggleListButton"
+        type="button"
+        className="p-1.5 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
+      >
+        <svg
+          className="w-5 h-5"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeWidth="2"
+            d="M9 8h10M9 12h10M9 16h10M4.99 8H5m-.02 4h.01m0 4H5"
+          />
+        </svg>
+        <span className="sr-only">Toggle list</span>
+      </button>
+
+      {/* Tooltip Container */}
+      <div
+        id="tooltip-list"
+        role="tooltip"
+        className="absolute z-10 invisible px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity dark:bg-gray-700"
+      >
+        Toggle list
+        <div className="tooltip-arrow" data-popper-arrow></div>
+
+        {/* Ordered List Button */}
+        <button
+          id="toggleOrderedListButton"
+          type="button"
+          onClick={applyOrderedList}
+          className="p-1.5 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
+        >
+          <svg
+            className="w-5 h-5"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M12 6h8m-8 6h8m-8 6h8M4 16a2 2 0 1 1 3.321 1.5L4 20h5M4 5l2-1v6m-2 0h4"
+            />
+          </svg>
+          <span className="sr-only">Toggle ordered list</span>
+        </button>
+
+        {/* Tooltip for Ordered List */}
+        <div
+          id="tooltip-ordered-list"
+          role="tooltip"
+          className="absolute z-10 invisible px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity dark:bg-gray-700"
+        >
+          Toggle ordered list
+          <div className="tooltip-arrow" data-popper-arrow></div>
+        </div>
+      </div>
+
+      {/* Unordered List Button */}
+      <button
+        id="toggleUnorderedListButton"
+        type="button"
+        onClick={applyUnorderedList}
+        className="p-1.5 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
+      >
+        <svg
+          className="w-5 h-5"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeWidth="2"
+            d="M6 8h14M6 12h14M6 16h14M4 8h.01M4 12h.01M4 16h.01"
+          />
+        </svg>
+        <span className="sr-only">Toggle unordered list</span>
+      </button>
+    </div>
+
+
+        </div>
+
+
           {/* Font Family Dropdown */}
           <select
             value={selectedFont}
@@ -748,6 +927,7 @@ const TextEditor: React.FC<TextEditorProps> = ({ value, onChange }) => {
 
           {/* Text Color Button with Dropdown */}
           <button
+          type="button"
             onClick={toggleColorDropdown}
             className="p-1.5 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
           >
@@ -815,7 +995,8 @@ const TextEditor: React.FC<TextEditorProps> = ({ value, onChange }) => {
               </button>
             </div>
           )}
-        </div>
+
+
       </div>
 
       <div
@@ -824,6 +1005,8 @@ const TextEditor: React.FC<TextEditorProps> = ({ value, onChange }) => {
         dir="ltr"
         style={{ direction: "ltr", textAlign: "left" }}
         onInput={handleInput}
+        onKeyDown={handleKeyDown}
+        onClick={handleClickInsideEditor}
         className="p-4 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-600 rounded-b-lg min-h-[200px]"
       />
     </div>
