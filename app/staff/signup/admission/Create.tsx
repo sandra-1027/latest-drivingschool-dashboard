@@ -54,7 +54,7 @@ type CreateProps = {
   const [admission, setAdmission] = useState<{ id: string; user_name: string }[]>([]);
   // const [documents, setDocuments] = useState<File | null>(null);
   // const [photo, setPhoto] = useState<File | null>(null);
- 
+   const [loading, setLoading] = useState(false);
 const[imagePreview,setImagePreview]=useState<string>('');
 const[documentPreview,setDocumentPreview]=useState<string>('');
 const[oldrcPreview,setOldrcPreview]=useState<string>('');
@@ -1109,7 +1109,7 @@ onClick={() => setmobileOpen(!isOpen)} >
               <button 
            type="submit"
               className="btn bg-primary font-medium text-white hover:bg-primary-focus focus:bg-primary-focus active:bg-primary-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90">
-                Add
+                 {loading ? 'Adding...' : 'Add'}
               </button>
             </div>
           </div>

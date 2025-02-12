@@ -1,5 +1,5 @@
 import { useAuth } from "@/app/context/AuthContext";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 interface Admission {
   user_name: string;
@@ -94,6 +94,7 @@ const Create: React.FC<CreateProps> = ({
   const [pucc, setpucc] = useState("");
   const [dob, setdob] = useState("");
   const [address, setaddress] = useState("");
+   const dropdownRef = useRef(null);
 
   const [localFormData, setLocalFormData] = useState(
     formDatas || {
@@ -201,7 +202,7 @@ const Create: React.FC<CreateProps> = ({
 
   const fetchAdmissionData = async () => {
     try {
-      const response = await fetch("/api/admin/signup/get_admission_details", {
+      const response = await fetch("/api/admin/report/get_mobile_user_autocomplete", {
         method: "POST",
         headers: {
           authorizations: state?.accessToken ?? "",
@@ -223,7 +224,7 @@ const Create: React.FC<CreateProps> = ({
       const data = await response.json();
 
       if (data.success) {
-        setAdmission(data.data || []);
+        setAdmission(data.data.mobile_details || []);
       } else {
         // console.error("API error:", data.msg || "Unknown error");
       }
@@ -235,6 +236,8 @@ const Create: React.FC<CreateProps> = ({
   useEffect(() => {
     fetchAdmissionData();
   }, [state]);
+ 
+
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -352,9 +355,7 @@ const Create: React.FC<CreateProps> = ({
   const filteredServices = service.filter((service) =>
     service.service_name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  const filteredMobilenumbers = admission.filter((admission) =>
-    admission.user_name.toLowerCase().includes(searchMobile.toLowerCase())
-  );
+  
 
   const handleSelect = (service: {
     id: string;
@@ -366,12 +367,33 @@ const Create: React.FC<CreateProps> = ({
     setSelectedAmount(service.amount || "0");
     setIsOpen(false);
   };
-
+  // const filteredMobilenumbers = admission.filter((admission) =>
+  //   admission.user_name.toLowerCase().includes(searchMobile.toLowerCase())
+  
+  // );
+  const filteredMobilenumbers = admission.filter((admission) =>
+    admission.user_name?.toLowerCase().includes(searchMobile.toLowerCase()) ||
+    admission.text?.toLowerCase().includes(searchMobile.toLowerCase()) // If mobile field exists
+  );
+  
   const handleSelectmobile = (admission: Admission) => {
-    setmobile(admission.user_name);
+    setmobile(admission.text);
 
     setmobileOpen(false);
   };
+  // const handleSearchMobile = (e) => {
+  //   const value = e.target.value;
+  //   setSearchMobile(value);
+
+  //   const searchMobileData = mobileData.filter(
+  //     (item) =>
+       
+  //       item.text.toLowerCase().includes(value.toLowerCase()) ||
+  //       item.pay_status.toLowerCase().includes(value.toLowerCase())
+  //   );
+
+  //   setFilteredMobile(searchMobileData);
+  // };
 
   if (!showmodal) return null;
 
@@ -388,7 +410,8 @@ const Create: React.FC<CreateProps> = ({
       <div className="relative flex w-full max-w-6xl origin-top flex-col overflow-hidden rounded-lg bg-white transition-all duration-300 dark:bg-navy-700">
         <div className="flex justify-between rounded-t-lg bg-slate-200 px-4 py-3 dark:bg-navy-800 sm:px-5">
           <h3 className="text-base font-medium text-slate-700 dark:text-navy-100">
-            {isEditing ? "Edit Admission" : "Add Admission"}
+            {/* {isEditing ? "Edit Admission" : "Add Admission"} */}
+            Add Admission
           </h3>
           <button
             onClick={togglemodal}
@@ -451,45 +474,92 @@ const Create: React.FC<CreateProps> = ({
 
                   {/* Conditional Input Field */}
                   {selectedOption === "alreadyCreated" && (
-                    <div className="mb-4">
-                      <div
-                        className="relative w-full"
-                        onClick={() => setmobileOpen(!isOpen)}
-                      >
-                        <div className="dark:bg-navy-700 form-select peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9">
-                          <span>{mobile || "Select a number"}</span>
-                        </div>
-                      </div>
+                    // <div className="mb-4">
+                    //    <span>Enter mobile No/Name</span>
+                    //   <div
+                    //     className="relative w-full"
+                    //     onClick={() => setmobileOpen(!isOpen)}
+                    //   >
+                    //     <div className="dark:bg-navy-700 form-select peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9">
+                    //       <span>{mobile || "Select a number"}</span>
+                    //     </div>
+                    //   </div>
 
-                      {mobileOpen && (
-                        <div className="dark:bg-navy-700 z-10 w-full mt-1 bg-white border border-slate-300 rounded-lg shadow-md">
-                          <input
-                            type="text"
-                            placeholder="Search..."
-                            className="dark:bg-navy-700 w-full px-3 py-2 border-b"
-                            value={searchMobile}
-                            onChange={(e) => setSearchMobile(e.target.value)}
-                          />
-                          <div className="max-h-60 overflow-y-auto">
-                            {filteredMobilenumbers.length > 0 ? (
-                              filteredMobilenumbers.map((admission) => (
-                                <div
-                                  key={admission.id}
-                                  className="cursor-pointer px-3 py-2 hover:bg-gray-200"
-                                  onClick={() => handleSelectmobile(admission)}
-                                >
-                                  {admission.user_name}
-                                </div>
-                              ))
-                            ) : (
-                              <div className="px-3 py-2 text-gray-400">
-                                No results found
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      )}
+                    //   {mobileOpen && (
+                    //     <div className="dark:bg-navy-700 z-10 w-full mt-1 bg-white border border-slate-300 rounded-lg shadow-md">
+                    //       <input
+                    //         type="text"
+                    //         placeholder="Search..."
+                    //         className="dark:bg-navy-700 w-full px-3 py-2 border-b"
+                    //         value={searchMobile}
+                    //         onChange={(e) => setSearchMobile(e.target.value)}
+                    //       />
+                    //       <div className="max-h-60 overflow-y-auto">
+                    //         {filteredMobilenumbers.length > 0 ? (
+                    //           filteredMobilenumbers.map((admission) => (
+                    //             <div
+                    //               key={admission.id}
+                    //               className="cursor-pointer px-3 py-2 hover:bg-gray-200"
+                    //               onClick={() => handleSelectmobile(admission)}
+                    //             >
+                    //               {admission.user_name}
+                    //             </div>
+                    //           ))
+                    //         ) : (
+                    //           <div className="px-3 py-2 text-gray-400">
+                    //             No results found
+                    //           </div>
+                    //         )}
+                    //       </div>
+                    //     </div>
+                    //   )}
+                    // </div>
+                    <div className="relative w-full" ref={dropdownRef}>
+                    <label htmlFor="mobile" className="block text-sm font-medium text-slate-700 dark:text-navy-100">
+                    Enter mobile No/Name
+                    </label>
+              
+                    {/* Dropdown Button */}
+                    <div
+                      onClick={() => setmobileOpen(!mobileOpen)}
+                      className="mt-1 flex w-full items-center justify-between rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm cursor-pointer focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+                    >
+                      {mobile || "Select a mobile"}
+                      <span className="ml-2">&#9662;</span> {/* Down arrow */}
                     </div>
+              
+                    {/* Dropdown Content */}
+                    {mobileOpen && (
+                      <div className="absolute z-10 mt-1 w-full rounded-md border border-gray-300 bg-white shadow-lg dark:border-navy-600 dark:bg-navy-700">
+                        {/* Search Bar Inside Dropdown */}
+                        <input
+                          type="text"
+                          value={searchMobile}
+                          onChange={(e) => setSearchMobile(e.target.value)}
+    onFocus={() => setmobileOpen(true)}
+                          placeholder="Search..."
+                          className="w-full border-b border-gray-300 px-3 py-2 text-sm focus:outline-none dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+                        />
+              
+                        {/* Dropdown Options */}
+                        <ul className="max-h-48 overflow-y-auto">
+                          {filteredMobilenumbers.length > 0 ? (
+                            filteredMobilenumbers.map((mobile) => (
+                              <li
+                                key={mobile.id}
+                                onClick={() =>  handleSelectmobile(mobile)}
+                                className="cursor-pointer px-3 py-2 hover:bg-indigo-500 hover:text-white dark:hover:bg-navy-500"
+                              >
+                               {mobile.text}
+                              </li>
+                            ))
+                          ) : (
+                            <li className="px-3 py-2 text-gray-500 dark:text-gray-400">No results found</li>
+                          )}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
                   )}
 
                   {/* Profile Information */}

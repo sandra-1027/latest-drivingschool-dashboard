@@ -1808,7 +1808,7 @@ fill="currentColor"
                       </li>
 
  {/*scanner */}
- <li>
+ {/* <li>
                         <Link
                           href="/staff/driver/scanner"
                           className="nav-link flex items-center justify-between p-2 text-xs+ tracking-wide outline-none transition-[color,padding-left] duration-300 ease-in-out hover:pl-4"
@@ -1822,10 +1822,10 @@ fill="currentColor"
                           </div>
                          
                         </Link>
-                      </li>
+                      </li> */}
 
 {/*QR code */}
-<li>
+{/* <li>
                         <Link
                           href="/staff/driver/qrcode"
                           className="nav-link flex items-center justify-between p-2 text-xs+ tracking-wide outline-none transition-[color,padding-left] duration-300 ease-in-out hover:pl-4"
@@ -1839,7 +1839,7 @@ fill="currentColor"
                           </div>
                          
                         </Link>
-                      </li>
+                      </li> */}
 
                     
   {/* accounts */}

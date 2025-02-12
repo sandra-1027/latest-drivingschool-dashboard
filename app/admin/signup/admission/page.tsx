@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { FaEdit } from 'react-icons/fa';
 import Create from './Create';
 
@@ -77,6 +77,16 @@ const Admission = () => {
   const [filters, setFilters] = useState({ service_name: '', status: '' });
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStatus, setSelectedStatus] = useState<string>("");
+  const [filterStatus,setFilterStatus] = useState("all");
+  
+  const [currentPage,setCurrentPage] = useState(1);
+  const [entriesPerPage] = useState(10);
+  const [mobileData, setMobileData] = useState([]);
+  const [filteredMobile, setFilteredMobile] = useState([]);
+  const [searchMobile, setSearchMobile] = useState("");
+  const [selectedMobile, setSelectedMobile] = useState("");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   
   const togglemodal = (mode: 'add' | 'edit', admission: Admission | null = null) => {
@@ -159,12 +169,124 @@ const Admission = () => {
   useEffect(() => {
     fetchBranchData();
   }, [state]);
-  const [filterStatus,setFilterStatus] = useState("all");
+ 
   
-  const [currentPage,setCurrentPage] = useState(1);
-  const [entriesPerPage] = useState(10);
+  // const fetchMobileData = async () => {
   
+
+  //   try {
+
+  //     const response = await fetch('/api/admin/report/get_mobile_autocomplete', {
+  //       method: 'POST',
+  //       headers: {
+  //          'authorizations': state?.accessToken ?? '', 
+         
+  //         'api_key': '10f052463f485938d04ac7300de7ec2b',  
+  //       },
+  //       body: JSON.stringify({ user_id:null}),
+  //     });
+  //     if (!response.ok) {
+  //       const errorData = await response.json();
+        
+  //       throw new Error(`HTTP error! Status: ${response.status} - ${errorData.message || 'Unknown error'}`);
+  //     }
+      
+  //     const data = await response.json();
+  //     console.log('search mobile data',data.data)
+ 
+  //     if (data.success) {
+  //       setmobileData(data.data.mobile_details || []);
+  //       //  setFilteredData(data.data || []);
+  //     } else {
+  //       // console.error("API error:", data.msg || "Unknown error");
+  //     }
+  //   } catch (error) {
+  //     console.error("Fetch error:", error);
+  //   }
+  // };
   
+  // useEffect(() => {
+  //   fetchMobileData();
+  // }, [state]);
+
+  // const handleSearchmobile = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const value = e.target.value;
+  //   setSearchmobile(value);
+  
+  //   const searchFilteredData = mobileData.filter(
+  //     (item) =>
+  //       item.term.toLowerCase().includes(value.toLowerCase()) ||
+  //       item.user_name.toLowerCase().includes(value.toLowerCase()) ||
+  //       item.email.toLowerCase().includes(value.toLowerCase()) ||
+  //       item.pay_status.toLowerCase().includes(value.toLowerCase())
+        
+  //   );
+  
+  //   setFilteredData(searchFilteredData); // Update filtered data in real-time
+  // };
+  const fetchMobileData = async () => {
+    try {
+      const response = await fetch("/api/admin/report/get_mobile_autocomplete", {
+        method: "POST",
+        headers: {
+          authorizations: state?.accessToken ?? "",
+          api_key: "10f052463f485938d04ac7300de7ec2b",
+        },
+        body: JSON.stringify({ user_id: null }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(`HTTP error! Status: ${response.status} - ${errorData.message || "Unknown error"}`);
+      }
+
+      const data = await response.json();
+      console.log("Search mobile data", data.data);
+
+      if (data.success) {
+        setMobileData(data.data.mobile_details || []);
+        setFilteredMobile(data.data.mobile_details || []);
+      }
+    } catch (error) {
+      console.error("Fetch error:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchMobileData();
+  }, [state]);
+
+  const handleSearchMobile = (e) => {
+    const value = e.target.value;
+    setSearchMobile(value);
+
+    const searchMobileData = mobileData.filter(
+      (item) =>
+        item.text.toLowerCase().includes(value.toLowerCase())
+        // item.user_name.toLowerCase().includes(value.toLowerCase()) ||
+        // item.email.toLowerCase().includes(value.toLowerCase()) ||
+        // item.pay_status.toLowerCase().includes(value.toLowerCase())
+    );
+
+    setFilteredMobile(searchMobileData);
+  };
+  const handleSelectMobile = (mobile) => {
+    setSelectedMobile(mobile.text);
+    setSearchMobile("");
+    setIsDropdownOpen(false); // Close dropdown after selection
+  };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
 
   const updateAccountStatus = async (id: string, status: string) => {
     try {
@@ -303,29 +425,53 @@ const Admission = () => {
    <div className="p-4 rounded-lg bg-slate-100 dark:bg-navy-800">
      <form>
        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-         {/* Driver Name Select */}
-         <div className='flex-1'>
-          <label
-            htmlFor="serviceName"
-            className="block text-sm font-medium text-slate-700 dark:text-navy-100"
-          >
-            Mobile
-          </label>
-          <select
-            id="mobile"
-            name="mobile"
-            value={selectedServices}
-            onChange={(e) => setSelectedServices(e.target.value)}
-            className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
-          >
-            <option value="">Select a mobile</option>
-            {AdmissionData.map((admission) => (
-    <option key={admission.id} value={admission.mobile}>
-      {admission.mobile}
-    </option>
-  ))}
-          </select>
+         {/* mobile Select */}
+        
+ <div className="relative w-full" ref={dropdownRef}>
+      <label htmlFor="mobile" className="block text-sm font-medium text-slate-700 dark:text-navy-100">
+        Mobile
+      </label>
+
+      {/* Dropdown Button */}
+      <div
+        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+        className="mt-1 flex w-full items-center justify-between rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm cursor-pointer focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+      >
+        {selectedMobile || "Select a mobile"}
+        <span className="ml-2">&#9662;</span> {/* Down arrow */}
+      </div>
+
+      {/* Dropdown Content */}
+      {isDropdownOpen && (
+        <div className="absolute z-10 mt-1 w-full rounded-md border border-gray-300 bg-white shadow-lg dark:border-navy-600 dark:bg-navy-700">
+          {/* Search Bar Inside Dropdown */}
+          <input
+            type="text"
+            value={searchMobile}
+            onChange={handleSearchMobile}
+            placeholder="Search..."
+            className="w-full border-b border-gray-300 px-3 py-2 text-sm focus:outline-none dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+          />
+
+          {/* Dropdown Options */}
+          <ul className="max-h-48 overflow-y-auto">
+            {filteredMobile.length > 0 ? (
+              filteredMobile.map((mobile) => (
+                <li
+                  key={mobile.id}
+                  onClick={() => handleSelectMobile(mobile)}
+                  className="cursor-pointer px-3 py-2 hover:bg-indigo-500 hover:text-white dark:hover:bg-navy-500"
+                >
+                  {mobile.text}
+                </li>
+              ))
+            ) : (
+              <li className="px-3 py-2 text-gray-500 dark:text-gray-400">No results found</li>
+            )}
+          </ul>
         </div>
+      )}
+    </div>
 
         <div className='flex-1'>
           <label

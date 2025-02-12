@@ -96,6 +96,7 @@ const Edit = ({ showmodal, togglemodal, AdmissionData, onSave }: EditProps) => {
   // const [imageChanged, setImageChanged] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [imageChanged, setImageChanged] = useState(false);
+   
 ////
   const fetchbranchData = async () => {
     try {
