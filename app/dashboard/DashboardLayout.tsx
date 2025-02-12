@@ -269,8 +269,9 @@ export default function DashboardLayout({
           {/* Show loader only over the inner content */}
          
           {loading && (
-            <div className="loader-overlay absolute inset-0 z-50 grid place-content-center bg-white/70 dark:bg-navy-900/70">
-              <div className="app-preloader-inner relative inline-block size-48"></div>
+            <div className="loader-overlay app-preloader absolute inset-0 z-50 grid place-content-center bg-white/70 dark:bg-navy-900/70">
+              <div className="app-preloader-inner relative inline-block size-48">
+              </div>
             </div>
           )}
 

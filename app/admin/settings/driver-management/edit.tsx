@@ -223,7 +223,7 @@ const Edit = ({ showModal, toggleModal, driverData, onSave }: EditProps) => {
               type="submit"
               className="bg-primary text-white rounded p-2 w-1/5 mt-4"
             >
-              Update
+              {loading ? 'Updating...' : 'Update'}
             </button>
           </form>
         </div>

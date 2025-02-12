@@ -1,21 +1,12 @@
 import { useAuth } from "@/app/context/AuthContext";
 import React, { useEffect, useState } from "react";
-// type CreateProps = {
-//   showmodal: boolean;
-//   togglemodal: () => void;
-//   formData?: {
-//     f_cost: string;
-//     m_cost: string;
-//     service_id: string;
-//     vehicle_type: string;
-//     id:string;
-//   };
-//   isEditing?: boolean;
-// };
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 interface Cost {
-       f_cost: string;
-    m_cost: string;
+  study_cost: string;
+  licence_cost: string;
+  cost:string;
     service_id: string;
     vehicle_type: string;
     id?: string;
@@ -24,6 +15,10 @@ interface Cost {
     branch_name:string;
     added_date:string;
     gender:string;
+    lmc_mc_both_study:string;
+    lmc_mc_both_licence:string;
+    lmc_study_mc_licence:string;
+    lmc_licence_mc_study:string;
   }
 
 
@@ -45,39 +40,36 @@ const Edit = ({ showModal, togglemodal, costData, onSave }: EditProps) => {
   const [success, setSuccess] = useState(false);
   useEffect(() => {
     if (costData) {
-      // Exclude password from being pre-filled
       setFormData({
         ...costData,
-        // password: '', 
       });
     }
   }, [costData]);
 
-useEffect(() => {
-    if (showModal) {
-      const fetchServices = async () => {
-        try {
-          // const response = await fetch("/api/admin/settings/service_details");
-          const response = await fetch('/api/admin/settings/service_details', {
-            method: 'POST',
-            headers: {
-              'authorizations': state?.accessToken ?? '',
-              'api_key': '10f052463f485938d04ac7300de7ec2b',  // Make sure the API key is correct
-            },
-            body: JSON.stringify({ /* request body */ }),
-          });
-          const data = await response.json();
-          if (data.success) {
-            setServices(data.data);
-          }
-        } catch (error) {
-          console.error("Error fetching Services:", error);
-        }
-      };
+// useEffect(() => {
+//     if (showModal) {
+//       const fetchServices = async () => {
+//         try {
+//           const response = await fetch('/api/admin/settings/service_details', {
+//             method: 'POST',
+//             headers: {
+//               'authorizations': state?.accessToken ?? '',
+//               'api_key': '10f052463f485938d04ac7300de7ec2b', 
+//             },
+//             body: JSON.stringify({ }),
+//           });
+//           const data = await response.json();
+//           if (data.success) {
+//             setServices(data.data);
+//           }
+//         } catch (error) {
+//           console.error("Error fetching Services:", error);
+//         }
+//       };
 
-      fetchServices();
-    }
-  }, [showModal]);
+//       fetchServices();
+//     }
+//   }, [showModal]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -89,27 +81,26 @@ useEffect(() => {
  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // setLoading(true);
-    // setError('');
-    // setSuccess(false);
   
     try {
       if (formData) {
         const transformedData = {
           id: formData.id,
-        //   name: `${formData.first_name}`,
-          type: 'cost',
-          f_cost: formData.f_cost,
-          m_cost: formData.m_cost,
-          service_id: formData.service_id,
-          vehicle_type: formData.vehicle_type,
+          // type: 'cost',
+          study_cost: formData.study_cost,
+          licence_cost: formData.licence_cost,
+          cost: formData.cost,
           gender:formData.gender,
-          
+          vehicle_type: formData.vehicle_type,
+          lmc_mc_both_study:formData.lmc_mc_both_study,
+      lmc_mc_both_licence:formData.lmc_mc_both_licence,
+      lmc_study_mc_licence:formData.lmc_study_mc_licence,
+       lmc_licence_mc_study:formData.lmc_licence_mc_study
         };
   
         console.log('Transformed Data:', transformedData);
   
-        const response = await fetch(`/api/admin/accounts/update_license_class`, {
+        const response = await fetch(`/api/admin/accounts/update_fresh_licence_cost`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -123,25 +114,99 @@ useEffect(() => {
         const data = await response.json();
   
         console.log('Response Data:', data);
-  
+      
         if (data.success) {
           setSuccess(true);
           onSave(formData);
+          toast.success('License Class updated successfully');
           togglemodal();
         } else {
           setError(data.msg || 'Failed to update driver');
           console.log('Error Messages:', data.error_msgs);
         }
       }
-    } catch (err) {
+    } catch (err:any) {
       console.error('Error during API call:', err);
-      setError('An error occurred while updating the driver.');
+      toast.error(err.msg || 'An error occurred while updating the License class.');
+
     } finally {
       setLoading(false);
     }
   };
   
-
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+    
+  //   try {
+  //     if (!formData) return;
+  
+  //     const transformedData = {
+  //       id: formData.id,
+  //       type: 'cost',
+  //       study_cost: formData.study_cost,
+  //       licence_cost: formData.licence_cost,
+  //       cost: formData.cost,
+  //       vehicle_type: formData.vehicle_type,
+  //     };
+  
+  //     console.log('Transformed Data:', transformedData);
+  
+  //     const response = await fetch(`/api/admin/accounts/update_fresh_licence_cost`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         authorizations: state?.accessToken ?? '',
+  //         api_key: '10f052463f485938d04ac7300de7ec2b',
+  //       },
+  //       body: JSON.stringify(transformedData),
+  //     });
+  
+  //     console.log('Response Status:', response.status);
+  
+  //     // ✅ Read response as text first
+  //     const responseText = await response.text();
+  //     console.log('Raw Response:', responseText || '(empty)');
+  
+  //     let data: any = {};
+  //     if (responseText.trim()) {
+  //       try {
+  //         data = JSON.parse(responseText);
+  //       } catch (jsonError) {
+  //         console.error('JSON Parse Error:', jsonError);
+  //         throw new Error('Invalid JSON response from server');
+  //       }
+  //     }
+  
+  //     console.log('Response Data:', data);
+  
+  //     // ✅ Handle truly empty responses (assume success on status 200)
+  //     if (response.status === 200 && Object.keys(data).length === 0) {
+  //       toast.success('License Class updated successfully');
+  //       setSuccess(true);
+  //       onSave(formData);
+  //       togglemodal();
+  //       return;
+  //     }
+  
+  //     if (data.success) {
+  //       setSuccess(true);
+  //       onSave(formData);
+  //       toast.success('License Class updated successfully');
+  //       togglemodal();
+  //     } else {
+  //       setError(data.msg || 'Failed to update driver');
+  //       console.log('Error Messages:', data.error_msgs || 'No error messages provided');
+  //     }
+  //   } catch (err: any) {
+  //     console.error('Error during API call:', err);
+  //     toast.error(err.message || 'An error occurred while updating the License class.');
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+  
+  
+  
   if (!showModal || !formData) return null;
 
 
@@ -153,7 +218,7 @@ useEffect(() => {
         <div className="relative flex w-full max-w-3xl origin-top flex-col overflow-hidden rounded-lg bg-white transition-all duration-300 dark:bg-navy-700">
           <div className="flex justify-between rounded-t-lg bg-slate-200 px-4 py-3 dark:bg-navy-800 sm:px-5">
             <h3 className="text-xl font-medium text-slate-700 dark:text-navy-100">
-              Edit License Class
+              Edit License Cost
             </h3>
             <button onClick={togglemodal} className="btn -mr-1.5 size-7 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25">
 
@@ -179,53 +244,148 @@ useEffect(() => {
             {/* Form fields */}
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            
+          
               <label className="block">
                 <span>Vehicle Type</span>
-            
-              <input name="vehicle_type"
+              {/* <select name="vehicle_type" value={formData.vehicle_type} onChange={handleChange} 
+              className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+              >
+                <option value="">Please select vehicle type</option>
+               <option value="LMC">LMV</option>
+               <option value="MC">MV</option>
+               <option value="Both">Both</option>
+               <option value="Auto rickshaw">Auto rickshaw</option>
+              </select> */}
+
+<input name="vehicle_type"
              value={formData.vehicle_type}
               onChange={handleChange}
                type="text"
-                placeholder="vehicle Type"
+                placeholder="vehicle_type"
+                readOnly
                 className="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" />
               </label>
+
+
+
                <label className="block">
                 <span>Gender</span>
-           <input 
-            name="gender"
+              {/* <select name="vehicle_type" value={formData.gender} onChange={handleChange} 
+              className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+              >
+                <option value="">Please select Gender</option>
+                <option value="Female">Female</option>
+               <option value="Male">Male</option>
+              </select> */}
+              <input name="gender"
              value={formData.gender}
               onChange={handleChange}
                type="text"
                 placeholder="gender"
+                readOnly
                 className="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" />
               </label>
-              <label className="block">
-                <span>Study Female Cost</span>
+              {( formData.vehicle_type === 'lmc_mc' ||
+                formData.vehicle_type === 'both'||
+                formData.vehicle_type === 'Both'
+              ) ? (
+                <>
+                  <label className="block">
+                  <span>LMV MC both study</span>
+              <input 
+              name="lmc_mc_both_study"
+               value={formData.lmc_mc_both_study}
+                onChange={handleChange}
+                 type="text"
+                  placeholder="LMV MC both study" 
+                  className="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" />
+              </label>
+
+<label className="block">
+<span>LMV MC both licence</span>
+<input 
+name="lmc_mc_both_licence"
+value={formData.lmc_mc_both_licence}
+onChange={handleChange}
+type="text"
+placeholder="LMV MC both licence" 
+className="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" />
+</label>
+
+
+<label className="block">
+<span>LMV study MC licence</span>
+<input 
+name="lmc_study_mc_licence"
+value={formData.lmc_study_mc_licence}
+onChange={handleChange}
+type="text"
+placeholder="LMV study MC licence" 
+className="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" />
+</label>
+
+<label className="block">
+<span>LMV Licence MC Study</span>
+<input 
+name="lmc_licence_mc_study"
+value={formData.lmc_licence_mc_study}
+onChange={handleChange}
+type="text"
+placeholder="LMV Licence MC Study" 
+className="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" />
+</label>
+</>):(
+  <>
+      <label className="block">
+      <span>Study Cost</span>
+  <input 
+  name="study_cost"
+   value={formData.study_cost}
+    onChange={handleChange}
+     type="text"
+      placeholder="study cost" 
+      className="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" />
+  </label>
+  <label className="block">
+  <span>Licence Cost</span>
+<input name="licence_cost"
+ value={formData.licence_cost}
+  onChange={handleChange}
+   type="text"
+    placeholder="licence cost"
+    className="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" />
+</label>
+</>
+              )}
+
+              {/* <label className="block">
+                <span>Study Cost</span>
             <input 
-            name="f_cost"
-             value={formData.f_cost}
+            name="study_cost"
+             value={formData.study_cost}
               onChange={handleChange}
                type="text"
-                placeholder="Female cost" 
+                placeholder="study cost" 
                 className="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" />
-            </label>
-            <label className="block">
-              <span>Study Male Cost</span>
-            <input name="m_cost"
-             value={formData.m_cost}
+            </label> */}
+
+            {/* <label className="block">
+              <span>Licence Cost</span>
+            <input name="licence_cost"
+             value={formData.licence_cost}
               onChange={handleChange}
                type="text"
-                placeholder="Male cost"
+                placeholder="licence cost"
                 className="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" />
-           </label>
+           </label> */}
+
            <label className="block">
               <span>Both Licence Study</span>
-            <input name="m_cost"
-             value={formData.m_cost}
+            <input name="cost"
+             value={formData.cost}
               onChange={handleChange}
                type="text"
-                placeholder="Male cost"
+                placeholder="Cost"
                 className="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" />
            </label>
             </div>

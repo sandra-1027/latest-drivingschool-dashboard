@@ -9,7 +9,6 @@ import Add from './add';
 import { FaRegCheckCircle } from 'react-icons/fa';
 import Edit from './edit';
 import { HiOutlineArrowNarrowDown, HiOutlineArrowNarrowUp } from 'react-icons/hi';
-
 type Account = {
   id?: string;
   status: string;
@@ -32,8 +31,10 @@ const page = () => {
   const [showmodal,setShowmodal]=useState(false);
   const [accountData, setAccountData] = useState<Account[]>([]);
   const [filteredData, setFilteredData] = useState<Account[]>([]);
-  //const [expenseData, setExpenseData] = useState<Account[]>([]);
   const [expenseData, setExpenseData] = useState<Account | null>(null);
+
+  const [selectedBranches, setSelectedBranches] = useState<string>("");
+  const [ BranchData,  setBranchData] = useState<Account []>([]);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedBranch, setSelectedBranch] = useState<string>("");
@@ -44,9 +45,9 @@ const page = () => {
   const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
 
   const togglemodal = (mode: 'add' | 'edit', account: Account | null = null) => {
-    setModalMode(mode);  // Set the modal mode to either "add" or "edit"
-    setSelectedAccount(account);  // Pass the selected driver if in edit mode
-    setShowmodal((prev) => !prev);  // Toggle the modal visibility
+    setModalMode(mode);
+    setSelectedAccount(account);
+    setShowmodal((prev) => !prev); 
   };
 
 
@@ -59,8 +60,7 @@ const page = () => {
         method: 'POST',
         headers: {
            'authorizations': state?.accessToken ?? '', 
-          // 'authorizations': token ?? '',
-          'api_key': '10f052463f485938d04ac7300de7ec2b',  // Make sure the API key is correct
+          'api_key': '10f052463f485938d04ac7300de7ec2b', 
         },
         body: JSON.stringify({ 
           id: null,
@@ -69,7 +69,6 @@ const page = () => {
       });
       if (!response.ok) {
         const errorData = await response.json();
-        // console.error('API error:', errorData);
         throw new Error(`HTTP error! Status: ${response.status} - ${errorData.message || 'Unknown error'}`);
       }
       
@@ -80,7 +79,6 @@ const page = () => {
         setFilteredData(data.data.accounts_details);
         setExpenseData(data.data.expenses);
       } else {
-        // console.error("API error:", data.msg || "Unknown error");
       }
     } catch (error) {
       console.error("Fetch error:", error);
@@ -88,6 +86,41 @@ const page = () => {
   };
   useEffect(() => {
     fetchStaffData();
+  }, [state]);
+
+
+  const fetchBranchData = async () => {
+    try {
+
+      const response = await fetch('/api/admin/settings/branch_details', {
+        method: 'POST',
+        headers: {
+           'authorizations': state?.accessToken ?? '', 
+        
+          'api_key': '10f052463f485938d04ac7300de7ec2b',  
+        },
+        body: JSON.stringify({ user_id:null}),
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+       
+        throw new Error(`HTTP error! Status: ${response.status} - ${errorData.message || 'Unknown error'}`);
+      }
+      
+      const data = await response.json();
+ //console.log(data,"data")
+      if (data.success) {
+        setBranchData(data.data || []);
+      } else {
+      
+      }
+    } catch (error) {
+      console.error("Fetch error:", error);
+    }
+  };
+  
+  useEffect(() => {
+    fetchBranchData();
   }, [state]);
 
   const [filterStatus,setFilterStatus] = useState("all");
@@ -109,15 +142,21 @@ const page = () => {
         (item) => item.status === selectedStatus
       );
     }
-   
+  
     if (selectedDate) {
       newFilteredData = newFilteredData.filter((item) => {
       
-        const itemDate = item.added_date.split(" ")[0]; // Splits "2025-01-18 16:58:49" into ["2025-01-18", "16:58:49"] and takes the first part
+        const itemDate = item.added_date.split(" ")[0]; 
         return itemDate === selectedDate;
       });
     }
-    return newFilteredData; // Return filtered data
+
+    if (selectedBranches){
+      newFilteredData = newFilteredData.filter(
+        (item) => item.branch_name=== selectedBranches
+      );
+    }
+    return newFilteredData; 
   };
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -127,24 +166,26 @@ const page = () => {
       (item) =>
         item.daily_status.toLowerCase().includes(value.toLowerCase()) ||
         item.type.toLowerCase().includes(value.toLowerCase()) ||
+        item.expense_name.toLowerCase().includes(value.toLowerCase()) ||
+        item.added_by.toLowerCase().includes(value.toLowerCase()) ||
         item.status.toLowerCase().includes(value.toLowerCase())
     );
   
-    setFilteredData(searchFilteredData); // Update filtered data in real-time
+    setFilteredData(searchFilteredData); 
   };
   
-  // Handle form submit for additional filters
+ 
   const handleFilterSubmit = (e: React.FormEvent) => {
-    e.preventDefault(); // Prevent page reload
+    e.preventDefault(); 
     const newFilteredData = applyFilters();
-    setFilteredData(newFilteredData); // Update filtered data
+    setFilteredData(newFilteredData); 
   };
   
   const handleReset = () => {
     setSearchTerm("");
     setdailystatusselected("");
     setSelectedStatus("");
-    setFilteredData(accountData); // Reset to original data
+    setFilteredData(accountData); 
   };
 
   const indexOfLastEntry = currentPage * entriesPerPage;
@@ -157,10 +198,7 @@ const page = () => {
   const totalPages = Math.ceil(totalEntries / entriesPerPage);
 
 
-    // const handleEdit = (staff: Account) => {
-    //   setSelectedAccount(staff); 
-    //   setShowmodal(true); 
-    // };
+
 
 
     const updateAccountStatus = async (id: string, status: string) => {
@@ -184,7 +222,7 @@ const page = () => {
         }
     
         const data = await response.json();
-        console.log("API Response:", data); // Log the response
+        console.log("API Response:", data); 
     
         if (data.success) {
          
@@ -260,7 +298,7 @@ const page = () => {
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
           >
-            <option value="">select Status</option>
+            <option value="">All Status</option>
             <option value="active">Active</option>
             <option value="inactive">Inactive</option>
           </select>
@@ -281,10 +319,33 @@ const page = () => {
       />
     </div>
       </div>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 mt-4">
+      <div className='flex-1'>
+          <label
+            htmlFor="serviceName"
+            className="block text-sm font-medium text-slate-700 dark:text-navy-100"
+          >
+           Branch Name
+          </label>
+          <select
+            id="branch_name"
+            name="branch_name"
+            value={selectedBranches}
+            onChange={(e) => setSelectedBranches(e.target.value)}
+            className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+          >
+            <option value="">Select a Branch</option>
+            {BranchData.map((branch) => (
+    <option key={branch.id} value={branch.branch_name}>
+      {branch.branch_name}
+    </option>
+  ))}
+          </select>
+        </div>
       <div className="mt-4 flex space-x-4">
         <button
           type="submit"
-          className="inline-flex justify-center rounded-md border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          className="inline-flex justify-center rounded-md border border-transparent bg-primary py-3 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           onClick={handleFilterSubmit}
         >
           <i
@@ -295,7 +356,7 @@ const page = () => {
         </button>
         <button
           type="button"
-          className="inline-flex justify-center rounded-md border border-gray-300 bg-warning py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-warningfocus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          className="inline-flex justify-center rounded-md border border-gray-300 bg-warning py-3 px-4 text-sm font-medium text-white shadow-sm hover:bg-warningfocus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           onClick={handleReset}
         >
           <i
@@ -304,6 +365,7 @@ const page = () => {
           ></i>
           Reset
         </button>
+      </div>
       </div>
     </form>
   </div>
@@ -323,7 +385,7 @@ const page = () => {
 
           <div className="flex list-group-item p-2">
             <p className='mr-8'>Total Expense </p>
-            <span className='font-bold'>{expenseData.total_expense}</span>
+            <span className='font-bold'> {expenseData.total_expense}</span>
           </div>
        
         </div>
@@ -332,9 +394,6 @@ const page = () => {
     </div>
   </div>
 </div>
-
-
-
   <div className="flex items-center justify-between py-5 lg:py-6">
                 <span className="text-lg font-medium text-slate-800 dark:text-navy-50">
                 Daily Accounts
@@ -345,17 +404,12 @@ const page = () => {
           Add Accounts
                 </button>
                
-            </div>
-
-                             
+            </div>                    
   <div className="grid grid-cols-1 gap-4 sm:gap-5 lg:gap-6" >
   <div className="card px-4 pb-4 sm:px-5">
   <div className="mt-5">
-
-  
   <div className="gridjs-head">
             <div className="gridjs-search">
-           
             <input
       type="text"
       value={searchTerm}
@@ -365,6 +419,8 @@ const page = () => {
     />
             </div>
           </div>
+
+
         <div className="overflow-x-auto w-full">
   <table className="is-hoverable w-full text-left">
             <thead>
@@ -379,27 +435,24 @@ const page = () => {
                Added By
                 </th>
                 <th className="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
+               Branch Name
+                </th>
+                <th className="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                Type
                 </th>
-          
+              
                 <th className="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                Amount
                 </th>
-                {/* <th className="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                Status
-                </th>             */}
-                 
                 <th className="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                Date
                 </th> 
                 <th className="whitespace-nowrap rounded-r-lg bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                 Action
                 </th> 
-          
               </tr>
             </thead>
             <tbody>
-             
             {currentEntries.map((item, index) => (
               <tr key={item.id} className="border-y border-transparent border-b-slate-200 dark:border-b-navy-500">
                 <td className="whitespace-nowrap rounded-l-lg px-4 py-3 sm:px-5">
@@ -411,10 +464,10 @@ const page = () => {
                 <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 {item.added_by}
                 </td>
-                {/* <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                {item.daily_status}
-                </td> */}
-               <td className="whitespace-nowrap px-4 py-3 sm:px-5">
+                <td className="whitespace-nowrap px-4 py-3 sm:px-5">
+                {item.branch_name}
+                </td>
+                  <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 {item.daily_status === "income" ? (
     <div className="badge space-x-2.5 rounded-lg bg-success/10 text-success">
       <span>Income</span>
@@ -432,8 +485,6 @@ const page = () => {
                 <td className="whitespace-nowrap  px-4 py-3 sm:px-5">
                 {item.amount}
                 </td>
-              
-
                 <td className="whitespace-nowrap  px-4 py-3 sm:px-5">
                 {item.added_date}
                 </td>
@@ -445,14 +496,12 @@ const page = () => {
                         className="btn size-8 p-0 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25">
                           <i className="fa fa-edit"/>
                         </button>
-                       
                         <button
                         className={`btn size-8 p-0 ${item.status === 'active' ? 'text-error' : 'text-primary'} hover:bg-${item.status === 'active' ? 'error' : 'primary'}/20 focus:bg-${item.status === 'active' ? 'error' : 'primary'}/20 active:bg-${item.status === 'active' ? 'error' : 'primary'}/25`}
                         onClick={() => updateAccountStatus(item.id!, item.status)} // Pass the current status
                       >
                         <i className={`fa ${item.status === 'active' ? 'fa-trash-alt' : 'fa-check-circle'}`} />
                       </button>
-
                       </div>
                     </span>
                 </td>
@@ -463,50 +512,64 @@ const page = () => {
           </table>
         </div>
 
-        <div className="flex justify-between items-center mt-4">
-        <div>
-          Showing {indexOfFirstEntry + 1} to {Math.min(indexOfLastEntry, totalEntries)} of {totalEntries} entries
-        </div>
-        <div>
-          <button
-            onClick={() => setCurrentPage(1)}
-            disabled={currentPage === 1}
-            className="px-4 py-2 border rounded-md"
-          >
-            First
-          </button>
-          <button
-            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-            disabled={currentPage === 1}
-            className="px-4 py-2 border rounded-md"
-          >
-            Previous
-          </button>
-          {Array.from({ length: totalPages }, (_, i) => (
-            <button
-              key={i + 1}
-              onClick={() => setCurrentPage(i + 1)}
-              className={`px-4 py-2 border rounded-md ${currentPage === i + 1 ? 'bg-[#4f46e5] text-white' : ''}`}
-            >
-              {i + 1}
-            </button>
-          ))}
-          <button
-            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-            disabled={currentPage === totalPages}
-            className="px-4 py-2 border rounded-md"
-          >
-            Next
-          </button>
-          <button
-            onClick={() => setCurrentPage(totalPages)}
-            disabled={currentPage === totalPages}
-            className="px-4 py-2 border rounded-md"
-          >
-            Last
-          </button>
-        </div>
-      </div>
+
+      <div className="flex flex-col sm:flex-row justify-between items-center mt-4 space-y-4 sm:space-y-0">
+  {/* Entries Info */}
+  <div className="text-center sm:text-left">
+    Showing {indexOfFirstEntry + 1} to {Math.min(indexOfLastEntry, totalEntries)} of {totalEntries} entries
+  </div>
+
+  {/* Pagination Controls */}
+  <div className="flex flex-wrap justify-center sm:justify-end gap-1">
+    <button
+      onClick={() => setCurrentPage(1)}
+      disabled={currentPage === 1}
+      className={`px-3 py-2 border rounded-md ${
+        currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''
+      }`}
+    >
+      First
+    </button>
+    <button
+      onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+      disabled={currentPage === 1}
+      className={`px-3 py-2 border rounded-md ${
+        currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''
+      }`}
+    >
+      Previous
+    </button>
+    {Array.from({ length: totalPages }, (_, i) => (
+      <button
+        key={i + 1}
+        onClick={() => setCurrentPage(i + 1)}
+        className={`px-3 py-2 border rounded-md ${
+          currentPage === i + 1 ? 'bg-[#4f46e5] text-white' : ''
+        }`}
+      >
+        {i + 1}
+      </button>
+    ))}
+    <button
+      onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+      disabled={currentPage === totalPages}
+      className={`px-4 py-2 border rounded-md ${
+        currentPage === totalPages ? 'cursor-not-allowed opacity-50' : ''
+      }`}
+    >
+      Next
+    </button>
+    <button
+      onClick={() => setCurrentPage(totalPages)}
+      disabled={currentPage === totalPages}
+      className={`px-3 py-2 border rounded-md ${
+        currentPage === totalPages ? 'cursor-not-allowed opacity-50' : ''
+      }`}
+    >
+      Last
+    </button>
+  </div>
+</div>
       </div>
   </div>
   </div>
@@ -515,14 +578,8 @@ const page = () => {
   modalMode === 'edit' ? (
     <Edit
       showModal={showmodal}
-      toggleModal={() => togglemodal('add')}  // Correct the mode here if you want to switch to 'edit'
+      toggleModal={() => togglemodal('add')}  
       AccountData={selectedAccount}
-      // onSave={(updatedAccount) => {
-      //   setAccountData((prevData) => prevData.map((account) =>
-      //     account.id === updatedAccount.id ? updatedAccount: account
-      //   ));
-      //   togglemodal('add');  // Close modal after saving
-      // }}
       onSave={(updatedAccount) => {
         console.log("Updated Account:", updatedAccount);
         console.log("Current Account Data:", accountData);
@@ -550,3 +607,5 @@ const page = () => {
 }
 
 export default page
+
+

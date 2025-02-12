@@ -149,7 +149,7 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal }) => {
                   className="bg-primary text-white rounded p-2 w-1/5"
                   disabled={loading}
                 >
-                  Add
+                   {loading ? 'Adding...' : 'Add'}
                 </button>
               </div>
             </form>

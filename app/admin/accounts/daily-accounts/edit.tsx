@@ -1,14 +1,9 @@
 import { useAuth } from "@/app/context/AuthContext";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
 
 interface Account {
-  // id?: string;
-  // daily_status: string;
-  // amount: string;
-  // type: string;
-  //  expense_name: string;
+
    id?: string;
    status: string;
    daily_status: string; 
@@ -35,6 +30,7 @@ interface EditProps {
 const Edit = ({ showModal, toggleModal, AccountData, onSave }: EditProps) => {
   const { state } = useAuth();
   const [services, setServices] = useState<{ id: string; service_name: string }[]>([]);
+  const [ BranchData,  setBranchData] = useState<Account []>([]);
   const [formData, setFormData] = useState<Account | null>(null);
   useEffect(() => {
     if (AccountData) {
@@ -43,13 +39,43 @@ const Edit = ({ showModal, toggleModal, AccountData, onSave }: EditProps) => {
       });
     }
   }, [AccountData]);
-  // const [accountType, setAccountType] = useState(formData?.daily_status);
-  // const [expenseType, setExpenseType] = useState(formData?.type || '');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
 
+  const fetchBranchData = async () => {
+    try {
 
+      const response = await fetch('/api/admin/settings/branch_details', {
+        method: 'POST',
+        headers: {
+           'authorizations': state?.accessToken ?? '', 
+        
+          'api_key': '10f052463f485938d04ac7300de7ec2b',  
+        },
+        body: JSON.stringify({ user_id:null}),
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+       
+        throw new Error(`HTTP error! Status: ${response.status} - ${errorData.message || 'Unknown error'}`);
+      }
+      
+      const data = await response.json();
+ //console.log(data,"data")
+      if (data.success) {
+        setBranchData(data.data || []);
+      } else {
+      
+      }
+    } catch (error) {
+      console.error("Fetch error:", error);
+    }
+  };
+  
+  useEffect(() => {
+    fetchBranchData();
+  }, [state]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -70,6 +96,8 @@ const Edit = ({ showModal, toggleModal, AccountData, onSave }: EditProps) => {
           amount: formData.amount, 
           daily_status: formData.daily_status, 
           expense_name: formData.expense_name, 
+          // branch_name: formData.branch_name,
+          branch_id: formData.branch_id,
         };
     
         console.log('Transformed Data:', transformedData);
@@ -86,7 +114,7 @@ const Edit = ({ showModal, toggleModal, AccountData, onSave }: EditProps) => {
   
         console.log('Response Status:', response.status);
         const data = await response.json();
-  toast.success('Account updated successfully!')
+        toast.success('Account updated successfully');
         console.log('Response Data:', data);
   
         if (data.success) {
@@ -98,10 +126,10 @@ const Edit = ({ showModal, toggleModal, AccountData, onSave }: EditProps) => {
           console.log('Error Messages:', data.error_msgs);
         }
       }
-    } catch (err:any) {
+    } catch (err :any) {
       console.error('Error during API call:', err);
       setError('An error occurred while updating the Cost.');
-      toast.error(err.message ||'An error occurred while updating the Account.')
+      toast.error(err.msg || 'An error occurred while updating the Account.');
     } finally {
       setLoading(false);
     }
@@ -145,6 +173,7 @@ if (!showModal || !formData) return null;
         
 
             {/* Radio buttons for account type */}
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="flex items-center mb-4 ml-6">
   <label className="mr-4">
     <input
@@ -170,74 +199,11 @@ if (!showModal || !formData) return null;
   </label>
 </div>
 
-          
 
-{formData.daily_status === 'expense' && (
-  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-    {/* Expense Type Dropdown */}
+{(formData.daily_status === 'income') && (
+    // {/* Name Field */}
     <label className="block">
-      <select
-        // value={expenseType}
-        value={formData.expense_name}
-        name="expense_name"
-        // onChange={(e) => setExpenseType(e.target.value)}
-        onChange={handleChange}
-        className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
-      >
-        <option value="">Please select Expense type</option>
-        <option value="petrol">Petrol</option>
-        <option value="Salary">Salary</option>
-        <option value="workshop">Workshop</option>
-        <option value="others">Others</option>
-      </select>
-    </label>
-
-  
-    {formData.expense_name === 'others' ? (
-  // Render Name field when expenseType is 'others'
-  <label className="block">
-    <input
-      type="text"
-      placeholder="Name"
-      name="type"
-      value={formData.type}
-      onChange={handleChange}
-      className="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-    />
-  </label>
-) : (
-
-  <label className="block">
-    <input
-      type="text"
-      placeholder="Amount"
-      name="amount"
-      value={ formData.amount}
-      onChange={handleChange}
-      className="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-    />
-  </label>
-)}
-
- 
-    {formData.expense_name === 'others' && (
-      <label className="block">
-        <input
-          type="text"
-          placeholder="Amount"
-          name="amount"
-          value={ formData.amount}
-          onChange={handleChange}
-          className="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-        />
-      </label>
-    )}
-  </div>
-)}
-{formData.daily_status === 'income' && (
-  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-    {/* Name Field */}
-    <label className="block">
+      <span>Name</span>
       <input
         type="text"
         placeholder="Name"
@@ -247,9 +213,38 @@ if (!showModal || !formData) return null;
         className="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
       />
     </label>
+)}
+
+{(formData.daily_status === 'expense') && (
+   <label className="block">
+      
+   <select
+     // value={expenseType}
+     value={formData.expense_name}
+     name="expense_name"
+     // onChange={(e) => setExpenseType(e.target.value)}
+     onChange={handleChange}
+     className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+   >
+     <option value="">Please select Expense type</option>
+     <option value="petrol">Petrol</option>
+     <option value="Salary">Salary</option>
+     <option value="workshop">Workshop</option>
+     <option value="others">Others</option>
+   </select>
+ </label>
+)}
+
+   </div>       
+
+
+{/* {formData.daily_status === 'income' && ( */}
+  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 mt-3">
+  
 
     {/* Amount Field */}
     <label className="block">
+      <span>Amount</span>
       <input
         type="text"
         placeholder="Amount"
@@ -259,8 +254,31 @@ if (!showModal || !formData) return null;
         className="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
       />
     </label>
+
+    <label className="block ">
+    <span>Branch Name</span>
+  
+           <select
+            id="branch_name"
+            value={formData.branch_name}
+            name="branch_name"
+            // value={selectedBranches}
+            // onChange={(e) => setSelectedBranches(e.target.value)}
+            
+     // onChange={(e) => setExpenseType(e.target.value)}
+     onChange={handleChange}
+            className=" block w-full rounded-md border border-slate-300 bg-white py-2.5 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+          >
+            <option value="">Select a Branch</option>
+            {BranchData.map((branch) => (
+    <option key={branch.id} value={branch.branch_name}>
+      {branch.branch_name}
+    </option>
+  ))}
+          </select>
+ </label>
   </div>
-)}
+{/* )} */}
             {/* Submit Button */}
             <button
               type="submit"

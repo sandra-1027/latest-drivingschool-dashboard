@@ -683,19 +683,20 @@ const page = () => {
     };
     
     // Handle real-time search filtering
+  
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = e.target.value;
-      setSearchTerm(value);
-    
-      const searchFilteredData = costData.filter(
-        (item) =>
-          item.service_name.toLowerCase().includes(value.toLowerCase()) ||
-          item.vehicle_type.toLowerCase().includes(value.toLowerCase()) ||
-          item.status.toLowerCase().includes(value.toLowerCase())
-      );
-    
-      setFilteredData(searchFilteredData); // Update filtered data in real-time
-    };
+          const value = e.target.value;
+          setSearchTerm(value);
+        
+          const searchFilteredData = costData.filter(
+            (item) =>
+              item.gender.toLowerCase().includes(value.toLowerCase()) ||
+              item.vehicle_type.toLowerCase().includes(value.toLowerCase()) ||
+              item.status.toLowerCase().includes(value.toLowerCase())
+          );
+        
+          setFilteredData(searchFilteredData); // Update filtered data in real-time
+        };
     
     // Handle form submit for additional filters
     const handleFilterSubmit = (e: React.FormEvent) => {

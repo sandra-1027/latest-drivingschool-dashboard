@@ -203,7 +203,7 @@ const Edit = ({ showModal, toggleModal, serviceData, onSave }: EditProps) => {
                   className="bg-primary text-white rounded p-2 w-1/5"
                   disabled={loading}
                 >
-                  Update
+                   {loading ? 'Updating...' : 'Update'}
                 </button>
               </div>
             </form>
