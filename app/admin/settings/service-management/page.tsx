@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "@/app/context/AuthContext";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Edit from "./edit";
 import Add from "./add";
 
@@ -26,10 +26,16 @@ const page = () => {
   const [showmodal, setShowmodal] = useState(false);
   const [modalMode, setModalMode] = useState<"add" | "edit">("add");
   const [editedService, setEditedService] = useState<Service | null>(null);
-  const [selectedService, setSelectedService] = useState<string>("");
+  
   const [filteredData, setFilteredData] = useState<Service[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStatus, setSelectedStatus] = useState<string>("");
+  const [selectedService, setSelectedService] = useState<string>("");
+    const [searchService, setSearchService] = useState("");
+    const[searchServiceData,setSearchServiceData] =useState("");
+    const[filteredService,setFilteredService]=useState("");
+     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+      const dropdownRef = useRef(null);
 
   const togglemodal = (
     mode: "add" | "edit",
@@ -172,6 +178,75 @@ const page = () => {
       console.error("Update error:", error);
     }
   };
+ const fetchSearchService = async () => {
+      try {
+        const response = await fetch("/api/admin/report/get_service_autocomplete", {
+          method: "POST",
+          headers: {
+            authorizations: state?.accessToken ?? "",
+            api_key: "10f052463f485938d04ac7300de7ec2b",
+          },
+          body: JSON.stringify({}),
+        });
+  
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(`HTTP error! Status: ${response.status} - ${errorData.message || "Unknown error"}`);
+        }
+  
+        const data = await response.json();
+        console.log("Search mobile data", data.data);
+  
+        if (data.success) {
+          setSearchServiceData(data.data.service_details || []);
+          setFilteredService(data.data.service_details || []);
+        }
+      } catch (error) {
+        console.error("Fetch error:", error);
+      }
+    };
+  
+    useEffect(() => {
+      fetchSearchService();
+    }, [state]);
+  
+    const handleSearchService = (e : any) => {
+      const value = e.target.value;
+      setSearchService(value);
+  
+      const searchData = searchServiceData.filter(
+        (item) =>
+          item.text.toLowerCase().includes(value.toLowerCase())
+          // item.user_name.toLowerCase().includes(value.toLowerCase()) ||
+          // item.email.toLowerCase().includes(value.toLowerCase()) ||
+          // item.pay_status.toLowerCase().includes(value.toLowerCase())
+      );
+  
+      setFilteredService(searchData);
+    };
+  
+    
+    const handleSelectService = (service) => {
+      setSelectedService(service.text);
+      // setSelectedMobile(`${mobile.text} - ${mobile.term}`);
+      setSearchService("");
+      setIsDropdownOpen(false); // Close dropdown after selection
+    };
+  
+    // Close dropdown when clicking outside
+    useEffect(() => {
+      const handleClickOutside = (event) => {
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+          setIsDropdownOpen(false);
+        }
+      };
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
+
+
+
   return (
     <div className=" w-full  pb-8">
       <div className="flex items-center space-x-4 py-5 lg:py-6">
@@ -228,8 +303,8 @@ const page = () => {
           <div className="p-4 rounded-lg bg-slate-100 dark:bg-navy-800">
             <form>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                {/* Driver Name Select */}
-                <div className="flex-1">
+                {/* Service Name Select */}
+                {/* <div className="flex-1">
                   <label
                     htmlFor="serviceName"
                     className="block text-sm font-medium text-slate-700 dark:text-navy-100"
@@ -250,7 +325,54 @@ const page = () => {
                       </option>
                     ))}
                   </select>
-                </div>
+                </div> */}
+ <div className="relative w-full" ref={dropdownRef}>
+      <label htmlFor="mobile" className="block text-sm font-medium text-slate-700 dark:text-navy-100">
+       Service Name
+      </label>
+
+      {/* Dropdown Button */}
+      <div
+        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+        className="mt-1 flex w-full items-center justify-between rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm cursor-pointer focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+      >
+        {selectedService || "Select a service"}
+        <span className="ml-2">&#9662;</span> {/* Down arrow */}
+      </div>
+
+      {/* Dropdown Content */}
+      {isDropdownOpen && (
+        <div className="absolute z-10 mt-1 w-full rounded-md border border-gray-300 bg-white shadow-lg dark:border-navy-600 dark:bg-navy-700">
+          {/* Search Bar Inside Dropdown */}
+          <input
+            type="text"
+            value={searchService}
+            onChange={handleSearchService}
+            placeholder="Search..."
+            className="w-full border-b border-gray-300 px-3 py-2 text-sm focus:outline-none dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+          />
+
+          {/* Dropdown Options */}
+          <ul className="max-h-48 overflow-y-auto">
+            {filteredService.length > 0 ? (
+              filteredService.map((service) => (
+                <li
+                  key={service.id}
+                  onClick={() => handleSelectService(service)}
+                  className="cursor-pointer px-3 py-2 hover:bg-indigo-500 hover:text-white dark:hover:bg-navy-500"
+                >
+                   {service.text}
+                </li>
+              ))
+            ) : (
+              <li className="px-3 py-2 text-gray-500 dark:text-gray-400">No results found</li>
+            )}
+          </ul>
+        </div>
+      )}
+    </div>
+
+
                 {/* Status Select */}
                 <div className="flex-1">
                   <label

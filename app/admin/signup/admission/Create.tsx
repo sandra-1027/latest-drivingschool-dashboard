@@ -378,7 +378,6 @@ const Create: React.FC<CreateProps> = ({
   
   const handleSelectmobile = (admission: Admission) => {
     setmobile(admission.text);
-
     setmobileOpen(false);
   };
   // const handleSearchMobile = (e) => {
@@ -524,7 +523,7 @@ const Create: React.FC<CreateProps> = ({
                       onClick={() => setmobileOpen(!mobileOpen)}
                       className="mt-1 flex w-full items-center justify-between rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm cursor-pointer focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
                     >
-                      {mobile || "Select a mobile"}
+                      {mobile || "Select a mobile / name"}
                       <span className="ml-2">&#9662;</span> {/* Down arrow */}
                     </div>
               

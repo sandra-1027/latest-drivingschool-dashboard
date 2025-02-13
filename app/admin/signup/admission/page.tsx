@@ -226,13 +226,13 @@ const Admission = () => {
   // };
   const fetchMobileData = async () => {
     try {
-      const response = await fetch("/api/admin/report/get_mobile_autocomplete", {
+      const response = await fetch("/api/admin/report/get_mobile_user_autocomplete", {
         method: "POST",
         headers: {
           authorizations: state?.accessToken ?? "",
           api_key: "10f052463f485938d04ac7300de7ec2b",
         },
-        body: JSON.stringify({ user_id: null }),
+        body: JSON.stringify({}),
       });
 
       if (!response.ok) {
@@ -256,22 +256,35 @@ const Admission = () => {
     fetchMobileData();
   }, [state]);
 
-  const handleSearchMobile = (e) => {
-    const value = e.target.value;
+  // const handleSearchMobile = (e : any) => {
+  //   const value = e.target.value;
+  //   setSearchMobile(value);
+
+  //   const searchMobileData = mobileData.filter(
+  //     (item) =>
+  //       item.text.toLowerCase().includes(value.toLowerCase())
+  //       // item.user_name.toLowerCase().includes(value.toLowerCase()) ||
+  //       // item.email.toLowerCase().includes(value.toLowerCase()) ||
+  //       // item.pay_status.toLowerCase().includes(value.toLowerCase())
+  //   );
+
+  //   setFilteredMobile(searchMobileData);
+  // };
+  const handleSearchMobile = (e: any) => {
+    const value = e.target.value.toLowerCase();
     setSearchMobile(value);
-
-    const searchMobileData = mobileData.filter(
-      (item) =>
-        item.text.toLowerCase().includes(value.toLowerCase())
-        // item.user_name.toLowerCase().includes(value.toLowerCase()) ||
-        // item.email.toLowerCase().includes(value.toLowerCase()) ||
-        // item.pay_status.toLowerCase().includes(value.toLowerCase())
+  
+    const searchMobileData = mobileData.filter((item) =>
+      item.text.toLowerCase().includes(value) ||  // Search by name
+      item.mobile?.toLowerCase().includes(value) // Search by mobile number (ensure this field exists)
     );
-
+  
     setFilteredMobile(searchMobileData);
   };
+  
   const handleSelectMobile = (mobile) => {
     setSelectedMobile(mobile.text);
+    // setSelectedMobile(`${mobile.text} - ${mobile.term}`);
     setSearchMobile("");
     setIsDropdownOpen(false); // Close dropdown after selection
   };
@@ -437,7 +450,7 @@ const Admission = () => {
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         className="mt-1 flex w-full items-center justify-between rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm cursor-pointer focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
       >
-        {selectedMobile || "Select a mobile"}
+        {selectedMobile || "Select a mobile / name"}
         <span className="ml-2">&#9662;</span> {/* Down arrow */}
       </div>
 
@@ -462,7 +475,7 @@ const Admission = () => {
                   onClick={() => handleSelectMobile(mobile)}
                   className="cursor-pointer px-3 py-2 hover:bg-indigo-500 hover:text-white dark:hover:bg-navy-500"
                 >
-                  {mobile.text}
+                   {mobile.text}
                 </li>
               ))
             ) : (
