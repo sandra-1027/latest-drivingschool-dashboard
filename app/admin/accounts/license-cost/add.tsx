@@ -102,7 +102,7 @@
 
 
 import { useAuth } from "@/app/context/AuthContext";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 type CreateProps = {
@@ -120,13 +120,24 @@ type CreateProps = {
 const Add: React.FC<CreateProps> = ({ showmodal, togglemodal, formData, isEditing }) => {
   const { state } = useAuth();
   const [services, setServices] = useState<{ id: string; service_name: string }[]>([]);
+
+  const [selectedService, setSelectedService] = useState<string>("");
+  const [searchService, setSearchService] = useState("");
+  const[searchServiceData,setSearchServiceData] =useState("");
+  const[filteredService,setFilteredService]=useState("");
+   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const dropdownRef = useRef(null);
+
   const [localFormData, setLocalFormData] = useState(formData || {
     f_cost: "",
     m_cost: "",
-    service_id: "",
+service_id: selectedService,
     vehicle_type: "",
     id:"",
   });
+
+
+
   useEffect(() => {
     if (showmodal) {
       const fetchServices = async () => {
@@ -177,7 +188,8 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         api_key: "10f052463f485938d04ac7300de7ec2b",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(localFormData),
+      body: JSON.stringify(localFormData
+      ),
     });
 
     console.log(localFormData, "data sent to backend");
@@ -199,6 +211,77 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 };
 
   if (!showmodal) return null;
+
+
+    const fetchSearchService = async () => {
+      try {
+        const response = await fetch("/api/admin/report/get_service_autocomplete", {
+          method: "POST",
+          headers: {
+            authorizations: state?.accessToken ?? "",
+            api_key: "10f052463f485938d04ac7300de7ec2b",
+          },
+          body: JSON.stringify({}),
+        });
+  
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(`HTTP error! Status: ${response.status} - ${errorData.message || "Unknown error"}`);
+        }
+  
+        const data = await response.json();
+        console.log("Search mobile data", data.data);
+  
+        if (data.success) {
+          setSearchServiceData(data.data.service_details || []);
+          setFilteredService(data.data.service_details || []);
+        }
+      } catch (error) {
+        console.error("Fetch error:", error);
+      }
+    };
+  
+    useEffect(() => {
+      fetchSearchService();
+    }, [state]);
+  
+    const handleSearchService = (e : any) => {
+      const value = e.target.value;
+      setSearchService(value);
+  
+      const searchData = searchServiceData.filter(
+        (item) =>
+          item.text.toLowerCase().includes(value.toLowerCase())
+          // item.user_name.toLowerCase().includes(value.toLowerCase()) ||
+          // item.email.toLowerCase().includes(value.toLowerCase()) ||
+          // item.pay_status.toLowerCase().includes(value.toLowerCase())
+      );
+  
+      setFilteredService(searchData);
+    };
+  
+    
+    const handleSelectService = (service) => {
+      setSelectedService(service.text);
+     
+      // setSelectedMobile(`${mobile.text} - ${mobile.term}`);
+      setSearchService("");
+      setIsDropdownOpen(false); // Close dropdown after selection
+    };
+  
+    // Close dropdown when clicking outside
+    useEffect(() => {
+      const handleClickOutside = (event) => {
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+          setIsDropdownOpen(false);
+        }
+      };
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
+
+
   return (
     <div>
       <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden px-4 py-6 sm:px-5" role="dialog">
@@ -232,7 +315,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
             {/* Form fields */}
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <label className="block">
+            {/* <label className="block">
               <span>Service</span>
             <select name="service_id" value={localFormData.service_id} onChange={handleChange}
             className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
@@ -244,8 +327,52 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                   </option>
                 ))}
               </select>
-              </label>
+              </label> */}
+<div className="relative w-full" ref={dropdownRef}>
+      <label htmlFor="mobile" className="block text-sm font-medium text-slate-700 dark:text-navy-100">
+       Service Name
+      </label>
 
+      {/* Dropdown Button */}
+      <div
+        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+        className="mt-1 flex w-full items-center justify-between rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm cursor-pointer focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+      >
+        {selectedService || "Select a service"}
+        <span className="ml-2">&#9662;</span> {/* Down arrow */}
+      </div>
+
+      {/* Dropdown Content */}
+      {isDropdownOpen && (
+        <div className="absolute z-10 mt-1 w-full rounded-md border border-gray-300 bg-white shadow-lg dark:border-navy-600 dark:bg-navy-700">
+          {/* Search Bar Inside Dropdown */}
+          <input
+            type="text"
+            value={searchService}
+            onChange={handleSearchService}
+            placeholder="Search..."
+            className="w-full border-b border-gray-300 px-3 py-2 text-sm focus:outline-none dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+          />
+
+          {/* Dropdown Options */}
+          <ul className="max-h-48 overflow-y-auto hide-scrollbar">
+            {filteredService.length > 0 ? (
+              filteredService.map((service) => (
+                <li
+                  key={service.id}
+                  onClick={() => handleSelectService(service)}
+                  className="cursor-pointer px-3 py-2 hover:bg-indigo-500 hover:text-white dark:hover:bg-navy-500"
+                >
+                   {service.text}
+                </li>
+              ))
+            ) : (
+              <li className="px-3 py-2 text-gray-500 dark:text-gray-400">No results found</li>
+            )}
+          </ul>
+        </div>
+      )}
+    </div>
 
 
               <label className="block">

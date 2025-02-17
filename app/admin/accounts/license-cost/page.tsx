@@ -2,7 +2,7 @@
 
 'use client'
 import withAuth from '@/hoc/withAuth';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Add from './add';
 import { useAuth } from '@/app/context/AuthContext';
 import Edit from './edit';
@@ -25,12 +25,20 @@ const page = () => {
   const [filteredData, setFilteredData] = useState<Cost[]>([]);
   const [selectedCost, setSelectedCost] = useState<Cost | null>(null); 
   const [search, setSearch] = useState("");
-  const [selectedServices, setSelectedServices] = useState<string>("");
+  // const [selectedServices, setSelectedServices] = useState<string>("");
   const [service, setService] = useState<{ id: string; service_name: string }[]>([]);
   const [filters, setFilters] = useState({ service_name: '', status: '' });
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStatus, setSelectedStatus] = useState<string>("");
    const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
+ const [selectedService, setSelectedService] = useState<string>("");
+    const [searchService, setSearchService] = useState("");
+    const[searchServiceData,setSearchServiceData] =useState("");
+    const[filteredService,setFilteredService]=useState("");
+     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+      const dropdownRef = useRef(null);
+
+
  
   const togglemodal = (mode: 'add' | 'edit', cost: Cost | null = null) => {
     setModalMode(mode);  // Set the modal mode to either "add" or "edit"
@@ -164,9 +172,9 @@ const page = () => {
     
       // Apply form filters
      
-      if (selectedServices) {
+      if (selectedService) {
         newFilteredData = newFilteredData.filter(
-          (item) => item.service_name === selectedServices
+          (item) => item.service_name === selectedService
         );
       }
       if (selectedStatus) {
@@ -202,7 +210,7 @@ const page = () => {
     
     const handleReset = () => {
       setSearchTerm("");
-      setSelectedServices("");
+      setSelectedService("");
       setSelectedStatus("");
       setFilteredData(costData); // Reset to original data
     };
@@ -214,6 +222,78 @@ const page = () => {
     );
     const totalEntries = filteredData.length;
     const totalPages = Math.ceil(totalEntries / entriesPerPage);
+
+
+    const fetchSearchService = async () => {
+      try {
+        const response = await fetch("/api/admin/report/get_service_autocomplete", {
+          method: "POST",
+          headers: {
+            authorizations: state?.accessToken ?? "",
+            api_key: "10f052463f485938d04ac7300de7ec2b",
+          },
+          body: JSON.stringify({}),
+        });
+  
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(`HTTP error! Status: ${response.status} - ${errorData.message || "Unknown error"}`);
+        }
+  
+        const data = await response.json();
+        console.log("Search mobile data", data.data);
+  
+        if (data.success) {
+          setSearchServiceData(data.data.service_details || []);
+          setFilteredService(data.data.service_details || []);
+        }
+      } catch (error) {
+        console.error("Fetch error:", error);
+      }
+    };
+  
+    useEffect(() => {
+      fetchSearchService();
+    }, [state]);
+  
+    const handleSearchService = (e : any) => {
+      const value = e.target.value;
+      setSearchService(value);
+  
+      const searchData = searchServiceData.filter(
+        (item) =>
+          item.text.toLowerCase().includes(value.toLowerCase())
+          // item.user_name.toLowerCase().includes(value.toLowerCase()) ||
+          // item.email.toLowerCase().includes(value.toLowerCase()) ||
+          // item.pay_status.toLowerCase().includes(value.toLowerCase())
+      );
+  
+      setFilteredService(searchData);
+    };
+  
+    
+    const handleSelectService = (service) => {
+      setSelectedService(service.text);
+      // setSelectedMobile(`${mobile.text} - ${mobile.term}`);
+      setSearchService("");
+      setIsDropdownOpen(false); // Close dropdown after selection
+    };
+  
+    // Close dropdown when clicking outside
+    useEffect(() => {
+      const handleClickOutside = (event) => {
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+          setIsDropdownOpen(false);
+        }
+      };
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
+
+
+
+
   return (
     <div className=" w-full  pb-8">
  
@@ -247,7 +327,7 @@ const page = () => {
     <form>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         {/* Driver Name Select */}
-        <div className='flex-1'>
+        {/* <div className='flex-1'>
           <label
             htmlFor="serviceName"
             className="block text-sm font-medium text-slate-700 dark:text-navy-100"
@@ -269,7 +349,54 @@ const page = () => {
               ))}
 </select>
 
+        </div> */}
+<div className="relative w-full" ref={dropdownRef}>
+      <label htmlFor="mobile" className="block text-sm font-medium text-slate-700 dark:text-navy-100">
+       Service Name
+      </label>
+
+      {/* Dropdown Button */}
+      <div
+        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+        className="mt-1 flex w-full items-center justify-between rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm cursor-pointer focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+      >
+        {selectedService || "Select a service"}
+        <span className="ml-2">&#9662;</span> {/* Down arrow */}
+      </div>
+
+      {/* Dropdown Content */}
+      {isDropdownOpen && (
+        <div className="absolute z-10 mt-1 w-full rounded-md border border-gray-300 bg-white shadow-lg dark:border-navy-600 dark:bg-navy-700">
+          {/* Search Bar Inside Dropdown */}
+          <input
+            type="text"
+            value={searchService}
+            onChange={handleSearchService}
+            placeholder="Search..."
+            className="w-full border-b border-gray-300 px-3 py-2 text-sm focus:outline-none dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+          />
+
+          {/* Dropdown Options */}
+          <ul className="max-h-48 overflow-y-auto hide-scrollbar">
+            {filteredService.length > 0 ? (
+              filteredService.map((service) => (
+                <li
+                  key={service.id}
+                  onClick={() => handleSelectService(service)}
+                  className="cursor-pointer px-3 py-2 hover:bg-indigo-500 hover:text-white dark:hover:bg-navy-500"
+                >
+                   {service.text}
+                </li>
+              ))
+            ) : (
+              <li className="px-3 py-2 text-gray-500 dark:text-gray-400">No results found</li>
+            )}
+          </ul>
         </div>
+      )}
+    </div>
+
+
         {/* Status Select */}
         <div className='flex-1'>
           <label

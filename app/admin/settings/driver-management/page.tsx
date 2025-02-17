@@ -355,7 +355,7 @@ const page = () => {
           />
 
           {/* Dropdown Options */}
-          <ul className="max-h-48 overflow-y-auto">
+          <ul className="max-h-48 overflow-y-auto hide-scrollbar">
             {filteredDriver.length > 0 ? (
               filteredDriver.map((driver) => (
                 <li

@@ -353,7 +353,7 @@ const page = () => {
           />
 
           {/* Dropdown Options */}
-          <ul className="max-h-48 overflow-y-auto">
+          <ul className="max-h-48 overflow-y-auto hide-scrollbar">
             {filteredService.length > 0 ? (
               filteredService.map((service) => (
                 <li
