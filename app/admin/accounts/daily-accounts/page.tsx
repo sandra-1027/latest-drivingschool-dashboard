@@ -10,7 +10,8 @@ import { FaRegCheckCircle } from 'react-icons/fa';
 import Edit from './edit';
 import { HiOutlineArrowNarrowDown, HiOutlineArrowNarrowUp } from 'react-icons/hi';
 type Account = {
-  id?: string;
+  id: string;
+  text:string;
   status: string;
   daily_status: string; 
   type: string;
@@ -45,10 +46,11 @@ const page = () => {
   const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
   
     const [searchBranch, setSearchBranch] = useState("");
-    const[searchBranchData,setSearchBranchData] =useState("");
-    const[filteredBranch,setFilteredBranch]=useState("");
+    const[searchBranchData,setSearchBranchData] =useState<Account []>([]);
+    const[filteredBranch,setFilteredBranch]=useState<Account []>([]);
      const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-      const dropdownRef = useRef(null);
+      // const dropdownRef = useRef(null);
+      const dropdownRef = useRef<HTMLDivElement>(null);
   
 
   const togglemodal = (mode: 'add' | 'edit', account: Account | null = null) => {
@@ -292,7 +294,7 @@ const fetchSearchBranch = async () => {
     };
   
     
-    const handleSelectBranch = (branch) => {
+    const handleSelectBranch = (branch: { id: string; text: string }) => {
       setSelectedBranch(branch.text);
       
       setSearchBranch("");
@@ -301,7 +303,7 @@ const fetchSearchBranch = async () => {
   
     // Close dropdown when clicking outside
     useEffect(() => {
-      const handleClickOutside = (event) => {
+      const handleClickOutside = (event :any) => {
         if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
           setIsDropdownOpen(false);
         }
@@ -709,6 +711,7 @@ const fetchSearchBranch = async () => {
             account.id === updatedAccount.id ? updatedAccount : account
           )
         );
+        
         togglemodal("add");
       }}
       

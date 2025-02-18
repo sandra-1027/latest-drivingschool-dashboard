@@ -359,7 +359,7 @@ const page = () => {
           />
 
           {/* Dropdown Options */}
-          <ul className="max-h-48 overflow-y-auto">
+          <ul className="max-h-48 overflow-y-auto hide-scrollbar">
             {filteredVehicle.length > 0 ? (
               filteredVehicle.map((vehicle) => (
                 <li

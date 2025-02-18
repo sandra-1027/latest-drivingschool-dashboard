@@ -9,10 +9,12 @@ import Edit from './edit';
 
 type Cost = {
   id?: string;
+  text:string;
   status: string;
   service_name: string;
-  f_cost: string;
-  m_cost: string;
+  // f_cost: string;
+  // m_cost: string;
+  cost:string;
   vehicle_type: string;
   service_id: string;
   branch_name:string;
@@ -33,10 +35,10 @@ const page = () => {
    const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
  const [selectedService, setSelectedService] = useState<string>("");
     const [searchService, setSearchService] = useState("");
-    const[searchServiceData,setSearchServiceData] =useState("");
-    const[filteredService,setFilteredService]=useState("");
+    const[searchServiceData,setSearchServiceData] =useState<Cost[]>([]);
+    const[filteredService,setFilteredService]=useState<Cost[]>([]);
      const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-      const dropdownRef = useRef(null);
+      const dropdownRef = useRef<HTMLDivElement>(null);
 
 
  
@@ -273,7 +275,7 @@ const page = () => {
     };
   
     
-    const handleSelectService = (service) => {
+    const handleSelectService = (service:any) => {
       setSelectedService(service.text);
       // setSelectedMobile(`${mobile.text} - ${mobile.term}`);
       setSearchService("");
@@ -282,7 +284,7 @@ const page = () => {
   
     // Close dropdown when clicking outside
     useEffect(() => {
-      const handleClickOutside = (event) => {
+      const handleClickOutside = (event:any) => {
         if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
           setIsDropdownOpen(false);
         }
@@ -514,7 +516,7 @@ onChange={handleSearchChange}
                 {item.vehicle_type}
                 </td>
                 <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                {item.f_cost}
+                {item.cost}
                 </td>
                 {/* <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 {item.m_cost}

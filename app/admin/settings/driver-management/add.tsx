@@ -59,7 +59,7 @@ const Add: React.FC<CreateProps> = ({ showModal, togglemodal }) => {
       return;
     }
     if (!password || password.length < 6) {
-      setError("Password must be at least 8 characters long.");
+      setError("Password must be at least 6 characters long.");
       return;
     }
     if (/\s/.test(password)) {

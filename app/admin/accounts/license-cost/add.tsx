@@ -109,28 +109,43 @@ type CreateProps = {
   showmodal: boolean;
   togglemodal: () => void;
   formData?: {
-    f_cost: string;
-    m_cost: string;
+    // f_cost: string;
+    // m_cost: string;
+    cost:string;
     service_id: string;
     vehicle_type: string;
     id:string;
+  
   };
   isEditing?: boolean;
 };
+type Cost = {
+  id?: string;
+  text:string;
+  status: string;
+  service_name: string;
+  // f_cost: string;
+  // m_cost: string;
+  cost:string;
+  vehicle_type: string;
+  service_id: string;
+  branch_name:string;
+  added_date:string;
+};
+
 const Add: React.FC<CreateProps> = ({ showmodal, togglemodal, formData, isEditing }) => {
   const { state } = useAuth();
   const [services, setServices] = useState<{ id: string; service_name: string }[]>([]);
  const [error, setError] = useState<string | null>(null);
   const [selectedService, setSelectedService] = useState<string>("");
   const [searchService, setSearchService] = useState("");
-  const[searchServiceData,setSearchServiceData] =useState("");
-  const[filteredService,setFilteredService]=useState("");
+  const[searchServiceData,setSearchServiceData] =useState<Cost[]>([]);
+  const[filteredService,setFilteredService]=useState<Cost[]>([]);
    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const dropdownRef = useRef(null);
+    const dropdownRef = useRef<HTMLDivElement>(null);
 
   const [localFormData, setLocalFormData] = useState(formData || {
-    f_cost: "",
-    m_cost: "",
+    cost: "",
 service_id: "",
     vehicle_type: "",
     id:"",
@@ -264,7 +279,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     };
   
     
-    const handleSelectService = (service) => {
+    const handleSelectService = (service : any) => {
       setSelectedService(service.text);
      
       setLocalFormData((prevData)=>({
@@ -277,7 +292,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   
     // Close dropdown when clicking outside
     useEffect(() => {
-      const handleClickOutside = (event) => {
+      const handleClickOutside = (event: any) => {
         if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
           setIsDropdownOpen(false);
         }
@@ -396,8 +411,8 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
               <label className="block">
                 <span>Cost</span>
             <input 
-            name="f_cost"
-             value={ localFormData.f_cost}
+            name="cost"
+             value={ localFormData.cost}
               onChange={handleChange}
                type="text"
                 placeholder="cost" 

@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 interface Account {
-
-   id?: string;
+text:string;
+   id: string;
    status: string;
    daily_status: string; 
    type: string;

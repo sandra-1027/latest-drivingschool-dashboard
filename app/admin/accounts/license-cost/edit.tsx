@@ -2,9 +2,9 @@ import { useAuth } from "@/app/context/AuthContext";
 import React, { useEffect, useState } from "react";
 
 interface Cost {
-   
-       f_cost: string;
-    m_cost: string;
+   cost:string;
+    //    f_cost: string;
+    // m_cost: string;
     service_id: string;
     vehicle_type: string;
     id?: string;
