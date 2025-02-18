@@ -55,6 +55,7 @@ const page = () => {
     setModalMode(mode);
     setSelectedAccount(account);
     setShowmodal((prev) => !prev); 
+    fetchBranchData();
   };
 
 
@@ -191,6 +192,7 @@ const page = () => {
   const handleReset = () => {
     setSearchTerm("");
     setdailystatusselected("");
+    setSelectedBranch("");
     setSelectedStatus("");
     setFilteredData(accountData); 
   };

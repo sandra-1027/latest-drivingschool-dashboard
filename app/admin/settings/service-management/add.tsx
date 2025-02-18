@@ -23,19 +23,34 @@ const Add: React.FC<AddProps> = ({ showmodal, togglemodal }) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (!formData.service_name || !formData.amount || !formData.description) {
+      setError("All fields are required");
+      return;
+    }
+if (!/^\d+$/.test(formData.amount)) {
+      setError("Amount must be numeric.");
+      return;
+    }
+    if (!formData.service_name) {
+      setError("Service name is required.");
+      return;
+    }
+
+
+
     console.log("Service Name:", formData.service_name);
     console.log("Description:", formData.description);
     console.log("amount:", formData.amount);
 
-    if (
-      !formData.service_name.trim() ||
-      !formData.description.trim() ||
-      !formData.amount.trim()
-    ) {
-      setError("All fields are required.");
-      setLoading(false);
-      return;
-    }
+    // if (
+    //   !formData.service_name.trim() ||
+    //   !formData.description.trim() ||
+    //   !formData.amount.trim()
+    // ) {
+    //   setError("All fields are required.");
+    //   setLoading(false);
+    //   return;
+    // }
 
     setError(null);
     setLoading(true);
@@ -82,7 +97,7 @@ const Add: React.FC<AddProps> = ({ showmodal, togglemodal }) => {
       setLoading(false);
     }
   };
-  if (!showmodal) return null;
+ // if (!showmodal) return null;
   return (
     <div
       className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden px-4 py-6 sm:px-5"
@@ -134,19 +149,21 @@ const Add: React.FC<AddProps> = ({ showmodal, togglemodal }) => {
                   onChange={(e) =>
                     setFormData({ ...formData, service_name: e.target.value })
                   }
+                  required
                 />
               </label>
               <label className="block">
                 <span>Amount</span>
                 <input
                   className="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                  placeholder="amount"
+                  placeholder="Amount"
                   name="amount"
                   type="text"
                   value={formData.amount}
                   onChange={(e) =>
                     setFormData({ ...formData, amount: e.target.value })
                   }
+                  required
                 />
               </label>
               <div className="mt-1.5 w-full">
@@ -156,8 +173,14 @@ const Add: React.FC<AddProps> = ({ showmodal, togglemodal }) => {
                   onChange={(value: string) =>
                     setFormData({ ...formData, description: value })
                   }
+                 
                 />
               </div>
+
+
+              {error && (
+              <div className="text-red-500 text-sm mt-2">{error}</div>
+            )}
 
               <button
                 type="submit"

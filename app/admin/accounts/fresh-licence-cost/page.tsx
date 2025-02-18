@@ -540,6 +540,7 @@ const page = () => {
       setModalMode(mode);  // Set the modal mode to either "add" or "edit"
       setSelectedCost(cost);  // Pass the selected driver if in edit mode
       setShowmodal((prev) => !prev);  // Toggle the modal visibility
+      fetchclassData();
     };
   
   

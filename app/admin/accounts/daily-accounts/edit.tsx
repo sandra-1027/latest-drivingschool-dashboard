@@ -120,7 +120,7 @@ const Edit = ({ showModal, toggleModal, AccountData, onSave }: EditProps) => {
         if (data.success) {
           setSuccess(true);
           onSave(formData);
-          toggleModal();
+          // toggleModal();
         } else {
           setError(data.msg || 'Failed to update Cost');
           console.log('Error Messages:', data.error_msgs);

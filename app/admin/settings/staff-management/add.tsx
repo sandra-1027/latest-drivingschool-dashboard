@@ -49,7 +49,7 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal, formData, isEditin
     mobile: "",
     place: "",
     email: "",
-    branch_id: "",
+    branch_id:"",
   });
   const [staffData, setStaffData] = useState<Staff[]>([]);
   const [error, setError] = useState(null);
@@ -102,7 +102,19 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElemen
 
 const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
-  
+  if (!localFormData.name || !localFormData.mobile || !localFormData.branch_id) {
+    setError("All fields are required");
+    return;
+  }
+if (!/^\d+$/.test(localFormData.mobile)) {
+    setError("Amount must be numeric.");
+    return;
+  }
+ 
+
+
+  // const formDataToSend = {...localFormData, branch_id}
+  const formDataToSend = { ...localFormData, branch_id: localFormData.branch_id };
   
   try {
     const response = await fetch("/api/admin/settings/add_staff", {
@@ -112,10 +124,10 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         api_key: "10f052463f485938d04ac7300de7ec2b",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(localFormData),
+      body: JSON.stringify(formDataToSend),
     });
 
-    console.log(localFormData, "data sent to backend");
+    console.log(formDataToSend, "data sent to backend");
 
     const responseJson = await response.json();
     console.log("Response from backend:", responseJson);
@@ -130,7 +142,7 @@ if (response.ok){
  
    
    
-    togglemodal(); 
+    // togglemodal(); 
    
   } catch (error:any) {
     console.error("Error submitting form:", error);
@@ -138,7 +150,7 @@ if (response.ok){
   }
 };
 
-  if (!showmodal) return null;
+  // if (!showmodal) return null;
 
 const fetchSearchBranch = async () => {
       try {
@@ -189,8 +201,11 @@ const fetchSearchBranch = async () => {
   
     
     const handleSelectBranch = (branch) => {
-      // setSelectedBranch(branch.text);
-      setbranch_id(branch.text);
+      setSelectedBranch(branch.text);
+      setLocalFormData((prevData)=>({
+        ...prevData,
+        branch_id: branch.id,
+      }))
       
       setSearchBranch("");
       setIsDropdownOpen(false); 
@@ -211,7 +226,7 @@ const fetchSearchBranch = async () => {
     <div>
       <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden px-4 py-6 sm:px-5" role="dialog">
         <div className="absolute inset-0 bg-slate-900/60 transition-opacity duration-300" onClick={togglemodal}></div>
-        <div className="relative flex w-full max-w-3xl origin-top flex-col overflow-hidden rounded-lg bg-white transition-all duration-300 dark:bg-navy-700">
+        <div className="relative flex w-full max-w-3xl origin-top flex-col rounded-lg bg-white transition-all duration-300 dark:bg-navy-700">
           <div className="flex justify-between rounded-t-lg bg-slate-200 px-4 py-3 dark:bg-navy-800 sm:px-5">
             <h3 className="text-xl font-medium text-slate-700 dark:text-navy-100">
             Add Staff
@@ -371,6 +386,11 @@ const fetchSearchBranch = async () => {
     </span>
             </label>
             </div>
+
+            {error && (
+              <div className="text-red-500 text-sm mt-2">{error}</div>
+            )}
+
             <button type="submit" className="bg-primary text-white rounded p-2 w-1/5 mt-4">
             {loading ? 'Adding...' : 'Add'}
             </button>

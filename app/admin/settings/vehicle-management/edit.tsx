@@ -50,7 +50,13 @@ const Edit = ({ showModal, toggleModal, vehicleData, onSave }: EditProps) => {
   }, [formData?.userfile]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+    const { name, value, type} = e.target;
+
+    // if (type === "date" && value < today) {
+    //   alert("You cannot select a past date!");
+    //   return;
+    // }
+
     setFormData((prevData) =>
       prevData ? { ...prevData, [name]: value } : null
     );
@@ -128,7 +134,7 @@ const Edit = ({ showModal, toggleModal, vehicleData, onSave }: EditProps) => {
       if (data.success) {
         setSuccess(true);
         onSave(formData);
-        toggleModal();
+        // toggleModal();
       } else {
         setError(data.msg || "Failed to update vehicle");
       }
@@ -151,6 +157,7 @@ const Edit = ({ showModal, toggleModal, vehicleData, onSave }: EditProps) => {
 
   if (!showModal || !formData) return null;
 
+  const today = new Date().toISOString().split("T")[0];
   return (
     <div>
       <div
@@ -213,6 +220,7 @@ const Edit = ({ showModal, toggleModal, vehicleData, onSave }: EditProps) => {
                     value={formData.tax_expiry_date}
                     onChange={handleChange}
                     placeholder="Mobile"
+                    min={today}
                     className="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                   />
                 </span>
@@ -227,6 +235,7 @@ const Edit = ({ showModal, toggleModal, vehicleData, onSave }: EditProps) => {
                     value={formData.rc_expiry_date}
                     onChange={handleChange}
                     placeholder="Mobile"
+                    min={today}
                     className="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                   />
                 </span>
@@ -240,6 +249,7 @@ const Edit = ({ showModal, toggleModal, vehicleData, onSave }: EditProps) => {
                     value={formData.pucc_expiry_date}
                     onChange={handleChange}
                     placeholder="Mobile"
+                    min={today}
                     className="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                   />
                 </span>
@@ -253,6 +263,7 @@ const Edit = ({ showModal, toggleModal, vehicleData, onSave }: EditProps) => {
                     value={formData.insurance_expiry_date}
                     onChange={handleChange}
                     placeholder="Mobile"
+                    min={today}
                     className="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                   />
                 </span>

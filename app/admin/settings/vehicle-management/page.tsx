@@ -49,9 +49,10 @@ const page = () => {
     setModalMode(mode);
     setSelectedDriver(vehicle);
     setShowmodal((prev) => !prev);
+    fetchVehicleData();
   };
 
-  const fetchServiceData = async () => {
+  const fetchVehicleData = async () => {
     try {
       const response = await fetch("/api/admin/settings/vehicle_details", {
         method: "POST",
@@ -87,7 +88,7 @@ const page = () => {
   };
 
   useEffect(() => {
-    fetchServiceData();
+    fetchVehicleData();
   }, [state]);
 
   const applyFilters = () => {

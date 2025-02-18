@@ -41,6 +41,7 @@ const page = () => {
     setModalMode(mode);
     setEditedBranch(branch);
     setShowmodal((prev) => !prev);
+    fetchBranchData();
   };
 
   const fetchBranchData = async () => {

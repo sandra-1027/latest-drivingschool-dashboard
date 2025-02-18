@@ -907,6 +907,7 @@ const Admission = () => {
  setModalMode(mode); 
  setEditedAdmission(admission); 
  setShowmodal((prev) => !prev); 
+ fetchAdmissionData();
  };
 
  const togglemodals =()=>{

@@ -134,6 +134,7 @@ type CreateProps = {
 const Add: React.FC<CreateProps> = ({ showmodal, togglemodal, formData, isEditing }) => {
   const { state } = useAuth();
   const [services, setServices] = useState<{ id: string; service_name: string }[]>([]);
+  const [error, setError] = useState<string | null>(null);
   const [localFormData, setLocalFormData] = useState(formData || {
     cost: "",
     study_cost:"",
@@ -186,7 +187,10 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal, formData, isEditin
 
 const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
-  
+  if (!localFormData.service_id.trim() || !localFormData.vehicle_type.trim()) {
+    setError("All fields are required.");
+    return;
+  }
   
   try {
     const response = await fetch('/api/admin/accounts/add_fresh_license_cost', {
@@ -220,7 +224,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   }
 };
 
-  if (!showmodal) return null;
+  // if (!showmodal) return null;
   return (
     // <div>
     //   <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden px-4 py-6 sm:px-5" role="dialog">
@@ -428,6 +432,10 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                 className="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" />
            </label>
           </div>
+          {error && (
+              <div className="text-red-500 text-sm mt-2">{error}</div>
+            )}
+
           <button type="submit" className="bg-primary text-white rounded p-2 w-1/5 mt-4">Add</button>
         </form>
       </div>

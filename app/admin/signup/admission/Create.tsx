@@ -65,10 +65,10 @@ const Create: React.FC<CreateProps> = ({
   const [adharPreview, setAdharPreview] = useState<string>("");
   const [insurencePreview, setInsurencePreview] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchMobile, setSearchMobile] = useState("");
+  // const [searchMobile, setSearchMobile] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [mobileOpen, setmobileOpen] = useState(false);
-  const [selectedService, setSelectedService] = useState("");
+  // const [selectedService, setSelectedService] = useState("");
   const [selectedAmount, setSelectedAmount] = useState("");
 
   const [name, setname] = useState("");
@@ -94,7 +94,30 @@ const Create: React.FC<CreateProps> = ({
   const [pucc, setpucc] = useState("");
   const [dob, setdob] = useState("");
   const [address, setaddress] = useState("");
-   const dropdownRef = useRef(null);
+ 
+    const [mobileData, setMobileData] = useState([]);
+    const [filteredMobile, setFilteredMobile] = useState([]);
+    const [searchMobile, setSearchMobile] = useState("");
+    const [selectedMobile, setSelectedMobile] = useState("");
+const [selectedBranch, setSelectedBranch] = useState<string>("");
+  const [searchBranch, setSearchBranch] = useState("");
+  const[searchBranchData,setSearchBranchData] =useState("");
+  const[filteredBranch,setFilteredBranch]=useState("");
+ const [selectedService, setSelectedService] = useState<string>("");
+  const [searchService, setSearchService] = useState("");
+  const[searchServiceData,setSearchServiceData] =useState("");
+  const[filteredService,setFilteredService]=useState("");
+
+
+
+ const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+   const [isbranchDropdownOpen, setIsbranchDropdownOpen] = useState(false);
+   const [isserviceDropdownOpen, setIsserviceDropdownOpen] = useState(false);
+   const serviceDropdownRef = useRef(null);
+    const userDropdownRef = useRef(null);
+    const branchDropdownRef = useRef(null);
+
+
 
   const [localFormData, setLocalFormData] = useState(
     formDatas || {
@@ -122,84 +145,7 @@ const Create: React.FC<CreateProps> = ({
     }
   );
 
-  const fetchbranchData = async () => {
-    try {
-      const response = await fetch("/api/admin/settings/branch_details", {
-        method: "POST",
-        headers: {
-          authorizations: state?.accessToken ?? "",
-
-          api_key: "10f052463f485938d04ac7300de7ec2b",
-        },
-        body: JSON.stringify({
-          /* request body */
-        }),
-      });
-      if (!response.ok) {
-        const errorData = await response.json();
-        // console.error('API error:', errorData);
-        throw new Error(
-          `HTTP error! Status: ${response.status} - ${
-            errorData.message || "Unknown error"
-          }`
-        );
-      }
-
-      const data = await response.json();
-
-      if (data.success) {
-        setBranch(data.data || []);
-      } else {
-        // console.error("API error:", data.msg || "Unknown error");
-      }
-    } catch (error) {
-      console.error("Fetch error:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchbranchData();
-  }, [state]);
-
-  const fetchserviceData = async () => {
-    try {
-      const response = await fetch("/api/admin/settings/service_details", {
-        method: "POST",
-        headers: {
-          authorizations: state?.accessToken ?? "",
-
-          api_key: "10f052463f485938d04ac7300de7ec2b",
-        },
-        body: JSON.stringify({
-          /* request body */
-        }),
-      });
-      if (!response.ok) {
-        const errorData = await response.json();
-        // console.error('API error:', errorData);
-        throw new Error(
-          `HTTP error! Status: ${response.status} - ${
-            errorData.message || "Unknown error"
-          }`
-        );
-      }
-
-      const data = await response.json();
-
-      if (data.success) {
-        setService(data.data || []);
-      } else {
-        // console.error("API error:", data.msg || "Unknown error");
-      }
-    } catch (error) {
-      console.error("Fetch error:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchserviceData();
-  }, [state]);
-
+ 
   const fetchAdmissionData = async () => {
     try {
       const response = await fetch("/api/admin/report/get_mobile_user_autocomplete", {
@@ -344,7 +290,7 @@ const Create: React.FC<CreateProps> = ({
       }
       if (response.ok) {
         alert("Admission added successfully!");
-        togglemodal();
+        // togglemodal();
       }
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -352,49 +298,198 @@ const Create: React.FC<CreateProps> = ({
     }
   };
 
-  const filteredServices = service.filter((service) =>
-    service.service_name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-  
-
-  const handleSelect = (service: {
-    id: string;
-    service_name: string;
-    amount?: string;
-  }) => {
-    setSelectedService(service.service_name);
-    setservice_id(service.id);
-    setSelectedAmount(service.amount || "0");
-    setIsOpen(false);
-  };
-  // const filteredMobilenumbers = admission.filter((admission) =>
-  //   admission.user_name.toLowerCase().includes(searchMobile.toLowerCase())
-  
+  // const filteredServices = service.filter((service) =>
+  //   service.service_name.toLowerCase().includes(searchTerm.toLowerCase())
   // );
-  const filteredMobilenumbers = admission.filter((admission) =>
-    admission.user_name?.toLowerCase().includes(searchMobile.toLowerCase()) ||
-    admission.text?.toLowerCase().includes(searchMobile.toLowerCase()) // If mobile field exists
-  );
   
-  const handleSelectmobile = (admission: Admission) => {
-    setmobile(admission.text);
-    setmobileOpen(false);
-  };
-  // const handleSearchMobile = (e) => {
-  //   const value = e.target.value;
-  //   setSearchMobile(value);
 
-  //   const searchMobileData = mobileData.filter(
-  //     (item) =>
-       
-  //       item.text.toLowerCase().includes(value.toLowerCase()) ||
-  //       item.pay_status.toLowerCase().includes(value.toLowerCase())
-  //   );
-
-  //   setFilteredMobile(searchMobileData);
+  // const handleSelect = (service: {
+  //   id: string;
+  //   service_name: string;
+  //   amount?: string;
+  // }) => {
+  //   setSelectedService(service.service_name);
+  //   setservice_id(service.id);
+  //   setSelectedAmount(service.amount || "0");
+  //   setIsOpen(false);
   // };
+  
+ 
 
-  if (!showmodal) return null;
+  // if (!showmodal) return null;
+
+
+
+
+  const fetchMobileData = async (searchTerm = null) => {
+   try {
+   const response = await fetch("/api/admin/report/get_mobile_user_autocomplete", {
+   method: "POST",
+   headers: {
+   authorizations: state?.accessToken ?? "",
+   api_key: "10f052463f485938d04ac7300de7ec2b",
+   },
+   body: JSON.stringify({ term: searchTerm }),
+   });
+  
+   if (!response.ok) {
+   const errorData = await response.json();
+   throw new Error(`HTTP error! Status: ${response.status} - ${errorData.message || "Unknown error"}`);
+   }
+  
+   const data = await response.json();
+   console.log("Search mobile data", data.data);
+  
+   if (data.success) {
+   setMobileData(data.data.mobile_details || []);
+   setFilteredMobile(data.data.mobile_details || []);
+   }
+   } catch (error) {
+   console.error("Fetch error:", error);
+   }
+  };
+  
+  // Fetch default mobile data on load
+  useEffect(() => {
+   fetchMobileData();
+  }, [state]);
+  
+  // Handle search input change
+  const handleSearchMobile = (e) => {
+   const value = e.target.value;
+   setSearchMobile(value);
+   fetchMobileData(value); 
+  };
+  
+  const handleSelectMobile = (mobile) => {
+   setSelectedMobile(mobile.text);
+   setIsDropdownOpen(false);
+   setSearchMobile(""); 
+  };
+
+
+    const fetchSearchBranch = async () => {
+         try {
+           const response = await fetch("/api/admin/report/get_branch_autocomplete", {
+             method: "POST",
+             headers: {
+               authorizations: state?.accessToken ?? "",
+               api_key: "10f052463f485938d04ac7300de7ec2b",
+             },
+             body: JSON.stringify({}),
+           });
+     
+           if (!response.ok) {
+             const errorData = await response.json();
+             throw new Error(`HTTP error! Status: ${response.status} - ${errorData.message || "Unknown error"}`);
+           }
+     
+           const data = await response.json();
+           console.log("Search mobile data", data.data);
+     
+           if (data.success) {
+             setSearchBranchData(data.data.branch_details || []);
+             setFilteredBranch(data.data.branch_details || []);
+           }
+         } catch (error) {
+           console.error("Fetch error:", error);
+         }
+       };
+     
+       useEffect(() => {
+         fetchSearchBranch();
+       }, [state]);
+     
+       const handleSearchBranch = (e : any) => {
+         const value = e.target.value;
+         setSearchBranch(value);
+     
+         const searchData = searchBranchData.filter(
+           (item) =>
+             item.text.toLowerCase().includes(value.toLowerCase())
+         );
+     
+         setFilteredBranch(searchData);
+       };
+     
+       
+       const handleSelectBranch = (branch) => {
+         setSelectedBranch(branch.text);
+         setSearchBranch("");
+         setIsDropdownOpen(false); 
+       };
+       const fetchSearchService = async () => {
+           try {
+             const response = await fetch("/api/admin/report/get_service_autocomplete", {
+               method: "POST",
+               headers: {
+                 authorizations: state?.accessToken ?? "",
+                 api_key: "10f052463f485938d04ac7300de7ec2b",
+               },
+               body: JSON.stringify({}),
+             });
+       
+             if (!response.ok) {
+               const errorData = await response.json();
+               throw new Error(`HTTP error! Status: ${response.status} - ${errorData.message || "Unknown error"}`);
+             }
+       
+             const data = await response.json();
+             console.log("Search mobile data", data.data);
+       
+             if (data.success) {
+               setSearchServiceData(data.data.service_details || []);
+               setFilteredService(data.data.service_details || []);
+             }
+           } catch (error) {
+             console.error("Fetch error:", error);
+           }
+         };
+       
+         useEffect(() => {
+           fetchSearchService();
+         }, [state]);
+       
+         const handleSearchService = (e : any) => {
+           const value = e.target.value;
+           setSearchService(value);
+       
+           const searchData = searchServiceData.filter(
+             (item) =>
+               item.text.toLowerCase().includes(value.toLowerCase())
+           );
+       
+           setFilteredService(searchData);
+         };
+       
+         
+         const handleSelectService = (service) => {
+           setSelectedService(service.text);
+          
+           setSearchService("");
+           setIsDropdownOpen(false); 
+         };
+
+
+
+
+
+        // useEffect(() => {
+        //      const handleClickOutside = (event) => {
+        //        if (userDropdownRef.current && !userDropdownRef.current.contains(event.target)) {
+        //          setIsDropdownOpen(false);
+        //        }
+        //        if (branchDropdownRef.current && !branchDropdownRef.current.contains(event.target)) {
+        //          setIsbranchDropdownOpen(false);
+        //        }
+        //        if (serviceDropdownRef.current && !serviceDropdownRef.current.contains(event.target)) {
+        //         setIsbranchDropdownOpen(false);
+        //       }
+        //      };
+           
+        //      document.addEventListener("mousedown", handleClickOutside);
+        //      return () => document.removeEventListener("mousedown", handleClickOutside);
+        //    }, []);
 
   return (
     <div
@@ -513,52 +608,51 @@ const Create: React.FC<CreateProps> = ({
                     //     </div>
                     //   )}
                     // </div>
-                    <div className="relative w-full" ref={dropdownRef}>
+                    <div className="relative w-full" ref={userDropdownRef}>
                     <label htmlFor="mobile" className="block text-sm font-medium text-slate-700 dark:text-navy-100">
-                    Enter mobile No/Name
+                    Mobile
                     </label>
-              
+                   
                     {/* Dropdown Button */}
                     <div
-                      onClick={() => setmobileOpen(!mobileOpen)}
-                      className="mt-1 flex w-full items-center justify-between rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm cursor-pointer focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                    className="mt-1 flex w-full items-center justify-between rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm cursor-pointer focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
                     >
-                      {mobile || "Select a mobile / name"}
-                      <span className="ml-2">&#9662;</span> {/* Down arrow */}
+                    {selectedMobile || "Select a mobile / name"}
+                    <span className="ml-2">&#9662;</span> {/* Down arrow */}
                     </div>
-              
+                   
                     {/* Dropdown Content */}
-                    {mobileOpen && (
-                      <div className="absolute z-10 mt-1 w-full rounded-md border border-gray-300 bg-white shadow-lg dark:border-navy-600 dark:bg-navy-700">
-                        {/* Search Bar Inside Dropdown */}
-                        <input
-                          type="text"
-                          value={searchMobile}
-                          onChange={(e) => setSearchMobile(e.target.value)}
-    onFocus={() => setmobileOpen(true)}
-                          placeholder="Search..."
-                          className="w-full border-b border-gray-300 px-3 py-2 text-sm focus:outline-none dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
-                        />
-              
-                        {/* Dropdown Options */}
-                        <ul className="max-h-48 overflow-y-auto">
-                          {filteredMobilenumbers.length > 0 ? (
-                            filteredMobilenumbers.map((mobile) => (
-                              <li
-                                key={mobile.id}
-                                onClick={() =>  handleSelectmobile(mobile)}
-                                className="cursor-pointer px-3 py-2 hover:bg-indigo-500 hover:text-white dark:hover:bg-navy-500"
-                              >
-                               {mobile.text}
-                              </li>
-                            ))
-                          ) : (
-                            <li className="px-3 py-2 text-gray-500 dark:text-gray-400">No results found</li>
-                          )}
-                        </ul>
-                      </div>
+                    {isDropdownOpen && (
+                    <div className="absolute z-10 mt-1 w-full rounded-md border border-gray-300 bg-white shadow-lg dark:border-navy-600 dark:bg-navy-700">
+                    {/* Search Bar Inside Dropdown */}
+                    <input
+                    type="text"
+                    value={searchMobile}
+                    onChange={handleSearchMobile}
+                    placeholder="Search..."
+                    className="w-full border-b border-gray-300 px-3 py-2 text-sm focus:outline-none dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+                    />
+                   
+                    {/* Dropdown Options */}
+                    <ul className="max-h-48 overflow-y-auto hide-scrollbar">
+                    {filteredMobile.length > 0 ? (
+                    filteredMobile.map((mobile) => (
+                    <li
+                    key={mobile.id}
+                    onClick={() => handleSelectMobile(mobile)}
+                    className="cursor-pointer px-3 py-2 hover:bg-indigo-500 hover:text-white dark:hover:bg-navy-500"
+                    >
+                    {mobile.text}
+                    </li>
+                    ))
+                    ) : (
+                    <li className="px-3 py-2 text-gray-500 dark:text-gray-400">No results found</li>
                     )}
-                  </div>
+                    </ul>
+                    </div>
+                    )}
+                    </div>
                   )}
 
                   {/* Profile Information */}
@@ -589,7 +683,7 @@ const Create: React.FC<CreateProps> = ({
                             value={name}
                             onChange={(e) => setname(e.target.value)}
                             className="form-input peer  mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                            placeholder="name"
+                            placeholder="Name"
                             type="text"
                           />
                         </span>
@@ -602,7 +696,7 @@ const Create: React.FC<CreateProps> = ({
                             value={mobile}
                             onChange={(e) => setmobile(e.target.value)}
                             className="form-input peer  mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                            placeholder="mobile"
+                            placeholder="Mobile"
                             type="text"
                           />
                         </span>
@@ -618,7 +712,7 @@ const Create: React.FC<CreateProps> = ({
                             value={dob}
                             onChange={(e) => setdob(e.target.value)}
                             className="form-input peer  mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                            placeholder="name"
+                            placeholder="Date of Birth"
                             type="date"
                           />
                         </span>
@@ -649,7 +743,7 @@ const Create: React.FC<CreateProps> = ({
                             value={email}
                             onChange={(e) => setemail(e.target.value)}
                             type="text"
-                            placeholder="email"
+                            placeholder="Email"
                             className="form-input peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                           />
                         </span>
@@ -693,7 +787,7 @@ const Create: React.FC<CreateProps> = ({
                           </select>
                         </span>
                       </label>
-
+{/* 
                       <label className="block ">
                         <span>Branch Name</span>
                         <span className="relative mt-1.5 flex">
@@ -711,7 +805,53 @@ const Create: React.FC<CreateProps> = ({
                             ))}
                           </select>
                         </span>
-                      </label>
+                      </label> */}
+<div className="relative w-full" ref={branchDropdownRef}>
+      <label htmlFor="mobile" className="block text-sm font-medium text-slate-700 dark:text-navy-100">
+       Branch Name
+      </label>
+
+      {/* Dropdown Button */}
+      <div
+        onClick={() => setIsbranchDropdownOpen(!isbranchDropdownOpen)}
+        className="mt-1 flex w-full items-center justify-between rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm cursor-pointer focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+      >
+        {selectedBranch || "Select a branch"}
+        <span className="ml-2">&#9662;</span> {/* Down arrow */}
+      </div>
+
+      {/* Dropdown Content */}
+      {isbranchDropdownOpen && (
+        <div className="absolute z-10 mt-1 w-full rounded-md border border-gray-300 bg-white shadow-lg dark:border-navy-600 dark:bg-navy-700">
+          {/* Search Bar Inside Dropdown */}
+          <input
+            type="text"
+            value={searchBranch}
+            onChange={handleSearchBranch}
+            placeholder="Search..."
+            className="w-full border-b border-gray-300 px-3 py-2 text-sm focus:outline-none dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+          />
+
+          {/* Dropdown Options */}
+          <ul className="max-h-48 overflow-y-auto hide-scrollbar">
+            {filteredBranch.length > 0 ? (
+              filteredBranch.map((branch) => (
+                <li
+                  key={branch.id}
+                  onClick={() => handleSelectBranch(branch)}
+                  className="cursor-pointer px-3 py-2 hover:bg-indigo-500 hover:text-white dark:hover:bg-navy-500"
+                >
+                   {branch.text}
+                </li>
+              ))
+            ) : (
+              <li className="px-3 py-2 text-gray-500 dark:text-gray-400">No results found</li>
+            )}
+          </ul>
+        </div>
+      )}
+    </div>
+
                     </div>
 
                     <label className="block mt-2">
@@ -865,7 +1005,7 @@ const Create: React.FC<CreateProps> = ({
               </label>
               <div className="space-y-5 p-4 sm:p-5">
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div className="relative w-full">
+                {/* <div className="relative w-full">
                 <span>Service</span>
                   <div
                     className="dark:bg-navy-700 form-select peer mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9"
@@ -902,8 +1042,52 @@ const Create: React.FC<CreateProps> = ({
                       </div>
                     </div>
                   )}
-                </div>
+                </div> */}
+<div className="relative w-full" ref={serviceDropdownRef}>
+      <label htmlFor="mobile" className="block text-sm font-medium text-slate-700 dark:text-navy-100">
+       Service Name
+      </label>
 
+      {/* Dropdown Button */}
+      <div
+        onClick={() => setIsserviceDropdownOpen(!isserviceDropdownOpen)}
+        className="mt-1 flex w-full items-center justify-between rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm cursor-pointer focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+      >
+        {selectedService || "Select a service"}
+        <span className="ml-2">&#9662;</span> {/* Down arrow */}
+      </div>
+
+      {/* Dropdown Content */}
+      {isserviceDropdownOpen && (
+        <div className="absolute z-10 mt-1 w-full rounded-md border border-gray-300 bg-white shadow-lg dark:border-navy-600 dark:bg-navy-700">
+          {/* Search Bar Inside Dropdown */}
+          <input
+            type="text"
+            value={searchService}
+            onChange={handleSearchService}
+            placeholder="Search..."
+            className="w-full border-b border-gray-300 px-3 py-2 text-sm focus:outline-none dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+          />
+
+          {/* Dropdown Options */}
+          <ul className="max-h-48 overflow-y-auto hide-scrollbar">
+            {filteredService.length > 0 ? (
+              filteredService.map((service) => (
+                <li
+                  key={service.id}
+                  onClick={() => handleSelectService(service)}
+                  className="cursor-pointer px-3 py-2 hover:bg-indigo-500 hover:text-white dark:hover:bg-navy-500"
+                >
+                   {service.text}
+                </li>
+              ))
+            ) : (
+              <li className="px-3 py-2 text-gray-500 dark:text-gray-400">No results found</li>
+            )}
+          </ul>
+        </div>
+      )}
+    </div>
 
 
                 <label className="block">

@@ -1502,7 +1502,8 @@ if (response.ok){
     console.log("Parsed API Response:", data);
 
     if (response.ok && data?.success) {
-      togglemodal();
+      // togglemodal();
+      // toast.success('Admission updated successfully');
     } else {
       toast.error(`Failed to submit: ${data?.msg || "Unknown error"}`);
     }
@@ -1554,7 +1555,7 @@ const handleSelect = (service: { id: string; service_name: string; amount: strin
 
 
 
-  if (!showmodal) return null;
+  // if (!showmodal) return null;
 
   return (
     <div

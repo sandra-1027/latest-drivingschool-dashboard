@@ -119,7 +119,7 @@ const Edit = ({ showModal, togglemodal, costData, onSave }: EditProps) => {
           setSuccess(true);
           onSave(formData);
           toast.success('License Class updated successfully');
-          togglemodal();
+          // togglemodal();
         } else {
           setError(data.msg || 'Failed to update driver');
           console.log('Error Messages:', data.error_msgs);

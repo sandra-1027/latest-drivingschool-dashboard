@@ -1635,8 +1635,8 @@ fill="currentColor"
                         >
                          
                           <div className="flex items-center space-x-2">
-                            <div className="size-1.5 rounded-full border border-current opacity-40" />
-                            <span>Admission</span>
+                            {/* <div className="size-1.5 rounded-full border border-current opacity-40" /> */}
+                            <span className="font-bold">Admission</span>
                           </div>
                          
                         </Link>
@@ -1652,7 +1652,7 @@ fill="currentColor"
         onClick={handleDropdownToggle} // Toggle the dropdown on button click
         className="ac-trigger flex w-full items-center justify-between py-2 text-xs+ tracking-wide text-slate-600 outline-none transition-[color,padding-left] duration-300 ease-in-out hover:text-slate-800 dark:text-navy-200 dark:hover:text-navy-50"
       >
-        <span>Master</span>
+        <span className="font-bold ml-2">Master</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className={`size-4 text-slate-400 transition-transform ease-in-out ${isDropdownOpen ? 'rotate-90' : ''}`}
@@ -1734,8 +1734,8 @@ fill="currentColor"
                         >
                          
                           <div className="flex items-center space-x-2">
-                            <div className="size-1.5 rounded-full border border-current opacity-40" />
-                            <span>Accounts</span>
+                            {/* <div className="size-1.5 rounded-full border border-current opacity-40" /> */}
+                            <span className="font-bold">Accounts</span>
                           </div>
                          
                         </Link>
@@ -1747,7 +1747,7 @@ fill="currentColor"
         onClick={handleDropdownToggles} // Toggle the dropdown on button click
         className="ac-trigger flex w-full items-center justify-between py-2 text-xs+ tracking-wide text-slate-600 outline-none transition-[color,padding-left] duration-300 ease-in-out hover:text-slate-800 dark:text-navy-200 dark:hover:text-navy-50"
       >
-         <span>Reports</span>
+         <span className="font-bold ml-2">Reports</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className={`size-4 text-slate-400 transition-transform ease-in-out ${isDropdownOpens ? 'rotate-90' : ''}`}

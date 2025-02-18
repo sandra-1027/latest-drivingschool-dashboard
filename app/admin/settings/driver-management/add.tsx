@@ -34,10 +34,39 @@ const Add: React.FC<CreateProps> = ({ showModal, togglemodal }) => {
       setError("All fields are required");
       return;
     }
-    if (!/^\d+$/.test(mobile)) {
-      setError("Mobile number must be numeric.");
+    // if (!/^\d+$/.test(mobile)) {
+    //   setError("Mobile number must be numeric.");
+    //   return;
+    // }
+    // if (!driverName) {
+    //   setError("Driver name is required.");
+    //   return;
+    // }
+    if (!mobile || !/^\d{10}$/.test(mobile)) {
+      setError("Mobile number must be a valid 10-digit number.");
       return;
     }
+    // if (!place) {
+    //   setError("Place is required.");
+    //   return;
+    // }
+    if (!place.trim() || place.split(/\s+/).length < 1) {
+      setError("Place cannot be empty and should contain at least one word.");
+      return;
+    }
+    if (!drivingLicenceNo || drivingLicenceNo.length < 5) {
+      setError("Driving licence number is required and must be at least 5 characters.");
+      return;
+    }
+    if (!password || password.length < 6) {
+      setError("Password must be at least 8 characters long.");
+      return;
+    }
+    if (/\s/.test(password)) {
+      setError("Password should not contain spaces.");
+      return;
+    }
+
     setError("");
     setLoading(true);
     setSuccess(false);
@@ -142,6 +171,7 @@ const Add: React.FC<CreateProps> = ({ showModal, togglemodal }) => {
                     type="text"
                     value={driverName}
                     onChange={(e) => setDriverName(e.target.value)}
+                    required
                   />
                 </span>
               </label>
@@ -154,6 +184,7 @@ const Add: React.FC<CreateProps> = ({ showModal, togglemodal }) => {
                     type="text"
                     value={mobile}
                     onChange={(e) => setMobile(e.target.value)}
+                    required
                   />
                 </span>
               </label>
@@ -166,6 +197,7 @@ const Add: React.FC<CreateProps> = ({ showModal, togglemodal }) => {
                     type="text"
                     value={place}
                     onChange={(e) => setPlace(e.target.value)}
+                    required
                   />
                 </span>
               </label>
@@ -178,6 +210,7 @@ const Add: React.FC<CreateProps> = ({ showModal, togglemodal }) => {
                     type="text"
                     value={drivingLicenceNo}
                     onChange={(e) => setdrivingLicenceNo(e.target.value)}
+                    required
                   />
                 </span>
               </label>
@@ -192,6 +225,7 @@ const Add: React.FC<CreateProps> = ({ showModal, togglemodal }) => {
                     name="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    required
                   />
                   <span
                     className="absolute right-3 flex items-center justify-center text-slate-400 cursor-pointer mt-3"
@@ -202,6 +236,10 @@ const Add: React.FC<CreateProps> = ({ showModal, togglemodal }) => {
                 </span>
               </label>
             </div>
+
+            {error && (
+              <div className="text-red-500 text-sm mt-2">{error}</div>
+            )}
 
             <button
               type="submit"

@@ -18,12 +18,19 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal }) => {
   const [insurance_expiry_date, setInsurance_expiry_date] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>("");
-
+ const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!vehicle_no) {
+      setError("Driver name is required.");
+      return;
+    }
+
+
 
     const formData = new FormData();
     formData.append("vehicle_no", vehicle_no);
@@ -53,7 +60,8 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal }) => {
         console.log("Vehicle added successfully:", data);
         // alert('Vehicle added successfully!');
         toast.success("Vehicle added successfully!");
-        resetForm();
+        setTimeout(() => togglemodal(), 2000);
+        // resetForm();
       } else {
         const errorData = await response.json();
         console.error("Error adding vehicle:", errorData);
@@ -90,17 +98,48 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal }) => {
     }
   };
 
-  const resetForm = () => {
-    setVehicle_No("");
-    setTax_expiry_date("");
-    setRc_expiry_date("");
-    setPucc_expiry_date("");
-    setInsurance_expiry_date("");
-    setSelectedFile(null);
-    setImagePreview("");
-  };
+  // const resetForm = () => {
+  //   setVehicle_No("");
+  //   setTax_expiry_date("");
+  //   setRc_expiry_date("");
+  //   setPucc_expiry_date("");
+  //   setInsurance_expiry_date("");
+  //   setSelectedFile(null);
+  //   setImagePreview("");
+  // };
 
-  if (!showmodal) return null;
+  // if (!showmodal) return null;
+
+// Get today's date in YYYY-MM-DD format
+const today = new Date().toISOString().split("T")[0];
+
+// const handleDateChange = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+//   const selectedDate = e.target.value;
+//   if (selectedDate < today) {
+//     alert("Please select a future date.");
+//     return;
+//   }
+
+//   // Update the correct state based on the field
+//   switch (field) {
+//     case "tax":
+//       setTax_expiry_date(selectedDate);
+//       break;
+//     case "rc":
+//       setRc_expiry_date(selectedDate);
+//       break;
+//     case "pucc":
+//       setPucc_expiry_date(selectedDate);
+//       break;
+//     case "insurance":
+//       setInsurance_expiry_date(selectedDate);
+//       break;
+//     default:
+//       break;
+//   }
+// };
+
+
 
   return (
     <div>
@@ -159,6 +198,8 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal }) => {
                   type="date"
                   value={tax_expiry_date}
                   onChange={(e) => setTax_expiry_date(e.target.value)}
+                  // onChange={handleDateChange("tax")}
+                  min={today}
                   className="mt-2 form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                   required
                 />
@@ -169,6 +210,8 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal }) => {
                   type="date"
                   value={rc_expiry_date}
                   onChange={(e) => setRc_expiry_date(e.target.value)}
+                  // onChange={handleDateChange("rc")}
+                  min={today}
                   className="mt-2 form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                   required
                 />
@@ -179,6 +222,8 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal }) => {
                   type="date"
                   value={pucc_expiry_date}
                   onChange={(e) => setPucc_expiry_date(e.target.value)}
+                  // onChange={handleDateChange("pucc")}
+                  min={today}
                   className="mt-2 form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                   required
                 />
@@ -189,6 +234,8 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal }) => {
                   type="date"
                   value={insurance_expiry_date}
                   onChange={(e) => setInsurance_expiry_date(e.target.value)}
+                  // onChange={handleDateChange("insurance")}
+                  min={today}
                   className="mt-2 form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                   required
                 />
@@ -256,6 +303,11 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal }) => {
                 </div>
               </div>
             </div>
+
+            {error && (
+              <div className="text-red-500 text-sm mt-2">{error}</div>
+            )}
+
 
             {/* Submit Button */}
             <div className="mt-4">

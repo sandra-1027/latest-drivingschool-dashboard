@@ -109,7 +109,7 @@ const [loading, setLoading] = useState(false);
         if (data.success) {
           setSuccess(true);
           onSave(formData);
-          toggleModal();
+          // toggleModal();
         } else {
           setError(data.msg || 'Failed to update driver');
           console.log('Error Messages:', data.error_msgs);

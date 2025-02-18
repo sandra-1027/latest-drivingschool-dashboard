@@ -77,7 +77,7 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal }) => {
     }
   };
 
-  if (!showmodal) return null;
+  // if (!showmodal) return null;
 
   return (
     <div>
@@ -131,6 +131,7 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal }) => {
                     onChange={(e) =>
                       setFormData({ ...formData, branch_name: e.target.value })
                     }
+                    required
                   />
                 </label>
 
@@ -141,8 +142,13 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal }) => {
                     onChange={(value: string) =>
                       setFormData({ ...formData, description: value })
                     }
+                    
                   />
                 </div>
+
+                {error && (
+              <div className="text-red-500 text-sm mt-2">{error}</div>
+            )}
 
                 <button
                   type="submit"

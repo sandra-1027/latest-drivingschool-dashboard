@@ -9,7 +9,7 @@ import { useAuth } from "@/app/context/AuthContext";
 import Edit from "./edit";
 
 interface Driver {
-  id?: string;
+  user_id?: string;
   first_name: string;
   status: string;
   mobile: string;
@@ -49,6 +49,7 @@ const page = () => {
     // setSelectedDriver(driver);
     setEditedDriver(driver);
     setShowmodal((prev) => !prev);
+    fetchDriverData();
   };
 
   const fetchDriverData = async () => {
@@ -129,6 +130,8 @@ const page = () => {
   const handleReset = () => {
     setFilters({ driverName: "", status: "" });
     setFilteredData(driverData);
+    setSelectedDriver("");
+    setSelectedStatus("");
     setCurrentPage(1);
   };
 
@@ -144,7 +147,7 @@ const page = () => {
   // Pagination logic
   const totalPages = Math.ceil(totalEntries / entriesPerPage);
 
-  const updateAccountStatus = async (id: string, status: string) => {
+  const updateAccountStatus = async (user_id: string, status: string) => {
     try {
       const response = await fetch("/api/admin/settings/inactivate_driver", {
         method: "POST",
@@ -153,7 +156,7 @@ const page = () => {
           api_key: "10f052463f485938d04ac7300de7ec2b",
         },
         body: JSON.stringify({
-          id: id,
+          id: user_id,
           status: status,
         }),
       });
@@ -168,7 +171,8 @@ const page = () => {
       }
 
       const data = await response.json();
-      console.log("API Response:", data); // Log the response
+      console.log("API Response:", data);
+      
 
       if (data.success) {
         fetchDriverData();
@@ -528,7 +532,7 @@ const page = () => {
                                 item.status === "active" ? "error" : "primary"
                               }/25`}
                               onClick={() =>
-                                updateAccountStatus(item.id!, item.status)
+                                updateAccountStatus(item.user_id!, item.status)
                               }
                             >
                               <i

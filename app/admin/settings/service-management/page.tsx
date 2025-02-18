@@ -44,6 +44,7 @@ const page = () => {
     setModalMode(mode);
     setEditedService(service);
     setShowmodal((prev) => !prev);
+    fetchServiceData();
   };
 
   const fetchServiceData = async () => {

@@ -120,7 +120,7 @@ type CreateProps = {
 const Add: React.FC<CreateProps> = ({ showmodal, togglemodal, formData, isEditing }) => {
   const { state } = useAuth();
   const [services, setServices] = useState<{ id: string; service_name: string }[]>([]);
-
+ const [error, setError] = useState<string | null>(null);
   const [selectedService, setSelectedService] = useState<string>("");
   const [searchService, setSearchService] = useState("");
   const[searchServiceData,setSearchServiceData] =useState("");
@@ -131,7 +131,7 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal, formData, isEditin
   const [localFormData, setLocalFormData] = useState(formData || {
     f_cost: "",
     m_cost: "",
-service_id: selectedService,
+service_id: "",
     vehicle_type: "",
     id:"",
   });
@@ -178,7 +178,13 @@ service_id: selectedService,
 
 const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
- 
+
+  if (!localFormData.service_id.trim() || !localFormData.vehicle_type.trim()) {
+    setError("All fields are required.");
+    return;
+  }
+
+  const formDataToSend = { ...localFormData, service_id: localFormData.service_id };
   
   try {
     const response = await fetch("/api/admin/accounts/add_license_cost", {
@@ -188,11 +194,11 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         api_key: "10f052463f485938d04ac7300de7ec2b",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(localFormData
+      body: JSON.stringify(formDataToSend
       ),
     });
 
-    console.log(localFormData, "data sent to backend");
+    console.log(formDataToSend, "data sent to backend");
 
     const responseJson = await response.json();
     console.log("Response from backend:", responseJson);
@@ -203,14 +209,14 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     // }
 
     // alert(`License added successfully!`);
-    togglemodal(); 
+    // togglemodal(); 
   } catch (error) {
     console.error("Error submitting form:", error);
     alert(`An error occurred while adding the license.`);
   }
 };
 
-  if (!showmodal) return null;
+  // if (!showmodal) return null;
 
 
     const fetchSearchService = async () => {
@@ -252,9 +258,6 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       const searchData = searchServiceData.filter(
         (item) =>
           item.text.toLowerCase().includes(value.toLowerCase())
-          // item.user_name.toLowerCase().includes(value.toLowerCase()) ||
-          // item.email.toLowerCase().includes(value.toLowerCase()) ||
-          // item.pay_status.toLowerCase().includes(value.toLowerCase())
       );
   
       setFilteredService(searchData);
@@ -264,9 +267,12 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     const handleSelectService = (service) => {
       setSelectedService(service.text);
      
-      // setSelectedMobile(`${mobile.text} - ${mobile.term}`);
+      setLocalFormData((prevData)=>({
+        ...prevData,
+        service_id: service.id,
+      }))
       setSearchService("");
-      setIsDropdownOpen(false); // Close dropdown after selection
+      setIsDropdownOpen(false); 
     };
   
     // Close dropdown when clicking outside
@@ -286,7 +292,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     <div>
       <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden px-4 py-6 sm:px-5" role="dialog">
         <div className="absolute inset-0 bg-slate-900/60 transition-opacity duration-300" onClick={togglemodal}></div>
-        <div className="relative flex w-full max-w-3xl origin-top flex-col overflow-hidden rounded-lg bg-white transition-all duration-300 dark:bg-navy-700">
+        <div className="relative flex w-full max-w-3xl origin-top flex-col  rounded-lg bg-white transition-all duration-300 dark:bg-navy-700">
           <div className="flex justify-between rounded-t-lg bg-slate-200 px-4 py-3 dark:bg-navy-800 sm:px-5">
             <h3 className="text-xl font-medium text-slate-700 dark:text-navy-100">
               {isEditing ? "Edit License Cost" : "Add License Cost"}
@@ -406,6 +412,12 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                 className="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" />
            </label> */}
             </div>
+
+            {error && (
+              <div className="text-red-500 text-sm mt-2">{error}</div>
+            )}
+
+
             <button type="submit" className="bg-primary text-white rounded p-2 w-1/5 mt-4">
               Add
             </button>

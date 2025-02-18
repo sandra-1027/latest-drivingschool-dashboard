@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 type Account = {
-  id?: string;
+  id: string;
   status: string;
   daily_status: string; 
   type: string;
@@ -21,6 +21,7 @@ type Account = {
   total_income:string;
   total_expense:string;
   added_by:string;
+  text: string;
 };
 type CreateProps = {
   showmodal: boolean;
@@ -46,53 +47,24 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal, formData, isEditin
   const [ BranchData,  setBranchData] = useState<Account []>([]);
   const [branch_id, setbranch_id] = useState(formData?.branch_id || '');
 
-//  const [selectedBranch, setSelectedBranch] = useState<string>("");
+ const [selectedBranch, setSelectedBranch] = useState<string>("");
   const [searchBranch, setSearchBranch] = useState("");
-    const[searchBranchData,setSearchBranchData] =useState("");
-    const[filteredBranch,setFilteredBranch]=useState("");
+    const[searchBranchData,setSearchBranchData] =useState<Account []>([]);
+    const[filteredBranch,setFilteredBranch]=useState<Account []>([]);
      const [isDropdownOpen, setIsDropdownOpen] = useState(false);
       const dropdownRef = useRef(null);
 
-  const fetchBranchData = async () => {
-    try {
 
-      const response = await fetch('/api/admin/settings/branch_details', {
-        method: 'POST',
-        headers: {
-           'authorizations': state?.accessToken ?? '', 
-        
-          'api_key': '10f052463f485938d04ac7300de7ec2b',  
-        },
-        body: JSON.stringify({ user_id:null}),
-      });
-      if (!response.ok) {
-        const errorData = await response.json();
-       
-        throw new Error(`HTTP error! Status: ${response.status} - ${errorData.message || 'Unknown error'}`);
-      }
-      
-      const data = await response.json();
-//console.log(data,"data")
-      if (data.success) {
-        setBranchData(data.data || []);
-      } else {
-      
-      }
-    } catch (error) {
-      console.error("Fetch error:", error);
-    }
-  };
-  
-  useEffect(() => {
-    fetchBranchData();
-  }, [state]);
 
   if (!showmodal) return null;
 
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+    const formDataToSend = { ...FormData, branch_id: branch_id };
+
+
+
     if (!branch_id) {
       toast.error("Please select a branch.");
       return;
@@ -138,7 +110,7 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal, formData, isEditin
       console.error("Network error:", error);
       toast.error(error.message || 'An error occurred while adding the account.');
     } finally {
-      togglemodal(); // Close modal
+      // togglemodal(); 
     }
   };
   
@@ -181,34 +153,41 @@ const fetchSearchBranch = async () => {
       const searchData = searchBranchData.filter(
         (item) =>
           item.text.toLowerCase().includes(value.toLowerCase())
-          // item.user_name.toLowerCase().includes(value.toLowerCase()) ||
-          // item.email.toLowerCase().includes(value.toLowerCase()) ||
-          // item.pay_status.toLowerCase().includes(value.toLowerCase())
+         
       );
   
       setFilteredBranch(searchData);
     };
   
     
-    const handleSelectBranch = (branch) => {
-      // setSelectedBranch(branch.text);
-      setbranch_id(branch.text);
+    const handleSelectBranch = (branch: { id: string; text: string }) => {
+      setSelectedBranch(branch.text);
+      setbranch_id(branch.id);
       
       setSearchBranch("");
       setIsDropdownOpen(false); 
     };
   
     // Close dropdown when clicking outside
+    // useEffect(() => {
+    //   const handleClickOutside = (event) => {
+    //     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+    //       setIsDropdownOpen(false);
+    //     }
+    //   };
+    //   document.addEventListener("mousedown", handleClickOutside);
+    //   return () => document.removeEventListener("mousedown", handleClickOutside);
+    // }, []);
     useEffect(() => {
-      const handleClickOutside = (event) => {
-        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      const handleClickOutside = (event: MouseEvent) => {
+        if (dropdownRef.current && !(dropdownRef.current as HTMLElement).contains(event.target as Node)) {
           setIsDropdownOpen(false);
         }
       };
       document.addEventListener("mousedown", handleClickOutside);
       return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
-  
+    
    
 
 
@@ -225,7 +204,7 @@ const fetchSearchBranch = async () => {
           onClick={togglemodal}
         ></div>
 
-        <div className="relative flex w-full max-w-3xl origin-top flex-col overflow-hidden rounded-lg bg-white transition-all duration-300 dark:bg-navy-700">
+        <div className="relative flex w-full max-w-3xl origin-top flex-col  rounded-lg bg-white transition-all duration-300 dark:bg-navy-700">
           <div className="flex justify-between rounded-t-lg bg-slate-200 px-4 py-3 dark:bg-navy-800 sm:px-5">
             <h3 className="text-xl font-medium text-slate-700 dark:text-navy-100">
               Add Account

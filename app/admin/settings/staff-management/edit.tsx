@@ -1,7 +1,7 @@
 
 
 import { useAuth } from "@/app/context/AuthContext";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { HiEye, HiEyeOff } from "react-icons/hi";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
@@ -38,6 +38,17 @@ const Edit = ({ showmodal, togglemodal, staffData, onSave }: EditProps) => {
 const[password,setpassword]=useState<Staff | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
+
+
+
+   const [selectedBranch, setSelectedBranch] = useState<string>("");
+   const [branch_id, setbranch_id] = useState<string>("");
+   const [searchBranch, setSearchBranch] = useState("");
+      const[searchBranchData,setSearchBranchData] =useState("");
+      const[filteredBranch,setFilteredBranch]=useState("");
+       const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+        const dropdownRef = useRef(null);
+
 const [formData, setFormData] = useState<Staff | null>(null);
   useEffect(() => {
     if (staffData) {
@@ -96,7 +107,7 @@ const handleSubmit = async (e: React.FormEvent) => {
           mobile: formData.mobile, 
           place: formData.address, 
           email: formData.email, 
-          branch_id:formData.branch_id,
+          branch_id:branch_id,
           password:formData.password,
         };
        
@@ -117,12 +128,12 @@ const handleSubmit = async (e: React.FormEvent) => {
         console.log('Response Data:', data);
         if (response.ok && data?.success) {
             toast.success('Staff Updated successfully');
-            togglemodal();
+            // togglemodal();
           }
         if (data.success) {
           setSuccess(true);
           onSave(formData);
-          togglemodal();
+          // togglemodal();
         } else {
           setError(data.msg || 'Failed to update Cost');
           console.log('Error Messages:', data.error_msgs);
@@ -137,13 +148,90 @@ const handleSubmit = async (e: React.FormEvent) => {
     }
   };
 
+
+
+
+
+
+
+
+const fetchSearchBranch = async () => {
+      try {
+        const response = await fetch("/api/admin/report/get_branch_autocomplete", {
+          method: "POST",
+          headers: {
+            authorizations: state?.accessToken ?? "",
+            api_key: "10f052463f485938d04ac7300de7ec2b",
+          },
+          body: JSON.stringify({}),
+        });
+  
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(`HTTP error! Status: ${response.status} - ${errorData.message || "Unknown error"}`);
+        }
+  
+        const data = await response.json();
+        console.log("Search mobile data", data.data);
+  
+        if (data.success) {
+          setSearchBranchData(data.data.branch_details || []);
+          setFilteredBranch(data.data.branch_details || []);
+        }
+      } catch (error) {
+        console.error("Fetch error:", error);
+      }
+    };
+  
+    useEffect(() => {
+      fetchSearchBranch();
+    }, [state]);
+  
+    const handleSearchBranch = (e : any) => {
+      const value = e.target.value;
+      setSearchBranch(value);
+  
+      const searchData = searchBranchData.filter(
+        (item) =>
+          item.text.toLowerCase().includes(value.toLowerCase())
+          // item.user_name.toLowerCase().includes(value.toLowerCase()) ||
+          // item.email.toLowerCase().includes(value.toLowerCase()) ||
+          // item.pay_status.toLowerCase().includes(value.toLowerCase())
+      );
+  
+      setFilteredBranch(searchData);
+    };
+  
+    
+    const handleSelectBranch = (branch) => {
+      setSelectedBranch(branch.text);
+      setbranch_id(branch.id);
+      
+      setSearchBranch("");
+      setIsDropdownOpen(false); 
+    };
+  
+    // Close dropdown when clicking outside
+    useEffect(() => {
+      const handleClickOutside = (event) => {
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+          setIsDropdownOpen(false);
+        }
+      };
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
+
+
+
   if (!showmodal || !formData) return null;
   return (
     <div>
       <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden px-4 py-6 sm:px-5" 
       role="dialog" onKeyDown={(e) => e.key === "Escape" && togglemodal()}>
         <div className="absolute inset-0 bg-slate-900/60 transition-opacity duration-300" onClick={togglemodal}></div>
-        <div className="relative flex w-full max-w-3xl origin-top flex-col overflow-hidden rounded-lg bg-white transition-all duration-300 dark:bg-navy-700">
+        <div className="relative flex w-full max-w-3xl origin-top flex-col rounded-lg bg-white transition-all duration-300 dark:bg-navy-700">
           <div className="flex justify-between rounded-t-lg bg-slate-200 px-4 py-3 dark:bg-navy-800 sm:px-5">
             <h3 className="text-xl font-medium text-slate-700 dark:text-navy-100">
              Edit Staff
@@ -185,6 +273,7 @@ const handleSubmit = async (e: React.FormEvent) => {
               />
             </span>
             </label>
+
             <label className="block">
             <span>Mobile</span>
     <span className="relative mt-1.5 flex">
@@ -222,7 +311,7 @@ const handleSubmit = async (e: React.FormEvent) => {
             </label>
   
       
-            <label className="block">
+            {/* <label className="block">
             <span>Branch Name</span>
             <span className="relative mt-1.5 flex ">
               <select name="branch_id" value={formData.branch_id} onChange={handleChange}
@@ -236,8 +325,53 @@ const handleSubmit = async (e: React.FormEvent) => {
                 ))}
               </select>
               </span>
-              </label>
-              
+              </label> */}
+                   <div className="relative w-full" ref={dropdownRef}>
+      <label htmlFor="mobile" className="block text-sm font-medium text-slate-700 dark:text-navy-100">
+       Branch Name
+      </label>
+
+      {/* Dropdown Button */}
+      <div
+        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+        className="mt-1 flex w-full items-center justify-between rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm cursor-pointer focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+      >
+        {selectedBranch || formData.branch_name|| "Select a branch"}
+        <span className="ml-2">&#9662;</span> {/* Down arrow */}
+      </div>
+
+      {/* Dropdown Content */}
+      {isDropdownOpen && (
+        <div className="absolute z-10 mt-1 w-full rounded-md border border-gray-300 bg-white shadow-lg dark:border-navy-600 dark:bg-navy-700">
+          {/* Search Bar Inside Dropdown */}
+          <input
+            type="text"
+            value={searchBranch}
+            onChange={handleSearchBranch}
+            placeholder="Search..."
+            className="w-full border-b border-gray-300 px-3 py-2 text-sm focus:outline-none dark:border-navy-600 dark:bg-navy-700 dark:text-navy-100"
+          />
+
+          {/* Dropdown Options */}
+          <ul className="max-h-48 overflow-y-auto hide-scrollbar">
+            {filteredBranch.length > 0 ? (
+              filteredBranch.map((branch) => (
+                <li
+                  key={branch.id}
+                  onClick={() => handleSelectBranch(branch)}
+                  className="cursor-pointer px-3 py-2 hover:bg-indigo-500 hover:text-white dark:hover:bg-navy-500"
+                >
+                   {branch.text}
+                </li>
+              ))
+            ) : (
+              <li className="px-3 py-2 text-gray-500 dark:text-gray-400">No results found</li>
+            )}
+          </ul>
+        </div>
+      )}
+    </div>
+
 
               <label className="block">
     <span>Password</span>

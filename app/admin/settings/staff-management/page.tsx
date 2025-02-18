@@ -60,7 +60,8 @@ const page = () => {
   const togglemodal = (mode: 'add' | 'edit', staff: Staff | null = null) => {
     setModalMode(mode); 
     setEditedStaff(staff);  
-    setShowmodal((prev) => !prev);  
+    setShowmodal((prev) => !prev); 
+    fetchStaffData(); 
   };
  
 
