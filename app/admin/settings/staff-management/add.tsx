@@ -52,7 +52,7 @@ const Add: React.FC<CreateProps> = ({ showmodal, togglemodal, formData, isEditin
     branch_id:"",
   });
   const [staffData, setStaffData] = useState<Staff[]>([]);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState("");
@@ -107,7 +107,11 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     return;
   }
 if (!/^\d+$/.test(localFormData.mobile)) {
-    setError("Amount must be numeric.");
+    setError("mobile must be numeric.");
+    return;
+  }
+  if (!localFormData.mobile || !/^\d{10}$/.test(localFormData.mobile)) {
+    setError("Mobile number must be a valid 10-digit number.");
     return;
   }
  
